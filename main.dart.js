@@ -49398,8 +49398,8 @@ s=b.a6(t.w).f.a
 p.E_(B.cC,A.a7p("screen size : "+s.h(0)),r,r)
 if(s.a>1024)return this.CF(s)
 return this.CF(s)},
-CF(a){var s=null,r=a.b,q=A.e($.a3J)+", Fullstack Developer, \uae40\ub3d9\ud604\uc785\ub2c8\ub2e4.",p=t._
-return A.aiY(new A.rD(A.n3(A.a8u(A.n3(new A.xA(B.aZ,B.mc,B.ev,B.cv,s,B.eU,s,A.a([A.n3(A.a8u(A.n3(A.a8m(A.a([B.D8,new A.Cq(q,s,A.ts(s,s,s,s,s,s,s,s,s,s,s,52,s,B.r,s,1.555555555555556,!0,s,s,s,s,s,s,s,s),s,s,s,s),B.D7],p),B.cv,B.ev),s,1024),B.ai),s,a.a)],p),s),r,s),B.aZ),r,s),s),!0)}}
+CF(a){var s=null,r=A.e($.a3J)+", Fullstack Developer, \uae40\ub3d9\ud604\uc785\ub2c8\ub2e4.",q=t._
+return A.aiY(new A.rD(A.n3(A.a8u(A.n3(new A.xA(B.aZ,B.mc,B.ev,B.cv,s,B.eU,s,A.a([A.n3(A.a8u(A.n3(A.a8m(A.a([B.D8,new A.Cq(r,s,A.ts(s,s,s,s,s,s,s,s,s,s,s,52,s,B.r,s,1.555555555555556,!0,s,s,s,s,s,s,s,s),s,s,s,s),B.D7],q),B.cv,B.ev),s,1024),B.ai),s,a.a)],q),s),1/0,s),B.aZ),a.b,s),s),!0)}}
 A.QM.prototype={
 Gm(a){return!0}}
 A.oT.prototype={

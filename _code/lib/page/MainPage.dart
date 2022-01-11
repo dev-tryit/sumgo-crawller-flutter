@@ -23,7 +23,7 @@ class MainPage extends StatelessWidget {
   Widget desktop(Size screenSize) {
     return AppComponents.webPage(
       screenSize: screenSize,
-      containerSize: Size(containerWidth, screenSize.height),
+      containerSize: Size.fromWidth(containerWidth),
       widgetList: [
         const Spacer(flex: 43),
         AppComponents.text(
