@@ -25,7 +25,7 @@ class MainPage extends StatelessWidget {
       screenSize: screenSize,
       containerWidth: containerWidth,
       widgetList: [
-        // const Spacer(flex: 43),
+        const Spacer(flex: 43),
         AppComponents.text(
           fontSize: 52,
           text: "${Setting.appBuildNumber}, Fullstack Developer, 김동현입니다.",
