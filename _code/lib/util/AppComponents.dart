@@ -22,9 +22,12 @@ class AppComponents {
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
   }) {
     return scaffold(
-      body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
+      body: ListView(
+        children: widgetList,
+      ),
+    );
+    /*
+    Row(
           mainAxisAlignment: mainAxisAlignment,
           crossAxisAlignment: crossAxisAlignment,
           children: [
@@ -38,8 +41,7 @@ class AppComponents {
             ),
           ],
         ),
-      ),
-    );
+        */
   }
 
   static text({
