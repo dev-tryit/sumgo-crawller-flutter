@@ -24,6 +24,8 @@ class MainPage extends StatelessWidget {
   }
 
   Widget desktop() {
+    var buildNumber = Setting.appBuildNumber;
+    LogUtil.info("app buildNumber : ${Setting.appBuildNumber}");
     return AppComponents.webPage(
       widgetList: [
         const Spacer(flex: 43),
