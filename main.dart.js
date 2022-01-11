@@ -46019,13 +46019,13 @@ $S:86}
 A.yp.prototype={
 R(a,b){return new A.pO(new A.yc(null),A.a6i(B.a3,B.i),null)}}
 A.yc.prototype={
-R(a,b){var s=b.a9(t.w).f.a.a,r=A.d(s),q=$.a98(),p="["+A.d(A.ah1().gna().ghW()[2].gog())+"] "
-q.Sr(B.dH,p+r,null,null)
-return A.agf(new A.qV(this.Du(0,s),null),!0)},
-Du(a,b){if(b>1024)return this.Az()
+R(a,b){return this.Du(0,b.a9(t.w).f.a)},
+Du(a,b){var s="screen size : "+b.h(0),r=$.a98(),q="["+A.d(A.ah1().gna().ghW()[2].gog())+"] "
+r.Sr(B.dH,q+s,null,null)
+if(b.a>1024)return this.Az()
 return this.Az()},
 Az(){var s=null,r=t.V
-return A.a5X(A.a([A.Ss(new A.wn(B.eP,B.lP,B.ee,B.ds,s,B.eC,s,A.a([B.Ct,A.a3U(52,A.d($.a63)+", Fullstack Developer, \uae40\ub3d9\ud604\uc785\ub2c8\ub2e4."),B.Cr,A.a3U(39,"\ud50c\ub8e8\ud130 \uc6f9, \uc571\uc744 \uc81c\uc791\ud569\ub2c8\ub2e4. \uc2a4\ud0c0\ud2b8\uc5c5\uc758 \uc2dc\uc791\uc744 \ub3c4\uc640\ub4dc\ub9ac\uaca0\uc2b5\ub2c8\ub2e4."),B.Cu,B.AC,B.Cs],r),s),s,1024)],r),B.fj,B.zP,B.ee)}}
+return A.agf(new A.qV(A.a5X(A.a([A.Ss(new A.wn(B.eP,B.lP,B.ee,B.ds,s,B.eC,s,A.a([B.Ct,A.a3U(52,A.d($.a63)+", Fullstack Developer, \uae40\ub3d9\ud604\uc785\ub2c8\ub2e4."),B.Cr,A.a3U(39,"\ud50c\ub8e8\ud130 \uc6f9, \uc571\uc744 \uc81c\uc791\ud569\ub2c8\ub2e4. \uc2a4\ud0c0\ud2b8\uc5c5\uc758 \uc2dc\uc791\uc744 \ub3c4\uc640\ub4dc\ub9ac\uaca0\uc2b5\ub2c8\ub2e4."),B.Cu,B.AC,B.Cs],r),s),s,s)],r),B.fj,B.zP,B.ee),s),!0)}}
 A.P7.prototype={
 DV(a){return!0}}
 A.oh.prototype={

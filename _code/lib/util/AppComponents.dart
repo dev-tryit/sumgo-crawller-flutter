@@ -1,10 +1,42 @@
 import 'package:kdh_homepage/Setting.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class AppComponents {
   static DateTime? _lastClickDateTime;
+
+  static Widget scaffold({required Widget body}) {
+    return SafeArea(
+      child: Scaffold(
+        body: body,
+      ),
+    );
+  }
+
+  static Widget webPage({
+    required List<Widget> widgetList,
+    double? containerWidth,
+    double? containerHeight,
+    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.center,
+    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+  }) {
+    return scaffold(
+      body: Row(
+        mainAxisAlignment: mainAxisAlignment,
+        crossAxisAlignment: crossAxisAlignment,
+        children: [
+          SizedBox(
+            width: containerWidth,
+            height: containerHeight,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: widgetList,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   static text({
     required String text,
@@ -363,8 +395,7 @@ class AppComponents {
           ),
           primary: Colors.white,
         ),
-        child: size16Text(
-            text: text, softWrap: softWrap, color: Colors.grey),
+        child: size16Text(text: text, softWrap: softWrap, color: Colors.grey),
         onPressed: onPressed,
       ),
     );
