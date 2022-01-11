@@ -22,6 +22,7 @@ class AppComponents {
     return SizedBox(
       height: screenSize.height,
       child: Scrollbar(
+        isAlwaysShown: true,
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: SizedBox(
@@ -44,6 +45,7 @@ class AppComponents {
     return SizedBox(
       width: screenSize.width,
       child: Scrollbar(
+        isAlwaysShown: true,
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: SizedBox(
