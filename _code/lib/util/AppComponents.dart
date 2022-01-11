@@ -31,12 +31,9 @@ class AppComponents {
             SizedBox(
               width: containerWidth,
               height: containerHeight,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: widgetList,
-                ),
+              child: ListView(
+                shrinkWrap: true,
+                children: widgetList,
               ),
             ),
           ],
