@@ -49534,7 +49534,7 @@ p.E5(B.cC,A.a7v("screen size : "+s.h(0)),r,r)
 if(s.a>1024)return this.CM(s)
 return this.CM(s)},
 CM(a){var s=null,r=t._
-return A.aj3(new A.rF(A.n5(A.a8A(A.n5(new A.xB(B.aZ,B.mc,B.ev,B.cv,s,B.eU,s,A.a([A.n5(A.a8A(A.n5(A.a8s(A.a([B.Dc,A.a6p(52,A.e($.a3N)+", Fullstack Developer, \uae40\ub3d9\ud604\uc785\ub2c8\ub2e4."),B.Da,A.a6p(39,"\ud50c\ub8e8\ud130 \uc6f9, \uc571\uc744 \uc81c\uc791\ud569\ub2c8\ub2e4. \uc2a4\ud0c0\ud2b8\uc5c5\uc758 \uc2dc\uc791\uc744 \ub3c4\uc640\ub4dc\ub9ac\uaca0\uc2b5\ub2c8\ub2e4."),B.Dd,B.Bd,B.Db],r),B.cv,B.ev),s,1024),B.ai),s,a.a)],r),s),s,s),B.aZ),a.b,s),s),!0)}}
+return A.aj3(new A.rF(A.n5(A.a8A(A.n5(A.a8s(A.a([A.n5(A.a8A(A.n5(new A.xB(B.aZ,B.mc,B.ev,B.cv,s,B.eU,s,A.a([B.Dc,A.a6p(52,A.e($.a3N)+", Fullstack Developer, \uae40\ub3d9\ud604\uc785\ub2c8\ub2e4."),B.Da,A.a6p(39,"\ud50c\ub8e8\ud130 \uc6f9, \uc571\uc744 \uc81c\uc791\ud569\ub2c8\ub2e4. \uc2a4\ud0c0\ud2b8\uc5c5\uc758 \uc2dc\uc791\uc744 \ub3c4\uc640\ub4dc\ub9ac\uaca0\uc2b5\ub2c8\ub2e4."),B.Dd,B.Bd,B.Db],r),s),s,s),B.aZ),a.b,s)],r),B.cv,B.ev),s,1024),B.ai),s,a.a),s),!0)}}
 A.QQ.prototype={
 Gt(a){return!0}}
 A.oW.prototype={
