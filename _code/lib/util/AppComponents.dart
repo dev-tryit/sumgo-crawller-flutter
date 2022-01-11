@@ -67,11 +67,11 @@ class AppComponents {
     double? containerHeight,
   }) {
     return scaffold(
-      body: verticalScroll(
-            screenSize: screenSize,
-            containerHeight: containerHeight,
-            children: widgetList,
-          )
+      body: horizontalScroll(
+        screenSize: screenSize,
+        containerWidth: containerWidth,
+        children: widgetList,
+      ),
     );/* 
     return scaffold(
       body: horizontalScroll(
