@@ -1,58 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:kdh_homepage/util/AppComponents.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("MainPage")),
-      body: Column(
-        children: [
-          Container(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-          TextField(),
-        ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(title: const Text("MainPage")),
+        body: Column(
+          children: [
+            const Spacer(flex: 92),
+            AppComponents.text(
+                text: "Fullstack Developer, 김동현입니다.", fontSize: 52),
+            const Spacer(flex: 14),
+            AppComponents.text(
+                text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.", fontSize: 40),
+            const Spacer(flex: 73),
+            const Placeholder(strokeWidth: 1, fallbackHeight: 426),
+            const Spacer(flex: 67),
+          ],
+        ),
       ),
     );
   }
