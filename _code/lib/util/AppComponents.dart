@@ -20,12 +20,10 @@ class AppComponents {
     required Size containerSize,
   }) {
     return SizedBox(
-      width: screenSize.width,
       height: screenSize.height,
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: SizedBox(
-          width: containerSize.width,
           height: containerSize.height,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,12 +41,10 @@ class AppComponents {
   }) {
     return SizedBox(
       width: screenSize.width,
-      height: screenSize.height,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: SizedBox(
           width: containerSize.width,
-          height: containerSize.height,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: children,
@@ -76,22 +72,6 @@ class AppComponents {
         ],
       ),
     );
-    /*
-    Row(
-          mainAxisAlignment: mainAxisAlignment,
-          crossAxisAlignment: crossAxisAlignment,
-          children: [
-            SizedBox(
-              width: containerWidth,
-              height: containerHeight,
-              child: ListView(
-                shrinkWrap: true,
-                children: widgetList,
-              ),
-            ),
-          ],
-        ),
-        */
   }
 
   static text({
