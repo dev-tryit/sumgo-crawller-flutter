@@ -21,13 +21,15 @@ class AppComponents {
   }) {
     return SizedBox(
       height: screenSize.height,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: SizedBox(
-          height: containerHeight,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: children,
+      child: Scrollbar(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: SizedBox(
+            height: containerHeight,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: children,
+            ),
           ),
         ),
       ),
@@ -41,13 +43,15 @@ class AppComponents {
   }) {
     return SizedBox(
       width: screenSize.width,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: SizedBox(
-          width: containerWidth,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: children,
+      child: Scrollbar(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: SizedBox(
+            width: containerWidth,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: children,
+            ),
           ),
         ),
       ),
