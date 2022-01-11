@@ -1,3 +1,4 @@
+import 'package:flutter/rendering.dart';
 import 'package:kdh_homepage/Setting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -21,19 +22,25 @@ class AppComponents {
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
   }) {
     return scaffold(
-      body: Row(
-        mainAxisAlignment: mainAxisAlignment,
-        crossAxisAlignment: crossAxisAlignment,
-        children: [
-          SizedBox(
-            width: containerWidth,
-            height: containerHeight,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: widgetList,
+      body: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: mainAxisAlignment,
+          crossAxisAlignment: crossAxisAlignment,
+          children: [
+            SizedBox(
+              width: containerWidth,
+              height: containerHeight,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: widgetList,
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
