@@ -8,7 +8,6 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text("MainPage")),
         body: Column(
           children: [
             const Spacer(flex: 92),
