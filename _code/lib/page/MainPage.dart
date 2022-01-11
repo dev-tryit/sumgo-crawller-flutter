@@ -29,34 +29,32 @@ class MainPage extends StatelessWidget {
   }
 
   Widget desktop() {
-    return Center(
-      child: Container(
-        width: containerWidth,
-        color: Colors.white,
-        child: Row(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Spacer(flex: 43),
-                AppComponents.text(
-                  fontSize: 52,
-                  text:
-                      "${Setting.appBuildNumber}, Fullstack Developer, 김동현입니다.",
-                ),
-                const Spacer(flex: 14),
-                AppComponents.text(
-                  fontSize: 39,
-                  text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
-                ),
-                const Spacer(flex: 73),
-                const Placeholder(strokeWidth: 1, fallbackHeight: 426),
-                const Spacer(flex: 35),
-              ],
-            ),
-          ],
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: containerWidth,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Spacer(flex: 43),
+              AppComponents.text(
+                fontSize: 52,
+                text: "${Setting.appBuildNumber}, Fullstack Developer, 김동현입니다.",
+              ),
+              const Spacer(flex: 14),
+              AppComponents.text(
+                fontSize: 39,
+                text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
+              ),
+              const Spacer(flex: 73),
+              const Placeholder(strokeWidth: 1, fallbackHeight: 426),
+              const Spacer(flex: 35),
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 
