@@ -20,7 +20,7 @@ class AppComponents {
     required double? containerHeight,
   }) {
     return SizedBox(
-      height: screenSize.height-50,
+      height: screenSize.height,
       child: Scrollbar(
         isAlwaysShown: true,
         child: SingleChildScrollView(
@@ -67,6 +67,13 @@ class AppComponents {
     double? containerHeight,
   }) {
     return scaffold(
+      body: verticalScroll(
+            screenSize: screenSize,
+            containerHeight: containerHeight,
+            children: widgetList,
+          )
+    );/* 
+    return scaffold(
       body: horizontalScroll(
         screenSize: screenSize,
         containerWidth: containerWidth,
@@ -78,7 +85,7 @@ class AppComponents {
           ),
         ],
       ),
-    );
+    ); */
   }
 
   static text({
