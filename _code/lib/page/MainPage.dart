@@ -13,6 +13,7 @@ class MainPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const Spacer(flex: 43),
             AppComponents.text(
