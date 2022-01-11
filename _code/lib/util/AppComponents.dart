@@ -14,24 +14,66 @@ class AppComponents {
     );
   }
 
-  static Widget webPage({
-    required List<Widget> widgetList,
-    double? containerWidth,
-    double? containerHeight,
-    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.center,
-    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+  static Widget verticalScroll({
+    required List<Widget> children,
+    required Size screenSize,
+    required Size containerSize,
   }) {
-    Widget container = SizedBox(
-      width: containerWidth,
-      height: containerHeight,
-      child: Column(
-        children: widgetList,
+    return SizedBox(
+      width: screenSize.width,
+      height: screenSize.height,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: SizedBox(
+          width: containerSize.width,
+          height: containerSize.height,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children,
+          ),
+        ),
       ),
     );
+  }
 
+  static Widget horizontalScroll({
+    required List<Widget> children,
+    required Size screenSize,
+    required Size containerSize,
+  }) {
+    return SizedBox(
+      width: screenSize.width,
+      height: screenSize.height,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: SizedBox(
+          width: containerSize.width,
+          height: containerSize.height,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children,
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Widget webPage({
+    required List<Widget> widgetList,
+    required Size screenSize,
+    required Size containerSize,
+  }) {
     return scaffold(
-      body: SingleChildScrollView(
-        child: container,
+      body: verticalScroll(
+        screenSize: screenSize,
+        containerSize: containerSize,
+        children: [
+          horizontalScroll(
+            children: widgetList,
+            screenSize: screenSize,
+            containerSize: containerSize,
+          )
+        ],
       ),
     );
     /*
