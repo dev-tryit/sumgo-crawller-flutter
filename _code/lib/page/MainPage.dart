@@ -9,6 +9,8 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LogUtil.info("app buildNumber : ${Setting.appBuildNumber}");
+    
     Size size = MediaQueryUtil.getScreenSize(context);
 
     return screen(size);
@@ -24,15 +26,12 @@ class MainPage extends StatelessWidget {
   }
 
   Widget desktop() {
-    var buildNumber = Setting.appBuildNumber;
-    LogUtil.info("app buildNumber : $buildNumber");
-    
     return AppComponents.webPage(
       widgetList: [
         const Spacer(flex: 43),
         AppComponents.text(
           fontSize: 52,
-          text: "$buildNumber, Fullstack Developer, 김동현입니다.",
+          text: "${Setting.appBuildNumber}, Fullstack Developer, 김동현입니다.",
         ),
         const Spacer(flex: 14),
         AppComponents.text(
