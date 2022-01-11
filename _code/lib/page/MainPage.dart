@@ -3,17 +3,21 @@ import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/util/AppColors.dart';
 import 'package:kdh_homepage/util/AppComponents.dart';
 import 'package:kdh_homepage/util/DebugUtil.dart';
+import 'package:kdh_homepage/util/LogUtil.dart';
+import 'package:kdh_homepage/util/MediaQueryUtil.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    LogUtil.info("${MediaQueryUtil.getScreenSize(context)}");
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Spacer(flex: 43),
             AppComponents.text(
