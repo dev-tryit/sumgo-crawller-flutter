@@ -15,13 +15,15 @@ class MainPage extends StatelessWidget {
     LogUtil.info("screen size : $screenSize");
 
     if (screenSize.width > containerWidth) {
-      return desktop();
+      return desktop(screenSize);
     }
-    return mobile();
+    return mobile(screenSize);
   }
 
-  Widget desktop() {
+  Widget desktop(Size screenSize) {
     return AppComponents.webPage(
+      containerWidth: screenSize.width,
+      containerHeight: screenSize.height,
       widgetList: [
         const Spacer(flex: 43),
         AppComponents.text(
@@ -33,7 +35,7 @@ class MainPage extends StatelessWidget {
     );
   }
 
-  Widget mobile() {
-    return desktop();
+  Widget mobile(Size screenSize) {
+    return desktop(screenSize);
   }
 }

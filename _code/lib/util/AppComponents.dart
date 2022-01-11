@@ -21,11 +21,17 @@ class AppComponents {
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.center,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
   }) {
+    Widget container = SizedBox(
+      width: containerWidth,
+      height: containerHeight,
+      child: Column(
+        children: widgetList,
+      ),
+    );
+
     return scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          children: widgetList,
-        ),
+        child: container,
       ),
     );
     /*
