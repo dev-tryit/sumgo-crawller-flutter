@@ -23,14 +23,14 @@ class MainPage extends StatelessWidget {
   Widget desktop(Size screenSize) {
     return AppComponents.webPage(
       screenSize: screenSize,
-      containerSize: Size.fromWidth(containerWidth),
+      containerWidth: containerWidth,
       widgetList: [
-        const Spacer(flex: 43),
+        // const Spacer(flex: 43),
         AppComponents.text(
           fontSize: 52,
           text: "${Setting.appBuildNumber}, Fullstack Developer, 김동현입니다.",
         ),
-        const Spacer(flex: 14),
+        // const Spacer(flex: 14),
       ],
     );
   }

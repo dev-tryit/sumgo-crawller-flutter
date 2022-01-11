@@ -17,14 +17,14 @@ class AppComponents {
   static Widget verticalScroll({
     required List<Widget> children,
     required Size screenSize,
-    required Size containerSize,
+    required double? containerHeight,
   }) {
     return SizedBox(
       height: screenSize.height,
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: SizedBox(
-          height: containerSize.height,
+          height: containerHeight,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: children,
@@ -37,14 +37,14 @@ class AppComponents {
   static Widget horizontalScroll({
     required List<Widget> children,
     required Size screenSize,
-    required Size containerSize,
+    double? containerWidth,
   }) {
     return SizedBox(
       width: screenSize.width,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: SizedBox(
-          width: containerSize.width,
+          width: containerWidth,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: children,
@@ -57,17 +57,18 @@ class AppComponents {
   static Widget webPage({
     required List<Widget> widgetList,
     required Size screenSize,
-    required Size containerSize,
+    required double containerWidth,
+    double? containerHeight,
   }) {
     return scaffold(
       body: verticalScroll(
         screenSize: screenSize,
-        containerSize: containerSize,
+        containerHeight: containerHeight,
         children: [
           horizontalScroll(
-            children: widgetList,
             screenSize: screenSize,
-            containerSize: containerSize,
+            containerWidth: containerWidth,
+            children: widgetList,
           )
         ],
       ),
