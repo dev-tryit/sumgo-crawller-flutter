@@ -22,7 +22,7 @@ class AppComponents {
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
   }) {
     return scaffold(
-      body: ListView(
+      body: Column(
         children: widgetList,
       ),
     );
