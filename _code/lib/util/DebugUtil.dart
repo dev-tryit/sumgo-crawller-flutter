@@ -14,4 +14,7 @@ String buildNumber = packageInfo.buildNumber;
  static Future<String> getAppVersion() async {
   return (await PackageInfo.fromPlatform()).version;
  }
+ static Future<String> getBuildNumber() async {
+  return (await PackageInfo.fromPlatform()).buildNumber;
+ }
 }

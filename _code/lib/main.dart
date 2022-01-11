@@ -6,7 +6,8 @@ import 'package:kdh_homepage/util/DebugUtil.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Setting.version = await DebugUtil.getAppVersion();
+  Setting.appVersion = await DebugUtil.getAppVersion();
+  Setting.appBuildNumber = await DebugUtil.getBuildNumber();
   runApp(MyApp());
 }
 

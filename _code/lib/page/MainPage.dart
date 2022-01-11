@@ -17,7 +17,7 @@ class MainPage extends StatelessWidget {
           children: [
             const Spacer(flex: 92),
             AppComponents.text(
-                text: "${Setting.version}, Fullstack Developer, 김동현입니다.", fontSize: 52),
+                text: "${Setting.appBuildNumber}, Fullstack Developer, 김동현입니다.", fontSize: 52),
             const Spacer(flex: 14),
             AppComponents.text(
                 text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.", fontSize: 40),

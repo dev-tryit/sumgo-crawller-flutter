@@ -11,5 +11,7 @@ class Setting {
   // 중복 클릭 방지 시간
   static int milliSecondsForPreventingMultipleClicks = 300;
 
-  static String version="";
+  static String appVersion="";
+
+  static String appBuildNumber="";
 }
