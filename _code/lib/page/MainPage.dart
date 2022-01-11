@@ -16,7 +16,6 @@ class MainPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Spacer(flex: 92),
             AppComponents.text(
