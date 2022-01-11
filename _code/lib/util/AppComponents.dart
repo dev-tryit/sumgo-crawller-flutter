@@ -20,7 +20,7 @@ class AppComponents {
     required double? containerHeight,
   }) {
     return SizedBox(
-      height: screenSize.height,
+      height: screenSize.height-50,
       child: Scrollbar(
         isAlwaysShown: true,
         child: SingleChildScrollView(

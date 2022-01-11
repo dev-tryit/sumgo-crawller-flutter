@@ -49546,8 +49546,8 @@ s=b.a6(t.w).f.a
 p.E5(B.cC,A.a7w("screen size : "+s.h(0)),r,r)
 if(s.a>1024)return this.CM(s)
 return this.CM(s)},
-CM(a){var s=null,r=a.b,q=t._
-return A.aj4(new A.rG(A.n6(A.a3M(A.a8B(A.n6(A.a8t(A.a([A.n6(A.a3M(A.a8B(A.n6(new A.xC(B.aZ,B.mc,B.ev,B.cv,s,B.eU,s,A.a([B.Dc,A.a6q(52,A.e($.a3O)+", Fullstack Developer, \uae40\ub3d9\ud604\uc785\ub2c8\ub2e4."),B.Da,A.a6q(39,"\ud50c\ub8e8\ud130 \uc6f9, \uc571\uc744 \uc81c\uc791\ud569\ub2c8\ub2e4. \uc2a4\ud0c0\ud2b8\uc5c5\uc758 \uc2dc\uc791\uc744 \ub3c4\uc640\ub4dc\ub9ac\uaca0\uc2b5\ub2c8\ub2e4."),B.Dd,B.Bd,B.Db],q),s),r,s),B.aZ),s,!0),r,s)],q),B.cv,B.ev),s,1024),B.ai),s,!0),s,a.a),s),!0)}}
+CM(a){var s=null,r=a.b-50,q=t._
+return A.aj4(new A.rG(A.n6(A.a3M(A.a8B(A.n6(A.a8t(A.a([A.n6(A.a3M(A.a8B(A.n6(new A.xC(B.aZ,B.mc,B.ev,B.cv,s,B.eU,s,A.a([B.Dc,A.a6q(52,A.e($.a3O)+", Fullstack Developer, \uae40\ub3d9\ud604\uc785\ub2c8\ub2e4."),B.Da,A.a6q(39,"\ud50c\ub8e8\ud130 \uc6f9, \uc571\uc744 \uc81c\uc791\ud569\ub2c8\ub2e4. \uc2a4\ud0c0\ud2b8\uc5c5\uc758 \uc2dc\uc791\uc744 \ub3c4\uc640\ub4dc\ub9ac\uaca0\uc2b5\ub2c8\ub2e4."),B.Dd,B.Bd,B.Db],q),s),r,s),B.aZ),s,!0),r,s)],q),B.cv,B.ev),s,974),B.ai),s,!0),s,a.a),s),!0)}}
 A.QQ.prototype={
 Gt(a){return!0}}
 A.oX.prototype={

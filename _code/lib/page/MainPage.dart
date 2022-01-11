@@ -21,10 +21,12 @@ class MainPage extends StatelessWidget {
   }
 
   Widget desktop(Size screenSize) {
+    //TODO: 스크롤바가 안보이는 이슈.
+    //TODO: 정렬 이슈.
     return AppComponents.webPage(
       screenSize: screenSize,
-      containerWidth: containerWidth,
-      containerHeight: screenSize.height,
+      containerWidth: containerWidth-50,
+      containerHeight: screenSize.height-50,
       widgetList: [
         const Spacer(flex: 43),
         AppComponents.text(
