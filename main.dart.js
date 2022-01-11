@@ -49332,7 +49332,7 @@ p.E_(B.cA,A.a7k("screen size : "+s.h(0)),r,r)
 if(s.a>1024)return this.CF(s)
 return this.CF(s)},
 CF(a){var s=null,r=A.BI(A.a8h(A.a([A.a6g(52,A.e($.a3E)+", Fullstack Developer, \uae40\ub3d9\ud604\uc785\ub2c8\ub2e4."),A.a6g(39,"\ud50c\ub8e8\ud130 \uc6f9, \uc571\uc744 \uc81c\uc791\ud569\ub2c8\ub2e4. \uc2a4\ud0c0\ud2b8\uc5c5\uc758 \uc2dc\uc791\uc744 \ub3c4\uc640\ub4dc\ub9ac\uaca0\uc2b5\ub2c8\ub2e4.")],t._),B.dJ,B.m7),s,974)
-return A.aiT(new A.rC(A.BI(A.a8o(new A.BF(B.ai,!1,r,s),s,!0),s,a.a),s),!0)}}
+return A.aiT(new A.rC(A.a8o(A.BI(new A.BF(B.ai,!1,r,s),s,a.a),s,!0),s),!0)}}
 A.QG.prototype={
 Gm(a){return!0}}
 A.oS.prototype={
