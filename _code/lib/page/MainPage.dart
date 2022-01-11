@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kdh_homepage/Setting.dart';
+import 'package:kdh_homepage/util/AppColors.dart';
 import 'package:kdh_homepage/util/AppComponents.dart';
 import 'package:kdh_homepage/util/DebugUtil.dart';
 
@@ -13,7 +14,9 @@ class MainPage extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
+        backgroundColor: AppColors.backgroundColor,
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Spacer(flex: 92),
             AppComponents.text(
