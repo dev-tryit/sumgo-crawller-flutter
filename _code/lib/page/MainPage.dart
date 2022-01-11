@@ -30,7 +30,7 @@ class MainPage extends StatelessWidget {
           fontSize: 52,
           text: "${Setting.appBuildNumber}, Fullstack Developer, 김동현입니다.",
         ),
-        // const Spacer(flex: 14),
+        const Spacer(flex: 14),
       ],
     );
   }
