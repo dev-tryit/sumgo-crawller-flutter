@@ -19,18 +19,15 @@ class AppComponents {
     required Size screenSize,
     required double? containerHeight,
   }) {
-    return Scrollbar(
-      isAlwaysShown: true,
-      child: SizedBox(
-        height: screenSize.height,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: SizedBox(
-            height: containerHeight,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: children,
-            ),
+    return SizedBox(
+      height: screenSize.height,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: SizedBox(
+          height: containerHeight,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children,
           ),
         ),
       ),
@@ -42,18 +39,15 @@ class AppComponents {
     required Size screenSize,
     double? containerWidth,
   }) {
-    return Scrollbar(
-      isAlwaysShown: true,
-      child: SizedBox(
-        width: screenSize.width,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: SizedBox(
-            width: containerWidth,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: children,
-            ),
+    return SizedBox(
+      width: screenSize.width,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: SizedBox(
+          width: containerWidth,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children,
           ),
         ),
       ),
@@ -66,13 +60,7 @@ class AppComponents {
     required double containerWidth,
     double? containerHeight,
   }) {
-    return scaffold(
-      body: horizontalScroll(
-        screenSize: screenSize,
-        containerWidth: containerWidth,
-        children: widgetList,
-      ),
-    ); /* 
+    //TODO: 스크롤바가 안보이는 이유 찾아내기
     return scaffold(
       body: horizontalScroll(
         screenSize: screenSize,
@@ -85,7 +73,7 @@ class AppComponents {
           ),
         ],
       ),
-    ); */
+    );
   }
 
   static text({

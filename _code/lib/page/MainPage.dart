@@ -25,8 +25,8 @@ class MainPage extends StatelessWidget {
     //TODO: 정렬 이슈.
     return AppComponents.webPage(
       screenSize: screenSize,
-      containerWidth: containerWidth-50,
-      containerHeight: screenSize.height-50,
+      containerWidth: containerWidth,
+      containerHeight: screenSize.height,
       widgetList: [
         // const Spacer(flex: 43),
         AppComponents.text(
