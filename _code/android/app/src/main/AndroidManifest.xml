@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.unbound_size_test_flutter">
+    package="com.example.kdh_homepage">
    <application
-        android:label="unbound_size_test_flutter"
+        android:label="kdh_homepage"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
