@@ -21,7 +21,7 @@ class _HorizontalScrollPageState extends State<HorizontalScrollPage> {
 
     return SafeArea(
       child: Scaffold(
-        body: AppComponents.horizontalScroll(
+        body: AppComponents.horizonalScroll(
           screenSize: screenSize,
           children: [
             AppComponents.text(text: "test"),
