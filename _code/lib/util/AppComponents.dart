@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class AppComponents {
+  AppComponents._();
+
   static DateTime? _lastClickDateTime;
 
   static Widget scaffold({required Widget body}) {
