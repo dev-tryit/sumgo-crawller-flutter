@@ -7,7 +7,7 @@ echo "----flutter build web"
 buildInfo=$(flutter build web --verbose)
 # echo $buildInfo
 if echo "$buildInfo" | grep 'Failed'; then
-	return 0
+	exit 1
 fi
 
 echo "cp -r ../build/web/* ../../"
