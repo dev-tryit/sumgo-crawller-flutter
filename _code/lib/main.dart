@@ -1,4 +1,5 @@
 import 'package:kdh_homepage/Setting.dart';
+import 'package:kdh_homepage/config/MyCustomScrollBehavior.dart';
 import 'package:kdh_homepage/page/HorizontalScrollPage.dart';
 import 'package:kdh_homepage/page/MainPage.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior: MyCustomScrollBehavior(),
       theme: ThemeData(
         brightness: Brightness.light,
         canvasColor: AppColors.backgroundColor,
