@@ -19,15 +19,18 @@ class AppComponents {
   static Widget verticalScroll({
     required List<Widget> children,
     required Size screenSize,
+    double? containerWidth,
     double? containerHeight,
   }) {
     return Scrollbar(
       isAlwaysShown: true,
       child: SizedBox(
+        width: screenSize.width,
         height: screenSize.height,
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: SizedBox(
+            width: containerWidth,
             height: containerHeight,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
