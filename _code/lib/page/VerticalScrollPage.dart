@@ -4,14 +4,14 @@ import 'package:kdh_homepage/util/AppComponents.dart';
 import 'package:kdh_homepage/util/LogUtil.dart';
 import 'package:kdh_homepage/util/MediaQueryUtil.dart';
 
-class TestPage extends StatefulWidget {
-  const TestPage({Key? key}) : super(key: key);
+class VerticalScrollPage extends StatefulWidget {
+  const VerticalScrollPage({Key? key}) : super(key: key);
 
   @override
-  _TestPageState createState() => _TestPageState();
+  _VerticalScrollPageState createState() => _VerticalScrollPageState();
 }
 
-class _TestPageState extends State<TestPage> {
+class _VerticalScrollPageState extends State<VerticalScrollPage> {
   @override
   Widget build(BuildContext context) {
     LogUtil.info("app buildNumber : ${Setting.appBuildNumber}");
