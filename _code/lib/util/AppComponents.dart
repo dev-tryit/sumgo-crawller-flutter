@@ -21,15 +21,18 @@ class AppComponents {
     required Size screenSize,
     double? containerHeight,
   }) {
-    return SizedBox(
-      height: screenSize.height,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: SizedBox(
-          height: containerHeight,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: children,
+    return Scrollbar(
+      isAlwaysShown: true,
+      child: SizedBox(
+        height: screenSize.height,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: SizedBox(
+            height: containerHeight,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: children,
+            ),
           ),
         ),
       ),
