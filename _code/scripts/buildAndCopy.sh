@@ -4,11 +4,11 @@ echo "----python3.9 changeVersion.py"
 python3.9 changeVersion.py
 
 echo "----flutter build web"
-buildInfo = $(flutter build web)
+buildInfo=$(flutter build web)
 if [[ $string =~ "Fail" ]]; then
-	echo "true"
+	exit 0
 else
-	echo "false"
+	echo "----[success]flutter build web"
 fi
 
 echo "cp -r ../build/web/* ../../"
