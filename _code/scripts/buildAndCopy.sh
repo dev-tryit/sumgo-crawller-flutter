@@ -6,7 +6,7 @@ python3.9 changeVersion.py
 echo "----flutter build web"
 buildInfo=$(flutter build web --verbose)
 # echo $buildInfo
-if [[ "$buildInfo" == *"Failed"* ]]; then
+if [[ "$buildInfo" =~ "Failed" ]]; then
 	exit 0
 fi
 
