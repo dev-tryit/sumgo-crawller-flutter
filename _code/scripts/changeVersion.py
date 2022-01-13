@@ -13,3 +13,5 @@ with open('../pubspec.yaml', 'w') as f:
     fullVersion:str = yamlMap["version"]
     yamlMap["version"] = (fullVersion.split('+'))[0]+"+"+str(int((fullVersion.split('+'))[1])+1)
     yaml.dump(yamlMap, f)
+
+    print(f'----------------{yamlMap["version"]} 버전입니다.')
