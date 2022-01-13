@@ -46,16 +46,22 @@ class AppComponents {
     required List<Widget> children,
     required Size screenSize,
     double? containerWidth,
+    double? containerHeight,
   }) {
-    return SizedBox(
-      width: screenSize.width,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: SizedBox(
-          width: containerWidth,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: children,
+    return Scrollbar(
+      isAlwaysShown: true,
+      child: SizedBox(
+        width: screenSize.width,
+        height: screenSize.height,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: SizedBox(
+            width: containerWidth,
+            height: containerHeight,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: children,
+            ),
           ),
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:kdh_homepage/Setting.dart';
+import 'package:kdh_homepage/page/HorizontalScrollPage.dart';
 import 'package:kdh_homepage/page/MainPage.dart';
 import 'package:flutter/material.dart';
 import 'package:kdh_homepage/page/VerticalScrollPage.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         //   bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
         // ),
       ),
-      home: VerticalScrollPage(),
+      home: HorizontalScrollPage(),
     );
   }
 }
