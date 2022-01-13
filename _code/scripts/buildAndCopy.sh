@@ -15,4 +15,4 @@ git add --all
 echo "----git commit -m $1"
 git commit -m "$1"
 echo "----git push -u origin"
-git push -u origin
+git push origin
