@@ -17,7 +17,7 @@ class AppComponents {
   static Widget verticalScroll({
     required List<Widget> children,
     required Size screenSize,
-    required double? containerHeight,
+    double? containerHeight,
   }) {
     return SizedBox(
       height: screenSize.height,
