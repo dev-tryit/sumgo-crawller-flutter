@@ -22,6 +22,8 @@ class _VerticalScrollPageState extends State<VerticalScrollPage> {
     return SafeArea(
       child: Scaffold(
         body: AppComponents.verticalScroll(
+          screenSize: screenSize,
+          
           children: [
             AppComponents.text(text: "test"),
             AppComponents.text(text: "test"),
@@ -118,7 +120,6 @@ class _VerticalScrollPageState extends State<VerticalScrollPage> {
             AppComponents.text(text: "test"),
             AppComponents.text(text: "test"),
           ],
-          screenSize: screenSize,
         ),
       ),
     );
