@@ -23,7 +23,6 @@ class _HorizontalScrollPageState extends State<HorizontalScrollPage> {
       child: Scaffold(
         body: AppComponents.horizontalScroll(
           screenSize: screenSize,
-          containerWidth:100,
           children: [
             AppComponents.text(text: "test"),
             AppComponents.text(text: "test"),
