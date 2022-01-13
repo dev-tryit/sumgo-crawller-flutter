@@ -45,8 +45,6 @@ class AppComponents {
   static Widget horizontalScroll({
     required List<Widget> children,
     required Size screenSize,
-    double? containerWidth,
-    double? containerHeight,
   }) {
     return Scrollbar(
       isAlwaysShown: true,
@@ -55,13 +53,9 @@ class AppComponents {
         height: screenSize.height,
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: SizedBox(
-            width: containerWidth,
-            height: containerHeight,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: children,
-            ),
+          child: Row( //ROW가 무한해야한다. 
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children,
           ),
         ),
       ),
