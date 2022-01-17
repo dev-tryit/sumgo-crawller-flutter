@@ -26,8 +26,8 @@ echo -e "${Clear}"
 echo "----flutter build web"
 { buildInfo="$(flutter build web --verbose)"; } 2>/dev/null
 if [[ !($buildInfo =~ "exiting with code 0") ]]; then
+	echo "$buildInfo"
 	echo -e "${Magenta}----에러 발생했어요${Clear}"
-	echo
 	exit 1
 fi
 
