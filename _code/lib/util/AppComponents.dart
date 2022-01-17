@@ -2,7 +2,6 @@ import 'package:flutter/rendering.dart';
 import 'package:kdh_homepage/Setting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:vs_scrollbar/vs_scrollbar.dart';
 
 class AppComponents {
   AppComponents._();
@@ -21,25 +20,20 @@ class AppComponents {
     required List<Widget> children,
     required Size screenSize,
     double? containerWidth,
-    double? containerHeight,
   }) {
     ScrollController _scrollController = ScrollController();
     return Scrollbar(
       controller: _scrollController,
       isAlwaysShown: true,
       child: SizedBox(
-        width: screenSize.width,
+        width: containerWidth ?? screenSize.width,
         height: screenSize.height,
         child: SingleChildScrollView(
           controller: _scrollController,
           scrollDirection: Axis.vertical,
-          child: SizedBox(
-            width: containerWidth,
-            height: containerHeight,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: children,
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children,
           ),
         ),
       ),
@@ -49,6 +43,7 @@ class AppComponents {
   static Widget horizontalScroll({
     required List<Widget> children,
     required Size screenSize,
+    double? containerHeight,
   }) {
     ScrollController _scrollController = ScrollController();
     return Scrollbar(
@@ -56,12 +51,11 @@ class AppComponents {
       isAlwaysShown: true,
       child: SizedBox(
         width: screenSize.width,
-        height: screenSize.height,
+        height: containerHeight ?? screenSize.height,
         child: SingleChildScrollView(
           controller: _scrollController,
           scrollDirection: Axis.horizontal,
           child: Row(
-            //Scroll은 유한하고, 안에 들어갈 Row는 Scroll보다 크거나 무한해야 한다.
             crossAxisAlignment: CrossAxisAlignment.start,
             children: children,
           ),
@@ -73,17 +67,15 @@ class AppComponents {
   static Widget webPage({
     required List<Widget> widgetList,
     required Size screenSize,
-    required double containerWidth,
-    double? containerHeight,
+    double? containerWidth,
   }) {
-    //TODO: 스크롤바가 안보이는 이유 찾아내기
     return scaffold(
       body: horizontalScroll(
         screenSize: screenSize,
         children: [
           verticalScroll(
             screenSize: screenSize,
-            containerHeight: containerHeight,
+            containerWidth: containerWidth,
             children: widgetList,
           ),
         ],
@@ -91,7 +83,7 @@ class AppComponents {
     );
   }
 
-  static text({
+  static Widget text({
     required String text,
     TextAlign? textAlign,
     Color? color,
@@ -112,132 +104,6 @@ class AppComponents {
         height: textHeight ?? 1.555555555555556,
       ),
       overflow: overflow,
-    );
-  }
-
-  static Text size22Text({
-    required String text,
-    TextAlign? textAlign,
-    Color? color,
-    double? textHeight,
-    FontWeight? fontWeight,
-    TextOverflow? overflow,
-    bool? softWrap,
-  }) {
-    return AppComponents.text(
-      text: text,
-      fontSize: 22,
-      color: color,
-      textAlign: textAlign,
-      fontWeight: fontWeight,
-      textHeight: textHeight,
-      overflow: overflow,
-      softWrap: softWrap,
-    );
-  }
-
-  static Text size18Text({
-    required String text,
-    TextAlign? textAlign,
-    Color? color,
-    double? textHeight,
-    FontWeight? fontWeight,
-    TextOverflow? overflow,
-    bool? softWrap,
-  }) {
-    return AppComponents.text(
-      text: text,
-      fontSize: 18,
-      color: color,
-      textAlign: textAlign,
-      fontWeight: fontWeight,
-      textHeight: textHeight,
-      overflow: overflow,
-      softWrap: softWrap,
-    );
-  }
-
-  static Text size16Text({
-    required String text,
-    TextAlign? textAlign,
-    Color? color,
-    double? textHeight,
-    FontWeight? fontWeight,
-    TextOverflow? overflow,
-    bool? softWrap,
-  }) {
-    return AppComponents.text(
-      text: text,
-      fontSize: 16,
-      color: color,
-      textAlign: textAlign,
-      fontWeight: fontWeight,
-      textHeight: textHeight,
-      overflow: overflow,
-      softWrap: softWrap,
-    );
-  }
-
-  static Text size14Text({
-    required String text,
-    TextAlign? textAlign,
-    Color? color,
-    double? textHeight,
-    FontWeight? fontWeight,
-    TextOverflow? overflow,
-    bool? softWrap,
-  }) {
-    return AppComponents.text(
-      text: text,
-      fontSize: 14,
-      color: color,
-      textAlign: textAlign,
-      fontWeight: fontWeight,
-      textHeight: textHeight,
-      overflow: overflow,
-      softWrap: softWrap,
-    );
-  }
-
-  static Text size12Text({
-    required String text,
-    TextAlign? textAlign,
-    Color? color,
-    double? textHeight,
-    FontWeight? fontWeight,
-    TextOverflow? overflow,
-    bool? softWrap,
-  }) {
-    return AppComponents.text(
-      text: text,
-      fontSize: 12,
-      color: color,
-      textAlign: textAlign,
-      fontWeight: fontWeight,
-      textHeight: textHeight,
-      overflow: overflow,
-      softWrap: softWrap,
-    );
-  }
-
-  static size9Text({
-    required String text,
-    TextAlign? textAlign,
-    Color? color,
-    double? textHeight,
-    FontWeight? fontWeight,
-    TextOverflow? overflow,
-    bool? softWrap,
-  }) {
-    return AppComponents.text(
-      text: text,
-      fontSize: 9,
-      color: color,
-      textAlign: textAlign,
-      fontWeight: fontWeight,
-      textHeight: textHeight,
-      overflow: overflow,
-      softWrap: softWrap,
     );
   }
 
@@ -393,7 +259,7 @@ class AppComponents {
 
   static Widget noItems({double? height}) {
     Widget child = Center(
-      child: AppComponents.size16Text(text: "항목이 없습니다"),
+      child: AppComponents.text(fontSize: 16, text: "항목이 없습니다"),
     );
 
     if (height != null) {
@@ -423,7 +289,8 @@ class AppComponents {
             ),
           ),
         ),
-        child: size16Text(
+        child: AppComponents.text(
+            fontSize: 16,
             text: text,
             softWrap: softWrap,
             color: isActive ? Colors.blue : Colors.grey),
@@ -448,7 +315,8 @@ class AppComponents {
           ),
           primary: Colors.white,
         ),
-        child: size16Text(text: text, softWrap: softWrap, color: Colors.grey),
+        child: AppComponents.text(
+            fontSize: 16, text: text, softWrap: softWrap, color: Colors.grey),
         onPressed: onPressed,
       ),
     );

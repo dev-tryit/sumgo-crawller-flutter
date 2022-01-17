@@ -21,12 +21,9 @@ class MainPage extends StatelessWidget {
   }
 
   Widget desktop(Size screenSize) {
-    //TODO: 스크롤바가 안보이는 이슈.
-    //TODO: 정렬 이슈.
     return AppComponents.webPage(
       screenSize: screenSize,
-      containerWidth: containerWidth,
-      containerHeight: screenSize.height,
+      // containerWidth: containerWidth,
       widgetList: [
         // const Spacer(flex: 43),
         AppComponents.text(
@@ -34,6 +31,78 @@ class MainPage extends StatelessWidget {
           text: "${Setting.appBuildNumber}, Fullstack Developer, 김동현입니다.",
         ),
         // const Spacer(flex: 14),
+        AppComponents.text(
+          fontSize: 39,
+          text: "플루터 웹, 앱을 제작합니다. 스타트업의wergrewgwergwergwregrgwergwregrwrwegrwegwergregrewgregwre 시작을 도와드리겠습니다.",
+        ),
+        AppComponents.text(
+          fontSize: 39,
+          text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
+        ),
+        AppComponents.text(
+          fontSize: 39,
+          text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
+        ),
+        AppComponents.text(
+          fontSize: 39,
+          text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
+        ),
+        AppComponents.text(
+          fontSize: 39,
+          text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
+        ),
+        AppComponents.text(
+          fontSize: 39,
+          text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
+        ),
+        AppComponents.text(
+          fontSize: 39,
+          text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
+        ),
+        AppComponents.text(
+          fontSize: 39,
+          text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
+        ),
+        AppComponents.text(
+          fontSize: 39,
+          text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
+        ),
+        AppComponents.text(
+          fontSize: 39,
+          text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
+        ),
+        AppComponents.text(
+          fontSize: 39,
+          text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
+        ),
+        AppComponents.text(
+          fontSize: 39,
+          text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
+        ),
+        AppComponents.text(
+          fontSize: 39,
+          text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
+        ),
+        AppComponents.text(
+          fontSize: 39,
+          text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
+        ),
+        AppComponents.text(
+          fontSize: 39,
+          text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
+        ),
+        AppComponents.text(
+          fontSize: 39,
+          text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
+        ),
+        AppComponents.text(
+          fontSize: 39,
+          text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
+        ),
+        AppComponents.text(
+          fontSize: 39,
+          text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
+        ),
         AppComponents.text(
           fontSize: 39,
           text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
