@@ -45,13 +45,17 @@ class _MainPageState extends KDHState<MainPage> {
           text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
         ),
       ),
+      WidgetToGetSize(
+        "listView",
+        (key) => const Placeholder(strokeWidth: 1, fallbackHeight: 426),
+      ),
     ];
   }
 
   @override
   Future<void> onLoad() async {
     LogUtil.debug("onLoad");
-    maxSize = w["maxContainer"]!.size!;
+    maxSize = w["maxContainer"]!.size;
   }
 
   @override
@@ -68,6 +72,16 @@ class _MainPageState extends KDHState<MainPage> {
   }
 
   Widget desktop(Size screenSize) {
+    double sizableHeight = -1 +
+        w["maxContainer"]!.height -
+        (43 +
+            14 +
+            200 +
+            426 +
+            w["headerText1"]!.height +
+            w["headerText2"]!.height +
+            w["listView"]!.height);
+
     return AppComponents.webPage(
       screenSize: screenSize,
       containerWidth: containerWidth,
@@ -76,9 +90,9 @@ class _MainPageState extends KDHState<MainPage> {
         w["headerText1"]!.makeWidget(),
         Container(color: Colors.yellow, height: 14),
         w["headerText2"]!.makeWidget(),
-        Container(color: Colors.blue, height: 73),
-        const Placeholder(strokeWidth: 1, fallbackHeight: 426),
-        Container(color: Colors.red, height: 35),
+        Container(color: Colors.blue, height: sizableHeight),
+        w["listView"]!.makeWidget(),
+        Container(color: Colors.red, height: 200),
       ],
     );
   }
