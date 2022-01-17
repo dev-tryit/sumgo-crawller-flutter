@@ -2,6 +2,7 @@ import 'package:flutter/rendering.dart';
 import 'package:kdh_homepage/Setting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:vs_scrollbar/vs_scrollbar.dart';
 
 class AppComponents {
   AppComponents._();
@@ -67,9 +68,8 @@ class AppComponents {
     required List<Widget> children,
     required Size screenSize,
   }) {
-    return Scrollbar(
+    return VsScrollbar(
       isAlwaysShown: true,
-      scrollbarOrientation: ScrollbarOrientation.left,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: children,
