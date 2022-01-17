@@ -24,6 +24,10 @@ class _HorizontalScrollPageState extends State<HorizontalScrollPage> {
         body: AppComponents.horizontalScroll(
           screenSize: screenSize,
           children: [
+            Image.network('https://picsum.photos/250?image=9'),
+            Image.network('https://picsum.photos/250?image=9'),
+            Image.network('https://picsum.photos/250?image=9'),
+            Image.network('https://picsum.photos/250?image=9'),
             AppComponents.text(text: "test"),
             AppComponents.text(text: "test"),
             AppComponents.text(text: "test"),

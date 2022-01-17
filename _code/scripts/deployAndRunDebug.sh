@@ -26,6 +26,7 @@ echo -e "${Clear}"
 echo "----flutter build web"
 { buildInfo="$(flutter build web --verbose)"; } 2>/dev/null
 if [[ !($buildInfo =~ "exiting with code 0") ]]; then
+	echo -e "${Magenta}----에러 발생했어요${Clear}"
 	exit 1
 fi
 
@@ -43,3 +44,5 @@ git commit -m "$1"
 
 echo "----git push -u origin"
 git push origin
+
+runDebug.sh

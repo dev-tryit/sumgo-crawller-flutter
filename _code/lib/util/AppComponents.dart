@@ -23,12 +23,15 @@ class AppComponents {
     double? containerWidth,
     double? containerHeight,
   }) {
+    ScrollController _scrollController = ScrollController();
     return Scrollbar(
+      controller: _scrollController,
       isAlwaysShown: true,
       child: SizedBox(
         width: screenSize.width,
         height: screenSize.height,
         child: SingleChildScrollView(
+          controller: _scrollController,
           scrollDirection: Axis.vertical,
           child: SizedBox(
             width: containerWidth,
@@ -47,12 +50,15 @@ class AppComponents {
     required List<Widget> children,
     required Size screenSize,
   }) {
+    ScrollController _scrollController = ScrollController();
     return Scrollbar(
+      controller: _scrollController,
       isAlwaysShown: true,
       child: SizedBox(
         width: screenSize.width,
         height: screenSize.height,
         child: SingleChildScrollView(
+          controller: _scrollController,
           scrollDirection: Axis.horizontal,
           child: Row(
             //Scroll은 유한하고, 안에 들어갈 Row는 Scroll보다 크거나 무한해야 한다.
@@ -60,19 +66,6 @@ class AppComponents {
             children: children,
           ),
         ),
-      ),
-    );
-  }
-
-  static Widget horizontalScroll2({
-    required List<Widget> children,
-    required Size screenSize,
-  }) {
-    return VsScrollbar(
-      isAlwaysShown: true,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: children,
       ),
     );
   }
