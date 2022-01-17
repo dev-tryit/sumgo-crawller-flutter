@@ -17,13 +17,11 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends KDHState<MainPage> {
   double containerWidth = 1024;
 
-  //makeWidgetListToGetSize->onLoad->build(realBuild)
-  
+  //makeWidgetListToGetSize->onLoad->mustRebuild->super.build
+
   @override
   List<WidgetToGetSize> makeWidgetListToGetSize() {
-    return [
-      WidgetToGetSize("maxContainer", maxContainerToGetSize)
-    ];
+    return [WidgetToGetSize("maxContainer", maxContainerToGetSize)];
   }
 
   @override
@@ -32,12 +30,16 @@ class _MainPageState extends KDHState<MainPage> {
   }
 
   @override
-  Widget realBuild(BuildContext context) {
-    LogUtil.debug("realBuild");
-    if (screenSize.width > containerWidth) {
-      return desktop(screenSize);
-    }
-    return mobile(screenSize);
+  void mustRebuild(BuildContext context) {
+    LogUtil.debug("mustRebuild");
+
+    widgetToBuild = () {
+      if (screenSize.width > containerWidth) {
+        return desktop(screenSize);
+      }
+      return mobile(screenSize);
+    };
+    rebuild();
   }
 
   Widget desktop(Size screenSize) {
@@ -65,5 +67,4 @@ class _MainPageState extends KDHState<MainPage> {
   Widget mobile(Size screenSize) {
     return desktop(screenSize);
   }
-
 }

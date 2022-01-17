@@ -7,12 +7,16 @@ import 'package:kdh_homepage/_common/util/MediaQueryUtil.dart';
 abstract class KDHState<T extends StatefulWidget> extends State<T> {
   List<WidgetToGetSize> widgetListToGetSize = [];
 
-  Widget Function(BuildContext context)? lazyBuild; //lazyBuild가 채워지면 준비된거다.
+  Widget Function()? widgetToBuild;
   late Size screenSize;
 
-  //호출순서 : super.initState->super.build->super.afterBuild->super.prepareRealBuild
-  //                                                       ->onLoad->build(realBuild)
-  
+  //호출순서 : super.initState->super.build->super.afterBuild->super.prepareRebuild
+  //                                                       ->onLoad->mustRebuild->super.build
+
+  void rebuild() {
+    setState(() {});
+  }
+
   @override
   void initState() {
     LogUtil.debug("super.initState");
@@ -35,8 +39,8 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
     LogUtil.debug("super.build");
     screenSize = MediaQueryUtil.getScreenSize(context);
 
-    return lazyBuild != null
-        ? lazyBuild!(context)
+    return widgetToBuild != null
+        ? widgetToBuild!()
         : Stack(
             children: [
               ...(widgetListToGetSize.map((w) => w.makeWidget())),
@@ -47,25 +51,22 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
 
   Future<void> afterBuild() async {
     LogUtil.debug("super.afterBuild");
-    await prepareRealBuild();
+    await prepareRebuild();
   }
 
-  Future<void> prepareRealBuild() async {
-    LogUtil.debug("super.prepareRealBuild");
+  Future<void> prepareRebuild() async {
+    LogUtil.debug("super.prepareRebuild");
 
     getSizeOfWidgetList();
 
     await onLoad();
 
-    lazyBuild = realBuild;
-    if (lazyBuild != null) {
-      setState(() {});
-    }
+    mustRebuild(context);
   }
 
   Future<void> onLoad();
 
-  Widget realBuild(BuildContext context);
+  void mustRebuild(BuildContext context);
 
   Widget maxContainerToGetSize(GlobalKey key) {
     return Container(
