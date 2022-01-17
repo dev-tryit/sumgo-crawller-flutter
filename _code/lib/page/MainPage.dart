@@ -25,17 +25,17 @@ class MainPage extends StatelessWidget {
       screenSize: screenSize,
       containerWidth: 1024,
       widgetList: [
-        const SizedBox(height: 43),
+        Container(color: Colors.brown, height: 43),
         AppComponents.text(
           fontSize: 52,
           text: "${Setting.appBuildNumber}, Fullstack Developer, 김동현입니다.",
         ),
-        const SizedBox(height: 14),
+        Container(color: Colors.yellow, height: 14),
         AppComponents.text(
-          fontSize: 39,
+          fontSize: 37,
           text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
         ),
-        const SizedBox(height: 73),
+        Container(color: Colors.blue, height: 73),
         const Placeholder(strokeWidth: 1, fallbackHeight: 426),
         Container(color: Colors.red, height: 35),
       ],
