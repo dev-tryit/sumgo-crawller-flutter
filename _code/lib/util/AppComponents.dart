@@ -69,6 +69,7 @@ class AppComponents {
   }) {
     return Scrollbar(
       isAlwaysShown: true,
+      scrollbarOrientation: ScrollbarOrientation.left,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: children,
