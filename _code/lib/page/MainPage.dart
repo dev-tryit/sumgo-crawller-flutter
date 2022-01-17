@@ -3,6 +3,19 @@ import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/util/AppComponents.dart';
 import 'package:kdh_homepage/util/LogUtil.dart';
 import 'package:kdh_homepage/util/MediaQueryUtil.dart';
+import 'package:kdh_homepage/util/SizeUtil.dart';
+
+class WidgetToGetSize {
+  Widget widget;
+  GlobalKey key = GlobalKey();
+  Size? size;
+
+  WidgetToGetSize(this.widget);
+
+  void calculateSize() {
+    size = SizeUtil.getSizeByKey(key);
+  }
+}
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -12,6 +25,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  late List<WidgetToGetSize> widgetListToGetSize;
+
   Widget Function(BuildContext context)? lazyBuild; //lazyBuild가 채워지면 준비된거다.
   double containerWidth = 1024;
   late Size screenSize;
@@ -21,6 +36,9 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     print("initState");
     super.initState();
+
+    widgetListToGetSize =
+        [maxContainerToGetSize()].map((e) => WidgetToGetSize(e)).toList();
 
     Future(afterBuild);
   }
@@ -32,23 +50,36 @@ class _MainPageState extends State<MainPage> {
 
     return lazyBuild != null
         ? lazyBuild!(context)
-        : AppComponents.loadingWidget();
+        : Stack(
+            children: [
+              ...(widgetListToGetSize.map((e) => e.widget)),
+              AppComponents.loadingWidget(),
+            ],
+          );
   }
 
   Future<void> afterBuild() async {
     print("afterBuild");
-    await onPrepare();
-    setState(() {});
+    await prepareRealBuild();
   }
 
-  Future<void> onPrepare() async {
-    print("onPrepare");
-    lazyBuild = (context) {
-      if (screenSize.width > containerWidth) {
-        return desktop(screenSize);
-      }
-      return mobile(screenSize);
-    };
+  Future<void> prepareRealBuild() async {
+    print("prepareRealBuild");
+
+    getSizeOfWidgetList();
+
+    lazyBuild = realBuild;
+    if (lazyBuild != null) {
+      setState(() {});
+    }
+  }
+
+  Widget realBuild(BuildContext context) {
+    print("realBuild");
+    if (screenSize.width > containerWidth) {
+      return desktop(screenSize);
+    }
+    return mobile(screenSize);
   }
 
   Widget desktop(Size screenSize) {
@@ -75,5 +106,19 @@ class _MainPageState extends State<MainPage> {
 
   Widget mobile(Size screenSize) {
     return desktop(screenSize);
+  }
+
+  final maxContainerKey = GlobalKey();
+  Widget maxContainerToGetSize() {
+    return Container(
+      key: maxContainerKey,
+      color: Colors.black,
+    );
+  }
+
+  void getSizeOfWidgetList() {
+    widgetListToGetSize.forEach((element) {
+      element.calculateSize();
+    });
   }
 }
