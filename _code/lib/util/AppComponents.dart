@@ -19,14 +19,13 @@ class AppComponents {
   static Widget verticalScroll({
     required List<Widget> children,
     required Size screenSize,
-    double? containerWidth,
   }) {
     ScrollController _scrollController = ScrollController();
     return Scrollbar(
       controller: _scrollController,
       isAlwaysShown: true,
       child: SizedBox(
-        width: containerWidth ?? screenSize.width,
+        width: screenSize.width,
         height: screenSize.height,
         child: SingleChildScrollView(
           controller: _scrollController,
@@ -43,7 +42,6 @@ class AppComponents {
   static Widget horizontalScroll({
     required List<Widget> children,
     required Size screenSize,
-    double? containerHeight,
   }) {
     ScrollController _scrollController = ScrollController();
     return Scrollbar(
@@ -51,7 +49,7 @@ class AppComponents {
       isAlwaysShown: true,
       child: SizedBox(
         width: screenSize.width,
-        height: containerHeight ?? screenSize.height,
+        height: screenSize.height,
         child: SingleChildScrollView(
           controller: _scrollController,
           scrollDirection: Axis.horizontal,
@@ -69,18 +67,38 @@ class AppComponents {
     required Size screenSize,
     double? containerWidth,
   }) {
-    return scaffold(
-      body: horizontalScroll(
+    Widget child;
+    if (containerWidth != null) {
+      child = Center(
+        child: SizedBox(
+          width: containerWidth,
+          child: horizontalScroll(
+            screenSize: screenSize,
+            children: [
+              SizedBox(
+                width: containerWidth,
+                child: verticalScroll(
+                  screenSize: screenSize,
+                  children: widgetList,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      child = horizontalScroll(
         screenSize: screenSize,
         children: [
           verticalScroll(
             screenSize: screenSize,
-            containerWidth: containerWidth,
             children: widgetList,
           ),
         ],
-      ),
-    );
+      );
+    }
+
+    return scaffold(body: child);
   }
 
   static Widget text({
