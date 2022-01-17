@@ -53,10 +53,27 @@ class AppComponents {
         height: screenSize.height,
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: Row( //Scroll은 유한하고, 안에 들어갈 Row는 Scroll보다 크거나 무한해야 한다.
+          child: Row(
+            //Scroll은 유한하고, 안에 들어갈 Row는 Scroll보다 크거나 무한해야 한다.
             crossAxisAlignment: CrossAxisAlignment.start,
             children: children,
           ),
+        ),
+      ),
+    );
+  }
+
+  static Widget horizontalScroll2({
+    required List<Widget> children,
+    required Size screenSize,
+  }) {
+    return Scrollbar(
+      isAlwaysShown: true,
+      child: SizedBox(
+        width: screenSize.width,
+        height: screenSize.height,
+        child: ListView(
+          children: children,
         ),
       ),
     );
