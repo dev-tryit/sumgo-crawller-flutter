@@ -43,7 +43,7 @@ git add --all
 echo "----git commit -m $1"
 git commit -m "$1"
 
-echo "----git push -u origin"
+echo "----git push origin"
 git push origin
 
 bash runDebug.sh
