@@ -6,7 +6,7 @@ import 'package:kdh_homepage/_common/util/MediaQueryUtil.dart';
 
 abstract class KDHState<T extends StatefulWidget> extends State<T> {
   List<WidgetToGetSize> _widgetListToGetSize = [];
-  Map<String, WidgetToGetSize> w = {};
+  Map<dynamic, WidgetToGetSize> w = {};
 
   Widget Function()? widgetToBuild;
   late Size screenSize;
@@ -78,7 +78,7 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
     w.clear();
     for (var e in _widgetListToGetSize) {
       e.calculateSize();
-      w[e.label] = e;
+      w[e.key] = e;
     }
   }
 }

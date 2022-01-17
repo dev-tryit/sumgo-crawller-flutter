@@ -5,6 +5,13 @@ import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
 import 'package:kdh_homepage/_common/util/AppComponents.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
 
+enum MainPageWidget {
+  maxContainer,
+  headerText1,
+  headerText2,
+  mainListView,
+}
+
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -23,14 +30,14 @@ class _MainPageState extends KDHState<MainPage> {
   List<WidgetToGetSize> makeWidgetListToGetSize() {
     return [
       WidgetToGetSize(
-        "maxContainer",
+        MainPageWidget.maxContainer,
         (key) => Container(
           key: key,
           color: Colors.transparent,
         ),
       ),
       WidgetToGetSize(
-        "headerText1",
+        MainPageWidget.headerText1,
         (key) => AppComponents.text(
           key: key,
           fontSize: 52,
@@ -38,7 +45,7 @@ class _MainPageState extends KDHState<MainPage> {
         ),
       ),
       WidgetToGetSize(
-        "headerText2",
+        MainPageWidget.headerText2,
         (key) => AppComponents.text(
           key: key,
           fontSize: 37,
@@ -46,8 +53,19 @@ class _MainPageState extends KDHState<MainPage> {
         ),
       ),
       WidgetToGetSize(
-        "listView",
-        (key) => const Placeholder(strokeWidth: 1, fallbackHeight: 426),
+        MainPageWidget.mainListView,
+        (key) => Container(
+          color: Colors.amberAccent,
+          height: 426,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              Image.network('https://picsum.photos/250?image=9'),
+              Image.network('https://picsum.photos/250?image=9'),
+              Image.network('https://picsum.photos/250?image=9'),
+            ],
+          ),
+        ),
       ),
     ];
   }
@@ -55,7 +73,7 @@ class _MainPageState extends KDHState<MainPage> {
   @override
   Future<void> onLoad() async {
     LogUtil.debug("onLoad");
-    maxSize = w["maxContainer"]!.size;
+    maxSize = w[MainPageWidget.maxContainer]!.size;
   }
 
   @override
@@ -73,26 +91,26 @@ class _MainPageState extends KDHState<MainPage> {
 
   Widget desktop(Size screenSize) {
     double sizableHeight = -1 +
-        w["maxContainer"]!.height -
+        w[MainPageWidget.maxContainer]!.height -
         (43 +
             14 +
             200 +
             426 +
-            w["headerText1"]!.height +
-            w["headerText2"]!.height +
-            w["listView"]!.height);
+            w["MainPageWidget.headerText1"]!.height +
+            w["MainPageWidget.headerText2"]!.height +
+            w["MainPageWidget.MainPageWidget.listView"]!.height);
 
     return AppComponents.webPage(
       screenSize: screenSize,
       containerWidth: containerWidth,
       widgetList: [
-        Container(color: Colors.brown, height: 43),
-        w["headerText1"]!.makeWidget(),
-        Container(color: Colors.yellow, height: 14),
-        w["headerText2"]!.makeWidget(),
+        const SizedBox(height: 43),
+        w["MainPageWidget.headerText1"]!.makeWidget(),
+        const SizedBox(height: 14),
+        w["MainPageWidget.headerText2"]!.makeWidget(),
         Container(color: Colors.blue, height: sizableHeight),
-        w["listView"]!.makeWidget(),
-        Container(color: Colors.red, height: 200),
+        w["MainPageWidget.MainPageWidget.listView"]!.makeWidget(),
+        const SizedBox(height: 200),
       ],
     );
   }
