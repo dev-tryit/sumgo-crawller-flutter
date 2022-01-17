@@ -47,10 +47,10 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
 
   Future<void> afterBuild() async {
     LogUtil.debug("super.afterBuild");
-    await _prepareRealBuild();
+    await prepareRealBuild();
   }
 
-  Future<void> _prepareRealBuild() async {
+  Future<void> prepareRealBuild() async {
     LogUtil.debug("super.prepareRealBuild");
 
     getSizeOfWidgetList();
