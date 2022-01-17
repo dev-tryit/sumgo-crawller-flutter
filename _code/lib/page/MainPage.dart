@@ -4,8 +4,6 @@ import 'package:kdh_homepage/_common/abstract/KDHState.dart';
 import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
 import 'package:kdh_homepage/_common/util/AppComponents.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
-import 'package:kdh_homepage/_common/util/MediaQueryUtil.dart';
-import 'package:kdh_homepage/_common/util/SizeUtil.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -17,6 +15,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends KDHState<MainPage> {
   double containerWidth = 1024;
 
+  //screenSize, widgetToGetSizeByLabel, widgetToBuild를 잘 사용해야 한다.
   //makeWidgetListToGetSize->onLoad->mustRebuild->super.build
 
   @override

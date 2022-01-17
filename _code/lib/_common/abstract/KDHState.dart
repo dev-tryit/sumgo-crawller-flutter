@@ -5,7 +5,8 @@ import 'package:kdh_homepage/_common/util/LogUtil.dart';
 import 'package:kdh_homepage/_common/util/MediaQueryUtil.dart';
 
 abstract class KDHState<T extends StatefulWidget> extends State<T> {
-  List<WidgetToGetSize> widgetListToGetSize = [];
+  List<WidgetToGetSize> _widgetListToGetSize = [];
+  Map<String, WidgetToGetSize> widgetToGetSizeByLabel = {};
 
   Widget Function()? widgetToBuild;
   late Size screenSize;
@@ -22,7 +23,7 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
     LogUtil.debug("super.initState");
     super.initState();
 
-    widgetListToGetSize = makeWidgetListToGetSize();
+    _widgetListToGetSize = makeWidgetListToGetSize();
 
     Future(afterBuild);
   }
@@ -43,7 +44,7 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
         ? widgetToBuild!()
         : Stack(
             children: [
-              ...(widgetListToGetSize.map((w) => w.makeWidget())),
+              ...(_widgetListToGetSize.map((w) => w.makeWidget())),
               AppComponents.loadingWidget(),
             ],
           );
@@ -76,8 +77,10 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
   }
 
   void getSizeOfWidgetList() {
-    widgetListToGetSize.forEach((w) {
+    widgetToGetSizeByLabel.clear();
+    for(var w in _widgetListToGetSize) {
       w.calculateSize();
-    });
+      widgetToGetSizeByLabel[w.label] = w;
+    }
   }
 }
