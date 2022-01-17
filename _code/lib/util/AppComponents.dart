@@ -73,6 +73,7 @@ class AppComponents {
         width: screenSize.width,
         height: screenSize.height,
         child: ListView(
+          scrollDirection: Axis.horizontal,
           children: children,
         ),
       ),
