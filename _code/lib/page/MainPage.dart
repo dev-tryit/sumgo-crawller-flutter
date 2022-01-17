@@ -4,20 +4,51 @@ import 'package:kdh_homepage/util/AppComponents.dart';
 import 'package:kdh_homepage/util/LogUtil.dart';
 import 'package:kdh_homepage/util/MediaQueryUtil.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
+
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  Widget Function(BuildContext context)? lazyBuild; //lazyBuild가 채워지면 준비된거다.
   double containerWidth = 1024;
+  late Size screenSize;
+
+  //호출순서 : initState->build->afterBuild->onPrepare->build
+  @override
+  void initState() {
+    print("initState");
+    super.initState();
+
+    Future(afterBuild);
+  }
 
   @override
   Widget build(BuildContext context) {
-    LogUtil.info("app buildNumber : ${Setting.appBuildNumber}");
+    print("build");
+    screenSize = MediaQueryUtil.getScreenSize(context);
 
-    Size screenSize = MediaQueryUtil.getScreenSize(context);
-    LogUtil.info("screen size : $screenSize");
+    return lazyBuild != null
+        ? lazyBuild!(context)
+        : AppComponents.loadingWidget();
+  }
 
-    if (screenSize.width > containerWidth) {
-      return desktop(screenSize);
-    }
-    return mobile(screenSize);
+  Future<void> afterBuild() async {
+    print("afterBuild");
+    await onPrepare();
+    setState(() {});
+  }
+
+  Future<void> onPrepare() async {
+    print("onPrepare");
+    lazyBuild = (context) {
+      if (screenSize.width > containerWidth) {
+        return desktop(screenSize);
+      }
+      return mobile(screenSize);
+    };
   }
 
   Widget desktop(Size screenSize) {
