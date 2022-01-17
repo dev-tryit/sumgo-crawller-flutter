@@ -16,7 +16,7 @@ class _MainPageState extends KDHState<MainPage> {
   late Size maxSize;
   double containerWidth = 1024;
 
-  //screenSize, widgetToGetSizeByLabel, widgetToBuild를 잘 사용해야 한다.
+  //screenSize, w, widgetToBuild를 잘 사용해야 한다.
   //makeWidgetListToGetSize->onLoad->mustRebuild->super.build
 
   @override
@@ -51,7 +51,7 @@ class _MainPageState extends KDHState<MainPage> {
   @override
   Future<void> onLoad() async {
     LogUtil.debug("onLoad");
-    maxSize = widgetToGetSizeByLabel["maxContainer"]!.size!;
+    maxSize = w["maxContainer"]!.size!;
   }
 
   @override
@@ -64,7 +64,7 @@ class _MainPageState extends KDHState<MainPage> {
       }
       return mobile(screenSize);
     };
-    // rebuild();
+    rebuild();
   }
 
   Widget desktop(Size screenSize) {
@@ -73,9 +73,9 @@ class _MainPageState extends KDHState<MainPage> {
       containerWidth: containerWidth,
       widgetList: [
         Container(color: Colors.brown, height: 43),
-        widgetToGetSizeByLabel["headerText1"]!.makeWidget(),
+        w["headerText1"]!.makeWidget(),
         Container(color: Colors.yellow, height: 14),
-        widgetToGetSizeByLabel["headerText2"]!.makeWidget(),
+        w["headerText2"]!.makeWidget(),
         Container(color: Colors.blue, height: 73),
         const Placeholder(strokeWidth: 1, fallbackHeight: 426),
         Container(color: Colors.red, height: 35),
