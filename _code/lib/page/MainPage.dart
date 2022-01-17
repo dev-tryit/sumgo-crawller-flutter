@@ -60,9 +60,31 @@ class _MainPageState extends KDHState<MainPage> {
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
-              Image.network('https://picsum.photos/250?image=9'),
-              Image.network('https://picsum.photos/250?image=9'),
-              Image.network('https://picsum.photos/250?image=9'),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
+              eachWorkCard(),
             ],
           ),
         ),
@@ -96,20 +118,20 @@ class _MainPageState extends KDHState<MainPage> {
             14 +
             200 +
             426 +
-            w["MainPageWidget.headerText1"]!.height +
-            w["MainPageWidget.headerText2"]!.height +
-            w["MainPageWidget.MainPageWidget.listView"]!.height);
+            w[MainPageWidget.headerText1]!.height +
+            w[MainPageWidget.headerText2]!.height +
+            w[MainPageWidget.mainListView]!.height);
 
     return AppComponents.webPage(
       screenSize: screenSize,
       containerWidth: containerWidth,
       widgetList: [
         const SizedBox(height: 43),
-        w["MainPageWidget.headerText1"]!.makeWidget(),
+        w[MainPageWidget.headerText1]!.makeWidget(),
         const SizedBox(height: 14),
-        w["MainPageWidget.headerText2"]!.makeWidget(),
-        Container(color: Colors.blue, height: sizableHeight),
-        w["MainPageWidget.MainPageWidget.listView"]!.makeWidget(),
+        w[MainPageWidget.headerText2]!.makeWidget(),
+        SizedBox(height: sizableHeight),
+        w[MainPageWidget.mainListView]!.makeWidget(),
         const SizedBox(height: 200),
       ],
     );
@@ -117,5 +139,23 @@ class _MainPageState extends KDHState<MainPage> {
 
   Widget mobile(Size screenSize) {
     return desktop(screenSize);
+  }
+
+  Widget eachWorkCard() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 27, right: 27),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.network('https://picsum.photos/250?image=9'),
+          const SizedBox(height: 22),
+          AppComponents.text(text: "파섹 홈페이지"),
+          AppComponents.text(text: "포토그래퍼 포트폴리오용 홈페이지"),
+          const SizedBox(height: 16),
+          AppComponents.text(text: "500,000원"),
+        ],
+      ),
+    );
   }
 }
