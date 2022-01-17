@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kdh_homepage/Setting.dart';
+import 'package:kdh_homepage/_common/abstract/KDHState.dart';
 import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
 import 'package:kdh_homepage/_common/util/AppComponents.dart';
+import 'package:kdh_homepage/_common/util/LogUtil.dart';
 import 'package:kdh_homepage/_common/util/MediaQueryUtil.dart';
 import 'package:kdh_homepage/_common/util/SizeUtil.dart';
-
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -13,59 +14,26 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
-  late List<WidgetToGetSize> widgetListToGetSize;
-
-  Widget Function(BuildContext context)? lazyBuild; //lazyBuild가 채워지면 준비된거다.
+class _MainPageState extends KDHState<MainPage> {
   double containerWidth = 1024;
-  late Size screenSize;
 
-  //호출순서 : initState->build->afterBuild->onPrepare->build
+  //makeWidgetListToGetSize->onLoad->build(realBuild)
+  
   @override
-  void initState() {
-    print("initState");
-    super.initState();
-
-    widgetListToGetSize = [
+  List<WidgetToGetSize> makeWidgetListToGetSize() {
+    return [
       WidgetToGetSize("maxContainer", maxContainerToGetSize)
     ];
-
-    Future(afterBuild);
   }
 
   @override
-  Widget build(BuildContext context) {
-    print("build");
-    screenSize = MediaQueryUtil.getScreenSize(context);
-
-    return lazyBuild != null
-        ? lazyBuild!(context)
-        : Stack(
-            children: [
-              ...(widgetListToGetSize.map((w) => w.makeWidget())),
-              AppComponents.loadingWidget(),
-            ],
-          );
+  Future<void> onLoad() async {
+    LogUtil.debug("onLoad");
   }
 
-  Future<void> afterBuild() async {
-    print("afterBuild");
-    await prepareRealBuild();
-  }
-
-  Future<void> prepareRealBuild() async {
-    print("prepareRealBuild");
-
-    getSizeOfWidgetList();
-
-    // lazyBuild = realBuild;
-    if (lazyBuild != null) {
-      setState(() {});
-    }
-  }
-
+  @override
   Widget realBuild(BuildContext context) {
-    print("realBuild");
+    LogUtil.debug("realBuild");
     if (screenSize.width > containerWidth) {
       return desktop(screenSize);
     }
@@ -75,7 +43,7 @@ class _MainPageState extends State<MainPage> {
   Widget desktop(Size screenSize) {
     return AppComponents.webPage(
       screenSize: screenSize,
-      containerWidth: 1024,
+      containerWidth: containerWidth,
       widgetList: [
         Container(color: Colors.brown, height: 43),
         AppComponents.text(
@@ -98,17 +66,4 @@ class _MainPageState extends State<MainPage> {
     return desktop(screenSize);
   }
 
-  final maxContainerKey = GlobalKey();
-  Widget maxContainerToGetSize(GlobalKey key) {
-    return Container(
-      key: key,
-      color: Colors.black,
-    );
-  }
-
-  void getSizeOfWidgetList() {
-    widgetListToGetSize.forEach((w) {
-      w.calculateSize();
-    });
-  }
 }
