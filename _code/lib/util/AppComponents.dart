@@ -69,13 +69,9 @@ class AppComponents {
   }) {
     return Scrollbar(
       isAlwaysShown: true,
-      child: SizedBox(
-        width: screenSize.width,
-        height: screenSize.height,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: children,
-        ),
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: children,
       ),
     );
   }
