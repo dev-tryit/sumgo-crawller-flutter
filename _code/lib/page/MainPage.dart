@@ -6,14 +6,20 @@ import 'package:kdh_homepage/util/MediaQueryUtil.dart';
 import 'package:kdh_homepage/util/SizeUtil.dart';
 
 class WidgetToGetSize {
-  Widget widget;
+  String label;
+  late Widget Function() makeWidget;
   GlobalKey key = GlobalKey();
   Size? size;
 
-  WidgetToGetSize(this.widget);
+  WidgetToGetSize(this.label, Widget Function(GlobalKey key) makeWidget) {
+    this.makeWidget = () {
+      return makeWidget(key);
+    };
+  }
 
   void calculateSize() {
     size = SizeUtil.getSizeByKey(key);
+    print("[$label] size: $size");
   }
 }
 
@@ -37,8 +43,9 @@ class _MainPageState extends State<MainPage> {
     print("initState");
     super.initState();
 
-    widgetListToGetSize =
-        [maxContainerToGetSize()].map((e) => WidgetToGetSize(e)).toList();
+    widgetListToGetSize = [
+      WidgetToGetSize("maxContainer", maxContainerToGetSize)
+    ];
 
     Future(afterBuild);
   }
@@ -52,7 +59,7 @@ class _MainPageState extends State<MainPage> {
         ? lazyBuild!(context)
         : Stack(
             children: [
-              ...(widgetListToGetSize.map((e) => e.widget)),
+              ...(widgetListToGetSize.map((w) => w.makeWidget())),
               AppComponents.loadingWidget(),
             ],
           );
@@ -68,7 +75,7 @@ class _MainPageState extends State<MainPage> {
 
     getSizeOfWidgetList();
 
-    lazyBuild = realBuild;
+    // lazyBuild = realBuild;
     if (lazyBuild != null) {
       setState(() {});
     }
@@ -109,16 +116,16 @@ class _MainPageState extends State<MainPage> {
   }
 
   final maxContainerKey = GlobalKey();
-  Widget maxContainerToGetSize() {
+  Widget maxContainerToGetSize(GlobalKey key) {
     return Container(
-      key: maxContainerKey,
+      key: key,
       color: Colors.black,
     );
   }
 
   void getSizeOfWidgetList() {
-    widgetListToGetSize.forEach((element) {
-      element.calculateSize();
+    widgetListToGetSize.forEach((w) {
+      w.calculateSize();
     });
   }
 }
