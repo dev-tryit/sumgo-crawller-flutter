@@ -42,11 +42,13 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
 
     return widgetToBuild != null
         ? widgetToBuild!()
-        : Stack(
-            children: [
-              ...(_widgetListToGetSize.map((w) => w.makeWidget())),
-              AppComponents.loadingWidget(),
-            ],
+        : Scaffold(
+            body: Stack(
+              children: [
+                ...(_widgetListToGetSize.map((w) => w.makeWidget())),
+                AppComponents.loadingWidget(),
+              ],
+            ),
           );
   }
 
@@ -69,16 +71,9 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
 
   void mustRebuild(BuildContext context);
 
-  Widget maxContainerToGetSize(GlobalKey key) {
-    return Container(
-      key: key,
-      color: Colors.black,
-    );
-  }
-
   void getSizeOfWidgetList() {
     widgetToGetSizeByLabel.clear();
-    for(var w in _widgetListToGetSize) {
+    for (var w in _widgetListToGetSize) {
       w.calculateSize();
       widgetToGetSizeByLabel[w.label] = w;
     }

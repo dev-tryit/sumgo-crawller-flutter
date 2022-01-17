@@ -102,6 +102,7 @@ class AppComponents {
   }
 
   static Widget text({
+    GlobalKey? key,
     required String text,
     TextAlign? textAlign,
     Color? color,
@@ -113,6 +114,7 @@ class AppComponents {
   }) {
     return Text(
       text,
+      key:key,
       textAlign: textAlign,
       softWrap: softWrap,
       style: TextStyle(

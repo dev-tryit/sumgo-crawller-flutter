@@ -13,6 +13,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends KDHState<MainPage> {
+  late Size maxSize;
   double containerWidth = 1024;
 
   //screenSize, widgetToGetSizeByLabel, widgetToBuild를 잘 사용해야 한다.
@@ -20,12 +21,37 @@ class _MainPageState extends KDHState<MainPage> {
 
   @override
   List<WidgetToGetSize> makeWidgetListToGetSize() {
-    return [WidgetToGetSize("maxContainer", maxContainerToGetSize)];
+    return [
+      WidgetToGetSize(
+        "maxContainer",
+        (key) => Container(
+          key: key,
+          color: Colors.transparent,
+        ),
+      ),
+      WidgetToGetSize(
+        "headerText1",
+        (key) => AppComponents.text(
+          key: key,
+          fontSize: 52,
+          text: "${Setting.appBuildNumber}, Fullstack Developer, 김동현입니다.",
+        ),
+      ),
+      WidgetToGetSize(
+        "headerText2",
+        (key) => AppComponents.text(
+          key: key,
+          fontSize: 37,
+          text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
+        ),
+      ),
+    ];
   }
 
   @override
   Future<void> onLoad() async {
     LogUtil.debug("onLoad");
+    maxSize = widgetToGetSizeByLabel["maxContainer"]!.size!;
   }
 
   @override
@@ -38,7 +64,7 @@ class _MainPageState extends KDHState<MainPage> {
       }
       return mobile(screenSize);
     };
-    rebuild();
+    // rebuild();
   }
 
   Widget desktop(Size screenSize) {
@@ -47,15 +73,9 @@ class _MainPageState extends KDHState<MainPage> {
       containerWidth: containerWidth,
       widgetList: [
         Container(color: Colors.brown, height: 43),
-        AppComponents.text(
-          fontSize: 52,
-          text: "${Setting.appBuildNumber}, Fullstack Developer, 김동현입니다.",
-        ),
+        widgetToGetSizeByLabel["headerText1"]!.makeWidget(),
         Container(color: Colors.yellow, height: 14),
-        AppComponents.text(
-          fontSize: 37,
-          text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
-        ),
+        widgetToGetSizeByLabel["headerText2"]!.makeWidget(),
         Container(color: Colors.blue, height: 73),
         const Placeholder(strokeWidth: 1, fallbackHeight: 426),
         Container(color: Colors.red, height: 35),
