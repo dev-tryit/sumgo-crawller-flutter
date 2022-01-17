@@ -3,17 +3,8 @@ import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
 import 'package:kdh_homepage/_common/util/AppComponents.dart';
 import 'package:kdh_homepage/_common/util/MediaQueryUtil.dart';
-import 'package:kdh_homepage/_common/util/SizeUtil.dart';
 
-
-class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
-
-  @override
-  _MainPageState createState() => _MainPageState();
-}
-
-class _MainPageState extends State<MainPage> {
+abstract class KDHState<T extends StatefulWidget> extends State<T> {
   late List<WidgetToGetSize> widgetListToGetSize;
 
   Widget Function(BuildContext context)? lazyBuild; //lazyBuild가 채워지면 준비된거다.

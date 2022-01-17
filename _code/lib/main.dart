@@ -1,11 +1,11 @@
 import 'package:kdh_homepage/Setting.dart';
-import 'package:kdh_homepage/config/MyCustomScrollBehavior.dart';
+import 'package:kdh_homepage/_common/config/MyCustomScrollBehavior.dart';
+import 'package:kdh_homepage/_common/util/AppColors.dart';
+import 'package:kdh_homepage/_common/util/DebugUtil.dart';
 import 'package:kdh_homepage/page/HorizontalScrollPage.dart';
 import 'package:kdh_homepage/page/MainPage.dart';
 import 'package:flutter/material.dart';
 import 'package:kdh_homepage/page/VerticalScrollPage.dart';
-import 'package:kdh_homepage/util/AppColors.dart';
-import 'package:kdh_homepage/util/DebugUtil.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

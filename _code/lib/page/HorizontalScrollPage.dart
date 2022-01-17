@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kdh_homepage/Setting.dart';
-import 'package:kdh_homepage/util/AppComponents.dart';
-import 'package:kdh_homepage/util/LogUtil.dart';
-import 'package:kdh_homepage/util/MediaQueryUtil.dart';
+import 'package:kdh_homepage/_common/util/AppComponents.dart';
+import 'package:kdh_homepage/_common/util/LogUtil.dart';
+import 'package:kdh_homepage/_common/util/MediaQueryUtil.dart';
 
 class HorizontalScrollPage extends StatefulWidget {
   const HorizontalScrollPage({Key? key}) : super(key: key);
