@@ -23,13 +23,13 @@ class AppComponents {
   }) {
     ScrollController _scrollController = ScrollController();
     Widget returnWidget = SingleChildScrollView(
-        controller: _scrollController,
-        scrollDirection: Axis.vertical,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: children,
-        ),
-      );
+      controller: _scrollController,
+      scrollDirection: Axis.vertical,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: children,
+      ),
+    );
 
     if (showScrollbar) {
       returnWidget = Scrollbar(
@@ -68,8 +68,8 @@ class AppComponents {
         onPointerSignal: (pointerSignal) {
           if (pointerSignal is PointerScrollEvent) {
             _scrollController.animateTo(
-              _scrollController.offset + pointerSignal.scrollDelta.dy * 3,
-              duration: Duration(milliseconds: 400),
+              _scrollController.offset + pointerSignal.scrollDelta.dy * 3.005,
+              duration: Duration(milliseconds: 300),
               curve: Curves.ease,
             );
           }
