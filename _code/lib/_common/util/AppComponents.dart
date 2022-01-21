@@ -19,48 +19,57 @@ class AppComponents {
 
   static Widget verticalScroll({
     required List<Widget> children,
+    bool showScrollbar = false,
   }) {
     ScrollController _scrollController = ScrollController();
-    return Scrollbar(
-      controller: _scrollController,
-      isAlwaysShown: true,
-      child: SingleChildScrollView(
+    Widget returnWidget = SingleChildScrollView(
         controller: _scrollController,
         scrollDirection: Axis.vertical,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: children,
         ),
-      ),
-    );
+      );
+
+    if (showScrollbar) {
+      returnWidget = Scrollbar(
+          controller: _scrollController,
+          isAlwaysShown: true,
+          child: returnWidget);
+    }
+
+    return returnWidget;
   }
 
   static Widget horizontalScroll({
     required List<Widget> children,
+    bool showScrollbar = false,
     bool useWheelScrool = false,
   }) {
     ScrollController _scrollController = ScrollController();
-    Widget returnWidget = Scrollbar(
+    Widget returnWidget = SingleChildScrollView(
       controller: _scrollController,
-      isAlwaysShown: true,
-      child: SingleChildScrollView(
-        controller: _scrollController,
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: children,
-        ),
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: children,
       ),
     );
+
+    if (showScrollbar) {
+      returnWidget = Scrollbar(
+          controller: _scrollController,
+          isAlwaysShown: true,
+          child: returnWidget);
+    }
 
     if (useWheelScrool) {
       returnWidget = Listener(
         onPointerSignal: (pointerSignal) {
           if (pointerSignal is PointerScrollEvent) {
             _scrollController.animateTo(
-              _scrollController.offset +
-                  ((pointerSignal.scrollDelta.dy > 0) ? 200 : -200),
-              duration: const Duration(milliseconds: 100),
+              _scrollController.offset + pointerSignal.scrollDelta.dy * 3,
+              duration: Duration(milliseconds: 400),
               curve: Curves.ease,
             );
           }
@@ -74,18 +83,26 @@ class AppComponents {
 
   static Widget webPage({
     required List<Widget> widgetList,
+    required Size
+        screenSize, //scroll 내에 scroll이 중첩되기 위해서는, 반드시 둘 중 하나의 스크롤에 크기가 정해져있어야 한다. 그래야, 에러가 안난다.
     double? containerWidth,
+    bool showHorizontalScrollbar = true,
+    bool showVerticalScrollbar = true,
   }) {
     Widget child;
     if (containerWidth != null) {
       child = Center(
         child: SizedBox(
           width: containerWidth,
+          height: screenSize.height,
           child: horizontalScroll(
+            showScrollbar: showHorizontalScrollbar,
             children: [
               SizedBox(
                 width: containerWidth,
+                height: screenSize.height,
                 child: verticalScroll(
+                  showScrollbar: showVerticalScrollbar,
                   children: widgetList,
                 ),
               ),
@@ -94,12 +111,22 @@ class AppComponents {
         ),
       );
     } else {
-      child = horizontalScroll(
-        children: [
-          verticalScroll(
-            children: widgetList,
-          ),
-        ],
+      child = SizedBox(
+        width: screenSize.width,
+        height: screenSize.height,
+        child: horizontalScroll(
+          showScrollbar: showHorizontalScrollbar,
+          children: [
+            SizedBox(
+              width: screenSize.width,
+              height: screenSize.height,
+              child: verticalScroll(
+                showScrollbar: showVerticalScrollbar,
+                children: widgetList,
+              ),
+            ),
+          ],
+        ),
       );
     }
 
