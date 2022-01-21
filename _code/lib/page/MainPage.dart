@@ -36,8 +36,6 @@ class _MainPageState extends KDHState<MainPage> {
 
   @override
   List<WidgetToGetSize> makeWidgetListToGetSize() {
-    LogUtil.info("_MainPageState makeWidgetListToGetSize");
-
     return [
       WidgetToGetSize(
         MainPageWidget.maxContainer,
@@ -79,15 +77,11 @@ class _MainPageState extends KDHState<MainPage> {
 
   @override
   Future<void> onLoad() async {
-    LogUtil.info("_MainPageState onLoad");
-
     maxSize = w[MainPageWidget.maxContainer]!.size;
   }
 
   @override
   void mustRebuild() {
-    LogUtil.info("_MainPageState mustRebuild");
-
     widgetToBuild = () {
       if (screenSize.width > containerWidth) {
         return desktop(screenSize);
@@ -146,19 +140,16 @@ class _EachWorkCardState extends KDHState<EachWorkCard> {
 
   @override
   List<WidgetToGetSize> makeWidgetListToGetSize() {
-    LogUtil.info("_EachWorkCardState makeWidgetListToGetSize");
     return [];
   }
 
   @override
   Future<void> onLoad() async {
-    LogUtil.info("_EachWorkCardState onLoad");
     imageUrl = await ImageUtil.getRandomImage();
   }
 
   @override
   void mustRebuild() {
-    LogUtil.info("_EachWorkCardState mustRebuild");
     widgetToBuild = () {
       return Padding(
         padding: const EdgeInsets.only(left: 27, right: 27),
