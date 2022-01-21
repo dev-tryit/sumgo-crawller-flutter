@@ -68,8 +68,8 @@ class AppComponents {
         onPointerSignal: (pointerSignal) {
           if (pointerSignal is PointerScrollEvent) {
             _scrollController.animateTo(
-              _scrollController.offset + pointerSignal.scrollDelta.dy * 3.005,
-              duration: Duration(milliseconds: 300),
+              _scrollController.offset + pointerSignal.scrollDelta.dy * 1.8,
+              duration: Duration(milliseconds: 10),
               curve: Curves.ease,
             );
           }
@@ -300,12 +300,11 @@ class AppComponents {
   }
 
   static Widget loadingWidget() {
-    return Center(
-      child: Container(
-        width: 40,
-        height: 40,
-        child: CircularProgressIndicator(),
-      ),
+    return Container(
+      width: 40,
+      height: 40,
+      alignment: Alignment.center,
+      child: CircularProgressIndicator(),
     );
   }
 

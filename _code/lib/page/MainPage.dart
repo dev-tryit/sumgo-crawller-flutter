@@ -4,6 +4,7 @@ import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/_common/abstract/KDHState.dart';
 import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
 import 'package:kdh_homepage/_common/util/AppComponents.dart';
+import 'package:kdh_homepage/_common/util/ImageUtil.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
 
 enum MainPageWidget {
@@ -29,7 +30,14 @@ class _MainPageState extends KDHState<MainPage> {
   //makeWidgetListToGetSize->onLoad->mustRebuild->super.build
 
   @override
+  bool isPage() {
+    return true;
+  }
+
+  @override
   List<WidgetToGetSize> makeWidgetListToGetSize() {
+    LogUtil.info("_MainPageState makeWidgetListToGetSize");
+
     return [
       WidgetToGetSize(
         MainPageWidget.maxContainer,
@@ -61,8 +69,9 @@ class _MainPageState extends KDHState<MainPage> {
           height: 426,
           child: AppComponents.horizontalScroll(
               useWheelScrool: true,
+              showScrollbar: true,
               children:
-                  List.generate(30, (index) => eachWorkCard("파섹홈페이지 $index"))),
+                  List.generate(15, (index) => EachWorkCard("파섹홈페이지 $index"))),
         ),
       ),
     ];
@@ -70,13 +79,14 @@ class _MainPageState extends KDHState<MainPage> {
 
   @override
   Future<void> onLoad() async {
-    LogUtil.debug("onLoad");
+    LogUtil.info("_MainPageState onLoad");
+
     maxSize = w[MainPageWidget.maxContainer]!.size;
   }
 
   @override
-  void mustRebuild(BuildContext context) {
-    LogUtil.debug("mustRebuild");
+  void mustRebuild() {
+    LogUtil.info("_MainPageState mustRebuild");
 
     widgetToBuild = () {
       if (screenSize.width > containerWidth) {
@@ -116,22 +126,59 @@ class _MainPageState extends KDHState<MainPage> {
   Widget mobile(Size screenSize) {
     return desktop(screenSize);
   }
+}
 
-  Widget eachWorkCard(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 27, right: 27),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.network('https://picsum.photos/250?image=9'),
-          const SizedBox(height: 22),
-          AppComponents.text(text: title),
-          AppComponents.text(text: "포토그래퍼 포트폴리오용 홈페이지"),
-          const SizedBox(height: 16),
-          AppComponents.text(text: "500,000원"),
-        ],
-      ),
-    );
+class EachWorkCard extends StatefulWidget {
+  String title;
+  EachWorkCard(this.title, {Key? key}) : super(key: key);
+
+  @override
+  _EachWorkCardState createState() => _EachWorkCardState();
+}
+
+class _EachWorkCardState extends KDHState<EachWorkCard> {
+  late String imageUrl;
+
+  @override
+  bool isPage() {
+    return false;
+  }
+
+  @override
+  List<WidgetToGetSize> makeWidgetListToGetSize() {
+    LogUtil.info("_EachWorkCardState makeWidgetListToGetSize");
+    return [];
+  }
+
+  @override
+  Future<void> onLoad() async {
+    LogUtil.info("_EachWorkCardState onLoad");
+    imageUrl = await ImageUtil.getRandomImage();
+  }
+
+  @override
+  void mustRebuild() {
+    LogUtil.info("_EachWorkCardState mustRebuild");
+    widgetToBuild = () {
+      return Padding(
+        padding: const EdgeInsets.only(left: 27, right: 27),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.network(
+              imageUrl,
+              height: 260,
+            ),
+            const SizedBox(height: 22),
+            AppComponents.text(text: widget.title),
+            AppComponents.text(text: "포토그래퍼 포트폴리오용 홈페이지"),
+            const SizedBox(height: 16),
+            AppComponents.text(text: "500,000원"),
+          ],
+        ),
+      );
+    };
+    rebuild();
   }
 }

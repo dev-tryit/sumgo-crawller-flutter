@@ -5,13 +5,13 @@ class Setting {
   static const String appName = "KDH_HOMEPAGE";
 
   // Log
-  static const Level LogLevel = Level.verbose;
+  static const Level LogLevel = Level.info;
   static bool showLog = true;
 
   // 중복 클릭 방지 시간
   static int milliSecondsForPreventingMultipleClicks = 300;
 
-  static String appVersion="";
+  static String appVersion = "";
 
-  static String appBuildNumber="";
+  static String appBuildNumber = "";
 }

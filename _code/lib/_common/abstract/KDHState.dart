@@ -5,6 +5,7 @@ import 'package:kdh_homepage/_common/util/LogUtil.dart';
 import 'package:kdh_homepage/_common/util/MediaQueryUtil.dart';
 
 abstract class KDHState<T extends StatefulWidget> extends State<T> {
+  bool whenBuildCalledFirst = true;
   List<WidgetToGetSize> _widgetListToGetSize = [];
   Map<dynamic, WidgetToGetSize> w = {};
 
@@ -14,18 +15,18 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
   //호출순서 : super.initState->super.build->super.afterBuild->super.prepareRebuild
   //                                                       ->onLoad->mustRebuild->super.build
 
+  bool isPage();
+
   void rebuild() {
     setState(() {});
   }
 
   @override
   void initState() {
-    LogUtil.debug("super.initState");
+    // LogUtil.debug("super.initState");
     super.initState();
 
     _widgetListToGetSize = makeWidgetListToGetSize();
-
-    Future(afterBuild);
   }
 
   /*
@@ -37,42 +38,60 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
-    LogUtil.debug("super.build");
+    // LogUtil.debug("super.build");
     screenSize = MediaQueryUtil.getScreenSize(context);
 
-    return widgetToBuild != null
-        ? widgetToBuild!()
-        : Scaffold(
-            body: Stack(
-              children: [
-                ...(_widgetListToGetSize.map((w) => Opacity(
-                      opacity: 0,
-                      child: w.makeWidget(),
-                    ))),
-                AppComponents.loadingWidget(),
-              ],
-            ),
-          );
+    if (whenBuildCalledFirst) {
+      whenBuildCalledFirst = false;
+      Future(() async {
+        await afterBuild();
+      });
+    }
+
+    bool existWidgetToBuild = widgetToBuild != null;
+    if (existWidgetToBuild) {
+      return widgetToBuild!();
+    }
+
+    Widget returnWidget = Stack(
+      children: [
+        ...(_widgetListToGetSize.isNotEmpty
+            ? _widgetListToGetSize.map((w) => Opacity(
+                  opacity: 0,
+                  child: w.makeWidget(),
+                ))
+            : []),
+        AppComponents.loadingWidget(),
+      ],
+    );
+
+    if (isPage()) {
+      returnWidget = Scaffold(
+        body: returnWidget,
+      );
+    }
+
+    return returnWidget;
   }
 
   Future<void> afterBuild() async {
-    LogUtil.debug("super.afterBuild");
+    // LogUtil.debug("super.afterBuild");
     await prepareRebuild();
   }
 
   Future<void> prepareRebuild() async {
-    LogUtil.debug("super.prepareRebuild");
+    // LogUtil.debug("super.prepareRebuild");
 
     getSizeOfWidgetList();
 
     await onLoad();
 
-    mustRebuild(context);
+    mustRebuild();
   }
 
   Future<void> onLoad();
 
-  void mustRebuild(BuildContext context);
+  void mustRebuild();
 
   void getSizeOfWidgetList() {
     w.clear();
