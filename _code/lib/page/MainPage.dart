@@ -24,7 +24,8 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends KDHState<MainPage> {
   late Size maxSize;
-  double containerWidth = 1024;
+  double maxMobileSize = 1024;
+  double desktopContainerSize = 1024;
   ScrollController scrollController = ScrollController();
 
   //screenSize, w, widgetToBuild를 잘 사용해야 한다.
@@ -50,7 +51,7 @@ class _MainPageState extends KDHState<MainPage> {
         (key) => AppComponents.text(
           key: key,
           fontSize: 52,
-          text: "${Setting.appBuildNumber}, Fullstack Developer, 김동현입니다.",
+          text: "Fullstack Developer, 김동현입니다.",
         ),
       ),
       WidgetToGetSize(
@@ -76,13 +77,14 @@ class _MainPageState extends KDHState<MainPage> {
 
   @override
   Future<void> onLoad() async {
+    LogUtil.info("${Setting.appBuildNumber} 빌드 버전");
     maxSize = w[MainPageWidget.maxContainer]!.size;
   }
 
   @override
   void mustRebuild() {
     widgetToBuild = () {
-      if (screenSize.width > containerWidth) {
+      if (screenSize.width > maxMobileSize) {
         return desktop(screenSize);
       }
       return mobile(screenSize);
@@ -103,12 +105,20 @@ class _MainPageState extends KDHState<MainPage> {
 
     return AppComponents.webPage(
       screenSize: screenSize,
-      containerWidth: containerWidth,
       widgetList: [
-        const SizedBox(height: 43),
-        w[MainPageWidget.headerText1]!.makeWidget(),
-        const SizedBox(height: 14),
-        w[MainPageWidget.headerText2]!.makeWidget(),
+        Container(
+          width: double.infinity,
+          alignment: Alignment.center,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 43),
+              w[MainPageWidget.headerText1]!.makeWidget(),
+              const SizedBox(height: 14),
+              w[MainPageWidget.headerText2]!.makeWidget(),
+            ],
+          ),
+        ),
         SizedBox(height: sizableHeight),
         w[MainPageWidget.mainListView]!.makeWidget(),
         const SizedBox(height: 200),
