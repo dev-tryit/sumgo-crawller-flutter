@@ -52695,7 +52695,8 @@ s.toString
 return s},
 $S:108}
 A.rm.prototype={
-ii(){this.aY(new A.Sh())},
+ii(){if(this.c==null)return
+this.aY(new A.Sh())},
 be(){this.bJ()
 this.e=this.FX()},
 U(a,b){var s,r,q=this,p=null
