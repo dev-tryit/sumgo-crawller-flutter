@@ -25,7 +25,6 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends KDHState<MainPage> {
   late Size maxSize;
   double maxMobileSize = 1024;
-  double desktopContainerSize = 1024;
   ScrollController scrollController = ScrollController();
 
   //screenSize, w, widgetToBuild를 잘 사용해야 한다.
@@ -65,6 +64,7 @@ class _MainPageState extends KDHState<MainPage> {
       WidgetToGetSize(
         MainPageWidget.mainListView,
         (key) => SizedBox(
+          key: key,
           height: 426,
           child: AppComponents.horizontalScroll(
               useWheelScrool: true,
@@ -98,7 +98,6 @@ class _MainPageState extends KDHState<MainPage> {
         (43 +
             14 +
             200 +
-            426 +
             w[MainPageWidget.headerText1]!.height +
             w[MainPageWidget.headerText2]!.height +
             w[MainPageWidget.mainListView]!.height);
