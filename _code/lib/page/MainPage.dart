@@ -61,9 +61,8 @@ class _MainPageState extends KDHState<MainPage> {
             if (pointerSignal is PointerScrollEvent) {
               LogUtil.info('Scrolled jump ${pointerSignal.scrollDelta.dy}');
               scrollController.animateTo(
-                scrollController.offset +
-                    ((pointerSignal.scrollDelta.dy > 0) ? 200 : -200),
-                duration: Duration(milliseconds: 100),
+                scrollController.offset + pointerSignal.scrollDelta.dy * 3,
+                duration: Duration(milliseconds: 400),
                 curve: Curves.ease,
               );
             }
@@ -72,36 +71,10 @@ class _MainPageState extends KDHState<MainPage> {
             color: Colors.amberAccent,
             height: 426,
             child: ListView(
-              controller: scrollController,
-              scrollDirection: Axis.horizontal,
-              children: [
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-                eachWorkCard(),
-              ],
-            ),
+                controller: scrollController,
+                scrollDirection: Axis.horizontal,
+                children: List.generate(
+                    30, (index) => eachWorkCard("파섹홈페이지 $index"))),
           ),
         ),
       ),
@@ -156,7 +129,7 @@ class _MainPageState extends KDHState<MainPage> {
     return desktop();
   }
 
-  Widget eachWorkCard() {
+  Widget eachWorkCard(String title) {
     return Padding(
       padding: const EdgeInsets.only(left: 27, right: 27),
       child: Column(
@@ -165,7 +138,7 @@ class _MainPageState extends KDHState<MainPage> {
         children: [
           Image.network('https://picsum.photos/250?image=9'),
           const SizedBox(height: 22),
-          AppComponents.text(text: "파섹 홈페이지"),
+          AppComponents.text(text: title),
           AppComponents.text(text: "포토그래퍼 포트폴리오용 홈페이지"),
           const SizedBox(height: 16),
           AppComponents.text(text: "500,000원"),
