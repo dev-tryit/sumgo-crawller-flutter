@@ -104,4 +104,10 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
       w[e.key] = e;
     }
   }
+
+  @override
+  void dispose() {
+    // LogUtil.debug("super.dispose");
+    super.dispose();
+  }
 }

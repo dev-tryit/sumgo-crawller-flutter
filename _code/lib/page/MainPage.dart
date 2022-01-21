@@ -71,7 +71,7 @@ class _MainPageState extends KDHState<MainPage> {
               useWheelScrool: true,
               showScrollbar: true,
               children:
-                  List.generate(15, (index) => EachWorkCard("파섹홈페이지 $index"))),
+                  List.generate(2, (index) => EachWorkCard("파섹홈페이지 $index"))),
         ),
       ),
     ];
