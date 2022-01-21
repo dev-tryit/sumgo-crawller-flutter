@@ -12,6 +12,7 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
   Widget Function()? widgetToBuild;
   late Size screenSize;
 
+  //화면을 바꿀 수 있을 때 사용, 주의!!! dispose가 마음대로 불릴 수 있음.
   //호출순서 : super.initState->super.build->super.afterBuild->super.prepareRebuild
   //                                                       ->onLoad->mustRebuild->super.build
 
