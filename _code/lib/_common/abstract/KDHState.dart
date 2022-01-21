@@ -40,6 +40,10 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
   */
   List<WidgetToGetSize> makeWidgetListToGetSize();
 
+  Widget loadingWidget() {
+    return AppComponents.loadingWidget();
+  }
+
   @override
   Widget build(BuildContext context) {
     // LogUtil.debug("super.build");
@@ -65,7 +69,7 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
                   child: w.makeWidget(),
                 ))
             : []),
-        AppComponents.loadingWidget(),
+        loadingWidget(),
       ],
     );
 

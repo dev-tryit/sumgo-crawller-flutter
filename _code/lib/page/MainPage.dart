@@ -6,6 +6,7 @@ import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
 import 'package:kdh_homepage/_common/util/AppComponents.dart';
 import 'package:kdh_homepage/_common/util/ImageUtil.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
+import 'package:unsplash_client/unsplash_client.dart';
 
 enum MainPageWidget {
   maxContainer,
@@ -62,14 +63,12 @@ class _MainPageState extends KDHState<MainPage> {
       ),
       WidgetToGetSize(
         MainPageWidget.mainListView,
-        (key) => Container(
-          color: Colors.amberAccent,
+        (key) => SizedBox(
           height: 426,
           child: AppComponents.horizontalScroll(
               useWheelScrool: true,
-              showScrollbar: true,
               children:
-                  List.generate(2, (index) => EachWorkCard("파섹홈페이지 $index"))),
+                  List.generate(15, (index) => EachWorkCard("파섹홈페이지 $index"))),
         ),
       ),
     ];
@@ -131,11 +130,16 @@ class EachWorkCard extends StatefulWidget {
 }
 
 class _EachWorkCardState extends KDHState<EachWorkCard> {
-  late String imageUrl;
+  late Photo photo;
 
   @override
   bool isPage() {
     return false;
+  }
+
+  @override
+  Widget loadingWidget() {
+    return const SizedBox.shrink();
   }
 
   @override
@@ -145,11 +149,12 @@ class _EachWorkCardState extends KDHState<EachWorkCard> {
 
   @override
   Future<void> onLoad() async {
-    imageUrl = await ImageUtil.getRandomImage();
+    photo = await ImageUtil.getRandomImage();
   }
 
   @override
   void mustRebuild() {
+    bool isPortrait = photo.ratio > 1;
     widgetToBuild = () {
       return Padding(
         padding: const EdgeInsets.only(left: 27, right: 27),
@@ -158,8 +163,8 @@ class _EachWorkCardState extends KDHState<EachWorkCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.network(
-              imageUrl,
-              height: 260,
+              photo.urls.regular.toString(),
+              height: isPortrait ? 210 : 290,
             ),
             const SizedBox(height: 22),
             AppComponents.text(text: widget.title),

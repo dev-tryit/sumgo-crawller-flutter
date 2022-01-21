@@ -11,7 +11,7 @@ import 'package:unsplash_client/unsplash_client.dart';
 class ImageUtil {
   static ListQueue<Photo> photoQueue = ListQueue();
 
-  static Future<String> getRandomImage() async {
+  static Future<Photo> getRandomImage() async {
     final client = UnsplashClient(
       settings: const ClientSettings(
           credentials: AppCredentials(
@@ -24,7 +24,7 @@ class ImageUtil {
       photoQueue.addAll(await client.photos.random(count: 10).goAndGet());
     }
 
-    return photoQueue.removeFirst().urls.regular.toString();
+    return photoQueue.removeFirst();
   }
 
   // static Future<List<XFile>> chooseMultipleImage({
