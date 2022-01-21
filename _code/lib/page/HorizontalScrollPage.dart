@@ -22,7 +22,6 @@ class _HorizontalScrollPageState extends State<HorizontalScrollPage> {
     return SafeArea(
       child: Scaffold(
         body: AppComponents.horizontalScroll(
-          screenSize: screenSize,
           children: [
             Image.network('https://picsum.photos/250?image=9'),
             Image.network('https://picsum.photos/250?image=9'),

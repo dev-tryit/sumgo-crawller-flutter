@@ -22,7 +22,6 @@ class _VerticalScrollPageState extends State<VerticalScrollPage> {
     return SafeArea(
       child: Scaffold(
         body: AppComponents.verticalScroll(
-          screenSize: screenSize,
           children: [
             Image.network('https://picsum.photos/250?image=9'),
             Image.network('https://picsum.photos/250?image=9'),

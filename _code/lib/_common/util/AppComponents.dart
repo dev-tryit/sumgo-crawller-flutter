@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:kdh_homepage/Setting.dart';
 import 'package:flutter/material.dart';
@@ -18,22 +19,17 @@ class AppComponents {
 
   static Widget verticalScroll({
     required List<Widget> children,
-    required Size screenSize,
   }) {
     ScrollController _scrollController = ScrollController();
     return Scrollbar(
       controller: _scrollController,
       isAlwaysShown: true,
-      child: SizedBox(
-        width: screenSize.width,
-        height: screenSize.height,
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          scrollDirection: Axis.vertical,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: children,
-          ),
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        scrollDirection: Axis.vertical,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: children,
         ),
       ),
     );
@@ -41,30 +37,43 @@ class AppComponents {
 
   static Widget horizontalScroll({
     required List<Widget> children,
-    required Size screenSize,
+    bool useWheelScrool = false,
   }) {
     ScrollController _scrollController = ScrollController();
-    return Scrollbar(
+    Widget returnWidget = Scrollbar(
       controller: _scrollController,
       isAlwaysShown: true,
-      child: SizedBox(
-        width: screenSize.width,
-        height: screenSize.height,
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: children,
-          ),
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: children,
         ),
       ),
     );
+
+    if (useWheelScrool) {
+      returnWidget = Listener(
+        onPointerSignal: (pointerSignal) {
+          if (pointerSignal is PointerScrollEvent) {
+            _scrollController.animateTo(
+              _scrollController.offset +
+                  ((pointerSignal.scrollDelta.dy > 0) ? 200 : -200),
+              duration: const Duration(milliseconds: 100),
+              curve: Curves.ease,
+            );
+          }
+        },
+        child: returnWidget,
+      );
+    }
+
+    return returnWidget;
   }
 
   static Widget webPage({
     required List<Widget> widgetList,
-    required Size screenSize,
     double? containerWidth,
   }) {
     Widget child;
@@ -73,12 +82,10 @@ class AppComponents {
         child: SizedBox(
           width: containerWidth,
           child: horizontalScroll(
-            screenSize: screenSize,
             children: [
               SizedBox(
                 width: containerWidth,
                 child: verticalScroll(
-                  screenSize: screenSize,
                   children: widgetList,
                 ),
               ),
@@ -88,10 +95,8 @@ class AppComponents {
       );
     } else {
       child = horizontalScroll(
-        screenSize: screenSize,
         children: [
           verticalScroll(
-            screenSize: screenSize,
             children: widgetList,
           ),
         ],
@@ -114,7 +119,7 @@ class AppComponents {
   }) {
     return Text(
       text,
-      key:key,
+      key: key,
       textAlign: textAlign,
       softWrap: softWrap,
       style: TextStyle(

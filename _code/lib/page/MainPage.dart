@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/_common/abstract/KDHState.dart';
@@ -22,6 +23,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends KDHState<MainPage> {
   late Size maxSize;
   double containerWidth = 1024;
+  ScrollController scrollController = ScrollController();
 
   //screenSize, w, widgetToBuild를 잘 사용해야 한다.
   //makeWidgetListToGetSize->onLoad->mustRebuild->super.build
@@ -54,38 +56,52 @@ class _MainPageState extends KDHState<MainPage> {
       ),
       WidgetToGetSize(
         MainPageWidget.mainListView,
-        (key) => Container(
-          color: Colors.amberAccent,
-          height: 426,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-              eachWorkCard(),
-            ],
+        (key) => Listener(
+          onPointerSignal: (pointerSignal) {
+            if (pointerSignal is PointerScrollEvent) {
+              LogUtil.info('Scrolled jump ${pointerSignal.scrollDelta.dy}');
+              scrollController.animateTo(
+                scrollController.offset +
+                    ((pointerSignal.scrollDelta.dy > 0) ? 200 : -200),
+                duration: Duration(milliseconds: 100),
+                curve: Curves.ease,
+              );
+            }
+          },
+          child: Container(
+            color: Colors.amberAccent,
+            height: 426,
+            child: ListView(
+              controller: scrollController,
+              scrollDirection: Axis.horizontal,
+              children: [
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+                eachWorkCard(),
+              ],
+            ),
           ),
         ),
       ),
@@ -104,14 +120,14 @@ class _MainPageState extends KDHState<MainPage> {
 
     widgetToBuild = () {
       if (screenSize.width > containerWidth) {
-        return desktop(screenSize);
+        return desktop();
       }
-      return mobile(screenSize);
+      return mobile();
     };
     rebuild();
   }
 
-  Widget desktop(Size screenSize) {
+  Widget desktop() {
     double sizableHeight = -1 +
         w[MainPageWidget.maxContainer]!.height -
         (43 +
@@ -123,7 +139,6 @@ class _MainPageState extends KDHState<MainPage> {
             w[MainPageWidget.mainListView]!.height);
 
     return AppComponents.webPage(
-      screenSize: screenSize,
       containerWidth: containerWidth,
       widgetList: [
         const SizedBox(height: 43),
@@ -137,8 +152,8 @@ class _MainPageState extends KDHState<MainPage> {
     );
   }
 
-  Widget mobile(Size screenSize) {
-    return desktop(screenSize);
+  Widget mobile() {
+    return desktop();
   }
 
   Widget eachWorkCard() {
