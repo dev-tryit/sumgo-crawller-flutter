@@ -6,6 +6,7 @@ import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
 import 'package:kdh_homepage/_common/util/AppComponents.dart';
 import 'package:kdh_homepage/_common/util/ImageUtil.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:unsplash_client/unsplash_client.dart';
 
 enum W {
@@ -180,24 +181,34 @@ class _EachWorkCardState extends KDHState<EachWorkCard> {
   void mustRebuild() {
     bool isPortrait = photo.ratio > 1;
     widgetToBuild = () {
-      return Padding(
-        padding: const EdgeInsets.only(left: 27, right: 27),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.network(
-              photo.urls.regular.toString(),
-              height: isPortrait ? 210 : 290,
-            ),
-            const SizedBox(height: 22),
-            AppComponents.text(text: widget.title),
-            AppComponents.text(text: "포토그래퍼 포트폴리오용 홈페이지"),
-            const SizedBox(height: 16),
-            AppComponents.text(text: "500,000원"),
-          ],
-        ),
+      Widget returnWidget = Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          FadeInImage.memoryNetwork(
+            placeholder: kTransparentImage,
+            image: photo.urls.regular.toString(),
+            height: isPortrait ? 210 : 290,
+          ),
+          const SizedBox(height: 22),
+          AppComponents.text(text: widget.title),
+          AppComponents.text(text: "포토그래퍼 포트폴리오용 홈페이지"),
+          const SizedBox(height: 16),
+          AppComponents.text(text: "500,000원"),
+        ],
       );
+
+      returnWidget = MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: returnWidget,
+      );
+
+      returnWidget = Padding(
+        padding: const EdgeInsets.only(left: 27, right: 27),
+        child: returnWidget,
+      );
+
+      return returnWidget;
     };
     rebuild();
   }
