@@ -3,22 +3,22 @@ import 'package:kdh_homepage/_common/util/SizeUtil.dart';
 
 class WidgetToGetSize<T> {
   Enum key;
-  late Widget Function() makeWidget;
+  late Widget Function() make;
   final _globalKey = GlobalKey();
   late Size size;
-  late double width;
-  late double height;
+  late double w;
+  late double h;
 
   WidgetToGetSize(this.key, Widget Function(GlobalKey key) makeWidget) {
-    this.makeWidget = () {
+    this.make = () {
       return makeWidget(_globalKey);
     };
   }
 
   void calculateSize() {
     size = SizeUtil.getSizeByKey(_globalKey);
-    width = size.width;
-    height = size.height;
+    w = size.width;
+    h = size.height;
     print("[$key] size: $size");
   }
 }

@@ -8,11 +8,14 @@ import 'package:kdh_homepage/_common/util/ImageUtil.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
 import 'package:unsplash_client/unsplash_client.dart';
 
-enum MainPageWidget {
+enum W {
   maxContainer,
+  space1,
   headerText1,
+  space2,
   headerText2,
   mainListView,
+  space3,
 }
 
 class MainPage extends StatefulWidget {
@@ -39,14 +42,18 @@ class _MainPageState extends KDHState<MainPage> {
   List<WidgetToGetSize> makeWidgetListToGetSize() {
     return [
       WidgetToGetSize(
-        MainPageWidget.maxContainer,
+        W.maxContainer,
         (key) => Container(
           key: key,
           color: Colors.transparent,
         ),
       ),
       WidgetToGetSize(
-        MainPageWidget.headerText1,
+        W.space1,
+        (key) => SizedBox(key: key, height: 43),
+      ),
+      WidgetToGetSize(
+        W.headerText1,
         (key) => AppComponents.text(
           key: key,
           fontSize: 52,
@@ -54,7 +61,11 @@ class _MainPageState extends KDHState<MainPage> {
         ),
       ),
       WidgetToGetSize(
-        MainPageWidget.headerText2,
+        W.space2,
+        (key) => SizedBox(key: key, height: 14),
+      ),
+      WidgetToGetSize(
+        W.headerText2,
         (key) => AppComponents.text(
           key: key,
           fontSize: 37,
@@ -62,7 +73,11 @@ class _MainPageState extends KDHState<MainPage> {
         ),
       ),
       WidgetToGetSize(
-        MainPageWidget.mainListView,
+        W.space3,
+        (key) => SizedBox(key: key, height: 100),
+      ),
+      WidgetToGetSize(
+        W.mainListView,
         (key) => SizedBox(
           key: key,
           height: 426,
@@ -78,7 +93,7 @@ class _MainPageState extends KDHState<MainPage> {
   @override
   Future<void> onLoad() async {
     LogUtil.info("${Setting.appBuildNumber} 빌드 버전");
-    maxSize = w[MainPageWidget.maxContainer]!.size;
+    maxSize = widgetMap[W.maxContainer]!.size;
   }
 
   @override
@@ -94,13 +109,13 @@ class _MainPageState extends KDHState<MainPage> {
 
   Widget desktop(Size screenSize) {
     double sizableHeight = -1 +
-        w[MainPageWidget.maxContainer]!.height -
-        (43 +
-            14 +
-            200 +
-            w[MainPageWidget.headerText1]!.height +
-            w[MainPageWidget.headerText2]!.height +
-            w[MainPageWidget.mainListView]!.height);
+        widgetMap[W.maxContainer]!.h -
+        (widgetMap[W.space1]!.h +
+            widgetMap[W.headerText1]!.h +
+            widgetMap[W.space2]!.h +
+            widgetMap[W.headerText2]!.h +
+            widgetMap[W.mainListView]!.h +
+            widgetMap[W.space3]!.h);
 
     return AppComponents.webPage(
       screenSize: screenSize,
@@ -111,16 +126,16 @@ class _MainPageState extends KDHState<MainPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 43),
-              w[MainPageWidget.headerText1]!.makeWidget(),
-              const SizedBox(height: 14),
-              w[MainPageWidget.headerText2]!.makeWidget(),
+              widgetMap[W.space1]!.make(),
+              widgetMap[W.headerText1]!.make(),
+              widgetMap[W.space2]!.make(),
+              widgetMap[W.headerText2]!.make(),
             ],
           ),
         ),
         SizedBox(height: sizableHeight),
-        w[MainPageWidget.mainListView]!.makeWidget(),
-        const SizedBox(height: 200),
+        widgetMap[W.mainListView]!.make(),
+        widgetMap[W.space3]!.make(),
       ],
     );
   }

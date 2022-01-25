@@ -7,7 +7,7 @@ import 'package:kdh_homepage/_common/util/MediaQueryUtil.dart';
 abstract class KDHState<T extends StatefulWidget> extends State<T> {
   bool whenBuildCalledFirst = true;
   List<WidgetToGetSize> _widgetListToGetSize = [];
-  Map<dynamic, WidgetToGetSize> w = {};
+  Map<dynamic, WidgetToGetSize> widgetMap = {};
 
   Widget Function()? widgetToBuild;
   late Size screenSize;
@@ -66,7 +66,7 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
         ...(_widgetListToGetSize.isNotEmpty
             ? _widgetListToGetSize.map((w) => Opacity(
                   opacity: 0,
-                  child: w.makeWidget(),
+                  child: w.make(),
                 ))
             : []),
         loadingWidget(),
@@ -102,10 +102,10 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
   void mustRebuild();
 
   void getSizeOfWidgetList() {
-    w.clear();
+    widgetMap.clear();
     for (var e in _widgetListToGetSize) {
       e.calculateSize();
-      w[e.key] = e;
+      widgetMap[e.key] = e;
     }
   }
 
