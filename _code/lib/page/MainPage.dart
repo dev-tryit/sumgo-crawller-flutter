@@ -84,7 +84,7 @@ class _MainPageState extends KDHState<MainPage> {
           child: AppComponents.horizontalScroll(
               useWheelScrool: true,
               children:
-                  List.generate(15, (index) => EachWorkCard("파섹홈페이지 $index"))),
+                  List.generate(7, (index) => EachWorkCard("파섹홈페이지 $index"))),
         ),
       ),
     ];

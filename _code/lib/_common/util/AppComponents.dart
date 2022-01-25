@@ -68,9 +68,11 @@ class AppComponents {
         onPointerSignal: (pointerSignal) {
           if (pointerSignal is PointerScrollEvent) {
             _scrollController.animateTo(
-              _scrollController.offset + pointerSignal.scrollDelta.dy * 1.8,
-              duration: Duration(milliseconds: 10),
-              curve: Curves.ease,
+              _scrollController.offset + pointerSignal.scrollDelta.dy * 1.1,
+              duration: const Duration(
+                  milliseconds:
+                      100), //다음 스크롤까지 딜레이를 주는 개념으로 볼 수 있다, 부드러운 느낌을 줄 수 있음
+              curve: Curves.ease, //가장 노멀하게 부드러운 것 같음.
             );
           }
         },
