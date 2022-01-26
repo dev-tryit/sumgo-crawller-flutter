@@ -182,14 +182,9 @@ class _EachWorkCardState extends KDHState<EachWorkCard> {
 
   @override
   void mustRebuild() {
-    Timer(Duration(milliseconds: 1000), () {
-      opacity = 1.0;
-      rebuild();
-    });
-
     var photoUrl = photo.urls.regular.toString();
-
     bool isPortrait = photo.ratio > 1;
+
     widgetToBuild = () {
       Widget returnWidget = Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -226,5 +221,10 @@ class _EachWorkCardState extends KDHState<EachWorkCard> {
       return returnWidget;
     };
     rebuild();
+
+    Timer(const Duration(milliseconds: 1000), () {
+      opacity = 1.0;
+      rebuild();
+    });
   }
 }
