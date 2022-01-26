@@ -83,6 +83,45 @@ class AppComponents {
     return returnWidget;
   }
 
+  static Widget horizontalListView({
+    required List<Widget> children,
+    bool showScrollbar = false,
+    bool useWheelScrool = false,
+  }) {
+    ScrollController _scrollController = ScrollController();
+    Widget returnWidget = ListView(
+      controller: _scrollController,
+      scrollDirection: Axis.horizontal,
+      children: children,
+    );
+
+    if (showScrollbar) {
+      returnWidget = Scrollbar(
+          controller: _scrollController,
+          isAlwaysShown: true,
+          child: returnWidget);
+    }
+
+    if (useWheelScrool) {
+      returnWidget = Listener(
+        onPointerSignal: (pointerSignal) {
+          if (pointerSignal is PointerScrollEvent) {
+            _scrollController.animateTo(
+              _scrollController.offset + pointerSignal.scrollDelta.dy * 1.1,
+              duration: const Duration(
+                  milliseconds:
+                      100), //다음 스크롤까지 딜레이를 주는 개념으로 볼 수 있다, 부드러운 느낌을 줄 수 있음
+              curve: Curves.ease, //가장 노멀하게 부드러운 것 같음.
+            );
+          }
+        },
+        child: returnWidget,
+      );
+    }
+
+    return returnWidget;
+  }
+
   static Widget webPage({
     required List<Widget> widgetList,
     required Size

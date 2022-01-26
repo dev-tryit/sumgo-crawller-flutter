@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kdh_homepage/Setting.dart';
@@ -82,7 +84,7 @@ class _MainPageState extends KDHState<MainPage> {
         (key) => SizedBox(
           key: key,
           height: 426,
-          child: AppComponents.horizontalScroll(
+          child: AppComponents.horizontalListView(
               useWheelScrool: true,
               children:
                   List.generate(7, (index) => EachWorkCard("파섹홈페이지 $index"))),
@@ -156,6 +158,7 @@ class EachWorkCard extends StatefulWidget {
 
 class _EachWorkCardState extends KDHState<EachWorkCard> {
   late Photo photo;
+  double opacity = 0;
 
   @override
   bool isPage() {
@@ -179,15 +182,21 @@ class _EachWorkCardState extends KDHState<EachWorkCard> {
 
   @override
   void mustRebuild() {
+    Timer(Duration(milliseconds: 1000), () {
+      opacity = 1.0;
+      rebuild();
+    });
+
+    var photoUrl = photo.urls.regular.toString();
+
     bool isPortrait = photo.ratio > 1;
     widgetToBuild = () {
       Widget returnWidget = Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FadeInImage.memoryNetwork(
-            placeholder: kTransparentImage,
-            image: photo.urls.regular.toString(),
+          Image.network(
+            photoUrl,
             height: isPortrait ? 210 : 290,
           ),
           const SizedBox(height: 22),
@@ -196,6 +205,12 @@ class _EachWorkCardState extends KDHState<EachWorkCard> {
           const SizedBox(height: 16),
           AppComponents.text(text: "500,000원"),
         ],
+      );
+
+      returnWidget = AnimatedOpacity(
+        opacity: opacity,
+        duration: const Duration(milliseconds: 1000),
+        child: returnWidget,
       );
 
       returnWidget = MouseRegion(
