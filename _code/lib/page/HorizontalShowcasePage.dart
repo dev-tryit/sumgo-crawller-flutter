@@ -222,7 +222,7 @@ class _EachWorkCardState extends KDHState<EachWorkCard> {
     };
     rebuild();
 
-    Timer(const Duration(milliseconds: 1000), () {
+    Timer(const Duration(milliseconds: 200), () {
       opacity = 1.0;
       rebuild();
     });
