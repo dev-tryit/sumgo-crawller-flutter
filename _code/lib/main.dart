@@ -3,7 +3,7 @@ import 'package:kdh_homepage/_common/config/MyCustomScrollBehavior.dart';
 import 'package:kdh_homepage/_common/util/AppColors.dart';
 import 'package:kdh_homepage/_common/util/DebugUtil.dart';
 import 'package:kdh_homepage/page/HorizontalScrollPage.dart';
-import 'package:kdh_homepage/page/MainPage.dart';
+import 'package:kdh_homepage/page/HorizontalShowcasePage.dart';
 import 'package:flutter/material.dart';
 import 'package:kdh_homepage/page/VerticalScrollPage.dart';
 
@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       scrollBehavior: MyCustomScrollBehavior(),
       theme: ThemeData(
         brightness: Brightness.light,
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
         //   bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
         // ),
       ),
-      home: MainPage(),
+      home: HorizontalShowcasePage(),
     );
   }
 }

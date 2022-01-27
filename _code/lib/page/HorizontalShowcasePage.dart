@@ -21,14 +21,14 @@ enum W {
   space3,
 }
 
-class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+class HorizontalShowcasePage extends StatefulWidget {
+  const HorizontalShowcasePage({Key? key}) : super(key: key);
 
   @override
-  _MainPageState createState() => _MainPageState();
+  _HorizontalShowcasePageState createState() => _HorizontalShowcasePageState();
 }
 
-class _MainPageState extends KDHState<MainPage> {
+class _HorizontalShowcasePageState extends KDHState<HorizontalShowcasePage> {
   late Size maxSize;
   double maxMobileSize = 1024;
   ScrollController scrollController = ScrollController();
