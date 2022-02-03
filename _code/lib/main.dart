@@ -1,11 +1,16 @@
+import 'package:flutter/material.dart';
+
 import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/_common/config/MyCustomScrollBehavior.dart';
-import 'package:kdh_homepage/_common/util/AppColors.dart';
+import 'package:kdh_homepage/util/MyColors.dart';
 import 'package:kdh_homepage/_common/util/DebugUtil.dart';
+
+import 'package:kdh_homepage/page/RegisterPage.dart';
+import 'package:kdh_homepage/page/VerticalScrollPage.dart';
 import 'package:kdh_homepage/page/HorizontalScrollPage.dart';
 import 'package:kdh_homepage/page/HorizontalShowcasePage.dart';
-import 'package:flutter/material.dart';
-import 'package:kdh_homepage/page/VerticalScrollPage.dart';
+import 'package:kdh_homepage/page/resume/MainPage.dart';
+import 'package:kdh_homepage/util/MyTheme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +27,7 @@ class MyApp extends StatelessWidget {
       scrollBehavior: MyCustomScrollBehavior(),
       theme: ThemeData(
         brightness: Brightness.light,
-        canvasColor: AppColors.backgroundColor,
+        canvasColor: MyTheme.backgroundColor,
         // primaryColor: Colors.lightBlue[800],
         // Define the default font family.
         // fontFamily: 'Georgia',
@@ -35,7 +40,7 @@ class MyApp extends StatelessWidget {
         //   bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
         // ),
       ),
-      home: HorizontalShowcasePage(),
+      home: MainPage(),
     );
   }
 }

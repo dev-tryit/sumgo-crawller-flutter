@@ -130,6 +130,25 @@ class AppComponents {
     bool showHorizontalScrollbar = true,
     bool showVerticalScrollbar = true,
   }) {
+    return scaffold(
+      body: bidirectionalScroll(
+        widgetList: widgetList,
+        screenSize: screenSize,
+        containerWidth: containerWidth,
+        showHorizontalScrollbar: showHorizontalScrollbar,
+        showVerticalScrollbar: showVerticalScrollbar,
+      ),
+    );
+  }
+
+  static Widget bidirectionalScroll({
+    required List<Widget> widgetList,
+    required Size
+        screenSize, //scroll 내에 scroll이 중첩되기 위해서는, 반드시 둘 중 하나의 스크롤에 크기가 정해져있어야 한다. 그래야, 에러가 안난다.
+    double? containerWidth,
+    bool showHorizontalScrollbar = true,
+    bool showVerticalScrollbar = true,
+  }) {
     Widget child;
     if (containerWidth != null) {
       child = Center(
@@ -171,7 +190,7 @@ class AppComponents {
       );
     }
 
-    return scaffold(body: child);
+    return child;
   }
 
   static Widget text({
