@@ -158,7 +158,7 @@ class MainPageComponent {
           EachMenuItem("", "트라잇"),
           EachMenuItem("", "소개"),
           EachMenuItem("", "이력서"),
-          EachMenuItem("", "이력서"),
+          EachMenuItem("", "포트폴리오"),
           EachMenuItem("", "연락하기"),
         ];
 
@@ -167,9 +167,10 @@ class MainPageComponent {
           item.isClick.addListener(() {
             if (item.isClick.value) {
               for (var element in itemList) {
-                element.iconColor.value = EachMenuItem.unselectedColor;
+                if (element != item) {
+                  element.unclick();
+                }
               }
-              item.iconColor.value = EachMenuItem.selectedColor;
             }
           });
         }
@@ -300,11 +301,12 @@ class _EachMenuState extends State<EachMenu> {
       ),
     );
 
-    // returnWidget = GestureDetector(
-    //   onTap: () {
-    //     widget.item.isClick.value = true;
-    //   },
-    // );
+    returnWidget = GestureDetector(
+      onTap: () {
+        widget.item.click();
+      },
+      child: returnWidget,
+    );
 
     returnWidget = MouseRegion(
       cursor: SystemMouseCursors.click,
