@@ -219,10 +219,10 @@ class Menu<T> extends StatefulWidget {
       : super(key: key);
 
   @override
-  _MenuState createState() => _MenuState();
+  _MenuState<T> createState() => _MenuState<T>();
 }
 
-class _MenuState extends State<Menu> {
+class _MenuState<T> extends State<Menu<T>> {
   @override
   void initState() {
     widget.addListnerOnMenuClick(widget.itemList);
