@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/_common/abstract/KDHState.dart';
+import 'package:kdh_homepage/_common/model/TValue.dart';
 import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
 import 'package:kdh_homepage/util/MyComponents.dart';
 import 'package:kdh_homepage/_common/util/ImageUtil.dart';
@@ -161,12 +162,17 @@ class MainPageComponent {
           EachMenuItem("", "연락하기"),
         ];
 
-        // for (int i = 0; i < itemList.length; i++) {
-        //   var item = itemList[i];
-        //   item.iconColorNotifier.addListener(() {
-        //     itemList.forEach((e)=>e.);
-        //   });
-        // }
+        for (int i = 0; i < itemList.length; i++) {
+          var item = itemList[i];
+          item.isClick.addListener(() {
+            if (item.isClick.value) {
+              for (var element in itemList) {
+                element.iconColor.value = EachMenuItem.unselectedColor;
+              }
+              item.iconColor.value = EachMenuItem.selectedColor;
+            }
+          });
+        }
 
         return Padding(
           padding: const EdgeInsets.only(top: 13.0),
@@ -218,9 +224,23 @@ class _MenuState extends State<Menu> {
 }
 
 class EachMenuItem {
+  static const Color selectedColor = MyColors.lightBlue;
+  static const Color unselectedColor = MyColors.ligthGray;
+
   String imagePath;
   String label;
-  ValueNotifier iconColorNotifier = ValueNotifier(MyColors.ligthGray);
+  ValueNotifier iconColor = ValueNotifier(unselectedColor);
+  ValueNotifier isClick = ValueNotifier(false);
+
+  void click() {
+    isClick.value = true;
+    iconColor.value = selectedColor;
+  }
+
+  void unclick() {
+    isClick.value = false;
+    iconColor.value = unselectedColor;
+  }
 
   EachMenuItem(this.imagePath, this.label);
 }
@@ -234,6 +254,22 @@ class EachMenu extends StatefulWidget {
 }
 
 class _EachMenuState extends State<EachMenu> {
+  void rebuild() {
+    setState(() {});
+  }
+
+  void setRebuildCondition() {
+    widget.item.iconColor.addListener(() {
+      rebuild();
+    });
+  }
+
+  @override
+  void initState() {
+    setRebuildCondition();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget returnWidget = Container(
@@ -253,8 +289,8 @@ class _EachMenuState extends State<EachMenu> {
             height: 40,
             child: CircleAvatar(
               radius: 50.0,
-              backgroundColor: widget.item.iconColorNotifier.value,
-              backgroundImage: AssetImage(widget.item.imagePath),
+              backgroundColor: widget.item.iconColor.value,
+              // backgroundImage: AssetImage(widget.item.imagePath),
             ),
           ),
           const SizedBox(height: 7),
@@ -265,26 +301,27 @@ class _EachMenuState extends State<EachMenu> {
     );
 
     // returnWidget = GestureDetector(
-    //   onTap: () {},
+    //   onTap: () {
+    //     widget.item.isClick.value = true;
+    //   },
     // );
 
     returnWidget = MouseRegion(
       cursor: SystemMouseCursors.click,
       child: returnWidget,
       onExit: (event) {
-        widget.item.iconColorNotifier.value = MyColors.ligthGray;
-        rebuild();
+        if (widget.item.isClick.value) {
+          widget.item.iconColor.value = EachMenuItem.selectedColor;
+          return;
+        }
+
+        widget.item.iconColor.value = EachMenuItem.unselectedColor;
       },
       onEnter: (event) {
-        widget.item.iconColorNotifier.value = MyColors.lightBlue;
-        rebuild();
+        widget.item.iconColor.value = EachMenuItem.selectedColor;
       },
     );
 
     return returnWidget;
-  }
-
-  void rebuild() {
-    setState(() {});
   }
 }
