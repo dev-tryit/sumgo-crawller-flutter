@@ -153,12 +153,13 @@ class MainPageComponent {
 
   Widget leftMenu() {
     return Column(
-      children: [
-        eachMenu("", "트라잇"),
-        eachMenu("", "트라잇"),
-        eachMenu("", "트라잇"),
-        eachMenu("", "트라잇"),
-        eachMenu("", "트라잇"),
+      children: const [
+        const SizedBox(height: 13),
+        const EachMenu("", "트라잇"),
+        const EachMenu("", "소개"),
+        const EachMenu("", "이력서"),
+        const EachMenu("", "포트폴리오"),
+        const EachMenu("", "연락하기"),
       ],
     );
   }
@@ -183,9 +184,22 @@ class MainPageComponent {
       physics: const NeverScrollableScrollPhysics(),
     );
   }
+}
 
-  Widget eachMenu(String imagePath, String label) {
-    return Container(
+class EachMenu extends StatefulWidget {
+  final String iconPath;
+  final String label;
+  const EachMenu(this.iconPath, this.label, {Key? key}) : super(key: key);
+
+  @override
+  _EachMenuState createState() => _EachMenuState();
+}
+
+class _EachMenuState extends State<EachMenu> {
+  Color eachMenuIconColor = MyColors.ligthGray;
+  @override
+  Widget build(BuildContext context) {
+    Widget returnWidget = Container(
       width: 91,
       height: 91,
       decoration: BoxDecoration(
@@ -197,11 +211,39 @@ class MainPageComponent {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(Icons.ac_unit_outlined, color: MyColors.ligthGray),
-          SizedBox(height: 9),
-          MyComponents.text(text: label, color: MyColors.white),
+          SizedBox(
+            width: 40,
+            height: 40,
+            child: CircleAvatar(
+              radius: 50.0,
+              backgroundColor: eachMenuIconColor,
+              backgroundImage: AssetImage(widget.iconPath),
+            ),
+          ),
+          SizedBox(height: 7),
+          MyComponents.text(
+              text: widget.label, fontSize: 12, color: MyColors.white),
         ],
       ),
     );
+
+    returnWidget = MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: returnWidget,
+      onHover: (event) {
+        eachMenuIconColor = MyColors.lightBlue;
+        rebuild();
+      },
+      onExit: (event) {
+        eachMenuIconColor = MyColors.ligthGray;
+        rebuild();
+      },
+    );
+
+    return returnWidget;
+  }
+
+  void rebuild() {
+    setState(() {});
   }
 }
