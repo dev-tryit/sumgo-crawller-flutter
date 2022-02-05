@@ -23,12 +23,20 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
 }
 
-class _MainPageState extends KDHState<MainPage> {
+class _MainPageState extends KDHState<MainPage> with TickerProviderStateMixin {
   final double maxMobileSize = 1024;
   late final Size maxSize;
+  late final MainPageComponent component;
 
   //screenSize, w, widgetToBuild를 잘 사용해야 한다.
   //makeWidgetListToGetSize->onLoad->mustRebuild->super.build
+
+  @override
+  void initState() {
+    component = MainPageComponent(this);
+
+    super.initState();
+  }
 
   @override
   bool isPage() {
@@ -72,19 +80,15 @@ class _MainPageState extends KDHState<MainPage> {
           Container(
             color: MyColors.black,
             width: 91,
-            child: Column(
-              children: [],
-            ),
+            child: component.leftMenu(),
           ),
           Container(
             color: MyColors.gray,
             width: 404,
-            child: Column(
-              children: [],
-            ),
+            child: component.desktopProfile(),
           ),
           Expanded(
-            child: MainPageComponent.content(),
+            child: component.content(),
           ),
         ],
       ),
@@ -112,18 +116,93 @@ class _MainPageState extends KDHState<MainPage> {
 
   Widget mobile(Size screenSize) {
     return AppComponents.scaffold(
-      body: SizedBox.expand(child: MainPageComponent.content()),
+      body: SizedBox.expand(child: component.content()),
     );
   }
 }
 
+enum PageEnum { mainPage, profilePage }
+
 class MainPageComponent {
-  static Widget content() {
-    return Container(
+  int _selectedIndex = 0;
+  final pageController = PageController();
+  final _MainPageState state;
+  final TabController tabController;
+
+  MainPageComponent(this.state)
+      : tabController = TabController(length: 3, vsync: state);
+
+  Map<PageEnum, Widget> pages = {
+    PageEnum.mainPage: Container(
       color: MyColors.black,
       child: Column(
-        children: [],
+        children: const [
+          Text("MainPage"),
+        ],
       ),
+    ),
+    PageEnum.profilePage: Container(
+      color: MyColors.black,
+      child: Column(
+        children: const [
+          Text("ProfilePage"),
+        ],
+      ),
+    ),
+  };
+
+  Widget leftMenu() {
+    return NavigationRail(
+      selectedIndex: _selectedIndex,
+      onDestinationSelected: (int index) {
+        _selectedIndex = index;
+        state.rebuild();
+
+        pageController.animateToPage(
+          _selectedIndex,
+          duration: Duration(seconds: 1),
+          curve: Curves.ease,
+        );
+      },
+      labelType: NavigationRailLabelType.selected,
+      destinations: const <NavigationRailDestination>[
+        NavigationRailDestination(
+          icon: Icon(Icons.favorite_border),
+          selectedIcon: Icon(Icons.favorite),
+          label: Text('First'),
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.bookmark_border),
+          selectedIcon: Icon(Icons.book),
+          label: Text('Second'),
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.star_border),
+          selectedIcon: Icon(Icons.star),
+          label: Text('Third'),
+        ),
+      ],
+    );
+  }
+
+  Widget desktopProfile() {
+    return Column(
+      children: const [],
+    );
+  }
+
+  Widget content() {
+    // Timer(Duration(seconds: 2), () {
+    //   pageController.animateToPage(
+    //     1,
+    //     duration: Duration(seconds: 1),
+    //     curve: Curves.ease,
+    //   );
+    // });
+    return PageView(
+      controller: pageController,
+      children: pages.values.toList(),
+      physics: const NeverScrollableScrollPhysics(),
     );
   }
 }

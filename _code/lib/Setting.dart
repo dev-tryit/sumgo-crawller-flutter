@@ -2,7 +2,7 @@ import 'package:logger/logger.dart';
 
 class Setting {
   // App
-  static const String appName = "KDH_HOMEPAGE";
+  static const String appName = "TRY_IT";
 
   // Log
   static const Level LogLevel = Level.info;

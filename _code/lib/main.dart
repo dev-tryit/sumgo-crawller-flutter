@@ -9,7 +9,7 @@ import 'package:kdh_homepage/page/RegisterPage.dart';
 import 'package:kdh_homepage/page/VerticalScrollPage.dart';
 import 'package:kdh_homepage/page/HorizontalScrollPage.dart';
 import 'package:kdh_homepage/page/HorizontalShowcasePage.dart';
-import 'package:kdh_homepage/page/resume/MainPage.dart';
+import 'package:kdh_homepage/page/resume/ResumePage.dart';
 import 'package:kdh_homepage/util/MyTheme.dart';
 
 Future<void> main() async {
@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: Setting.appName,
       debugShowCheckedModeBanner: false,
       scrollBehavior: MyCustomScrollBehavior(),
       theme: ThemeData(
