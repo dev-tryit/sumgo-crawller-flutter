@@ -152,33 +152,34 @@ class MainPageComponent {
   };
 
   Widget leftMenu() {
-    return Menu(
-      menuBuilder: () {
-        List<EachMenuItem> itemList = [
-          EachMenuItem("", "트라잇"),
-          EachMenuItem("", "소개"),
-          EachMenuItem("", "이력서"),
-          EachMenuItem("", "포트폴리오"),
-          EachMenuItem("", "연락하기"),
-        ];
-
+    return Menu<EachMenuItem>(
+      itemList: [
+        EachMenuItem("", "트라잇"),
+        EachMenuItem("", "소개"),
+        EachMenuItem("", "이력서"),
+        EachMenuItem("", "포트폴리오"),
+        EachMenuItem("", "연락하기"),
+      ],
+      addListnerOnMenuClick: (itemList) {
         for (int i = 0; i < itemList.length; i++) {
           var item = itemList[i];
           item.isClick.addListener(() {
-            if (item.isClick.value) {
-              for (var element in itemList) {
-                if (element != item) {
-                  element.unclick();
-                }
+            if (!item.isClick.value) return;
+
+            for (var element in itemList) {
+              if (element != item) {
+                element.unclick();
               }
             }
           });
         }
-
+      },
+      menuBuilder: (itemList) {
         return Padding(
           padding: const EdgeInsets.only(top: 13.0),
-          child:
-              Column(children: itemList.map((item) => EachMenu(item)).toList()),
+          child: Column(
+            children: itemList.map((item) => EachMenu(item)).toList(),
+          ),
         );
       },
     );
@@ -206,12 +207,16 @@ class MainPageComponent {
   }
 }
 
-class Menu extends StatefulWidget {
-  final Widget Function() menuBuilder;
-  Menu({
-    Key? key,
-    required this.menuBuilder,
-  }) : super(key: key);
+class Menu<T> extends StatefulWidget {
+  final List<T> itemList;
+  final Widget Function(List<T> itemList) menuBuilder;
+  final void Function(List<T> itemList) addListnerOnMenuClick;
+  const Menu(
+      {Key? key,
+      required this.itemList,
+      required this.menuBuilder,
+      required this.addListnerOnMenuClick})
+      : super(key: key);
 
   @override
   _MenuState createState() => _MenuState();
@@ -219,8 +224,15 @@ class Menu extends StatefulWidget {
 
 class _MenuState extends State<Menu> {
   @override
+  void initState() {
+    widget.addListnerOnMenuClick(widget.itemList);
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return widget.menuBuilder();
+    return widget.menuBuilder(widget.itemList);
   }
 }
 
