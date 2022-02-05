@@ -4,7 +4,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/_common/abstract/KDHState.dart';
-import 'package:kdh_homepage/_common/model/TValue.dart';
 import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
 import 'package:kdh_homepage/util/MyComponents.dart';
 import 'package:kdh_homepage/_common/util/ImageUtil.dart';
@@ -153,8 +152,8 @@ class MainPageComponent {
 
   Widget leftMenu() {
     return Menu(
-      menuBuilder: (selectedIndex) {
-        List<EachMenuItem> itemList = const [
+      menuBuilder: () {
+        List<EachMenuItem> itemList = [
           EachMenuItem("", "트라잇"),
           EachMenuItem("", "소개"),
           EachMenuItem("", "이력서"),
@@ -162,15 +161,17 @@ class MainPageComponent {
           EachMenuItem("", "연락하기"),
         ];
 
+        // for (int i = 0; i < itemList.length; i++) {
+        //   var item = itemList[i];
+        //   item.iconColorNotifier.addListener(() {
+        //     itemList.forEach((e)=>e.);
+        //   });
+        // }
+
         return Padding(
           padding: const EdgeInsets.only(top: 13.0),
-          child: Column(
-              children: itemList
-                  .asMap()
-                  .map((i, item) => MapEntry(
-                      i, EachMenu(item, onPressed: () => selectedIndex.v = i)))
-                  .values
-                  .toList()),
+          child:
+              Column(children: itemList.map((item) => EachMenu(item)).toList()),
         );
       },
     );
@@ -199,7 +200,7 @@ class MainPageComponent {
 }
 
 class Menu extends StatefulWidget {
-  final Widget Function(TValue<int> selectedIndex) menuBuilder;
+  final Widget Function() menuBuilder;
   Menu({
     Key? key,
     required this.menuBuilder,
@@ -210,34 +211,29 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  TValue<int> selectedIndex = TValue(0);
-  TValue<int> clickedIndex = TValue(0);
-
   @override
   Widget build(BuildContext context) {
-    return widget.menuBuilder(selectedIndex);
+    return widget.menuBuilder();
   }
 }
 
 class EachMenuItem {
-  final String imagePath;
-  final String label;
+  String imagePath;
+  String label;
+  ValueNotifier iconColorNotifier = ValueNotifier(MyColors.ligthGray);
 
-  const EachMenuItem(this.imagePath, this.label);
+  EachMenuItem(this.imagePath, this.label);
 }
 
 class EachMenu extends StatefulWidget {
   final EachMenuItem item;
-  final Function onPressed;
-  const EachMenu(this.item, {Key? key, required this.onPressed})
-      : super(key: key);
+  const EachMenu(this.item, {Key? key}) : super(key: key);
 
   @override
   _EachMenuState createState() => _EachMenuState();
 }
 
 class _EachMenuState extends State<EachMenu> {
-  Color eachMenuIconColor = MyColors.ligthGray;
   @override
   Widget build(BuildContext context) {
     Widget returnWidget = Container(
@@ -257,7 +253,7 @@ class _EachMenuState extends State<EachMenu> {
             height: 40,
             child: CircleAvatar(
               radius: 50.0,
-              backgroundColor: eachMenuIconColor,
+              backgroundColor: widget.item.iconColorNotifier.value,
               backgroundImage: AssetImage(widget.item.imagePath),
             ),
           ),
@@ -268,21 +264,19 @@ class _EachMenuState extends State<EachMenu> {
       ),
     );
 
-    returnWidget = GestureDetector(
-      onTap: () {
-        widget.onPressed();
-      },
-    );
+    // returnWidget = GestureDetector(
+    //   onTap: () {},
+    // );
 
     returnWidget = MouseRegion(
       cursor: SystemMouseCursors.click,
       child: returnWidget,
       onExit: (event) {
-        eachMenuIconColor = MyColors.ligthGray;
+        widget.item.iconColorNotifier.value = MyColors.ligthGray;
         rebuild();
       },
       onEnter: (event) {
-        eachMenuIconColor = MyColors.lightBlue;
+        widget.item.iconColorNotifier.value = MyColors.lightBlue;
         rebuild();
       },
     );
