@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
-import 'package:kdh_homepage/_common/util/AppComponents.dart';
+import 'package:kdh_homepage/util/MyComponents.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
 import 'package:kdh_homepage/_common/util/MediaQueryUtil.dart';
 
@@ -41,7 +41,7 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
   List<WidgetToGetSize> makeWidgetListToGetSize();
 
   Widget loadingWidget() {
-    return AppComponents.loadingWidget();
+    return MyComponents.loadingWidget();
   }
 
   @override

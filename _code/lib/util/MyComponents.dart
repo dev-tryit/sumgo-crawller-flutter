@@ -4,8 +4,8 @@ import 'package:kdh_homepage/Setting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-class AppComponents {
-  AppComponents._();
+class MyComponents {
+  MyComponents._();
 
   static DateTime? _lastClickDateTime;
 
@@ -370,7 +370,7 @@ class AppComponents {
 
   static Widget noItems({double? height}) {
     Widget child = Center(
-      child: AppComponents.text(fontSize: 16, text: "항목이 없습니다"),
+      child: MyComponents.text(fontSize: 16, text: "항목이 없습니다"),
     );
 
     if (height != null) {
@@ -400,7 +400,7 @@ class AppComponents {
             ),
           ),
         ),
-        child: AppComponents.text(
+        child: MyComponents.text(
             fontSize: 16,
             text: text,
             softWrap: softWrap,
@@ -426,7 +426,7 @@ class AppComponents {
           ),
           primary: Colors.white,
         ),
-        child: AppComponents.text(
+        child: MyComponents.text(
             fontSize: 16, text: text, softWrap: softWrap, color: Colors.grey),
         onPressed: onPressed,
       ),

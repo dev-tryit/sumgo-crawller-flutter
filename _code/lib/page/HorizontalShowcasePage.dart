@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/_common/abstract/KDHState.dart';
 import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
-import 'package:kdh_homepage/_common/util/AppComponents.dart';
+import 'package:kdh_homepage/util/MyComponents.dart';
 import 'package:kdh_homepage/_common/util/ImageUtil.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -57,7 +57,7 @@ class _HorizontalShowcasePageState extends KDHState<HorizontalShowcasePage> {
       ),
       WidgetToGetSize(
         W.headerText1,
-        (key) => AppComponents.text(
+        (key) => MyComponents.text(
           key: key,
           fontSize: 52,
           text: "Fullstack Developer, 김동현입니다.",
@@ -69,7 +69,7 @@ class _HorizontalShowcasePageState extends KDHState<HorizontalShowcasePage> {
       ),
       WidgetToGetSize(
         W.headerText2,
-        (key) => AppComponents.text(
+        (key) => MyComponents.text(
           key: key,
           fontSize: 37,
           text: "플루터 웹, 앱을 제작합니다. 스타트업의 시작을 도와드리겠습니다.",
@@ -84,7 +84,7 @@ class _HorizontalShowcasePageState extends KDHState<HorizontalShowcasePage> {
         (key) => SizedBox(
           key: key,
           height: 426,
-          child: AppComponents.horizontalListView(
+          child: MyComponents.horizontalListView(
               useWheelScrool: true,
               children:
                   List.generate(7, (index) => EachWorkCard("파섹홈페이지 $index"))),
@@ -120,7 +120,7 @@ class _HorizontalShowcasePageState extends KDHState<HorizontalShowcasePage> {
             widgetMap[W.mainListView]!.h +
             widgetMap[W.space3]!.h);
 
-    return AppComponents.webPage(
+    return MyComponents.webPage(
       screenSize: screenSize,
       widgetList: [
         Container(
@@ -195,10 +195,10 @@ class _EachWorkCardState extends KDHState<EachWorkCard> {
             height: isPortrait ? 210 : 290,
           ),
           const SizedBox(height: 22),
-          AppComponents.text(text: widget.title),
-          AppComponents.text(text: "포토그래퍼 포트폴리오용 홈페이지"),
+          MyComponents.text(text: widget.title),
+          MyComponents.text(text: "포토그래퍼 포트폴리오용 홈페이지"),
           const SizedBox(height: 16),
-          AppComponents.text(text: "500,000원"),
+          MyComponents.text(text: "500,000원"),
         ],
       );
 

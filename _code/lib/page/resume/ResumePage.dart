@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/_common/abstract/KDHState.dart';
 import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
-import 'package:kdh_homepage/_common/util/AppComponents.dart';
+import 'package:kdh_homepage/util/MyComponents.dart';
 import 'package:kdh_homepage/_common/util/ImageUtil.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
 import 'package:kdh_homepage/util/MyColors.dart';
@@ -74,7 +74,7 @@ class _MainPageState extends KDHState<MainPage> with TickerProviderStateMixin {
   }
 
   Widget desktop(Size screenSize) {
-    return AppComponents.scaffold(
+    return MyComponents.scaffold(
       body: Row(
         children: [
           Container(
@@ -115,7 +115,7 @@ class _MainPageState extends KDHState<MainPage> with TickerProviderStateMixin {
   }
 
   Widget mobile(Size screenSize) {
-    return AppComponents.scaffold(
+    return MyComponents.scaffold(
       body: SizedBox.expand(child: component.content()),
     );
   }
@@ -152,35 +152,13 @@ class MainPageComponent {
   };
 
   Widget leftMenu() {
-    return NavigationRail(
-      selectedIndex: _selectedIndex,
-      onDestinationSelected: (int index) {
-        _selectedIndex = index;
-        state.rebuild();
-
-        pageController.animateToPage(
-          _selectedIndex,
-          duration: Duration(seconds: 1),
-          curve: Curves.ease,
-        );
-      },
-      labelType: NavigationRailLabelType.selected,
-      destinations: const <NavigationRailDestination>[
-        NavigationRailDestination(
-          icon: Icon(Icons.favorite_border),
-          selectedIcon: Icon(Icons.favorite),
-          label: Text('First'),
-        ),
-        NavigationRailDestination(
-          icon: Icon(Icons.bookmark_border),
-          selectedIcon: Icon(Icons.book),
-          label: Text('Second'),
-        ),
-        NavigationRailDestination(
-          icon: Icon(Icons.star_border),
-          selectedIcon: Icon(Icons.star),
-          label: Text('Third'),
-        ),
+    return Column(
+      children: [
+        eachMenu("", "트라잇"),
+        eachMenu("", "트라잇"),
+        eachMenu("", "트라잇"),
+        eachMenu("", "트라잇"),
+        eachMenu("", "트라잇"),
       ],
     );
   }
@@ -203,6 +181,27 @@ class MainPageComponent {
       controller: pageController,
       children: pages.values.toList(),
       physics: const NeverScrollableScrollPhysics(),
+    );
+  }
+
+  Widget eachMenu(String imagePath, String label) {
+    return Container(
+      width: 91,
+      height: 91,
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: MyColors.white, width: 0.1),
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(Icons.ac_unit_outlined, color: MyColors.ligthGray),
+          SizedBox(height: 9),
+          MyComponents.text(text: label, color: MyColors.white),
+        ],
+      ),
     );
   }
 }
