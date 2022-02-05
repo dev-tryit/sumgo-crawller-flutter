@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/_common/abstract/KDHState.dart';
+import 'package:kdh_homepage/_common/model/TValue.dart';
 import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
 import 'package:kdh_homepage/util/MyComponents.dart';
 import 'package:kdh_homepage/_common/util/ImageUtil.dart';
@@ -124,7 +125,6 @@ class _MainPageState extends KDHState<MainPage> with TickerProviderStateMixin {
 enum PageEnum { mainPage, profilePage }
 
 class MainPageComponent {
-  int _selectedIndex = 0;
   final pageController = PageController();
   final _MainPageState state;
   final TabController tabController;
@@ -152,15 +152,27 @@ class MainPageComponent {
   };
 
   Widget leftMenu() {
-    return Column(
-      children: const [
-        const SizedBox(height: 13),
-        const EachMenu("", "트라잇"),
-        const EachMenu("", "소개"),
-        const EachMenu("", "이력서"),
-        const EachMenu("", "포트폴리오"),
-        const EachMenu("", "연락하기"),
-      ],
+    return Menu(
+      menuBuilder: (selectedIndex) {
+        List<EachMenuItem> itemList = const [
+          EachMenuItem("", "트라잇"),
+          EachMenuItem("", "소개"),
+          EachMenuItem("", "이력서"),
+          EachMenuItem("", "이력서"),
+          EachMenuItem("", "연락하기"),
+        ];
+
+        return Padding(
+          padding: const EdgeInsets.only(top: 13.0),
+          child: Column(
+              children: itemList
+                  .asMap()
+                  .map((i, item) => MapEntry(
+                      i, EachMenu(item, onPressed: () => selectedIndex.v = i)))
+                  .values
+                  .toList()),
+        );
+      },
     );
   }
 
@@ -186,10 +198,39 @@ class MainPageComponent {
   }
 }
 
-class EachMenu extends StatefulWidget {
-  final String iconPath;
+class Menu extends StatefulWidget {
+  final Widget Function(TValue<int> selectedIndex) menuBuilder;
+  Menu({
+    Key? key,
+    required this.menuBuilder,
+  }) : super(key: key);
+
+  @override
+  _MenuState createState() => _MenuState();
+}
+
+class _MenuState extends State<Menu> {
+  TValue<int> selectedIndex = TValue(0);
+  TValue<int> clickedIndex = TValue(0);
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.menuBuilder(selectedIndex);
+  }
+}
+
+class EachMenuItem {
+  final String imagePath;
   final String label;
-  const EachMenu(this.iconPath, this.label, {Key? key}) : super(key: key);
+
+  const EachMenuItem(this.imagePath, this.label);
+}
+
+class EachMenu extends StatefulWidget {
+  final EachMenuItem item;
+  final Function onPressed;
+  const EachMenu(this.item, {Key? key, required this.onPressed})
+      : super(key: key);
 
   @override
   _EachMenuState createState() => _EachMenuState();
@@ -202,7 +243,7 @@ class _EachMenuState extends State<EachMenu> {
     Widget returnWidget = Container(
       width: 91,
       height: 91,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(color: MyColors.white, width: 0.1),
         ),
@@ -217,25 +258,31 @@ class _EachMenuState extends State<EachMenu> {
             child: CircleAvatar(
               radius: 50.0,
               backgroundColor: eachMenuIconColor,
-              backgroundImage: AssetImage(widget.iconPath),
+              backgroundImage: AssetImage(widget.item.imagePath),
             ),
           ),
-          SizedBox(height: 7),
+          const SizedBox(height: 7),
           MyComponents.text(
-              text: widget.label, fontSize: 12, color: MyColors.white),
+              text: widget.item.label, fontSize: 12, color: MyColors.white),
         ],
       ),
+    );
+
+    returnWidget = GestureDetector(
+      onTap: () {
+        widget.onPressed();
+      },
     );
 
     returnWidget = MouseRegion(
       cursor: SystemMouseCursors.click,
       child: returnWidget,
-      onHover: (event) {
-        eachMenuIconColor = MyColors.lightBlue;
-        rebuild();
-      },
       onExit: (event) {
         eachMenuIconColor = MyColors.ligthGray;
+        rebuild();
+      },
+      onEnter: (event) {
+        eachMenuIconColor = MyColors.lightBlue;
         rebuild();
       },
     );
