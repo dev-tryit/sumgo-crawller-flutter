@@ -127,22 +127,17 @@ class _MainPageState extends KDHState<MainPage> with TickerProviderStateMixin {
 enum PageEnum { mainPage, profilePage }
 
 class MainPageComponent {
-  static const selectedColor = MyColors.lightBlue;
-  static const unselectedColor = MyColors.ligthGray;
+  static const MenuColor menuColor =
+      MenuColor(MyColors.lightBlue, MyColors.ligthGray);
   final pageController = PageController();
   final _MainPageState state;
   final TabController tabController;
   final itemList = [
-    MyMenuItem("", "트라잇",
-        selectedColor: selectedColor, unselectedColor: unselectedColor),
-    MyMenuItem("", "소개",
-        selectedColor: selectedColor, unselectedColor: unselectedColor),
-    MyMenuItem("", "이력서",
-        selectedColor: selectedColor, unselectedColor: unselectedColor),
-    MyMenuItem("", "포트폴리오",
-        selectedColor: selectedColor, unselectedColor: unselectedColor),
-    MyMenuItem("", "연락하기",
-        selectedColor: selectedColor, unselectedColor: unselectedColor),
+    MyMenuItem("", "트라잇", menuColor: menuColor),
+    MyMenuItem("", "소개", menuColor: menuColor),
+    MyMenuItem("", "이력서", menuColor: menuColor),
+    MyMenuItem("", "포트폴리오", menuColor: menuColor),
+    MyMenuItem("", "연락하기", menuColor: menuColor),
   ];
 
   MainPageComponent(this.state)

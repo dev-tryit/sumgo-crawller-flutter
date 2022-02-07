@@ -3,29 +3,34 @@ import 'package:kdh_homepage/page/resume/MyMenu.dart';
 import 'package:kdh_homepage/util/MyColors.dart';
 import 'package:kdh_homepage/util/MyComponents.dart';
 
-abstract class MenuItem {
+class MenuColor {
   final Color highlightColor;
   final Color normalColor;
+  const MenuColor(this.highlightColor, this.normalColor);
+}
+
+abstract class MenuItem {
+  final MenuColor menuColor;
   final ValueNotifier isClick;
   final ValueNotifier iconColor;
 
   void click() {
     isClick.value = true;
-    setColor(highlightColor);
+    setColor(menuColor.highlightColor);
   }
 
   void unclick() {
     isClick.value = false;
-    setColor(normalColor);
+    setColor(menuColor.normalColor);
   }
 
   void setColor(Color color) {
     iconColor.value = color;
   }
 
-  MenuItem(this.highlightColor, this.normalColor)
+  MenuItem(this.menuColor)
       : isClick = ValueNotifier(false),
-        iconColor = ValueNotifier(normalColor);
+        iconColor = ValueNotifier(menuColor.normalColor);
 }
 
 class Menu<T extends MenuItem> extends StatefulWidget {

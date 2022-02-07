@@ -8,8 +8,8 @@ class MyMenuItem extends MenuItem {
   String label;
 
   MyMenuItem(this.imagePath, this.label,
-      {required Color selectedColor, required Color unselectedColor})
-      : super(selectedColor, unselectedColor);
+      {required MenuColor menuColor})
+      : super(menuColor);
 }
 
 class MyMenu extends StatefulWidget {
@@ -76,18 +76,19 @@ class _MyMenuState extends State<MyMenu> {
       child: returnWidget,
     );
 
+    MenuColor menuColor = widget.item.menuColor;
     returnWidget = MouseRegion(
       cursor: SystemMouseCursors.click,
       child: returnWidget,
       onExit: (event) {
         if (widget.item.isClick.value) {
-          widget.item.setColor(widget.item.highlightColor);
+          widget.item.setColor(menuColor.highlightColor);
         } else {
-          widget.item.setColor(widget.item.normalColor);
+          widget.item.setColor(menuColor.normalColor);
         }
       },
       onEnter: (event) {
-        widget.item.setColor(widget.item.highlightColor);
+        widget.item.setColor(menuColor.highlightColor);
       },
     );
 
