@@ -6,7 +6,8 @@ import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/_common/abstract/KDHState.dart';
 import 'package:kdh_homepage/_common/model/TValue.dart';
 import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
-import 'package:kdh_homepage/page/resume/Menu.dart';
+import 'package:kdh_homepage/page/resume/MyMenuItem.dart';
+import 'package:kdh_homepage/_common/widget/Menu.dart';
 import 'package:kdh_homepage/util/MyComponents.dart';
 import 'package:kdh_homepage/_common/util/ImageUtil.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
@@ -126,15 +127,22 @@ class _MainPageState extends KDHState<MainPage> with TickerProviderStateMixin {
 enum PageEnum { mainPage, profilePage }
 
 class MainPageComponent {
+  static const selectedColor = MyColors.lightBlue;
+  static const unselectedColor = MyColors.ligthGray;
   final pageController = PageController();
   final _MainPageState state;
   final TabController tabController;
-  final menuItemList = [
-    EachMenuItem("", "트라잇"),
-    EachMenuItem("", "소개"),
-    EachMenuItem("", "이력서"),
-    EachMenuItem("", "포트폴리오"),
-    EachMenuItem("", "연락하기"),
+  final itemList = [
+    MyMenuItem("", "트라잇",
+        selectedColor: selectedColor, unselectedColor: unselectedColor),
+    MyMenuItem("", "소개",
+        selectedColor: selectedColor, unselectedColor: unselectedColor),
+    MyMenuItem("", "이력서",
+        selectedColor: selectedColor, unselectedColor: unselectedColor),
+    MyMenuItem("", "포트폴리오",
+        selectedColor: selectedColor, unselectedColor: unselectedColor),
+    MyMenuItem("", "연락하기",
+        selectedColor: selectedColor, unselectedColor: unselectedColor),
   ];
 
   MainPageComponent(this.state)
@@ -160,28 +168,13 @@ class MainPageComponent {
   };
 
   Widget leftMenu() {
-    return Menu<EachMenuItem>(
-      itemList: menuItemList,
-      addListnerOnMenuClick: (itemList) {
-        for (int i = 0; i < itemList.length; i++) {
-          var item = itemList[i];
-          item.isClick.addListener(() {
-            if (!item.isClick.value) return;
-
-            for (var element in itemList) {
-              if (element != item) {
-                element.unclick();
-              }
-            }
-          });
-        }
-      },
-      menuBuilder: (itemList) {
+    return Menu<MyMenuItem>(
+      itemList: itemList,
+      itemWidgetBuilder: (item) => EachMenu(item),
+      menuWidgetBuilder: (itemWidgetList) {
         return Padding(
           padding: const EdgeInsets.only(top: 13.0),
-          child: Column(
-            children: itemList.map((item) => EachMenu(item)).toList(),
-          ),
+          child: Column(children: itemWidgetList),
         );
       },
     );
