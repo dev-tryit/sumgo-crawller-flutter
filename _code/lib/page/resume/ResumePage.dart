@@ -6,6 +6,7 @@ import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/_common/abstract/KDHState.dart';
 import 'package:kdh_homepage/_common/model/TValue.dart';
 import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
+import 'package:kdh_homepage/page/resume/Menu.dart';
 import 'package:kdh_homepage/util/MyComponents.dart';
 import 'package:kdh_homepage/_common/util/ImageUtil.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
@@ -128,6 +129,13 @@ class MainPageComponent {
   final pageController = PageController();
   final _MainPageState state;
   final TabController tabController;
+  final menuItemList = [
+    EachMenuItem("", "트라잇"),
+    EachMenuItem("", "소개"),
+    EachMenuItem("", "이력서"),
+    EachMenuItem("", "포트폴리오"),
+    EachMenuItem("", "연락하기"),
+  ];
 
   MainPageComponent(this.state)
       : tabController = TabController(length: 3, vsync: state);
@@ -153,13 +161,7 @@ class MainPageComponent {
 
   Widget leftMenu() {
     return Menu<EachMenuItem>(
-      itemList: [
-        EachMenuItem("", "트라잇"),
-        EachMenuItem("", "소개"),
-        EachMenuItem("", "이력서"),
-        EachMenuItem("", "포트폴리오"),
-        EachMenuItem("", "연락하기"),
-      ],
+      itemList: menuItemList,
       addListnerOnMenuClick: (itemList) {
         for (int i = 0; i < itemList.length; i++) {
           var item = itemList[i];
@@ -204,138 +206,5 @@ class MainPageComponent {
       children: pages.values.toList(),
       physics: const NeverScrollableScrollPhysics(),
     );
-  }
-}
-
-class Menu<T> extends StatefulWidget {
-  final List<T> itemList;
-  final Widget Function(List<T> itemList) menuBuilder;
-  final void Function(List<T> itemList) addListnerOnMenuClick;
-  const Menu(
-      {Key? key,
-      required this.itemList,
-      required this.menuBuilder,
-      required this.addListnerOnMenuClick})
-      : super(key: key);
-
-  @override
-  _MenuState<T> createState() => _MenuState<T>();
-}
-
-class _MenuState<T> extends State<Menu<T>> {
-  @override
-  void initState() {
-    widget.addListnerOnMenuClick(widget.itemList);
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return widget.menuBuilder(widget.itemList);
-  }
-}
-
-class EachMenuItem {
-  static const Color selectedColor = MyColors.lightBlue;
-  static const Color unselectedColor = MyColors.ligthGray;
-
-  String imagePath;
-  String label;
-  ValueNotifier iconColor = ValueNotifier(unselectedColor);
-  ValueNotifier isClick = ValueNotifier(false);
-
-  void click() {
-    isClick.value = true;
-    iconColor.value = selectedColor;
-  }
-
-  void unclick() {
-    isClick.value = false;
-    iconColor.value = unselectedColor;
-  }
-
-  EachMenuItem(this.imagePath, this.label);
-}
-
-class EachMenu extends StatefulWidget {
-  final EachMenuItem item;
-  const EachMenu(this.item, {Key? key}) : super(key: key);
-
-  @override
-  _EachMenuState createState() => _EachMenuState();
-}
-
-class _EachMenuState extends State<EachMenu> {
-  void rebuild() {
-    setState(() {});
-  }
-
-  void setRebuildConditionIfEmpty() {
-    //state의 변화에 따라서, listener가 사라져서 넣은 코드
-    if (!widget.item.iconColor.hasListeners) {
-      widget.item.iconColor.addListener(() {
-        rebuild();
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    setRebuildConditionIfEmpty();
-
-    Widget returnWidget = Container(
-      width: 91,
-      height: 91,
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: MyColors.white, width: 0.1),
-        ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 40,
-            height: 40,
-            child: CircleAvatar(
-              radius: 50.0,
-              backgroundColor: widget.item.iconColor.value,
-              // backgroundImage: AssetImage(widget.item.imagePath),
-            ),
-          ),
-          const SizedBox(height: 7),
-          MyComponents.text(
-              text: widget.item.label, fontSize: 12, color: MyColors.white),
-        ],
-      ),
-    );
-
-    returnWidget = GestureDetector(
-      onTap: () {
-        widget.item.click();
-      },
-      child: returnWidget,
-    );
-
-    returnWidget = MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: returnWidget,
-      onExit: (event) {
-        if (widget.item.isClick.value) {
-          widget.item.iconColor.value = EachMenuItem.selectedColor;
-          return;
-        }
-
-        widget.item.iconColor.value = EachMenuItem.unselectedColor;
-      },
-      onEnter: (event) {
-        print("MouseRegion onEnter");
-        widget.item.iconColor.value = EachMenuItem.selectedColor;
-      },
-    );
-
-    return returnWidget;
   }
 }
