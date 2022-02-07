@@ -271,20 +271,19 @@ class _EachMenuState extends State<EachMenu> {
     setState(() {});
   }
 
-  void setRebuildCondition() {
-    widget.item.iconColor.addListener(() {
-      rebuild();
-    });
-  }
-
-  @override
-  void initState() {
-    setRebuildCondition();
-    super.initState();
+  void setRebuildConditionIfEmpty() {
+    //state의 변화에 따라서, listener가 사라져서 넣은 코드
+    if (!widget.item.iconColor.hasListeners) {
+      widget.item.iconColor.addListener(() {
+        rebuild();
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    setRebuildConditionIfEmpty();
+
     Widget returnWidget = Container(
       width: 91,
       height: 91,
@@ -332,6 +331,7 @@ class _EachMenuState extends State<EachMenu> {
         widget.item.iconColor.value = EachMenuItem.unselectedColor;
       },
       onEnter: (event) {
+        print("MouseRegion onEnter");
         widget.item.iconColor.value = EachMenuItem.selectedColor;
       },
     );
