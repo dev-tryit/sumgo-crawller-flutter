@@ -6,7 +6,7 @@ import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/_common/abstract/KDHState.dart';
 import 'package:kdh_homepage/_common/model/TValue.dart';
 import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
-import 'package:kdh_homepage/page/resume/MyMenuItem.dart';
+import 'package:kdh_homepage/page/resume/MyMenu.dart';
 import 'package:kdh_homepage/_common/widget/Menu.dart';
 import 'package:kdh_homepage/util/MyComponents.dart';
 import 'package:kdh_homepage/_common/util/ImageUtil.dart';
@@ -170,7 +170,7 @@ class MainPageComponent {
   Widget leftMenu() {
     return Menu<MyMenuItem>(
       itemList: itemList,
-      itemWidgetBuilder: (item) => EachMenu(item),
+      itemWidgetBuilder: (item) => MyMenu(item),
       menuWidgetBuilder: (itemWidgetList) {
         return Padding(
           padding: const EdgeInsets.only(top: 13.0),
