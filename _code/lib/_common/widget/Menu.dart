@@ -48,7 +48,6 @@ class _MenuState<T extends MenuItem> extends State<Menu<T>> {
 
   @override
   void initState() {
-    //메뉴아이템 컴포넌트 만들기
     itemWidgetList.clear();
     for (var item in widget.itemList) {
       itemWidgetList.add(widget.itemWidgetBuilder(item));
@@ -141,14 +140,13 @@ class _EachMenuState extends State<EachMenu> {
       child: returnWidget,
       onExit: (event) {
         if (widget.item.isClick.value) {
-          widget.item.iconColor.value = widget.item.highlightColor;
-          return;
+          widget.item.setColor(widget.item.highlightColor);
+        } else {
+          widget.item.setColor(widget.item.normalColor);
         }
-
-        widget.item.iconColor.value = widget.item.normalColor;
       },
       onEnter: (event) {
-        widget.item.iconColor.value = widget.item.highlightColor;
+        widget.item.setColor(widget.item.highlightColor);
       },
     );
 
