@@ -4,12 +4,6 @@ import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/_common/config/MyCustomScrollBehavior.dart';
 import 'package:kdh_homepage/util/MyColors.dart';
 import 'package:kdh_homepage/_common/util/DebugUtil.dart';
-
-import 'package:kdh_homepage/page/RegisterPage.dart';
-import 'package:kdh_homepage/page/VerticalScrollPage.dart';
-import 'package:kdh_homepage/page/HorizontalScrollPage.dart';
-import 'package:kdh_homepage/page/HorizontalShowcasePage.dart';
-import 'package:kdh_homepage/page/resume/ResumePage.dart';
 import 'package:kdh_homepage/util/MyTheme.dart';
 
 Future<void> main() async {
