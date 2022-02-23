@@ -42,8 +42,11 @@ dependencies:
     unsplash_client: ^2.1.0+1
     transparent_image: ^2.0.0
     shared_preferences: ^2.0.6
+    flutter_svg: ^1.0.3
     #another_transformer_page_view 
     #cube_transition 
+    #https://pub.dev/packages/flip_card 돌리는 효과에 사용
+    #https://pub.dev/packages/card_swiper 카드 스와이퍼, 
 
 dev_dependencies:
     flutter_test:
