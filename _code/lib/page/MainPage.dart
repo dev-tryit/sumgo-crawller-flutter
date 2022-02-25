@@ -47,8 +47,14 @@ class MainPage extends StatelessWidget {
       ),
     );
 
-    Widget content = const Card(
-      child: Text("content"),
+    Widget content = SingleChildScrollView(
+      child: Column(
+        children: [
+          Card(
+            child: Text("content"),
+          ),
+        ],
+      ),
     );
 
     return Column(
