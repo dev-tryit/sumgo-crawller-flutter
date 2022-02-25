@@ -46,25 +46,6 @@ class MainPageComponent {
     );
   }
 
-  Widget menuItem(String text) {
-    return Container(
-      padding: const EdgeInsets.only(
-        left: 13,
-        right: 13,
-        top: 10,
-        bottom: 10,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: MyColors.deepBlue,
-      ),
-      child: MyComponents.text(
-        text: text,
-        color: MyColors.white,
-      ),
-    );
-  }
-
   Widget header() {
     return AspectRatio(
       aspectRatio: 6 / 4,
@@ -80,32 +61,11 @@ class MainPageComponent {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
-                  height: 19,
-                ),
-                MyComponents.text(text: "숨고 매니저", color: MyColors.white),
+                SizedBox(height: 19),
+                title(),
                 Spacer(flex: 1),
-                Container(
-                  padding: const EdgeInsets.only(
-                    left: 12,
-                    right: 12,
-                    top: 16,
-                    bottom: 16,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: MyColors.lightBlue,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      menuItem("키워드 분석"),
-                      menuItem("요청 정리"),
-                    ],
-                  ),
-                ),
-                Spacer(flex: 2),
+                menu(),
+                Spacer(flex: 3),
               ],
             ),
           ),
@@ -118,11 +78,87 @@ class MainPageComponent {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Card(
-            child: Text("content"),
-          ),
+          card(title: "키워드 분류", contens: [
+            MyComponents.text(text: "연령 분류"),
+            MyComponents.text(text: "의뢰 목적 분류"),
+          ]),
+          card(title: "연령 분석", contens: []),
         ],
       ),
+    );
+  }
+
+  Widget menu() {
+    return Container(
+      padding: const EdgeInsets.only(left: 12, right: 12, top: 16, bottom: 16),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5), color: MyColors.lightBlue),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          menuItem("키워드 분석", isChecked: true),
+          const SizedBox(width: 35),
+          menuItem("요청 정리"),
+        ],
+      ),
+    );
+  }
+
+  Widget title() {
+    return MyComponents.text(text: "숨고 매니저", color: MyColors.white);
+  }
+
+  Widget menuItem(String text, {bool isChecked = false}) {
+    return Container(
+      padding: const EdgeInsets.only(
+        left: 13,
+        right: 13,
+        top: 10,
+        bottom: 11,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: isChecked ? MyColors.deepBlue : Colors.transparent,
+      ),
+      child: MyComponents.text(
+        text: text,
+        color: MyColors.white,
+      ),
+    );
+  }
+
+  Widget card({required String title, required List<Widget> contens}) {
+    return Card(
+      margin: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
+      child: Padding(
+        padding: EdgeInsets.only(left: 14, right: 14, top: 24, bottom: 38),
+        child: FractionallySizedBox(
+          widthFactor: 1.0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              cardTitle(title),
+              const SizedBox(height: 23),
+              ...contens
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget redButton(String text) {
+    return ElevatedButton(onPressed: () {}, child: Text(text));
+  }
+
+  Widget cardTitle(String title) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(title),
+        redButton("생성하기"),
+      ],
     );
   }
 }
