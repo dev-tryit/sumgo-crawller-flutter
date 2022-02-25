@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
 import 'package:kdh_homepage/_common/util/MediaQueryUtil.dart';
 import 'package:kdh_homepage/_common/util/PlatformUtil.dart';
@@ -106,33 +107,56 @@ class MainPageComponent {
   }
 
   Widget title() {
-    return MyComponents.text(text: "숨고 매니저", color: MyColors.white);
+    return Text("숨고 매니저",
+        style: GoogleFonts.blackHanSans(
+          fontSize: 28,
+          color: MyColors.white,
+        ));
   }
 
   Widget menuItem(String text, {bool isChecked = false}) {
-    return Container(
-      padding: const EdgeInsets.only(
-        left: 13,
-        right: 13,
-        top: 10,
-        bottom: 11,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: isChecked ? MyColors.deepBlue : Colors.transparent,
-      ),
-      child: MyComponents.text(
-        text: text,
-        color: MyColors.white,
+    return InkWell(
+      onTap: () {
+        print("click");
+      },
+      child: Container(
+        padding: const EdgeInsets.only(
+          left: 13,
+          right: 13,
+          top: 10,
+          bottom: 11,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: isChecked ? MyColors.deepBlue : Colors.transparent,
+        ),
+        child: Text(
+          text,
+          style: GoogleFonts.gothicA1(
+            color: MyColors.white,
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
       ),
     );
   }
 
   Widget card({required String title, required List<Widget> contens}) {
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+        side: const BorderSide(
+          width: 0.5,
+          color: MyColors.black,
+        ),
+      ),
+      shadowColor: MyColors.black,
+      elevation: 7,
       margin: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
       child: Padding(
-        padding: EdgeInsets.only(left: 14, right: 14, top: 24, bottom: 38),
+        padding:
+            const EdgeInsets.only(left: 14, right: 14, top: 24, bottom: 38),
         child: FractionallySizedBox(
           widthFactor: 1.0,
           child: Column(
@@ -149,14 +173,38 @@ class MainPageComponent {
   }
 
   Widget redButton(String text) {
-    return ElevatedButton(onPressed: () {}, child: Text(text));
+    return ElevatedButton(
+      onPressed: () {},
+      child: Text(
+        text,
+        style: GoogleFonts.gothicA1(
+          color: MyColors.white,
+          fontSize: 12.5,
+        ),
+      ),
+      style: ElevatedButton.styleFrom(
+        shadowColor: MyColors.black,
+        elevation: 7,
+        padding:
+            const EdgeInsets.only(left: 23, right: 23, top: 14, bottom: 14),
+        primary: MyColors.red,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+      ),
+    );
   }
 
   Widget cardTitle(String title) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(title),
+        Text(
+          title,
+          style: GoogleFonts.gothicA1(
+            color: MyColors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         redButton("생성하기"),
       ],
     );
