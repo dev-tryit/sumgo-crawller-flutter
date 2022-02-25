@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/_common/config/MyCustomScrollBehavior.dart';
+import 'package:kdh_homepage/page/MainPage.dart';
 import 'package:kdh_homepage/util/MyColors.dart';
 import 'package:kdh_homepage/_common/util/DebugUtil.dart';
 import 'package:kdh_homepage/util/MyTheme.dart';
