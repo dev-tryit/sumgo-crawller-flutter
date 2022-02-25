@@ -35,7 +35,9 @@ class MainPage extends StatelessWidget {
       child: Stack(
         children: [
           FractionallySizedBox(
-              widthFactor: 1, child: MyImage.blueBackgroundImage),
+            widthFactor: 1,
+            child: MyImage.blueBackgroundImage,
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
