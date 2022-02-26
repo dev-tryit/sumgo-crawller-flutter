@@ -7,15 +7,48 @@ import 'package:kdh_homepage/util/MyColors.dart';
 import 'package:kdh_homepage/util/MyComponents.dart';
 import 'package:kdh_homepage/util/MyImage.dart';
 
-class MainPage extends StatelessWidget {
-  final MainPageComponent c;
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
 
-  MainPage({Key? key})
-      : this.c = MainPageComponent(),
-        super(key: key);
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  late final MainPageComponent c;
+  List<Future> loadList = [];
+  bool isLoaded = false;
+
+  void rebuild() {
+    //Flutter는 중간에 state를 제거해놓기도 한다. 추후에 build로 다시 생성하지만..
+    //이 때, setState가 불리면, 에러가 발생한다. 따라서, mounted 여부 체크가 필요하다.
+    if (!mounted) return;
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    c = MainPageComponent();
+  }
+
+  @override
+  void didChangeDependencies() {
+    loadList.add(precacheImage(MyImage.blueBackgroundImage, context));
+    Future.wait(loadList).then((value) {
+      isLoaded = true;
+      rebuild();
+    });
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (!isLoaded) {
+      return Scaffold(body: Center(child: MyComponents.loadingWidget()));
+    }
+
     var size = MediaQueryUtil.getScreenSize(context);
     LogUtil.info("size : $size");
     if (PlatformUtil.isMobile()) {
@@ -51,24 +84,19 @@ class MainPageComponent {
     return AspectRatio(
       aspectRatio: 6 / 4,
       child: Stack(
+        fit: StackFit.expand,
         alignment: Alignment.center,
         children: [
-          FractionallySizedBox(
-            widthFactor: 1,
-            child: MyImage.blueBackgroundImage,
-          ),
-          FractionallySizedBox(
-            widthFactor: 1,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: 19),
-                title(),
-                Spacer(flex: 1),
-                menu(),
-                Spacer(flex: 3),
-              ],
-            ),
+          Image(image: MyImage.blueBackgroundImage, fit: BoxFit.fill),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 19),
+              title(),
+              const Spacer(flex: 1),
+              menu(),
+              const Spacer(flex: 3),
+            ],
           ),
         ],
       ),
