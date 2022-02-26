@@ -36,6 +36,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void didChangeDependencies() {
     loadList.add(precacheImage(MyImage.backgroundTop, context));
+    loadList.add(precacheImage(MyImage.boxIcon, context));
     Future.wait(loadList).then((value) {
       isLoaded = true;
       rebuild();
@@ -91,7 +92,7 @@ class MainPageComponent {
         fit: StackFit.expand,
         alignment: Alignment.center,
         children: [
-          Image(image: MyImage.backgroundTop, fit: BoxFit.fill),
+          const Image(image: MyImage.backgroundTop, fit: BoxFit.fill),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -126,83 +127,15 @@ class MainPageComponent {
         ));
   }
 
-  Widget card({required String title, required List<Widget> contens}) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-        side: const BorderSide(
-          width: 0.5,
-          color: MyColors.black,
-        ),
-      ),
-      shadowColor: MyColors.black,
-      elevation: 7,
-      margin: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
-      child: Padding(
-        padding:
-            const EdgeInsets.only(left: 14, right: 14, top: 24, bottom: 38),
-        child: FractionallySizedBox(
-          widthFactor: 1.0,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              cardTitle(title),
-              const SizedBox(height: 23),
-              ...contens
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget redButton(String text) {
-    return ElevatedButton(
-      onPressed: () {},
-      child: Text(
-        text,
-        style: GoogleFonts.gothicA1(
-          color: MyColors.white,
-          fontSize: 12.5,
-        ),
-      ),
-      style: ElevatedButton.styleFrom(
-        shadowColor: MyColors.black,
-        elevation: 7,
-        padding:
-            const EdgeInsets.only(left: 23, right: 23, top: 14, bottom: 14),
-        primary: MyColors.red,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-      ),
-    );
-  }
-
-  Widget cardTitle(String title) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: GoogleFonts.gothicA1(
-            color: MyColors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        redButton("생성하기"),
-      ],
-    );
-  }
-
   Widget page1() {
     return SingleChildScrollView(
       child: Column(
         children: [
-          card(title: "키워드 분류", contens: [
-            MyComponents.text(text: "연령 분류"),
-            MyComponents.text(text: "의뢰 목적 분류"),
+          MyCard(title: "키워드 분류", contents: [
+            MyCardData("연령 분류", "학업, 취미/자기개발, 학업, 취미/자기개발"),
+            MyCardData("의뢰 목적 분류", "학업, 취미/자기개발, 학업, 취미/자기개발, 학업, 취미/자리..."),
           ]),
-          card(title: "연령 분석", contens: []),
+          MyCard(title: "연령 분석", contents: []),
         ],
       ),
     );
@@ -212,10 +145,11 @@ class MainPageComponent {
     return SingleChildScrollView(
       child: Column(
         children: [
-          card(title: "페이지2", contens: [
-            MyComponents.text(text: "연령 분류"),
+          MyCard(title: "페이지2", contents: [
+            MyCardData("연령 분류", "학업, 취미/자기개발, 학업, 취미/자기개발"),
+            MyCardData("의뢰 목적 분류", "학업, 취미/자기개발, 학업, 취미/자기개발, 학업, 취미/자리..."),
           ]),
-          card(title: "연령 분석", contens: []),
+          MyCard(title: "연령 분석", contents: []),
         ],
       ),
     );
@@ -285,6 +219,103 @@ class _MyMenuState extends State<MyMenu> {
             fontWeight: FontWeight.w400,
           ),
         ),
+      ),
+    );
+  }
+}
+
+class MyCardData {
+  String title;
+  String subtitle;
+
+  MyCardData(this.title, this.subtitle);
+}
+
+class MyCard extends StatelessWidget {
+  final String title;
+  final List<MyCardData> contents;
+  const MyCard({Key? key, required this.title, required this.contents})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+        side: const BorderSide(
+          width: 0.5,
+          color: MyColors.black,
+        ),
+      ),
+      shadowColor: MyColors.black,
+      elevation: 7,
+      margin: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
+      child: Padding(
+        padding:
+            const EdgeInsets.only(left: 14, right: 14, top: 24, bottom: 30),
+        child: FractionallySizedBox(
+          widthFactor: 1.0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              cardTitle(title),
+              const SizedBox(height: 10),
+              ...(contents
+                  .map((e) => cardListTile(e.title, e.subtitle))
+                  .toList())
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget cardTitle(String title) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: GoogleFonts.gothicA1(
+            color: MyColors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        redButton("생성하기"),
+      ],
+    );
+  }
+
+  ListTile cardListTile(String title, String subtitle) => ListTile(
+        leading: const Padding(
+          padding: EdgeInsets.only(top: 6),
+          child: Image(image: MyImage.boxIcon),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+        horizontalTitleGap: 6,
+        title: MyComponents.text(text: title),
+        subtitle: Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis),
+        dense: true,
+      );
+
+  Widget redButton(String text) {
+    return ElevatedButton(
+      onPressed: () {},
+      child: Text(
+        text,
+        style: GoogleFonts.gothicA1(
+          color: MyColors.white,
+          fontSize: 12.5,
+        ),
+      ),
+      style: ElevatedButton.styleFrom(
+        shadowColor: MyColors.black,
+        elevation: 7,
+        padding:
+            const EdgeInsets.only(left: 23, right: 23, top: 14, bottom: 14),
+        primary: MyColors.red,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
       ),
     );
   }
