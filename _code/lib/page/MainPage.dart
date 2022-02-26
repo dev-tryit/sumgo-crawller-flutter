@@ -30,7 +30,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    c = MainPageComponent();
+    c = MainPageComponent(this);
   }
 
   @override
@@ -74,6 +74,10 @@ class _MainPageState extends State<MainPage> {
 }
 
 class MainPageComponent {
+  final PageController pageC;
+  final _MainPageState _mainPageState;
+  MainPageComponent(this._mainPageState) : pageC = PageController();
+
   Widget body() {
     return Column(
       children: [header(), Expanded(child: content())],
@@ -94,7 +98,7 @@ class MainPageComponent {
               const SizedBox(height: 19),
               title(),
               const Spacer(flex: 1),
-              menu(),
+              MyMenu(pageC: pageC),
               const Spacer(flex: 3),
             ],
           ),
@@ -104,33 +108,13 @@ class MainPageComponent {
   }
 
   Widget content() {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          card(title: "키워드 분류", contens: [
-            MyComponents.text(text: "연령 분류"),
-            MyComponents.text(text: "의뢰 목적 분류"),
-          ]),
-          card(title: "연령 분석", contens: []),
-        ],
-      ),
-    );
-  }
-
-  Widget menu() {
-    return Container(
-      padding: const EdgeInsets.only(left: 12, right: 12, top: 16, bottom: 16),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5), color: MyColors.lightBlue),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          menuItem("키워드 분석", isChecked: true),
-          const SizedBox(width: 35),
-          menuItem("요청 정리"),
-        ],
-      ),
+    return PageView(
+      controller: pageC,
+      physics: const NeverScrollableScrollPhysics(),
+      children: [
+        page1(),
+        page2(),
+      ],
     );
   }
 
@@ -140,34 +124,6 @@ class MainPageComponent {
           fontSize: 28,
           color: MyColors.white,
         ));
-  }
-
-  Widget menuItem(String text, {bool isChecked = false}) {
-    return InkWell(
-      onTap: () {
-        print("click");
-      },
-      child: Container(
-        padding: const EdgeInsets.only(
-          left: 13,
-          right: 13,
-          top: 10,
-          bottom: 11,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: isChecked ? MyColors.deepBlue : Colors.transparent,
-        ),
-        child: Text(
-          text,
-          style: GoogleFonts.gothicA1(
-            color: MyColors.white,
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-      ),
-    );
   }
 
   Widget card({required String title, required List<Widget> contens}) {
@@ -235,6 +191,101 @@ class MainPageComponent {
         ),
         redButton("생성하기"),
       ],
+    );
+  }
+
+  Widget page1() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          card(title: "키워드 분류", contens: [
+            MyComponents.text(text: "연령 분류"),
+            MyComponents.text(text: "의뢰 목적 분류"),
+          ]),
+          card(title: "연령 분석", contens: []),
+        ],
+      ),
+    );
+  }
+
+  Widget page2() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          card(title: "페이지2", contens: [
+            MyComponents.text(text: "연령 분류"),
+          ]),
+          card(title: "연령 분석", contens: []),
+        ],
+      ),
+    );
+  }
+}
+
+class MyMenu extends StatefulWidget {
+  final PageController pageC;
+  const MyMenu({Key? key, required this.pageC}) : super(key: key);
+
+  @override
+  _MyMenuState createState() => _MyMenuState();
+}
+
+class _MyMenuState extends State<MyMenu> {
+  int selectedPageNum = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(left: 12, right: 12, top: 16, bottom: 16),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5), color: MyColors.lightBlue),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          menuItem(
+            "키워드 분석",
+            fixPageNum: 0,
+          ),
+          const SizedBox(width: 35),
+          menuItem(
+            "요청 정리",
+            fixPageNum: 1,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget menuItem(String text, {required int fixPageNum}) {
+    return InkWell(
+      onTap: () {
+        selectedPageNum = fixPageNum;
+        widget.pageC.jumpToPage(selectedPageNum);
+        setState(() {});
+      },
+      child: Container(
+        padding: const EdgeInsets.only(
+          left: 13,
+          right: 13,
+          top: 10,
+          bottom: 11,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: fixPageNum == selectedPageNum
+              ? MyColors.deepBlue
+              : Colors.transparent,
+        ),
+        child: Text(
+          text,
+          style: GoogleFonts.gothicA1(
+            color: MyColors.white,
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ),
     );
   }
 }
