@@ -35,7 +35,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void didChangeDependencies() {
-    loadList.add(precacheImage(MyImage.blueBackgroundImage, context));
+    loadList.add(precacheImage(MyImage.backgroundTop, context));
     Future.wait(loadList).then((value) {
       isLoaded = true;
       rebuild();
@@ -91,7 +91,7 @@ class MainPageComponent {
         fit: StackFit.expand,
         alignment: Alignment.center,
         children: [
-          Image(image: MyImage.blueBackgroundImage, fit: BoxFit.fill),
+          Image(image: MyImage.backgroundTop, fit: BoxFit.fill),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
