@@ -4,6 +4,7 @@ import 'package:kdh_homepage/util/MyComponents.dart';
 import 'package:kdh_homepage/util/MyImage.dart';
 import 'package:kdh_homepage/widget/MyCard.dart';
 import 'package:kdh_homepage/widget/MyChart.dart';
+import 'package:kdh_homepage/widget/MyRedButton.dart';
 
 class RequestRemovalPage extends StatefulWidget {
   const RequestRemovalPage({Key? key}) : super(key: key);
@@ -16,13 +17,25 @@ class _RequestRemovalPageState extends State<RequestRemovalPage> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      // physics: const BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       child: Column(
         children: [
           const SizedBox(height: 60),
-          MyCard(title: "키워드 분류", contents: [
-            cardListTile("연령 분류", "학업, 취미/자기개발, 학업, 취미/자기개발"),
-            cardListTile("의뢰 목적 분류", "학업, 취미/자기개발, 학업, 취미/자기개발, 학업, 취미/자리..."),
+          MyCard(
+            title: "정리 조건",
+            button: const MyRedButton("생성하기"),
+            contents: [
+              cardListTile("[최우선키워드] Flutter"),
+              cardListTile("[최우선키워드] Flutter"),
+              cardListTile("[포함] Flutter"),
+              cardListTile("[포함] Flutter"),
+              cardListTile("[포함] Flutter"),
+              cardListTile("[제외] Flutter"),
+              cardListTile("[제외] Flutter"),
+            ],
+          ),
+          MyCard(title: "연령 분석", contents: [
+            MyChart(),
           ]),
           MyCard(title: "연령 분석", contents: [
             MyChart(),
@@ -32,16 +45,15 @@ class _RequestRemovalPageState extends State<RequestRemovalPage> {
     );
   }
 
-  ListTile cardListTile(String title, String subtitle) {
+  ListTile cardListTile(String title, {bool isPlusIcon=true}) {
     return ListTile(
-      leading: const Padding(
+      leading: Padding(
         padding: EdgeInsets.only(top: 6),
-        child: Image(image: MyImage.boxIcon),
+        child: Image(image: (isPlusIcon ? MyImage.plusIcon : MyImage.minusIcon)),
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 5),
       horizontalTitleGap: 6,
       title: MyComponents.text(text: title),
-      subtitle: Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis),
       dense: true,
     );
   }

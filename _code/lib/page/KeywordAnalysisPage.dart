@@ -17,13 +17,13 @@ class _KeywordAnalysisPageState extends State<KeywordAnalysisPage> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      // physics: const BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       child: Column(
         children: [
           const SizedBox(height: 60),
           MyCard(
             title: "키워드 분류",
-            button: MyRedButton("생성하기"),
+            button: const MyRedButton("생성하기"),
             contents: [
               cardListTile("연령 분류", "학업, 취미/자기개발, 학업, 취미/자기개발"),
               cardListTile(

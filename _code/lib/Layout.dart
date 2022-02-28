@@ -41,6 +41,8 @@ class _LayoutState extends State<Layout> {
   void didChangeDependencies() {
     loadList.add(precacheImage(MyImage.backgroundTop, context));
     loadList.add(precacheImage(MyImage.boxIcon, context));
+    loadList.add(precacheImage(MyImage.plusIcon, context));
+    loadList.add(precacheImage(MyImage.minusIcon, context));
     Future.wait(loadList).then((value) {
       isLoaded = true;
       rebuild();
