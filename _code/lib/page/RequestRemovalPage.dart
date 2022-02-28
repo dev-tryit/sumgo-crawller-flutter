@@ -5,6 +5,7 @@ import 'package:kdh_homepage/util/MyImage.dart';
 import 'package:kdh_homepage/widget/MyCard.dart';
 import 'package:kdh_homepage/widget/MyChart.dart';
 import 'package:kdh_homepage/widget/MyRedButton.dart';
+import 'package:kdh_homepage/widget/MyWhiteButton.dart';
 
 class RequestRemovalPage extends StatefulWidget {
   const RequestRemovalPage({Key? key}) : super(key: key);
@@ -23,7 +24,7 @@ class _RequestRemovalPageState extends State<RequestRemovalPage> {
           const SizedBox(height: 60),
           MyCard(
             title: "정리 조건",
-            button: const MyRedButton("생성하기"),
+            rightButton: const MyRedButton("생성하기"),
             contents: [
               cardListTile("[최우선키워드] Flutter"),
               cardListTile("[최우선키워드] Flutter"),
@@ -33,13 +34,8 @@ class _RequestRemovalPageState extends State<RequestRemovalPage> {
               cardListTile("[제외] Flutter"),
               cardListTile("[제외] Flutter"),
             ],
+            bottomButton: const MyWhiteButton("요청 정리하기"),
           ),
-          MyCard(title: "연령 분석", contents: [
-            MyChart(),
-          ]),
-          MyCard(title: "연령 분석", contents: [
-            MyChart(),
-          ]),
         ],
       ),
     );

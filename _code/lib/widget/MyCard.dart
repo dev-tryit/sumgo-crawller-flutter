@@ -5,13 +5,17 @@ import 'package:kdh_homepage/util/MyColors.dart';
 class MyCard extends StatelessWidget {
   final String title;
   final List<Widget> contents;
-  final Widget? button;
+  final Widget? rightButton;
+  final Widget? bottomButton;
   const MyCard(
-      {Key? key, required this.title, required this.contents, this.button})
+      {Key? key, required this.title, required this.contents, this.rightButton, this.bottomButton})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    List bottomButtonList = [];
+    if(bottomButton != null) bottomButtonList.add(bottomButton);
+
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
@@ -33,7 +37,8 @@ class MyCard extends StatelessWidget {
             children: [
               cardTitle(title),
               const SizedBox(height: 10),
-              ...contents
+              ...contents,
+              ...bottomButtonList,
             ],
           ),
         ),
@@ -43,8 +48,8 @@ class MyCard extends StatelessWidget {
 
   Widget cardTitle(String title) {
     List buttonList = [];
-    if (button != null) {
-      buttonList.add(button);
+    if (rightButton != null) {
+      buttonList.add(rightButton);
     }
     
     return Row(
