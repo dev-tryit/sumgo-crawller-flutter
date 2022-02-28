@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
 import 'package:kdh_homepage/_common/util/MediaQueryUtil.dart';
 import 'package:kdh_homepage/_common/util/PlatformUtil.dart';
+import 'package:kdh_homepage/page/MyChart.dart';
 import 'package:kdh_homepage/util/MyColors.dart';
 import 'package:kdh_homepage/util/MyComponents.dart';
 import 'package:kdh_homepage/util/MyImage.dart';
@@ -132,10 +133,12 @@ class MainPageComponent {
       child: Column(
         children: [
           MyCard(title: "키워드 분류", contents: [
-            MyCardData("연령 분류", "학업, 취미/자기개발, 학업, 취미/자기개발"),
-            MyCardData("의뢰 목적 분류", "학업, 취미/자기개발, 학업, 취미/자기개발, 학업, 취미/자리..."),
+            cardListTile("연령 분류", "학업, 취미/자기개발, 학업, 취미/자기개발"),
+            cardListTile("의뢰 목적 분류", "학업, 취미/자기개발, 학업, 취미/자기개발, 학업, 취미/자리..."),
           ]),
-          MyCard(title: "연령 분석", contents: []),
+          MyCard(title: "연령 분석", contents: [
+            MyChart(),
+          ]),
         ],
       ),
     );
@@ -146,14 +149,26 @@ class MainPageComponent {
       child: Column(
         children: [
           MyCard(title: "페이지2", contents: [
-            MyCardData("연령 분류", "학업, 취미/자기개발, 학업, 취미/자기개발"),
-            MyCardData("의뢰 목적 분류", "학업, 취미/자기개발, 학업, 취미/자기개발, 학업, 취미/자리..."),
+            cardListTile("연령 분류", "학업, 취미/자기개발, 학업, 취미/자기개발"),
+            cardListTile("의뢰 목적 분류", "학업, 취미/자기개발, 학업, 취미/자기개발, 학업, 취미/자리..."),
           ]),
           MyCard(title: "연령 분석", contents: []),
         ],
       ),
     );
   }
+
+  ListTile cardListTile(String title, String subtitle) => ListTile(
+        leading: const Padding(
+          padding: EdgeInsets.only(top: 6),
+          child: Image(image: MyImage.boxIcon),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+        horizontalTitleGap: 6,
+        title: MyComponents.text(text: title),
+        subtitle: Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis),
+        dense: true,
+      );
 }
 
 class MyMenu extends StatefulWidget {
@@ -224,16 +239,9 @@ class _MyMenuState extends State<MyMenu> {
   }
 }
 
-class MyCardData {
-  String title;
-  String subtitle;
-
-  MyCardData(this.title, this.subtitle);
-}
-
 class MyCard extends StatelessWidget {
   final String title;
-  final List<MyCardData> contents;
+  final List<Widget> contents;
   const MyCard({Key? key, required this.title, required this.contents})
       : super(key: key);
 
@@ -260,9 +268,7 @@ class MyCard extends StatelessWidget {
             children: [
               cardTitle(title),
               const SizedBox(height: 10),
-              ...(contents
-                  .map((e) => cardListTile(e.title, e.subtitle))
-                  .toList())
+              ...contents
             ],
           ),
         ),
@@ -286,18 +292,6 @@ class MyCard extends StatelessWidget {
       ],
     );
   }
-
-  ListTile cardListTile(String title, String subtitle) => ListTile(
-        leading: const Padding(
-          padding: EdgeInsets.only(top: 6),
-          child: Image(image: MyImage.boxIcon),
-        ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-        horizontalTitleGap: 6,
-        title: MyComponents.text(text: title),
-        subtitle: Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis),
-        dense: true,
-      );
 
   Widget redButton(String text) {
     return ElevatedButton(
