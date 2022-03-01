@@ -112,6 +112,7 @@ class _KeywordAnalysisPageState extends State<KeywordAnalysisPage> {
                 decoration: InputDecoration(isDense: true),
               ),
             ),
+            const SizedBox(height: 10),
           ],
         ),
       ),
