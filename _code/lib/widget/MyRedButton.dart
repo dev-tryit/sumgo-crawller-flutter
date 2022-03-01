@@ -5,8 +5,10 @@ import 'package:kdh_homepage/util/MyColors.dart';
 class MyRedButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
+  final bool useShadow;
 
-  const MyRedButton(this.text, {Key? key, required this.onPressed})
+  const MyRedButton(this.text,
+      {Key? key, required this.onPressed, this.useShadow = true})
       : super(key: key);
 
   @override
@@ -21,10 +23,10 @@ class MyRedButton extends StatelessWidget {
         ),
       ),
       style: ElevatedButton.styleFrom(
-        shadowColor: MyColors.black,
-        elevation: 7,
+        shadowColor: useShadow ? MyColors.black : null,
+        elevation: useShadow ? 7 : null,
         padding:
-        const EdgeInsets.only(left: 23, right: 23, top: 14, bottom: 14),
+            const EdgeInsets.only(left: 23, right: 23, top: 14, bottom: 14),
         primary: MyColors.red,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
       ),

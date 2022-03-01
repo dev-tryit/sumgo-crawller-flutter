@@ -78,28 +78,40 @@ class _KeywordAnalysisPageState extends State<KeywordAnalysisPage> {
               padding: const EdgeInsets.only(left: 5, top: 5, bottom: 5),
               child: Row(
                 children: [
-                  Text('Title',
+                  Text('키워드 분류 생성하기',
                       style: GoogleFonts.gothicA1(
-                        color: MyColors.black,
-                        fontSize: 12.5,
-                      )),
+                          color: MyColors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500)),
                   Spacer(),
-                  ElevatedButton(
-                    child: const Text('Done!'),
-                    onPressed: () => Navigator.pop(context),
-                  ),
+                  MyRedButton("생성", useShadow: false, onPressed: () {}),
                 ],
               ),
             ),
             const Divider(),
-            const ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Text("분류 이름"),
-                title: TextField()),
-            const ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Text("분류 기준 텍스트"),
-                title: TextField()),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              dense: true,
+              minLeadingWidth: 100,
+              leading: Text("분류 이름",
+                  style: GoogleFonts.gothicA1(
+                      color: MyColors.black, fontSize: 12.5)),
+              title: const TextField(
+                decoration: InputDecoration(isDense: true),
+              ),
+            ),
+            const SizedBox(height: 10),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              dense: true,
+              minLeadingWidth: 100,
+              leading: Text("분류 기준 텍스트",
+                  style: GoogleFonts.gothicA1(
+                      color: MyColors.black, fontSize: 12.5)),
+              title: const TextField(
+                decoration: InputDecoration(isDense: true),
+              ),
+            ),
           ],
         ),
       ),
