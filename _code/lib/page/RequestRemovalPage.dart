@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kdh_homepage/Layout.dart';
 import 'package:kdh_homepage/util/MyComponents.dart';
 import 'package:kdh_homepage/util/MyImage.dart';
 import 'package:kdh_homepage/widget/MyCard.dart';
-import 'package:kdh_homepage/widget/MyChart.dart';
 import 'package:kdh_homepage/widget/MyRedButton.dart';
 import 'package:kdh_homepage/widget/MyWhiteButton.dart';
 
@@ -24,7 +22,7 @@ class _RequestRemovalPageState extends State<RequestRemovalPage> {
           const SizedBox(height: 60),
           MyCard(
             title: "정리 조건",
-            rightButton: const MyRedButton("생성하기"),
+            rightButton: MyRedButton("생성하기", onPressed: () {}),
             contents: [
               cardListTile("[최우선키워드] Flutter"),
               cardListTile("[최우선키워드] Flutter"),

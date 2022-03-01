@@ -45,7 +45,7 @@ dependencies:
     flutter_svg: ^1.0.3
     google_fonts: ^2.2.0
     fl_chart: ^0.45.0
-    smart_select: ^4.3.2
+    awesome_select: ^5.1.0
     #another_transformer_page_view 
     #cube_transition 
     #https://pub.dev/packages/flip_card 돌리는 효과에 사용
