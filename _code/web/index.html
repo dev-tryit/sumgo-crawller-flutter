@@ -28,12 +28,73 @@
 
   <title>kdh_homepage</title>
   <link rel="manifest" href="manifest.json">
+
+  <!-- flutter web에 확대, 축소를 막기 위한 코드-->
+  <script>
+      document.addEventListener('wheel', function(e) {
+        e.ctrlKey && e.preventDefault();
+      }, {
+        passive: false,
+      });
+      window.addEventListener('keydown', function(e) {
+        if (event.metaKey || event.ctrlKey) {
+          switch (event.key) {
+            case '=':
+            case '-':
+              event.preventDefault();
+              break;
+          }
+        }
+      });
+      var scale = 'scale(1)';
+      if(document.body?.style?.webkitTransform){
+          document.body.style.webkitTransform =  scale;    // Chrome, Opera, Safari
+      }
+      if(document.body?.style?.msTransform){
+          document.body.style.msTransform =  scale;    // IE 9
+      }
+      if(document.body?.style?.transform){
+          document.body.style.transform =  scale;    // General
+      }
+
+
+
+  </script>
+  <!-- flutter web에 확대, 축소를 막기 위한 코드-->
+
+  <style>
+     input::-ms-clear, input::-ms-reveal {display: none;}/*에지에서 비밀번호 필드에 눈 모양이 보여서 넣은 코드->동작안함.브라우저에지가 이상하게 개발한듯함*/
+     input[type="file"] {display:none;}/*web에서 input[type="file"]이 보여는 에러때문에 넣은 코드*/
+
+  </style>
 </head>
 <body>
-  <!-- This script installs service_worker.js to provide PWA functionality to
-       application. For more information, see:
-       https://developers.google.com/web/fundamentals/primers/service-workers -->
-  <script>
+<!-- web에서 firebase를 사용하기 위한 코드 -->
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+<script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC1LzWmL9H4z1r4SyBewiLyzWbEvBjVBtw",
+      authDomain: "sumgo-crawller-flutter.firebaseapp.com",
+      projectId: "sumgo-crawller-flutter",
+      storageBucket: "sumgo-crawller-flutter.appspot.com",
+      messagingSenderId: "445254650043",
+      appId: "1:445254650043:web:27348096a548fe5468819e",
+      measurementId: "G-WW9Y5CJB34"
+    };
+
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+</script>
+<!-- web에서 firebase를 사용하기 위한 코드 -->
+
+<!-- This script installs service_worker.js to provide PWA functionality to
+     application. For more information, see:
+     https://developers.google.com/web/fundamentals/primers/service-workers -->
+<script>
     var serviceWorkerVersion = null;
     var scriptLoaded = false;
     function loadMainDartJs() {
