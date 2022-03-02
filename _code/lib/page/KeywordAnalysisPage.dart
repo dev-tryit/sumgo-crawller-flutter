@@ -15,6 +15,14 @@ class KeywordAnalysisPage extends StatefulWidget {
 }
 
 class _KeywordAnalysisPageState extends State<KeywordAnalysisPage> {
+  late final KeywordAnalysisPageService service;
+
+  @override
+  void initState() {
+    super.initState();
+    service = KeywordAnalysisPageService(this);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -25,7 +33,7 @@ class _KeywordAnalysisPageState extends State<KeywordAnalysisPage> {
           MyCard(
             title: "키워드 분류",
             rightButton:
-                MyRedButton("생성하기", onPressed: showCreateItemBottomSheet),
+            MyRedButton("생성하기", onPressed: showCreateItemBottomSheet),
             contents: [
               cardListTile("연령 분류", "학업, 취미/자기개발, 학업, 취미/자기개발"),
               cardListTile(
@@ -84,7 +92,9 @@ class _KeywordAnalysisPageState extends State<KeywordAnalysisPage> {
                           fontSize: 14,
                           fontWeight: FontWeight.w500)),
                   Spacer(),
-                  MyRedButton("생성", useShadow: false, onPressed: () {}),
+                  MyRedButton("생성", useShadow: false, onPressed: () {
+                    Navigator.pop(context);
+                  }),
                 ],
               ),
             ),
@@ -118,4 +128,10 @@ class _KeywordAnalysisPageState extends State<KeywordAnalysisPage> {
       ),
     );
   }
+}
+
+class KeywordAnalysisPageService {
+  final _KeywordAnalysisPageState state;
+
+  const KeywordAnalysisPageService(this.state);
 }
