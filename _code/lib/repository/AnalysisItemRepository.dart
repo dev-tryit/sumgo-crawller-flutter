@@ -2,7 +2,7 @@ import 'package:kdh_homepage/_common/util/FirestoreUtil.dart';
 import 'package:kdh_homepage/_common/util/StringUtil.dart';
 import 'package:kdh_homepage/repository/AnalysisItem.dart';
 
-class AnalysisItemRepositoryRepository {
+class AnalysisItemRepository {
   static final FirestoreUtil<AnalysisItem> _ = FirestoreUtil(
     collectionName: StringUtil.classToString(AnalysisItem()),
     fromMap: AnalysisItem.fromMap,

@@ -26,4 +26,8 @@ class AnalysisItem extends WithDocId {
       'keywordList': instance.keywordList,
     };
   }
+
+  bool isValidForAdd() {
+    return false;
+  }
 }
