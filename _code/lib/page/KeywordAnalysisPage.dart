@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kdh_homepage/_common/util/LogUtil.dart';
 import 'package:kdh_homepage/repository/AnalysisItem.dart';
 import 'package:kdh_homepage/repository/AnalysisItemRepository.dart';
 import 'package:kdh_homepage/util/MyColors.dart';
@@ -107,8 +108,8 @@ class _KeywordAnalysisPageState extends State<KeywordAnalysisPage> {
                       "생성",
                       useShadow: false,
                       onPressed: () => service.addAnalysisItem(
-                        titleController.text,
-                        keywordController.text,
+                        titleController.text.trim(),
+                        keywordController.text.trim(),
                         setState,
                       ),
                     ),
@@ -165,6 +166,7 @@ class KeywordAnalysisPageService {
 
     String? errorMessage = AnalysisItem.getErrorMessageForAdd(title, keyword);
     if (errorMessage != null) {
+      LogUtil.info("에러있음 $errorMessage");
       setErrorMessage(errorMessage);
       return;
     }
@@ -172,6 +174,7 @@ class KeywordAnalysisPageService {
 
     List<String> keywordList =
         keyword.split(",").map((str) => str.trim()).toList();
+    LogUtil.info("에러없음 $keywordList");
     AnalysisItemRepository.add(
         analysisItem: AnalysisItem(title: title, keywordList: keywordList));
     Navigator.pop(context);
