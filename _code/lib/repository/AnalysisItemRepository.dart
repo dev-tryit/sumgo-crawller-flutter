@@ -4,7 +4,7 @@ import 'package:kdh_homepage/repository/AnalysisItem.dart';
 
 class AnalysisItemRepository {
   static final FirestoreUtil<AnalysisItem> _ = FirestoreUtil(
-    collectionName: StringUtil.classToString(AnalysisItem()),
+    collectionName: StringUtil.classToString(AnalysisItem.empty()),
     fromMap: AnalysisItem.fromMap,
     toMap: AnalysisItem.toMap,
   );

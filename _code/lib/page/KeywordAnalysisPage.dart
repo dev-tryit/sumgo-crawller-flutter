@@ -69,6 +69,9 @@ class _KeywordAnalysisPageState extends State<KeywordAnalysisPage> {
   }
 
   void showCreateItemBottomSheet() {
+    final TextEditingController titleController = TextEditingController();
+    final TextEditingController keywordController = TextEditingController();
+
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -79,17 +82,17 @@ class _KeywordAnalysisPageState extends State<KeywordAnalysisPage> {
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(30),
               topRight: Radius.circular(30),
-            ),
-          ),
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 5, top: 5, bottom: 5),
-                child: Row(
-                  children: [
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5, top: 5, bottom: 5),
+                        child: Row(
+                          children: [
                     Text('키워드 분류 생성하기',
                         style: GoogleFonts.gothicA1(
                             color: MyColors.black,
@@ -100,42 +103,49 @@ class _KeywordAnalysisPageState extends State<KeywordAnalysisPage> {
                         style: GoogleFonts.gothicA1(
                             color: MyColors.red, fontSize: 12)),
                     const SizedBox(width: 10),
-                    MyRedButton("생성",
-                        useShadow: false,
-                        onPressed: () =>
-                            service.addAnalysisItem(AnalysisItem(), setState)),
+                    MyRedButton(
+                      "생성",
+                      useShadow: false,
+                      onPressed: () => service.addAnalysisItem(
+                        titleController.text,
+                        keywordController.text,
+                        setState,
+                      ),
+                    ),
                   ],
-                ),
-              ),
-              const Divider(),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
+                        ),
+                      ),
+                      const Divider(),
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
                 dense: true,
                 minLeadingWidth: 100,
                 leading: Text("분류 이름",
                     style: GoogleFonts.gothicA1(
                         color: MyColors.black, fontSize: 12.5)),
-                title: const TextField(
-                  decoration: InputDecoration(isDense: true),
+                title: TextField(
+                  controller: titleController,
+                  decoration: const InputDecoration(isDense: true),
                 ),
               ),
-              const SizedBox(height: 10),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
+                      const SizedBox(height: 10),
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
                 dense: true,
                 minLeadingWidth: 100,
                 leading: Text("분류 기준 텍스트",
                     style: GoogleFonts.gothicA1(
                         color: MyColors.black, fontSize: 12.5)),
-                title: const TextField(
-                  decoration: InputDecoration(isDense: true),
+                title: TextField(
+                  controller: keywordController,
+                  decoration: const InputDecoration(isDense: true),
                 ),
               ),
-              const SizedBox(height: 10),
-            ],
+                      const SizedBox(height: 10),
+                    ],
+                  ),
+                ),
           ),
-        ),
-      ),
     );
   }
 }
@@ -147,16 +157,23 @@ class KeywordAnalysisPageService {
 
   BuildContext get context => state.context;
 
-  void addAnalysisItem(AnalysisItem analysisItem, StateSetter setState) {
-    if (!analysisItem.isValidForAdd()) {
-      state.errorMessage = '분류 이름을 입력해주세요';
+  void addAnalysisItem(String title, String keyword, StateSetter setState) {
+    void setErrorMessage(String errorMessage) {
+      state.errorMessage = errorMessage;
       setState(() {});
-      return;
     }
 
-    state.errorMessage = '';
-    setState(() {});
-    AnalysisItemRepository.add(analysisItem: analysisItem);
+    String? errorMessage = AnalysisItem.getErrorMessageForAdd(title, keyword);
+    if (errorMessage != null) {
+      setErrorMessage(errorMessage);
+      return;
+    }
+    setErrorMessage('');
+
+    List<String> keywordList =
+        keyword.split(",").map((str) => str.trim()).toList();
+    AnalysisItemRepository.add(
+        analysisItem: AnalysisItem(title: title, keywordList: keywordList));
     Navigator.pop(context);
   }
 }

@@ -4,8 +4,11 @@ class AnalysisItem extends WithDocId {
   String? title;
   List? keywordList;
 
-  AnalysisItem({String? documentId, this.title, this.keywordList})
+  AnalysisItem(
+      {String? documentId, required this.title, required this.keywordList})
       : super(documentId: documentId);
+
+  AnalysisItem.empty();
 
   factory AnalysisItem.fromJson(Map<String, dynamic> json) => fromMap(json);
 
@@ -27,7 +30,9 @@ class AnalysisItem extends WithDocId {
     };
   }
 
-  bool isValidForAdd() {
-    return false;
+  static String? getErrorMessageForAdd(String title, String keyword) {
+    if (title.isEmpty) return '분류 이름을 입력해주세요';
+    if (keyword.isEmpty) return '분류 기준 텍스트를 입력해주세요';
+    return null;
   }
 }
