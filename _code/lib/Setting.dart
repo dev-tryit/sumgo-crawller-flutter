@@ -1,6 +1,9 @@
 import 'package:logger/logger.dart';
 
 class Setting {
+  // DateTime
+  static const int timeZoneOffset = 9;
+
   // App
   static const String appName = "TRY_IT";
 

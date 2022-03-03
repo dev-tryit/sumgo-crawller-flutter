@@ -13,6 +13,14 @@ class RequestRemovalPage extends StatefulWidget {
 }
 
 class _RequestRemovalPageState extends State<RequestRemovalPage> {
+  late final RequestRemovalPageService service;
+
+  @override
+  void initState() {
+    super.initState();
+    service = RequestRemovalPageService(this);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -32,7 +40,8 @@ class _RequestRemovalPageState extends State<RequestRemovalPage> {
               cardListTile("[제외] Flutter", isPlusIcon: false),
               cardListTile("[제외] Flutter", isPlusIcon: false),
             ],
-            bottomButton: const MyWhiteButton("요청 정리하기"),
+            bottomButton:
+                MyWhiteButton("요청 정리하기", onPressed: service.removeRequests),
           ),
         ],
       ),
@@ -43,7 +52,8 @@ class _RequestRemovalPageState extends State<RequestRemovalPage> {
     return ListTile(
       leading: Padding(
         padding: EdgeInsets.only(top: 6),
-        child: Image(image: (isPlusIcon ? MyImage.plusIcon : MyImage.minusIcon)),
+        child:
+            Image(image: (isPlusIcon ? MyImage.plusIcon : MyImage.minusIcon)),
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 5),
       horizontalTitleGap: 6,
@@ -51,4 +61,14 @@ class _RequestRemovalPageState extends State<RequestRemovalPage> {
       dense: true,
     );
   }
+}
+
+class RequestRemovalPageService {
+  final _RequestRemovalPageState state;
+
+  const RequestRemovalPageService(this.state);
+
+  BuildContext get context => state.context;
+
+  void removeRequests() {}
 }

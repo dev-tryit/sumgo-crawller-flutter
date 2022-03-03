@@ -47,6 +47,7 @@ dependencies:
     fl_chart: ^0.45.0
     firebase_core: ^1.13.1
     cloud_firestore: ^3.1.10
+    puppeteer: ^2.6.0
     #another_transformer_page_view
     #cube_transition 
     #https://pub.dev/packages/flip_card 돌리는 효과에 사용

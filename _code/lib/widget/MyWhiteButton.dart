@@ -4,8 +4,10 @@ import 'package:kdh_homepage/util/MyColors.dart';
 
 class MyWhiteButton extends StatelessWidget {
   final String text;
+  final VoidCallback onPressed;
 
-  const MyWhiteButton(this.text, {Key? key}) : super(key: key);
+  const MyWhiteButton(this.text, {Key? key, required this.onPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +16,13 @@ class MyWhiteButton extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(left: 14, right: 14, top: 20),
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: onPressed,
           child: Text(
             text,
             style: GoogleFonts.gothicA1(
-              color: MyColors.black,
-              fontSize: 12,
-              fontWeight: FontWeight.w600
-            ),
+                color: MyColors.black,
+                fontSize: 12,
+                fontWeight: FontWeight.w600),
           ),
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.only(top: 19, bottom: 19),
