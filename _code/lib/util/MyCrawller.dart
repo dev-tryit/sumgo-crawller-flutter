@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
 import 'package:kdh_homepage/_common/util/PuppeteerUtil.dart';
+import 'package:kdh_homepage/_local/local.dart';
 import 'package:puppeteer/puppeteer.dart';
 
 class MyCrawller {
@@ -13,7 +14,6 @@ class MyCrawller {
   final List<String> listToExclude = const ["초등학생", "중학생"];
 
   void main() async {
-    Map localData = {};
     p.openBrowser(
       () async {
         while (true) {

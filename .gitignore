@@ -1,3 +1,5 @@
+_code/lib/_local/local.dart
+
 # Miscellaneous
 *.class
 *.log
