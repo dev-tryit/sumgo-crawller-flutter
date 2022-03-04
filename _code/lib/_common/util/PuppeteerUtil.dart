@@ -6,6 +6,8 @@ class PuppeteerUtil {
 
   final defaultTimeout = Duration(seconds: 10);
 
+  //TODO: 안드로이드 에뮬레이터의 경우에, 다른 컴퓨터에 켜져있는 pupueteer를 이용할 수 있다.
+
   Future<void> openBrowser(Future<void> Function() function,
       {int width = 1280, int height = 1024, bool headless = true}) async {
     //open
