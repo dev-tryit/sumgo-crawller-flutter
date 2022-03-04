@@ -10,7 +10,7 @@ class PuppeteerUtil {
 
   Future<void> openBrowser(Future<void> Function() function,
       {int width = 1280, int height = 1024, bool headless = true}) async {
-    //open
+    //openpackage_info
     browser = await puppeteer.launch(
       headless: headless,
       args: [

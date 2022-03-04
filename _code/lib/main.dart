@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:kdh_homepage/Layout.dart';
 import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/_common/config/MyCustomScrollBehavior.dart';
-import 'package:kdh_homepage/_common/util/DebugUtil.dart';
+import 'package:kdh_homepage/_common/util/DesktopUtil.dart';
 import 'package:kdh_homepage/util/MyTheme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Setting.appVersion = await DebugUtil.getAppVersion();
-  Setting.appBuildNumber = await DebugUtil.getBuildNumber();
+
+  Size size = await DesktopUtil.getSize();
+  await DesktopUtil.setSize(Size(500, size.height));
+  // Setting.appVersion = await DebugUtil.getAppVersion();
+  // Setting.appBuildNumber = await DebugUtil.getBuildNumber();
   runApp(MyApp());
 }
 
