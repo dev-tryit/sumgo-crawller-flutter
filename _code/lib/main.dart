@@ -7,13 +7,7 @@ import 'package:kdh_homepage/util/MyTheme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  Size size = await DesktopUtil.getSize();
-  print(size);
-  //TODO: setSize때문에 실행이 안됨
-  // await DesktopUtil.setSize(Size(1500, size.height));
-  // Setting.appVersion = await DebugUtil.getAppVersion();
-  // Setting.appBuildNumber = await DebugUtil.getBuildNumber();
+  DesktopUtil.setSize(Size(800, 900));
   runApp(MyApp());
 }
 

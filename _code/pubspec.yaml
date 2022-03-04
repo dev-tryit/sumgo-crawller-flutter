@@ -32,7 +32,7 @@ dependencies:
 
 
     #DESKTOP
-    desktop_window: ^0.4.0
+    window_manager: ^0.1.8
 
     #MOBILE
     #    package_info_plus: ^1.4.0
