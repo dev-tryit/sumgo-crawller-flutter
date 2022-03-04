@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kdh_homepage/util/MyComponents.dart';
+import 'package:kdh_homepage/util/MyCrawller.dart';
 import 'package:kdh_homepage/util/MyImage.dart';
 import 'package:kdh_homepage/widget/MyCard.dart';
 import 'package:kdh_homepage/widget/MyRedButton.dart';
@@ -70,5 +71,7 @@ class RequestRemovalPageService {
 
   BuildContext get context => state.context;
 
-  void removeRequests() {}
+  void removeRequests() {
+    MyCrawller().main();
+  }
 }
