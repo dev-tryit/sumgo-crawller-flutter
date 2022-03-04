@@ -5,6 +5,7 @@ import 'package:kdh_homepage/_common/util/PuppeteerUtil.dart';
 import 'package:kdh_homepage/_local/local.dart';
 import 'package:puppeteer/puppeteer.dart';
 
+//gitignore 적용 완료
 class MyCrawller {
   final p = PuppeteerUtil();
   final delay = Duration(milliseconds: 100);
