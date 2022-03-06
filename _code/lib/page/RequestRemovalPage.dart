@@ -72,6 +72,6 @@ class RequestRemovalPageService {
   BuildContext get context => state.context;
 
   void removeRequests() {
-    MyCrawller().main();
+    MyCrawller().start();
   }
 }

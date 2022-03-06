@@ -1,3 +1,4 @@
+import 'package:kdh_homepage/_common/util/LogUtil.dart';
 import 'package:puppeteer/puppeteer.dart';
 
 class PuppeteerUtil {
@@ -85,10 +86,24 @@ class PuppeteerUtil {
     }
   }
 
+  Future<bool> waitForSelector(String selector,
+      {bool? visible,
+      bool? hidden,
+      Duration timeout = const Duration(seconds: 5)}) async {
+    try {
+      await tab.waitForSelector(selector,
+          visible: visible, hidden: hidden, timeout: timeout);
+      return true;
+    } catch (e) {
+      LogUtil.info("$selector 가 없습니다.");
+      return false;
+    }
+  }
+
   Future<void> click(String selector, {ElementHandle? tag}) async {
     try {
       if (tag == null) {
-        await tab.waitForSelector(selector);
+        await waitForSelector(selector);
       }
       var tagToClick = await $(selector, tag: tag);
       await tagToClick.click();
