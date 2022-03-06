@@ -10,19 +10,26 @@ class PuppeteerUtil {
   //TODO: 안드로이드 에뮬레이터의 경우에, 다른 컴퓨터에 켜져있는 pupueteer를 이용할 수 있다.
 
   Future<void> openBrowser(Future<void> Function() function,
-      {int width = 1280, int height = 1024, bool headless = true}) async {
-    //openpackage_info
-    browser = await puppeteer.launch(
-      headless: headless,
-      args: [
-        '--no-sandbox',
-        '--window-size=$width,$height',
-      ],
-      defaultViewport: DeviceViewport(
-        width: width,
-        height: height,
-      ),
-    );
+      {int width = 1280,
+      int height = 1024,
+      bool headless = true,
+      bool isConnect = false}) async {
+    if (isConnect) {
+      //크롬 바로가기 만들고, 거기에 "C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222 -- "%1" 형태로 쓰면 됨.
+      browser = await puppeteer.connect(browserUrl: 'http://localhost:9222');
+    } else {
+      browser = await puppeteer.launch(
+        headless: headless,
+        args: [
+          '--no-sandbox',
+          '--window-size=$width,$height',
+        ],
+        defaultViewport: DeviceViewport(
+          width: width,
+          height: height,
+        ),
+      );
+    }
     tab = await browser.newPage();
     tab.defaultTimeout = defaultTimeout;
 
