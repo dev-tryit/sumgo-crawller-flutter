@@ -18,7 +18,7 @@ class MyCrawller {
         await _login(localData["id"], localData["pw"]);
         await _deleteAllRequests();
       },
-      headless: false,
+      headless: true,
     );
   }
 
