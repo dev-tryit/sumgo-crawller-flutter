@@ -16,7 +16,7 @@ class MyCrawller {
     await p.openBrowser(
       () async {
         await _login(localData["id"], localData["pw"]);
-        await _deleteRequests();
+        await _deleteAllRequests();
       },
       headless: false,
     );
@@ -48,32 +48,40 @@ class MyCrawller {
         await p.include(".form-text.text-invalfid", "입력해주세요");
   }
 
-  Future<void> _deleteRequests() async {
-    LogUtil.info("deleteRequests 시작");
-    await p.goto('https://soomgo.com/requests/received');
+  Future<void> _deleteAllRequests() async {
+    while (true) {
+      LogUtil.info("deleteRequests 시작");
+      await p.goto('https://soomgo.com/requests/received');
 
-    bool existSelector =
-        await p.waitForSelector('.request-list > li > .request-item');
-    if (!existSelector) {
-      return;
-    }
+      await p.autoScroll();
 
-    List<ElementHandle> tagList =
-        await p.$$('.request-list > li > .request-item');
-    for (var tag in tagList) {
-      var messageTag = await p.$('.quote > span.message', tag: tag);
-      String message = await p.html(tag: messageTag);
+      bool existSelector =
+          await p.waitForSelector('.request-list > li > .request-item');
+      if (!existSelector) {
+        return;
+      }
 
-      if (!_isValidRequest(message)) {
-        await p.click('.quote-btn.del', tag: tag);
-        await p.click('.sv-col-small-button-bw.sv__btn-close');
-        // FileUtil.writeFile(
-        //     "${DateTimeUtil.now().toIso8601String()}.html", await p.html());
-        await p.click('.swal2-confirm.btn');
+      bool haveTagToDelete = false;
+      List<ElementHandle> tagList =
+          await p.$$('.request-list > li > .request-item');
+      for (var tag in tagList) {
+        var messageTag = await p.$('.quote > span.message', tag: tag);
+        String message = await p.html(tag: messageTag);
 
-        LogUtil.info("삭제할 tagText : " + message);
-      } else {
-        LogUtil.info("내가 좋하하는 tagText : " + message);
+        if (!_isValidRequest(message)) {
+          haveTagToDelete = true;
+          await p.click('.quote-btn.del', tag: tag);
+          await p.click('.sv-col-small-button-bw.sv__btn-close');
+          // FileUtil.writeFile(
+          //     "${DateTimeUtil.now().toIso8601String()}.html", await p.html());
+          await p.click('.swal2-confirm.btn');
+        } else {
+          LogUtil.info("내가 좋하하는 tagText : " + message);
+        }
+      }
+
+      if (!haveTagToDelete) {
+        break;
       }
     }
   }
