@@ -1,4 +1,5 @@
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
+import 'package:kdh_homepage/_common/util/PlatformUtil.dart';
 import 'package:kdh_homepage/_common/util/PuppeteerUtil.dart';
 import 'package:kdh_homepage/_local/local.dart';
 import 'package:puppeteer/puppeteer.dart';
@@ -13,12 +14,17 @@ class MyCrawller {
   final List<String> listToExclude = const ["초등학생", "중학생"];
 
   Future<void> start() async {
+    bool headless = false;
+    headless = PlatformUtil.isComputer()
+        ? false
+        : headless; //TODO: 데스크탑에서 headless면 동작 ㅇ나함.
+
     await p.openBrowser(
       () async {
         await _login(localData["id"], localData["pw"]);
         await _deleteAllRequests();
       },
-      headless: true,
+      headless: headless,
     );
   }
 
@@ -75,13 +81,11 @@ class MyCrawller {
           // FileUtil.writeFile(
           //     "${DateTimeUtil.now().toIso8601String()}.html", await p.html());
           await p.click('.swal2-confirm.btn');
-        } else {
-          LogUtil.info("내가 좋하하는 tagText : " + message);
         }
       }
 
       if (!haveTagToDelete) {
-        break;
+        return;
       }
     }
   }
