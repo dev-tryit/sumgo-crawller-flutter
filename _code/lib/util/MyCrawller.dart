@@ -12,8 +12,8 @@ class MyCrawller {
   final List<String> listToInclude = const ["앱 개발", "취미/자기개발"];
   final List<String> listToExclude = const ["초등학생", "중학생"];
 
-  void start() async {
-    p.openBrowser(
+  Future<void> start() async {
+    await p.openBrowser(
       () async {
         await _login(localData["id"], localData["pw"]);
         await _deleteRequests();

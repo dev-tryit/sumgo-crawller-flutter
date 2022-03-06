@@ -71,7 +71,12 @@ class RequestRemovalPageService {
 
   BuildContext get context => state.context;
 
-  void removeRequests() {
-    MyCrawller().start();
+  Future<void> removeRequests() async {
+    try {
+      await MyComponents.showLoadingDialog(context);
+      await MyCrawller().start();
+    } finally {
+      await MyComponents.dismissLoadingDialog();
+    }
   }
 }

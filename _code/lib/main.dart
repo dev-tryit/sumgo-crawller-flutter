@@ -3,6 +3,7 @@ import 'package:kdh_homepage/Layout.dart';
 import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/_common/config/MyCustomScrollBehavior.dart';
 import 'package:kdh_homepage/_common/util/DesktopUtil.dart';
+import 'package:kdh_homepage/util/MyComponents.dart';
 import 'package:kdh_homepage/util/MyTheme.dart';
 
 Future<void> main() async {
@@ -33,6 +34,10 @@ class MyApp extends StatelessWidget {
         //   bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
         // ),
       ),
+      builder: (context, child) {
+        child = MyComponents.easyLoadingBuilder()(context, child);
+        return child;
+      },
       home: Layout(),
     );
   }

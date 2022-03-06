@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/rendering.dart';
-import 'package:kdh_homepage/Setting.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:kdh_homepage/Setting.dart';
 
 class MyComponents {
   MyComponents._();
@@ -220,6 +220,15 @@ class MyComponents {
   }
 
   static TransitionBuilder easyLoadingBuilder() {
+    /*
+      builder: (context, child) {
+        if (kIsWeb) {
+          child = AppComponents.devicePreview(app: child!);
+        }
+        child = AppComponents.easyLoadingBuilder()(context, child);
+        return child;
+      },
+     */
     EasyLoading.instance
       ..displayDuration = const Duration(milliseconds: 1000)
       ..loadingStyle = EasyLoadingStyle.custom
