@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
-import 'package:kdh_homepage/util/MyComponents.dart';
-import 'package:kdh_homepage/_common/util/LogUtil.dart';
 import 'package:kdh_homepage/_common/util/MediaQueryUtil.dart';
+import 'package:kdh_homepage/util/MyComponents.dart';
 
 abstract class KDHState<T extends StatefulWidget> extends State<T> {
-  bool whenBuildCalledFirst = true;
+  bool _whenBuildCalledFirst = true;
   List<WidgetToGetSize> _widgetListToGetSize = [];
-  Map<dynamic, WidgetToGetSize> widgetMap = {};
 
+  Map<dynamic, WidgetToGetSize> widgetMap = {};
   Widget Function()? widgetToBuild;
   late Size screenSize;
 
@@ -49,8 +48,8 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
     // LogUtil.debug("super.build");
     screenSize = MediaQueryUtil.getScreenSize(context);
 
-    if (whenBuildCalledFirst) {
-      whenBuildCalledFirst = false;
+    if (_whenBuildCalledFirst) {
+      _whenBuildCalledFirst = false;
       Future(() async {
         await afterBuild();
       });
@@ -90,8 +89,9 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
   Future<void> prepareRebuild() async {
     // LogUtil.debug("super.prepareRebuild");
 
-    getSizeOfWidgetList();
-
+    if (_widgetListToGetSize.isNotEmpty) {
+      getSizeOfWidgetList();
+    }
     await onLoad();
 
     mustRebuild();
@@ -99,6 +99,7 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
 
   Future<void> onLoad();
 
+  //widgetToBuild를 채우고, rebuild();
   void mustRebuild();
 
   void getSizeOfWidgetList() {

@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:kdh_homepage/Layout.dart';
 import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/_common/config/MyCustomScrollBehavior.dart';
 import 'package:kdh_homepage/_common/util/DesktopUtil.dart';
+import 'package:kdh_homepage/_common/util/PlatformUtil.dart';
+import 'package:kdh_homepage/page/LoadPage.dart';
 import 'package:kdh_homepage/util/MyComponents.dart';
 import 'package:kdh_homepage/util/MyTheme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  DesktopUtil.setSize(
-      size: const Size(800, 800), minimumSize: const Size(350, 800));
+  if (PlatformUtil.isComputer()) {
+    DesktopUtil.setSize(
+      size: const Size(350, 800),
+      minimumSize: const Size(350, 800),
+      maximumSize: const Size(350, 800),
+    );
+  }
   runApp(MyApp());
 }
 
@@ -39,7 +45,7 @@ class MyApp extends StatelessWidget {
         child = MyComponents.easyLoadingBuilder()(context, child);
         return child;
       },
-      home: Layout(),
+      home: LoadPage(),
     );
   }
 }

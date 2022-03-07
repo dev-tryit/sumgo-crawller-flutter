@@ -3,7 +3,8 @@ import 'dart:ui';
 import 'package:window_manager/window_manager.dart';
 
 class DesktopUtil {
-  static Future setSize({required Size size, Size? minimumSize}) async {
+  static Future setSize(
+      {required Size size, Size? minimumSize, Size? maximumSize}) async {
     await windowManager.ensureInitialized();
     windowManager.waitUntilReadyToShow().then((_) async {
       // Hide window title bar
@@ -11,6 +12,10 @@ class DesktopUtil {
       await windowManager.setSize(size);
       if (minimumSize != null) {
         await windowManager.setMinimumSize(minimumSize);
+      }
+      if (maximumSize != null) {
+        await windowManager.setMaximumSize(maximumSize);
+        await windowManager.setFullScreen(false);
       }
       // await windowManager.center();
       await windowManager.show();
