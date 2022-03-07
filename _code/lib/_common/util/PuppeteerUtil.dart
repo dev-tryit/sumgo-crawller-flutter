@@ -39,7 +39,7 @@ class PuppeteerUtil {
     //close
     try {
       await tab.close();
-      await browser.close();
+      if (!isConnect) await browser.close();
     } catch (e) {}
   }
 

@@ -8,7 +8,8 @@ import 'package:kdh_homepage/util/MyTheme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  DesktopUtil.setSize(Size(800, 800));
+  DesktopUtil.setSize(
+      size: const Size(800, 800), minimumSize: const Size(350, 800));
   runApp(MyApp());
 }
 

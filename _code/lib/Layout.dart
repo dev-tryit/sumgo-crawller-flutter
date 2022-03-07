@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:kdh_homepage/_common/util/LogUtil.dart';
 import 'package:kdh_homepage/_common/util/MediaQueryUtil.dart';
 import 'package:kdh_homepage/_common/util/PlatformUtil.dart';
 import 'package:kdh_homepage/page/KeywordAnalysisPage.dart';
 import 'package:kdh_homepage/page/RequestRemovalPage.dart';
-import 'package:kdh_homepage/widget/MyChart.dart';
-import 'package:kdh_homepage/util/MyColors.dart';
 import 'package:kdh_homepage/util/MyComponents.dart';
 import 'package:kdh_homepage/util/MyImage.dart';
 import 'package:kdh_homepage/widget/MyHeader.dart';
@@ -66,10 +62,13 @@ class _LayoutState extends State<Layout> {
 
   Widget desktop() {
     return Center(
-      child: SizedBox(
-        width: 350,
-        height: double.infinity,
-        child: c.body(),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minWidth: 350),
+        child: SizedBox(
+          width: 350,
+          height: double.infinity,
+          child: c.body(),
+        ),
       ),
     );
   }
