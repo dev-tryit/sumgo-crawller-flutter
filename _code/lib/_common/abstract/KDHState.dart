@@ -48,7 +48,7 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
     if (_whenBuildCalledFirst) {
       _whenBuildCalledFirst = false;
       Future(() async {
-        await prepareRebuild();
+        await _prepareRebuild();
       });
     }
   }
@@ -85,11 +85,11 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
   }
 
 
-  Future<void> prepareRebuild() async {
+  Future<void> _prepareRebuild() async {
     // LogUtil.debug("super.prepareRebuild");
 
     if (_widgetListToGetSize.isNotEmpty) {
-      getSizeOfWidgetList();
+      _getSizeOfWidgetList();
     }
 
     await onLoad();
@@ -106,7 +106,7 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
   //widgetToBuild를 채우고, rebuild();
   void mustRebuild();
 
-  void getSizeOfWidgetList() {
+  void _getSizeOfWidgetList() {
     widgetMap.clear();
     for (var e in _widgetListToGetSize) {
       e.calculateSize();

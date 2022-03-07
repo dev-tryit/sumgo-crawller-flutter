@@ -51,9 +51,7 @@ class _AuthPageState extends KDHState<AuthPage> {
               inputBox(
                 label: "휴대 전화번호",
                 trailing: "인증 요청",
-                onTrailingTap: () {
-                  print("a");
-                },
+                onTrailingTap: s.sendCertificationNumber,
               ),
               const SizedBox(height: 30),
               inputBox(
@@ -105,23 +103,23 @@ class _AuthPageState extends KDHState<AuthPage> {
               children: [
                 const Expanded(child: TextField()),
                 ...trailing != null
-                ? [
-                const SizedBox(width: 8),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 6),
-                  child: InkWell(
-                    onTap: onTrailingTap,
-                    child: Text(
-                      trailing,
-                      style: GoogleFonts.gothicA1(
-                          color: MyColors.deepBlue,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ]
-                  : [],
+                    ? [
+                        const SizedBox(width: 8),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 6),
+                          child: InkWell(
+                            onTap: onTrailingTap,
+                            child: Text(
+                              trailing,
+                              style: GoogleFonts.gothicA1(
+                                  color: MyColors.deepBlue,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ]
+                    : [],
               ],
             ),
           ],
@@ -137,4 +135,6 @@ class _AuthPageState extends KDHState<AuthPage> {
   Future<void> onLoad() async {}
 }
 
-class AuthPageService {}
+class AuthPageService {
+  void sendCertificationNumber() {}
+}
