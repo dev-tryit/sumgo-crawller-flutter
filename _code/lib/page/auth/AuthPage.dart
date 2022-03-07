@@ -13,7 +13,8 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends KDHState<AuthPage> {
-  final s = AuthPageService();
+  late final AuthPageService s;
+  late final AuthPageComponent c;
 
   @override
   bool isPage() => true;
@@ -22,65 +23,76 @@ class _AuthPageState extends KDHState<AuthPage> {
   List<WidgetToGetSize> makeWidgetListToGetSize() => [];
 
   @override
+  Future<void> onLoad() async {
+    s = AuthPageService(this);
+    c = AuthPageComponent(this);
+  }
+
+  @override
   void mustRebuild() {
-    widgetToBuild = () {
-      return Scaffold(
-        bottomSheet: Container(
-          height: 82,
-          padding: const EdgeInsets.only(left: 32, right: 32, bottom: 32),
-          child: SizedBox.expand(
-            child: ElevatedButton(
-              child: const Text("로그인"),
-              style: ElevatedButton.styleFrom(primary: MyColors.deepBlue),
-              onPressed: () {},
-            ),
+    widgetToBuild = () => c.body();
+    rebuild();
+  }
+
+  @override
+  Future<void> afterBuild() async {}
+}
+
+class AuthPageComponent {
+  TValue<double> checkCertificationNumberOpacity = TValue(0.0);
+  TValue<double> passwordOpacity = TValue(0.0);
+  TValue<double> passwordConfirmOpacity = TValue(0.0);
+
+  _AuthPageState state;
+
+  AuthPageComponent(this.state);
+
+  AuthPageService get s => state.s;
+
+  Widget body() {
+    return Scaffold(
+      bottomSheet: Container(
+        height: 82,
+        padding: const EdgeInsets.only(left: 32, right: 32, bottom: 32),
+        child: SizedBox.expand(
+          child: ElevatedButton(
+            child: const Text("로그인"),
+            style: ElevatedButton.styleFrom(primary: MyColors.deepBlue),
+            onPressed: () {},
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 36),
-              Text(
-                "숨고 매니저",
-                style: GoogleFonts.blackHanSans(
-                  fontSize: 35,
-                  color: MyColors.deepBlue,
-                ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 36),
+            Text(
+              "숨고 매니저",
+              style: GoogleFonts.blackHanSans(
+                fontSize: 35,
+                color: MyColors.deepBlue,
               ),
-              const SizedBox(height: 69),
-              inputBox(
-                label: "휴대 전화번호",
-                trailing: "인증 요청",
-                onTrailingTap: s.sendCertificationNumber,
-              ),
-              const SizedBox(height: 30),
-              inputBox(
+            ),
+            const SizedBox(height: 69),
+            inputBox(
+              label: "휴대 전화번호",
+              trailing: "인증 요청",
+              onTrailingTap: s.sendCertificationNumber,
+            ),
+            const SizedBox(height: 30),
+            inputBox(
                 label: "인증번호",
                 trailing: "인증 확인",
-                onTrailingTap: () {
-                  print("a");
-                },
-              ),
-              const SizedBox(height: 30),
-              inputBox(
-                label: "비밀번호",
-                onTrailingTap: () {
-                  print("a");
-                },
-              ),
-              const SizedBox(height: 30),
-              inputBox(
-                label: "비밀번호 확인",
-                onTrailingTap: () {
-                  print("a");
-                },
-              ),
-            ],
-          ),
+                onTrailingTap: s.checkCertificationNumber,
+                opacity: checkCertificationNumberOpacity),
+            const SizedBox(height: 30),
+            inputBox(label: "비밀번호", opacity: passwordOpacity),
+            const SizedBox(height: 30),
+            inputBox(label: "비밀번호 확인", opacity: passwordConfirmOpacity),
+          ],
         ),
-      );
-    };
-    rebuild();
+      ),
+    );
   }
 
   Widget inputBox({
@@ -90,8 +102,8 @@ class _AuthPageState extends KDHState<AuthPage> {
     TValue<double>? opacity,
   }) {
     return AnimatedOpacity(
-      opacity: opacity?.v ?? 0,
-      duration: const Duration(seconds: 2),
+      opacity: opacity?.v ?? 1,
+      duration: const Duration(milliseconds: 1200),
       child: Padding(
         padding: const EdgeInsets.only(left: 32, right: 32),
         child: Column(
@@ -127,14 +139,28 @@ class _AuthPageState extends KDHState<AuthPage> {
       ),
     );
   }
-
-  @override
-  Future<void> afterBuild() async {}
-
-  @override
-  Future<void> onLoad() async {}
 }
 
 class AuthPageService {
-  void sendCertificationNumber() {}
+  _AuthPageState state;
+
+  AuthPageService(this.state);
+
+  AuthPageComponent get c => state.c;
+
+  void sendCertificationNumber() {
+    //인증번호 보내기
+
+    //시간 세기
+
+    c.checkCertificationNumberOpacity.v = 1.0;
+    state.rebuild();
+  }
+
+  void checkCertificationNumber() {
+    //TODO: 로직 넣기 필요
+    c.passwordOpacity.v = 1.0;
+    c.passwordConfirmOpacity.v = 1.0; //회원가입이면 같이 보여줌
+    state.rebuild();
+  }
 }
