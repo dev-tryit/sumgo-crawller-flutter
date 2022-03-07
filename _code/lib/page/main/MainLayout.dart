@@ -58,6 +58,9 @@ class _MainLayoutState extends KDHState<MainLayout> {
   Widget mobile() {
     return c.body();
   }
+
+  @override
+  Future<void> afterBuild() async {}
 }
 
 class MainLayoutComponent {

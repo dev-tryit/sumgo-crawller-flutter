@@ -44,16 +44,19 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    // LogUtil.debug("super.build");
-    screenSize = MediaQueryUtil.getScreenSize(context);
-
+  void didChangeDependencies() {
     if (_whenBuildCalledFirst) {
       _whenBuildCalledFirst = false;
       Future(() async {
-        await afterBuild();
+        await prepareRebuild();
       });
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // LogUtil.debug("super.build");
+    screenSize = MediaQueryUtil.getScreenSize(context);
 
     bool existWidgetToBuild = widgetToBuild != null;
     if (existWidgetToBuild) {
@@ -81,10 +84,6 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
     return returnWidget;
   }
 
-  Future<void> afterBuild() async {
-    // LogUtil.debug("super.afterBuild");
-    await prepareRebuild();
-  }
 
   Future<void> prepareRebuild() async {
     // LogUtil.debug("super.prepareRebuild");
@@ -92,12 +91,17 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
     if (_widgetListToGetSize.isNotEmpty) {
       getSizeOfWidgetList();
     }
+
     await onLoad();
 
     mustRebuild();
+
+    await afterBuild();
   }
 
   Future<void> onLoad();
+
+  Future<void> afterBuild();
 
   //widgetToBuild를 채우고, rebuild();
   void mustRebuild();
