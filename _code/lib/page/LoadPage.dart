@@ -3,7 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kdh_homepage/_common/abstract/KDHStatelessWidget.dart';
 import 'package:kdh_homepage/_common/util/PageUtil.dart';
 import 'package:kdh_homepage/_common/util/PlatformUtil.dart';
+import 'package:kdh_homepage/page/auth/AuthPage.dart';
 import 'package:kdh_homepage/page/main/MainLayout.dart';
+import 'package:kdh_homepage/util/MyAuthUtil.dart';
 import 'package:kdh_homepage/util/MyColors.dart';
 
 class LoadPage extends KDHStatelessWidget {
@@ -25,12 +27,8 @@ class LoadPage extends KDHStatelessWidget {
   @override
   Future<void> afterBuild(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 3));
-
-    //TODO: 로그인 되어 있으면,
-    PageUtil.movePage(context, MainLayout());
-
-    //TODO: 로그인 안되어 있으면,
-    // PageUtil.movePage(context, AuthPage());
+    PageUtil.movePage(
+        context, await MyAuthUtil.isLogin() ? MainLayout() : AuthPage());
   }
 }
 

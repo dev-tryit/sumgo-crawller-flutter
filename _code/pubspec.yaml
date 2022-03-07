@@ -27,7 +27,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-    flutter:
+  flutter:
         sdk: flutter
 
 
@@ -56,6 +56,7 @@ dependencies:
     sign_button: ^2.0.2 # 동그란 signButton
     flutter_signin_button: ^2.0.0 # 네모난 signButton
     firedart: ^0.9.0+1
+    firebase_auth: ^3.3.9
 
     #https://pub.dev/packages/firedart windows에서 firebase store 사용하기
     #another_transformer_page_view
