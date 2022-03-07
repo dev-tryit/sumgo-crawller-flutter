@@ -53,6 +53,8 @@ dependencies:
     firebase_core: ^1.13.1
     cloud_firestore: ^3.1.10
     puppeteer: ^2.6.0
+    sign_button: ^2.0.2 # 동그란 signButton
+    flutter_signin_button: ^2.0.0 # 네모난 signButton
 
     #https://pub.dev/packages/firedart windows에서 firebase store 사용하기
     #another_transformer_page_view
