@@ -24,6 +24,8 @@ class LoadPage extends KDHStatelessWidget {
 
   @override
   Future<void> afterBuild(BuildContext context) async {
+    await Future.delayed(const Duration(seconds: 3));
+
     //TODO: 로그인 되어 있으면,
     PageUtil.movePage(context, MainLayout());
 
