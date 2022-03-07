@@ -40,7 +40,7 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
   List<WidgetToGetSize> makeWidgetListToGetSize();
 
   Widget loadingWidget() {
-    return MyComponents.loadingWidget();
+    return Center(child: MyComponents.loadingWidget());
   }
 
   @override
