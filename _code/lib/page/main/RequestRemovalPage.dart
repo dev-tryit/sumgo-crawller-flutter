@@ -14,12 +14,12 @@ class RequestRemovalPage extends StatefulWidget {
 }
 
 class _RequestRemovalPageState extends State<RequestRemovalPage> {
-  late final RequestRemovalPageService service;
+  late final RequestRemovalPageService s;
 
   @override
   void initState() {
     super.initState();
-    service = RequestRemovalPageService(this);
+    s = RequestRemovalPageService(this);
   }
 
   @override
@@ -41,8 +41,7 @@ class _RequestRemovalPageState extends State<RequestRemovalPage> {
               cardListTile("[제외] Flutter", isPlusIcon: false),
               cardListTile("[제외] Flutter", isPlusIcon: false),
             ],
-            bottomButton:
-                MyWhiteButton("요청 정리하기", onPressed: service.removeRequests),
+            bottomButton: MyWhiteButton("요청 정리하기", onPressed: s.removeRequests),
           ),
         ],
       ),

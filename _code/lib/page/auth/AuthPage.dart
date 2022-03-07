@@ -13,6 +13,8 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends KDHState<AuthPage> {
+  final s = AuthPageService();
+
   @override
   bool isPage() => true;
 
@@ -103,23 +105,23 @@ class _AuthPageState extends KDHState<AuthPage> {
               children: [
                 const Expanded(child: TextField()),
                 ...trailing != null
-                    ? [
-                        const SizedBox(width: 8),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 6),
-                          child: InkWell(
-                            onTap: onTrailingTap,
-                            child: Text(
-                              trailing,
-                              style: GoogleFonts.gothicA1(
-                                  color: MyColors.deepBlue,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                      ]
-                    : [],
+                ? [
+                const SizedBox(width: 8),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 6),
+                  child: InkWell(
+                    onTap: onTrailingTap,
+                    child: Text(
+                      trailing,
+                      style: GoogleFonts.gothicA1(
+                          color: MyColors.deepBlue,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ]
+                  : [],
               ],
             ),
           ],
@@ -134,3 +136,5 @@ class _AuthPageState extends KDHState<AuthPage> {
   @override
   Future<void> onLoad() async {}
 }
+
+class AuthPageService {}

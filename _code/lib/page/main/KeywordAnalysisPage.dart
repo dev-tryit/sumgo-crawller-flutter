@@ -18,13 +18,13 @@ class KeywordAnalysisPage extends StatefulWidget {
 }
 
 class _KeywordAnalysisPageState extends State<KeywordAnalysisPage> {
-  late final KeywordAnalysisPageService service;
+  late final KeywordAnalysisPageService s;
   String errorMessage = "";
 
   @override
   void initState() {
     super.initState();
-    service = KeywordAnalysisPageService(this);
+    s = KeywordAnalysisPageService(this);
   }
 
   @override
@@ -107,7 +107,7 @@ class _KeywordAnalysisPageState extends State<KeywordAnalysisPage> {
                     MyRedButton(
                       "생성",
                       useShadow: false,
-                      onPressed: () => service.addAnalysisItem(
+                      onPressed: () => s.addAnalysisItem(
                         titleController.text.trim(),
                         keywordController.text.trim(),
                         setState,
