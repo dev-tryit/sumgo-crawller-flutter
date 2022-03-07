@@ -47,13 +47,10 @@ class _MainLayoutState extends KDHState<MainLayout> {
 
   Widget desktop() {
     return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(minWidth: 350),
-        child: SizedBox(
-          width: 350,
-          height: double.infinity,
-          child: c.body(),
-        ),
+      child: SizedBox(
+        width: 350,
+        height: double.infinity,
+        child: c.body(),
       ),
     );
   }
