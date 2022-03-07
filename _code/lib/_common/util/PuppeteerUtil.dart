@@ -16,7 +16,7 @@ class PuppeteerUtil {
       bool isConnect = false}) async {
     if (isConnect) {
       //크롬 바로가기 만들고, 거기에 "C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222 -- "%1" 형태로 쓰면 됨.
-      browser = await puppeteer.connect(browserUrl: 'http://127.0.0.1:9222');
+      browser = await puppeteer.connect(browserUrl: 'http://localhost:9222');
     } else {
       browser = await puppeteer.launch(
         headless: headless,
