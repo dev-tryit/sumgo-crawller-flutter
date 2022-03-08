@@ -152,7 +152,6 @@ class AuthPageComponent {
 }
 
 class AuthPageService {
-  bool sendEmail = false;
 
   _AuthPageState state;
 
@@ -161,9 +160,6 @@ class AuthPageService {
   AuthPageComponent get c => state.c;
 
   void sendCertificationNumber() async {
-    if(sendEmail) return;
-    sendEmail = true;
-
     String email = c.emailController.text;
 
     bool haveAlreadyEmail = false;

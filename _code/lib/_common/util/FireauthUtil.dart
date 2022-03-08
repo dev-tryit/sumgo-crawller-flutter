@@ -3,6 +3,7 @@ import 'package:kdh_homepage/_common/model/exception/CommonException.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
 
 class FireauthUtil {
+  static bool _checkSendEmail = false;
   // static User? _user;
   // static bool _setAuthStateChanges = false;
   static FirebaseAuth get _instance => FirebaseAuth.instance;
@@ -62,7 +63,14 @@ class FireauthUtil {
     }
   }
 
+  static bool checkSendEmail(){
+    return _checkSendEmail;
+  }
+
   static Future<void> sendEmailVerification() async {
+    if(_checkSendEmail) return;
+    _checkSendEmail = true;
+
     User? user = getUser();
     if (user == null) {
       LogUtil.error("해당 유저로 회원가입이 필요합니다.");
