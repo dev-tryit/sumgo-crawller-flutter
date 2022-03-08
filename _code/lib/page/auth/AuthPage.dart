@@ -55,6 +55,8 @@ class AuthPageComponent {
   String? nextButtonText;
   Color emailValidationColor = MyColors.deepBlue;
 
+  double passwordOpacity = 0;
+
   AuthPageComponent(this.state);
 
   AuthPageService get s => state.s;
@@ -64,11 +66,22 @@ class AuthPageComponent {
 
     List<Widget> elementList = [];
     if (authMode == AuthMode.LOGIN) {
+      //TODO: 로그인 코드 참고하여 ,EasyFade 위젯 만들기
+      if(passwordOpacity == 0) {
+        Timer(const Duration(milliseconds: 500), () {
+          passwordOpacity = 1;
+          state.rebuild();
+        });
+      }
       elementList.addAll([
         const SizedBox(height: 30),
-        inputBox(
-          label: "비밀번호",
-          onChanged: (value) => _formKey.currentState?.validate(),
+        AnimatedOpacity(
+          opacity: passwordOpacity,
+          duration: const Duration(milliseconds: 800),
+          child: inputBox(
+            label: "비밀번호",
+            onChanged: (value) => _formKey.currentState?.validate(),
+          ),
         ),
       ]);
     } else if (authMode == AuthMode.REGISTER) {
