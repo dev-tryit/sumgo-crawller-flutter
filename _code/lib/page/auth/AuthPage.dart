@@ -84,6 +84,7 @@ class AuthPageComponent {
           trailing: "인증 확인",
           onTrailingTap: s.checkCertificationNumber,
           controller: certificationNumberController,
+          keyboardType: TextInputType.number,
           onChanged: (value) => _formKey.currentState?.validate(),
         ),
       ]);
@@ -223,7 +224,7 @@ class AuthPageService {
   void sendEmailVerification() async {
     await MyComponents.showLoadingDialog(context);
     String email = c.emailController.text.trim();
-    c.authMode = await MyAuthUtil.sendEmailVerification(email: email);
+    c.authMode = await MyAuthUtil.verifyBeforeUpdateEmail(email: email);
     //LOGIN이면,, 인증요청 글자 삭제 후에, 로그인 글자로 바꿈.
     //VERIFY_EMAIL이면, 인증확인을 위한 타이머 작동.
     await MyComponents.dismissLoadingDialog();

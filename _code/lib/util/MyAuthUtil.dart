@@ -13,19 +13,13 @@ class MyAuthUtil {
     return (user != null) && (user.emailVerified);
   }
 
-  static Future<AuthMode> sendEmailVerification({required String email}) async {
+  static Future<AuthMode> verifyBeforeUpdateEmail({required String email}) async {
     try {
-      await FireauthUtil.loginAnonymously();
-    } on CommonException catch (e) {
-      LogUtil.error("예상치 못한 에러 발생 ${e.code}");
-      return AuthMode.SEND_EMAIL;
-    }
-
-    try {
-      await FireauthUtil.sendEmailVerification(email: email);
+      await FireauthUtil.verifyBeforeUpdateEmail(email: email);
       return AuthMode.NEED_VERIFICATION;
     }
     on CommonException catch(e){
+      LogUtil.warn("이메일 업데이트 에러 : $e");
       return AuthMode.LOGIN;
     }
   }
