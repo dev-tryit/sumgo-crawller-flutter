@@ -48,7 +48,7 @@ class AuthPageComponent {
   TValue<double> passwordOpacity = TValue(0.0);
   TValue<double> passwordConfirmOpacity = TValue(0.0);
 
-  final emailController = TextEditingController();
+  final emailController = TextEditingController(text:"imkim189371@gmail.com");
   final certificationNumberController = TextEditingController();
 
   _AuthPageState state;
@@ -123,7 +123,7 @@ class AuthPageComponent {
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Expanded(child: TextField(controller: controller)),
+                Expanded(child: TextField(controller: controller, )),
                 ...trailing != null
                     ? [
                         const SizedBox(width: 8),
@@ -162,11 +162,10 @@ class AuthPageService {
     String email = c.emailController.text;
 
     try {
-      FireauthUtil.register(email: email, password: UUIDUtil.makeUuid());
+      await FireauthUtil.register(email: email, password: UUIDUtil.makeUuid());
     } on CommonException catch (e) {
-      LogUtil.error("회원가입 중 에러 발생 $e");
       if (e.code != "email-already-in-use") {
-        LogUtil.error("예상치 못한 오류에 의해 오류 발생");
+        LogUtil.error("예상치 못한 에러 발생 ${e.code}");
         return;
       }
     }

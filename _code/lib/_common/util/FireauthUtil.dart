@@ -3,6 +3,7 @@ import 'package:kdh_homepage/_common/model/exception/CommonException.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
 
 class FireauthUtil {
+  // static User? _user;
   // static bool _setAuthStateChanges = false;
   static FirebaseAuth get _instance => FirebaseAuth.instance;
 
@@ -38,6 +39,7 @@ class FireauthUtil {
 
   static Future<void> register(
       {required String email, required String password}) async {
+    //회원가입했을 때, _instance.currentUser로 유저를 알 수 없음.
     try {
       await _instance.createUserWithEmailAndPassword(
           email: email, password: password);
