@@ -3,7 +3,6 @@ import 'package:kdh_homepage/_common/model/exception/CommonException.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
 
 class FireauthUtil {
-  static bool _checkSendEmail = false;
   // static User? _user;
   // static bool _setAuthStateChanges = false;
   static FirebaseAuth get _instance => FirebaseAuth.instance;
@@ -83,21 +82,19 @@ class FireauthUtil {
     }
   }
 
-  static bool checkSendEmail(){
-    return _checkSendEmail;
-  }
 
   static Future<void> sendEmailVerification({required String email}) async {
-    if(_checkSendEmail) return;
-    _checkSendEmail = true;
-
     User? user = getUser();
     if (user == null) {
       LogUtil.error("이메일을 보낼 유저가 없습니다.");
       return;
     }
 
-    await user.updateEmail(email);
+    try {
+      await user.updateEmail(email);
+    } on FirebaseAuthException catch (e) {
+      throw CommonException(message: "이미 ID가 있습니다", code: e.code);
+    }
     await user.sendEmailVerification();
   }
 

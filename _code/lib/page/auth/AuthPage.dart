@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kdh_homepage/_common/abstract/KDHState.dart';
 import 'package:kdh_homepage/_common/model/TValue.dart';
@@ -10,7 +12,10 @@ import 'package:kdh_homepage/_common/model/exception/CommonException.dart';
 import 'package:kdh_homepage/_common/util/FireauthUtil.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
 import 'package:kdh_homepage/_common/util/UUIDUtil.dart';
+import 'package:kdh_homepage/util/MyAuthUtil.dart';
 import 'package:kdh_homepage/util/MyColors.dart';
+import 'package:kdh_homepage/util/MyComponents.dart';
+
 
 class AuthPage extends StatefulWidget {
   @override
@@ -44,20 +49,68 @@ class _AuthPageState extends KDHState<AuthPage> {
 }
 
 class AuthPageComponent {
-  TValue<double> checkCertificationNumberOpacity = TValue(0.0);
-  TValue<double> passwordOpacity = TValue(0.0);
-  TValue<double> passwordConfirmOpacity = TValue(0.0);
+  final _formKey = GlobalKey<FormState>();
 
-  final emailController = TextEditingController(text:"imkim189371@gmail.com");
+  TValue<double> checkCertificationNumberOpacity = TValue(0.0);
+
+  final emailController = TextEditingController(text: "imkim189371@gmail.com");
   final certificationNumberController = TextEditingController();
+  AuthMode authMode = AuthMode.SEND_EMAIL;
 
   _AuthPageState state;
+
 
   AuthPageComponent(this.state);
 
   AuthPageService get s => state.s;
 
   Widget body() {
+    print("body authMode:$authMode");
+    List<Widget> elementList = [];
+    if(authMode == AuthMode.LOGIN) {
+      elementList.addAll([
+        const SizedBox(height: 30),
+        inputBox(
+          label: "비밀번호",
+          onChanged: (value) => _formKey.currentState?.validate(),
+        ),
+      ]);
+    }
+    else if(authMode == AuthMode.NEED_VERIFICATION) {
+      elementList.addAll([
+        const SizedBox(height: 30),
+        inputBox(
+          label: "인증번호",
+          trailing: "인증 확인",
+          onTrailingTap: s.checkCertificationNumber,
+          controller: certificationNumberController,
+          onChanged: (value) => _formKey.currentState?.validate(),
+        ),
+      ]);
+    }
+    else if(authMode == AuthMode.REGISTER) {
+      elementList.addAll([
+        const SizedBox(height: 30),
+        inputBox(
+          label: "인증번호",
+          trailing: "인증 확인",
+          onTrailingTap: s.checkCertificationNumber,
+          controller: certificationNumberController,
+          onChanged: (value) => _formKey.currentState?.validate(),
+        ),
+        const SizedBox(height: 30),
+        inputBox(
+          label: "비밀번호",
+          onChanged: (value) => _formKey.currentState?.validate(),
+        ),
+        const SizedBox(height: 30),
+        inputBox(
+          label: "비밀번호 확인",
+          onChanged: (value) => _formKey.currentState?.validate(),
+        ),
+      ]);
+    }
+
     return Scaffold(
       bottomSheet: Container(
         height: 82,
@@ -70,35 +123,36 @@ class AuthPageComponent {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 36),
-            Text(
-              "숨고 매니저",
-              style: GoogleFonts.blackHanSans(
-                fontSize: 35,
-                color: MyColors.deepBlue,
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 36),
+              Text(
+                "숨고 매니저",
+                style: GoogleFonts.blackHanSans(
+                  fontSize: 35,
+                  color: MyColors.deepBlue,
+                ),
               ),
-            ),
-            const SizedBox(height: 69),
-            inputBox(
+              const SizedBox(height: 69),
+              inputBox(
                 label: "이메일",
                 trailing: "인증 요청",
-                onTrailingTap: s.sendCertificationNumber,
-                controller: emailController),
-            const SizedBox(height: 30),
-            inputBox(
-                label: "인증번호",
-                trailing: "인증 확인",
-                onTrailingTap: s.checkCertificationNumber,
-                opacity: checkCertificationNumberOpacity,
-                controller: certificationNumberController),
-            const SizedBox(height: 30),
-            inputBox(label: "비밀번호", opacity: passwordOpacity),
-            const SizedBox(height: 30),
-            inputBox(label: "비밀번호 확인", opacity: passwordConfirmOpacity),
-          ],
+                onTrailingTap: s.sendEmailVerification,
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                validator: (String? value) {
+                  if (value == null || !EmailValidator.validate(value)) {
+                    return "이메일 형식이 아닙니다.";
+                  }
+                },
+                onChanged: (value) => _formKey.currentState?.validate(),
+              ),
+              ...elementList
+            ],
+          ),
         ),
       ),
     );
@@ -108,11 +162,13 @@ class AuthPageComponent {
     required String label,
     String? trailing,
     GestureTapCallback? onTrailingTap,
-    TValue<double>? opacity,
     TextEditingController? controller,
+    TextInputType? keyboardType,
+    FormFieldValidator<String>? validator,
+    ValueChanged<String>? onChanged,
   }) {
     return AnimatedOpacity(
-      opacity: opacity?.v ?? 1,
+      opacity: 1.0,
       duration: const Duration(milliseconds: 1200),
       child: Padding(
         padding: const EdgeInsets.only(left: 32, right: 32),
@@ -121,14 +177,21 @@ class AuthPageComponent {
           children: [
             Text(label),
             Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(child: TextField(controller: controller, )),
+                Expanded(
+                  child: TextFormField(
+                    controller: controller,
+                    keyboardType: keyboardType,
+                    validator: validator,
+                    onChanged: onChanged,
+                  ),
+                ),
                 ...trailing != null
                     ? [
                         const SizedBox(width: 8),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 6),
+                          padding: const EdgeInsets.only(top: 25),
                           child: InkWell(
                             onTap: onTrailingTap,
                             child: Text(
@@ -152,32 +215,24 @@ class AuthPageComponent {
 }
 
 class AuthPageService {
-
   _AuthPageState state;
-
   AuthPageService(this.state);
-
   AuthPageComponent get c => state.c;
+  BuildContext get context => state.context;
 
-  void sendCertificationNumber() async {
-    try {
-      await FireauthUtil.loginAnonymously();
-    } on CommonException catch (e) {
-      LogUtil.error("예상치 못한 에러 발생 ${e.code}");
-      return;
-    }
+  void sendEmailVerification() async {
+    await MyComponents.showLoadingDialog(context);
+    String email = c.emailController.text.trim();
+    c.authMode = await MyAuthUtil.sendEmailVerification(email: email);
+    //LOGIN이면,, 인증요청 글자 삭제 후에, 로그인 글자로 바꿈.
+    //VERIFY_EMAIL이면, 인증확인을 위한 타이머 작동.
+    await MyComponents.dismissLoadingDialog();
 
-    String email = c.emailController.text;
-    await FireauthUtil.sendEmailVerification(email:email);
-
-    c.checkCertificationNumberOpacity.v = 1.0;
     state.rebuild();
   }
 
   void checkCertificationNumber() {
-    //TODO: 로직 넣기 필요
-    c.passwordOpacity.v = 1.0;
-    c.passwordConfirmOpacity.v = 1.0; //회원가입이면 같이 보여줌
+    //TODO:인증확인면 REGISTER 모드로 변경시킴.
     state.rebuild();
   }
 }

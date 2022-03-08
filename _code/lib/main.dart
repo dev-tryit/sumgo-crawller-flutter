@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
         child = MyComponents.easyLoadingBuilder()(context, child);
         return child;
       },
+      initialRoute: "/",
       home: LoadPage(),
     );
   }
