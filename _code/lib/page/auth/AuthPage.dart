@@ -164,6 +164,7 @@ class AuthPageService {
     try {
       FireauthUtil.register(email: email, password: UUIDUtil.makeUuid());
     } on CommonException catch (e) {
+      LogUtil.error("회원가입 중 에러 발생 $e");
       if (e.code != "email-already-in-use") {
         LogUtil.error("예상치 못한 오류에 의해 오류 발생");
         return;
