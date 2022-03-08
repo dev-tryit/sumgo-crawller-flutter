@@ -69,6 +69,7 @@ class FireauthUtil {
       return;
     }
 
+    await _instance.setLanguageCode('ko');
     await user.sendEmailVerification();
   }
 

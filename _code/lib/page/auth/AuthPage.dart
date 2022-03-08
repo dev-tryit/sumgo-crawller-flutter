@@ -152,6 +152,8 @@ class AuthPageComponent {
 }
 
 class AuthPageService {
+  bool sendEmail = false;
+
   _AuthPageState state;
 
   AuthPageService(this.state);
@@ -159,20 +161,27 @@ class AuthPageService {
   AuthPageComponent get c => state.c;
 
   void sendCertificationNumber() async {
+    if(sendEmail) return;
+    sendEmail = true;
+
     String email = c.emailController.text;
 
+    bool haveAlreadyEmail = false;
     try {
       await FireauthUtil.register(email: email, password: UUIDUtil.makeUuid());
     } on CommonException catch (e) {
-      if (e.code != "email-already-in-use") {
+      if (e.code == "email-already-in-use") {
+        haveAlreadyEmail = true;
+      }
+      else {
         LogUtil.error("예상치 못한 에러 발생 ${e.code}");
         return;
       }
     }
 
-    User? user = FireauthUtil.getUser();
-    if (user == null) {
-      LogUtil.error("유저가 없음 이유를 모르겠음.");
+    if(haveAlreadyEmail) {
+      //로그인 시키기
+      LogUtil.info("로그인하도록 UI 컨트롤");
       return;
     }
 
