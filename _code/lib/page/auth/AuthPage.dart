@@ -3,19 +3,13 @@ import 'dart:async';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kdh_homepage/_common/abstract/KDHState.dart';
-import 'package:kdh_homepage/_common/model/TValue.dart';
 import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
-import 'package:kdh_homepage/_common/model/exception/CommonException.dart';
-import 'package:kdh_homepage/_common/util/FireauthUtil.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
-import 'package:kdh_homepage/_common/util/UUIDUtil.dart';
 import 'package:kdh_homepage/util/MyAuthUtil.dart';
 import 'package:kdh_homepage/util/MyColors.dart';
 import 'package:kdh_homepage/util/MyComponents.dart';
-
 
 class AuthPage extends StatefulWidget {
   @override
@@ -51,23 +45,24 @@ class _AuthPageState extends KDHState<AuthPage> {
 class AuthPageComponent {
   final _formKey = GlobalKey<FormState>();
 
-  TValue<double> checkCertificationNumberOpacity = TValue(0.0);
-
   final emailController = TextEditingController(text: "imkim189371@gmail.com");
   final certificationNumberController = TextEditingController();
   AuthMode authMode = AuthMode.SEND_EMAIL;
 
   _AuthPageState state;
 
+  String? emailValidationText = "인증 요청";
+  String? nextButtonText;
 
   AuthPageComponent(this.state);
 
   AuthPageService get s => state.s;
 
   Widget body() {
-    print("body authMode:$authMode");
+    LogUtil.debug("body authMode:$authMode");
+
     List<Widget> elementList = [];
-    if(authMode == AuthMode.LOGIN) {
+    if (authMode == AuthMode.LOGIN) {
       elementList.addAll([
         const SizedBox(height: 30),
         inputBox(
@@ -75,30 +70,8 @@ class AuthPageComponent {
           onChanged: (value) => _formKey.currentState?.validate(),
         ),
       ]);
-    }
-    else if(authMode == AuthMode.NEED_VERIFICATION) {
+    } else if (authMode == AuthMode.REGISTER) {
       elementList.addAll([
-        const SizedBox(height: 30),
-        inputBox(
-          label: "인증번호",
-          trailing: "인증 확인",
-          onTrailingTap: s.checkCertificationNumber,
-          controller: certificationNumberController,
-          keyboardType: TextInputType.number,
-          onChanged: (value) => _formKey.currentState?.validate(),
-        ),
-      ]);
-    }
-    else if(authMode == AuthMode.REGISTER) {
-      elementList.addAll([
-        const SizedBox(height: 30),
-        inputBox(
-          label: "인증번호",
-          trailing: "인증 확인",
-          onTrailingTap: s.checkCertificationNumber,
-          controller: certificationNumberController,
-          onChanged: (value) => _formKey.currentState?.validate(),
-        ),
         const SizedBox(height: 30),
         inputBox(
           label: "비밀번호",
@@ -113,17 +86,23 @@ class AuthPageComponent {
     }
 
     return Scaffold(
-      bottomSheet: Container(
-        height: 82,
-        padding: const EdgeInsets.only(left: 32, right: 32, bottom: 32),
-        child: SizedBox.expand(
-          child: ElevatedButton(
-            child: const Text("로그인"),
-            style: ElevatedButton.styleFrom(primary: MyColors.deepBlue),
-            onPressed: () {},
-          ),
-        ),
-      ),
+      bottomSheet: nextButtonText != null
+          ? AnimatedOpacity(
+              opacity: 1.0,
+              duration: const Duration(milliseconds: 1500),
+              child: Container(
+                height: 82,
+                padding: const EdgeInsets.only(left: 32, right: 32, bottom: 32),
+                child: SizedBox.expand(
+                  child: ElevatedButton(
+                    child: Text(nextButtonText!),
+                    style: ElevatedButton.styleFrom(primary: MyColors.deepBlue),
+                    onPressed: s.loginOrRegister,
+                  ),
+                ),
+              ),
+            )
+          : null,
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -140,7 +119,7 @@ class AuthPageComponent {
               const SizedBox(height: 69),
               inputBox(
                 label: "이메일",
-                trailing: "인증 요청",
+                trailing: emailValidationText,
                 onTrailingTap: s.sendEmailVerification,
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
@@ -148,6 +127,7 @@ class AuthPageComponent {
                   if (value == null || !EmailValidator.validate(value)) {
                     return "이메일 형식이 아닙니다.";
                   }
+                  return null;
                 },
                 onChanged: (value) => _formKey.currentState?.validate(),
               ),
@@ -217,23 +197,60 @@ class AuthPageComponent {
 
 class AuthPageService {
   _AuthPageState state;
+
   AuthPageService(this.state);
+
   AuthPageComponent get c => state.c;
+
   BuildContext get context => state.context;
 
   void sendEmailVerification() async {
-    await MyComponents.showLoadingDialog(context);
     String email = c.emailController.text.trim();
-    c.authMode = await MyAuthUtil.verifyBeforeUpdateEmail(email: email);
-    //LOGIN이면,, 인증요청 글자 삭제 후에, 로그인 글자로 바꿈.
-    //VERIFY_EMAIL이면, 인증확인을 위한 타이머 작동.
+
+    await MyComponents.showLoadingDialog(context);
+    if (c.authMode == AuthMode.NEED_VERIFICATION) {
+      User? user = await MyAuthUtil.loginWithEmail(email);
+      if (user?.emailVerified ?? false) {
+        c.authMode = AuthMode.REGISTER;
+        c.emailValidationText = null;
+        c.nextButtonText = "회원가입";
+      } else {
+        MyComponents.toastError(context, "이메일 인증이 필요합니다.");
+      }
+    } else {
+      c.authMode = await MyAuthUtil.verifyBeforeUpdateEmail(email: email);
+
+      switch (c.authMode) {
+        case AuthMode.NEED_VERIFICATION:
+          c.emailValidationText = "인증 확인";
+          c.nextButtonText = null;
+          break;
+        case AuthMode.LOGIN:
+          c.emailValidationText = null;
+          c.nextButtonText = "로그인";
+          break;
+        default:
+          c.emailValidationText = "인증 요청";
+          c.nextButtonText = "null";
+          break;
+      }
+    }
     await MyComponents.dismissLoadingDialog();
 
     state.rebuild();
   }
 
-  void checkCertificationNumber() {
-    //TODO:인증확인면 REGISTER 모드로 변경시킴.
-    state.rebuild();
+  void loginOrRegister() {
+    //TODO: 여기만 구현하면됨.
+    if (c.authMode == AuthMode.LOGIN) {
+
+    } else if (c.authMode == AuthMode.REGISTER) {
+
+    } else {
+      MyComponents.toastError(
+        context,
+        "loginOrRegister에 에러가 있습니다. 회원가입, 로그인 상태가 아닙니다.",
+      );
+    }
   }
 }

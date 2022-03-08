@@ -17,7 +17,7 @@ class MyCrawller {
     bool headless = false;
     headless = PlatformUtil.isComputer()
         ? false
-        : headless; //TODO: 데스크탑에서 headless면 동작 ㅇ나함.
+        : headless; //데스크탑에서 headless면 동작 안나함.
 
     await p.openBrowser(
       () async {

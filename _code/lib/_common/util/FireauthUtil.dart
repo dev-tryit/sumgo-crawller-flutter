@@ -3,15 +3,14 @@ import 'package:kdh_homepage/_common/model/exception/CommonException.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
 
 class FireauthUtil {
-  static bool haveEverInit = false;
+  static bool _haveEverInit = false;
 
   static FirebaseAuth get _instance => FirebaseAuth.instance;
 
   static Future<void> init() async {
-    if (!haveEverInit) {
-      haveEverInit = true;
-      //이메일 보낼 때 한국어로 보냄
-      await _instance.setLanguageCode('ko');
+    if (!_haveEverInit) {
+      _haveEverInit = true;
+      await _instance.setLanguageCode('ko'); //이메일 보낼 때 한국어로 보냄
 
       //setPersistence를 통해서, 웹의 경우, 로그인 유지를 시킬지, 세션에만 시킬지, 안시킬지 결정할 수 있다.
 
@@ -20,10 +19,10 @@ class FireauthUtil {
       //authStateChanges는 회원가입, 로그인, 로그아웃까지.
       //idTokenChanges는 authStateChanges + 토큰 변경까지. (ADMIN SDK에 의한것은 감지 X)
       //userChanges는 idTokenChanges는 + currentUser의 내용이 변경되는 함수가 호출될 때 (ADMIN SDK에 의한것은 감지 X)
-
-      _instance.idTokenChanges().listen((User? user) {
-        //변경사항 체크하는 곳이다. 절대, user를 주는곳이 아니라는 것을 알아야 한다.
-      });
+      //이 부분에서 이메일 인증을 체크할 수 없다.
+      // _instance.idTokenChanges().listen((User? user) {
+      //   //변경사항 체크하는 곳이다. 절대, user를 주는곳이 아니라는 것을 알아야 한다.
+      // });
     }
   }
 
@@ -31,9 +30,14 @@ class FireauthUtil {
     return _instance.currentUser;
   }
 
-  static Future<void> loginAnonymously() async {
+  static Future<User?> loginAnonymously({String? password}) async {
     try {
       await _instance.signInAnonymously();
+      User? user = getUser();
+      if (password != null) {
+        await user?.updatePassword(password);
+      }
+      return user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         throw CommonException(message: "비밀번호 형식이 안전하지 않습니다", code: e.code);
@@ -78,22 +82,7 @@ class FireauthUtil {
   }
 
   static Future<void> verifyBeforeUpdateEmail({required String email}) async {
-    Future<void> login() async {
-      try {
-        await FireauthUtil.loginAnonymously();
-      } on CommonException catch (e) {
-        LogUtil.error("loginAnonymously ${e.code}");
-      }
-    }
-
-    await login();
     User? user = getUser();
-    if (user != null) {
-      await user.delete();
-    }
-
-    await login();
-    user = getUser();
     if (user == null) {
       LogUtil.error("user is null");
       return;
@@ -102,23 +91,25 @@ class FireauthUtil {
     try {
       await user.verifyBeforeUpdateEmail(email);
     } on FirebaseAuthException catch (e) {
-      LogUtil.warn("verifyBeforeUpdateEmail ${e.code}");
       if (e.code == 'email-already-in-use') {
         throw CommonException(message: "이미 ID가 있습니다", code: e.code);
+      } else {
+        LogUtil.error("FireauthUtil.verifyBeforeUpdateEmail ${e.code}");
       }
     }
   }
 
-  static Future<void> login(
+  static Future<User?> loginWithEmail(
       {required String email, required String password}) async {
     try {
       await _instance.signInWithEmailAndPassword(
           email: email, password: password);
+      return getUser();
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'invalid-email') {
+      if (e.code == 'user-not-found') {
+        return null;
+      } else if (e.code == 'invalid-email') {
         throw CommonException(message: "이메일이 형식이 잘못되었습니다", code: e.code);
-      } else if (e.code == 'user-not-found') {
-        throw CommonException(message: "해당 유저가 없습니다.", code: e.code);
       } else if (e.code == 'wrong-password') {
         throw CommonException(message: "비밀번호가 틀렸습니다", code: e.code);
       } else if (e.code == 'too-many-requests') {
