@@ -53,6 +53,7 @@ class AuthPageComponent {
 
   String? emailValidationText = "인증 요청";
   String? nextButtonText;
+  Color emailValidationColor = MyColors.deepBlue;
 
   AuthPageComponent(this.state);
 
@@ -120,6 +121,7 @@ class AuthPageComponent {
               inputBox(
                 label: "이메일",
                 trailing: emailValidationText,
+                trailingColor: emailValidationColor,
                 onTrailingTap: s.sendEmailVerification,
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
@@ -142,54 +144,53 @@ class AuthPageComponent {
   Widget inputBox({
     required String label,
     String? trailing,
+    Color? trailingColor,
     GestureTapCallback? onTrailingTap,
     TextEditingController? controller,
     TextInputType? keyboardType,
     FormFieldValidator<String>? validator,
     ValueChanged<String>? onChanged,
   }) {
-    return AnimatedOpacity(
-      opacity: 1.0,
-      duration: const Duration(milliseconds: 1200),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 32, right: 32),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(label),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: controller,
-                    keyboardType: keyboardType,
-                    validator: validator,
-                    onChanged: onChanged,
-                  ),
+    return Padding(
+      padding: const EdgeInsets.only(left: 32, right: 32),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: TextFormField(
+                  controller: controller,
+                  keyboardType: keyboardType,
+                  validator: validator,
+                  onChanged: onChanged,
                 ),
-                ...trailing != null
-                    ? [
-                        const SizedBox(width: 8),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 25),
-                          child: InkWell(
-                            onTap: onTrailingTap,
-                            child: Text(
-                              trailing,
-                              style: GoogleFonts.gothicA1(
-                                  color: MyColors.deepBlue,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold),
+              ),
+              ...trailing != null
+                  ? [
+                      const SizedBox(width: 8),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 25),
+                        child: InkWell(
+                          onTap: onTrailingTap,
+                          child: Text(
+                            trailing,
+                            style: GoogleFonts.gothicA1(
+                                color: trailingColor ?? MyColors.deepBlue,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+
                             ),
                           ),
                         ),
-                      ]
-                    : [],
-              ],
-            ),
-          ],
-        ),
+                      ),
+                    ]
+                  : [],
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -223,6 +224,7 @@ class AuthPageService {
       switch (c.authMode) {
         case AuthMode.NEED_VERIFICATION:
           c.emailValidationText = "인증 확인";
+          c.emailValidationColor = MyColors.red;
           c.nextButtonText = null;
           break;
         case AuthMode.LOGIN:
@@ -231,6 +233,7 @@ class AuthPageService {
           break;
         default:
           c.emailValidationText = "인증 요청";
+          c.emailValidationColor = MyColors.deepBlue;
           c.nextButtonText = "null";
           break;
       }
@@ -241,7 +244,7 @@ class AuthPageService {
   }
 
   void loginOrRegister() {
-    //TODO: 여기만 구현하면됨.
+    //TODO: 여기만 구현하면됨. 그리고. AnimatedOpacity의 값 변화를 이용해서 애니메이션하기.
     if (c.authMode == AuthMode.LOGIN) {
 
     } else if (c.authMode == AuthMode.REGISTER) {

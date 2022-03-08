@@ -18,7 +18,9 @@ class MyAuthUtil {
     try {
       await FireauthUtil.loginAnonymously(password: _password);
     } on CommonException catch (e) {
-      LogUtil.error("loginAnonymously ${e.code}");
+      if(e.code == "user-token-expired") {
+        return AuthMode.LOGIN;
+      }
     }
 
     try {
