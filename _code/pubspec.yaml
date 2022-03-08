@@ -27,7 +27,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-    flutter:
+  flutter:
         sdk: flutter
 
 
@@ -39,6 +39,7 @@ dependencies:
 
 
     #DESKTOP + WEB + MOBILE
+    uuid: ^3.0.4
     cupertino_icons: ^1.0.4
     intl: ^0.17.0
     page_transition: ^2.0.5

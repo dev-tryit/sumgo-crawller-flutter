@@ -1,10 +1,15 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kdh_homepage/_common/abstract/KDHState.dart';
 import 'package:kdh_homepage/_common/model/TValue.dart';
 import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
+import 'package:kdh_homepage/_common/model/exception/CommonException.dart';
+import 'package:kdh_homepage/_common/util/FireauthUtil.dart';
+import 'package:kdh_homepage/_common/util/LogUtil.dart';
+import 'package:kdh_homepage/_common/util/UUIDUtil.dart';
 import 'package:kdh_homepage/util/MyColors.dart';
 
 class AuthPage extends StatefulWidget {
@@ -43,6 +48,9 @@ class AuthPageComponent {
   TValue<double> passwordOpacity = TValue(0.0);
   TValue<double> passwordConfirmOpacity = TValue(0.0);
 
+  final emailController = TextEditingController();
+  final certificationNumberController = TextEditingController();
+
   _AuthPageState state;
 
   AuthPageComponent(this.state);
@@ -75,16 +83,17 @@ class AuthPageComponent {
             ),
             const SizedBox(height: 69),
             inputBox(
-              label: "휴대 전화번호",
-              trailing: "인증 요청",
-              onTrailingTap: s.sendCertificationNumber,
-            ),
+                label: "이메일",
+                trailing: "인증 요청",
+                onTrailingTap: s.sendCertificationNumber,
+                controller: emailController),
             const SizedBox(height: 30),
             inputBox(
                 label: "인증번호",
                 trailing: "인증 확인",
                 onTrailingTap: s.checkCertificationNumber,
-                opacity: checkCertificationNumberOpacity),
+                opacity: checkCertificationNumberOpacity,
+                controller: certificationNumberController),
             const SizedBox(height: 30),
             inputBox(label: "비밀번호", opacity: passwordOpacity),
             const SizedBox(height: 30),
@@ -100,6 +109,7 @@ class AuthPageComponent {
     String? trailing,
     GestureTapCallback? onTrailingTap,
     TValue<double>? opacity,
+    TextEditingController? controller,
   }) {
     return AnimatedOpacity(
       opacity: opacity?.v ?? 1,
@@ -113,7 +123,7 @@ class AuthPageComponent {
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                const Expanded(child: TextField()),
+                Expanded(child: TextField(controller: controller)),
                 ...trailing != null
                     ? [
                         const SizedBox(width: 8),
@@ -148,10 +158,25 @@ class AuthPageService {
 
   AuthPageComponent get c => state.c;
 
-  void sendCertificationNumber() {
-    //인증번호 보내기
+  void sendCertificationNumber() async {
+    String email = c.emailController.text;
 
-    //시간 세기
+    try {
+      FireauthUtil.register(email: email, password: UUIDUtil.makeUuid());
+    } on CommonException catch (e) {
+      if (e.code != "email-already-in-use") {
+        LogUtil.error("예상치 못한 오류에 의해 오류 발생");
+        return;
+      }
+    }
+
+    User? user = FireauthUtil.getUser();
+    if (user == null) {
+      LogUtil.error("유저가 없음 이유를 모르겠음.");
+      return;
+    }
+
+    await FireauthUtil.sendEmailVerification();
 
     c.checkCertificationNumberOpacity.v = 1.0;
     state.rebuild();

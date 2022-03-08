@@ -80,7 +80,7 @@ class MyCrawller {
         if (!_isValidRequest(message)) {
           haveTagToDelete = true;
           await p.click('.quote-btn.del', tag: tag);
-          await p.click('.sv-col-small-button-bw.sv__btn-close');
+          // await p.click('.sv-col-small-button-bw.sv__btn-close');
           // FileUtil.writeFile(
           //     "${DateTimeUtil.now().toIso8601String()}.html", await p.html());
           await p.click('.swal2-confirm.btn');
