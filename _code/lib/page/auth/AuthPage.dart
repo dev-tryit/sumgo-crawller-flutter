@@ -160,28 +160,15 @@ class AuthPageService {
   AuthPageComponent get c => state.c;
 
   void sendCertificationNumber() async {
-    String email = c.emailController.text;
-
-    bool haveAlreadyEmail = false;
     try {
-      await FireauthUtil.register(email: email, password: UUIDUtil.makeUuid());
+      await FireauthUtil.loginAnonymously();
     } on CommonException catch (e) {
-      if (e.code == "email-already-in-use") {
-        haveAlreadyEmail = true;
-      }
-      else {
-        LogUtil.error("예상치 못한 에러 발생 ${e.code}");
-        return;
-      }
-    }
-
-    if(haveAlreadyEmail) {
-      //로그인 시키기
-      LogUtil.info("로그인하도록 UI 컨트롤");
+      LogUtil.error("예상치 못한 에러 발생 ${e.code}");
       return;
     }
 
-    await FireauthUtil.sendEmailVerification();
+    String email = c.emailController.text;
+    await FireauthUtil.sendEmailVerification(email:email);
 
     c.checkCertificationNumberOpacity.v = 1.0;
     state.rebuild();

@@ -10,7 +10,7 @@ import 'package:kdh_homepage/util/MyTheme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  FireauthUtil.init();
+  await FireauthUtil.init();
   if (PlatformUtil.isComputer()) {
     DesktopUtil.setSize(
       size: const Size(350, 800),
