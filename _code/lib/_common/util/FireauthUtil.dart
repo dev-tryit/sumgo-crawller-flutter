@@ -127,4 +127,16 @@ class FireauthUtil {
   static Future<void> logout() async {
     await _instance.signOut();
   }
+
+  static Future<void> delete() async {
+    try {
+      User? user = getUser();
+      if (user != null) {
+        await user.delete();
+      }
+    }
+    catch (e) {
+      LogUtil.error("FireauthUtil.delete error $e");
+    }
+  }
 }

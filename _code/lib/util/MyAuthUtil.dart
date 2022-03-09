@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kdh_homepage/_common/model/exception/CommonException.dart';
 import 'package:kdh_homepage/_common/util/FireauthUtil.dart';
+import 'package:kdh_homepage/_common/util/FirestoreUtil.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
 
 enum AuthMode { SEND_EMAIL, NEED_VERIFICATION, REGISTER, LOGIN }
@@ -13,10 +14,11 @@ class MyAuthUtil {
     return (user != null) && (user.emailVerified);
   }
 
+
   static Future<AuthMode> verifyBeforeUpdateEmail(
       {required String email}) async {
     try {
-      await FireauthUtil.loginAnonymously(password: _password);
+      User? user = await FireauthUtil.loginAnonymously(password: _password);
     } on CommonException catch (e) {
       if(e.code == "user-token-expired") {
         return AuthMode.LOGIN;
@@ -25,6 +27,8 @@ class MyAuthUtil {
 
     try {
       await FireauthUtil.verifyBeforeUpdateEmail(email: email);
+      await FireauthUtil.delete();
+      await FireauthUtil.logout();
       return AuthMode.NEED_VERIFICATION;
     } on CommonException catch (e) {
       if (e.code == 'email-already-in-use') {

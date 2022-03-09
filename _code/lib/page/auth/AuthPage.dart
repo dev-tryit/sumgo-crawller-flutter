@@ -45,12 +45,14 @@ class _AuthPageState extends KDHState<AuthPage> {
 class AuthPageComponent {
   final _formKey = GlobalKey<FormState>();
 
-  final emailController = TextEditingController(text: "imkim189371@gmail.com");
-  final certificationNumberController = TextEditingController();
+  final emailController = TextEditingController(text: "imkim1893@naver.com");
+  final passwordController = TextEditingController(text: "1234");
+  final passwordConfirmController = TextEditingController(text: "1234");
   AuthMode authMode = AuthMode.SEND_EMAIL;
 
   _AuthPageState state;
 
+  bool emailTextFieldEnabled = true;
   String? emailValidationText = "인증 요청";
   String? nextButtonText;
   Color emailValidationColor = MyColors.deepBlue;
@@ -67,7 +69,7 @@ class AuthPageComponent {
     List<Widget> elementList = [];
     if (authMode == AuthMode.LOGIN) {
       //TODO: 로그인 코드 참고하여 ,EasyFade 위젯 만들기
-      if(passwordOpacity == 0) {
+      if (passwordOpacity == 0) {
         Timer(const Duration(milliseconds: 500), () {
           passwordOpacity = 1;
           state.rebuild();
@@ -80,6 +82,7 @@ class AuthPageComponent {
           duration: const Duration(milliseconds: 800),
           child: inputBox(
             label: "비밀번호",
+            controller: passwordController,
             onChanged: (value) => _formKey.currentState?.validate(),
           ),
         ),
@@ -89,11 +92,13 @@ class AuthPageComponent {
         const SizedBox(height: 30),
         inputBox(
           label: "비밀번호",
+          controller: passwordController,
           onChanged: (value) => _formKey.currentState?.validate(),
         ),
         const SizedBox(height: 30),
         inputBox(
           label: "비밀번호 확인",
+          controller: passwordConfirmController,
           onChanged: (value) => _formKey.currentState?.validate(),
         ),
       ]);
@@ -102,20 +107,20 @@ class AuthPageComponent {
     return Scaffold(
       bottomSheet: nextButtonText != null
           ? AnimatedOpacity(
-              opacity: 1.0,
-              duration: const Duration(milliseconds: 1500),
-              child: Container(
-                height: 82,
-                padding: const EdgeInsets.only(left: 32, right: 32, bottom: 32),
-                child: SizedBox.expand(
-                  child: ElevatedButton(
-                    child: Text(nextButtonText!),
-                    style: ElevatedButton.styleFrom(primary: MyColors.deepBlue),
-                    onPressed: s.loginOrRegister,
-                  ),
-                ),
-              ),
-            )
+        opacity: 1.0,
+        duration: const Duration(milliseconds: 1500),
+        child: Container(
+          height: 82,
+          padding: const EdgeInsets.only(left: 32, right: 32, bottom: 32),
+          child: SizedBox.expand(
+            child: ElevatedButton(
+              child: Text(nextButtonText!),
+              style: ElevatedButton.styleFrom(primary: MyColors.deepBlue),
+              onPressed: s.loginOrRegister,
+            ),
+          ),
+        ),
+      )
           : null,
       body: Form(
         key: _formKey,
@@ -123,12 +128,19 @@ class AuthPageComponent {
           child: Column(
             children: [
               const SizedBox(height: 36),
-              Text(
-                "숨고 매니저",
-                style: GoogleFonts.blackHanSans(
-                  fontSize: 35,
-                  color: MyColors.deepBlue,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Opacity(opacity: 0, child: Icon(Icons.logout)),
+                  Text(
+                    "숨고 매니저",
+                    style: GoogleFonts.blackHanSans(
+                      fontSize: 35,
+                      color: MyColors.deepBlue,
+                    ),
+                  ),
+                  const Opacity(opacity: 1, child: Icon(Icons.logout, color: MyColors.white,)),
+                ],
               ),
               const SizedBox(height: 69),
               inputBox(
@@ -137,6 +149,7 @@ class AuthPageComponent {
                 trailingColor: emailValidationColor,
                 onTrailingTap: s.sendEmailVerification,
                 controller: emailController,
+                textFieldEnabled: emailTextFieldEnabled,
                 keyboardType: TextInputType.emailAddress,
                 validator: (String? value) {
                   if (value == null || !EmailValidator.validate(value)) {
@@ -163,6 +176,7 @@ class AuthPageComponent {
     TextInputType? keyboardType,
     FormFieldValidator<String>? validator,
     ValueChanged<String>? onChanged,
+    bool? textFieldEnabled,
   }) {
     return Padding(
       padding: const EdgeInsets.only(left: 32, right: 32),
@@ -179,28 +193,29 @@ class AuthPageComponent {
                   keyboardType: keyboardType,
                   validator: validator,
                   onChanged: onChanged,
+                  enabled: textFieldEnabled,
                 ),
               ),
               ...trailing != null
-                  ? [
-                      const SizedBox(width: 8),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 25),
-                        child: InkWell(
-                          onTap: onTrailingTap,
-                          child: Text(
-                            trailing,
-                            style: GoogleFonts.gothicA1(
-                                color: trailingColor ?? MyColors.deepBlue,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
+              ? [
+              const SizedBox(width: 8),
+              Padding(
+                padding: const EdgeInsets.only(top: 25),
+                child: InkWell(
+                  onTap: onTrailingTap,
+                  child: Text(
+                    trailing,
+                    style: GoogleFonts.gothicA1(
+                      color: trailingColor ?? MyColors.deepBlue,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
 
-                            ),
-                          ),
-                        ),
-                      ),
-                    ]
-                  : [],
+                    ),
+                  ),
+                ),
+              ),
+            ]
+                : [],
             ],
           ),
         ],
@@ -227,6 +242,7 @@ class AuthPageService {
       if (user?.emailVerified ?? false) {
         c.authMode = AuthMode.REGISTER;
         c.emailValidationText = null;
+        c.emailTextFieldEnabled = false;
         c.nextButtonText = "회원가입";
       } else {
         MyComponents.toastError(context, "이메일 인증이 필요합니다.");
@@ -237,15 +253,18 @@ class AuthPageService {
       switch (c.authMode) {
         case AuthMode.NEED_VERIFICATION:
           c.emailValidationText = "인증 확인";
+          c.emailTextFieldEnabled = false;
           c.emailValidationColor = MyColors.red;
           c.nextButtonText = null;
           break;
         case AuthMode.LOGIN:
           c.emailValidationText = null;
+          c.emailTextFieldEnabled = false;
           c.nextButtonText = "로그인";
           break;
         default:
           c.emailValidationText = "인증 요청";
+          c.emailTextFieldEnabled = true;
           c.emailValidationColor = MyColors.deepBlue;
           c.nextButtonText = "null";
           break;
