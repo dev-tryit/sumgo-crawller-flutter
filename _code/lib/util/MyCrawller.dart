@@ -54,7 +54,7 @@ class MyCrawller {
     //요청보러들어가기
     await tag.click();
     await p.waitForNavigation();
-
+    
     //불러오기
     await p.click('.quote-tmpl-icon.arrow');
     await p.click('.item-list .item-short:nth-child(1)');
@@ -62,8 +62,8 @@ class MyCrawller {
     await p.click('.swal2-confirm.btn');
 
     //견적보내기
-    await p.click('.btn.quote-submit-button.btn-primary.btn-block');
-    await p.waitForNavigation();
+    await p.waitForSelector('.file-wrap .delete');
+    await p.evaluate("document.querySelector('.btn.btn-primary.btn-block').click();");
   }
 
   Future<void> _deleteAndSendRequests() async {
@@ -79,6 +79,7 @@ class MyCrawller {
         return;
       }
 
+      bool checkSendRequest = false;
       bool haveTagToDelete = false;
       List<ElementHandle> tagList =
       await p.$$('.request-list > li > .request-item');
@@ -88,6 +89,7 @@ class MyCrawller {
 
         if (_isValidRequest(message)) {
           await _sendRequests(tag);
+          checkSendRequest = true;
           break;
         }
 
@@ -98,6 +100,10 @@ class MyCrawller {
         // FileUtil.writeFile(
         //     "${DateTimeUtil.now().toIso8601String()}.html", await p.html());
         await p.click('.swal2-confirm.btn');
+      }
+
+      if(checkSendRequest) {
+        continue;
       }
 
       if (!haveTagToDelete) {

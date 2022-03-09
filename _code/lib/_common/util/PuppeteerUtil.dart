@@ -162,17 +162,6 @@ class PuppeteerUtil {
   }
 
   Future<void> setPageZoom({int zoom=1}) async {
-    await evaluate('''
-      var scale = 'scale($zoom)';
-      if(document.body?.style?.webkitTransform){
-          document.body.style.webkitTransform =  scale;    // Chrome, Opera, Safari
-      }
-      if(document.body?.style?.msTransform){
-          document.body.style.msTransform =  scale;    // IE 9
-      }
-      if(document.body?.style?.transform){
-          document.body.style.transform =  scale;    // General
-      }
-    ''');
+
   }
 }
