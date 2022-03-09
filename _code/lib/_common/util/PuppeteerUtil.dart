@@ -127,6 +127,14 @@ class PuppeteerUtil {
     }
   }
 
+  Future<Response?> waitForNavigation({Duration? timeout, Until? wait}) async {
+    try {
+      return await tab.waitForNavigation(timeout: timeout, wait: wait);
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<bool> include(String selector, String text) async {
     return await evaluate(
         "(document.querySelector('$selector')?.innerText ?? '').includes('$text')");

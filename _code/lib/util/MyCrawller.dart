@@ -4,7 +4,6 @@ import 'package:kdh_homepage/_common/util/PuppeteerUtil.dart';
 import 'package:kdh_homepage/_local/local.dart';
 import 'package:puppeteer/puppeteer.dart';
 
-//gitignore 적용 완료
 class MyCrawller {
   final p = PuppeteerUtil();
   final delay = Duration(milliseconds: 100);
@@ -15,14 +14,13 @@ class MyCrawller {
 
   Future<void> start() async {
     bool headless = false;
-    headless = PlatformUtil.isComputer()
-        ? false
-        : headless; //데스크탑에서 headless면 동작 안나함.
+    headless =
+    PlatformUtil.isComputer() ? false : headless; //데스크탑에서 headless면 동작 안나함.
 
     await p.openBrowser(
-      () async {
+          () async {
         await _login(localData["id"], localData["pw"]);
-        await _deleteAllRequests();
+        await _deleteAndSendRequests();
       },
       width: 500,
       height: 500,
@@ -52,39 +50,58 @@ class MyCrawller {
     return !isLoginPage;
   }
 
-  Future<bool> _checkLoginFail() async {
-    return await p.include(".invalid-feedback", "입력해주세요") ||
-        await p.include(".form-text.text-invalfid", "입력해주세요");
+  Future<void> _sendRequests(ElementHandle tag) async {
+    LogUtil.info("_sendRequests");
+    await tag.click();
+    await p.waitForNavigation();
+
+    LogUtil.info("_sendRequests 1");
+
+    await p.click('.quote-tmpl-icon.arrow');
+    await p.click('.item-list .item-short:nth-child(1)');
+    await p.click('.action-btn-portal.vue-portal-target');
+    await p.click('.swal2-confirm.btn');
+
+    LogUtil.info("_sendRequests 2");
+
+    await p.click('.btn.quote-submit-button.btn-primary.btn-block');
+    await p.waitForNavigation();
+
+    LogUtil.info("_sendRequests 3");
   }
 
-  Future<void> _deleteAllRequests() async {
-    while (true) {
-      LogUtil.info("deleteRequests 시작");
-      await p.goto('https://soomgo.com/requests/received');
+  Future<void> _deleteAndSendRequests() async {
+    LogUtil.info("_deleteAndSendRequests 시작");
 
+    while (true) {
+      await p.goto('https://soomgo.com/requests/received');
       await p.autoScroll();
 
       bool existSelector =
-          await p.waitForSelector('.request-list > li > .request-item');
+      await p.waitForSelector('.request-list > li > .request-item');
       if (!existSelector) {
         return;
       }
 
       bool haveTagToDelete = false;
       List<ElementHandle> tagList =
-          await p.$$('.request-list > li > .request-item');
+      await p.$$('.request-list > li > .request-item');
       for (var tag in tagList) {
         var messageTag = await p.$('.quote > span.message', tag: tag);
         String message = await p.html(tag: messageTag);
 
-        if (!_isValidRequest(message)) {
-          haveTagToDelete = true;
-          await p.click('.quote-btn.del', tag: tag);
-          // await p.click('.sv-col-small-button-bw.sv__btn-close');
-          // FileUtil.writeFile(
-          //     "${DateTimeUtil.now().toIso8601String()}.html", await p.html());
-          await p.click('.swal2-confirm.btn');
+        if (_isValidRequest(message)) {
+          await _sendRequests(tag);
+          break;
         }
+
+        //잘못된 Requests 삭제.
+        haveTagToDelete = true;
+        await p.click('.quote-btn.del', tag: tag);
+        // await p.click('.sv-col-small-button-bw.sv__btn-close');
+        // FileUtil.writeFile(
+        //     "${DateTimeUtil.now().toIso8601String()}.html", await p.html());
+        await p.click('.swal2-confirm.btn');
       }
 
       if (!haveTagToDelete) {
