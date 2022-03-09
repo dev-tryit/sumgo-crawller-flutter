@@ -51,16 +51,17 @@ class MyCrawller {
   }
 
   Future<void> _sendRequests(ElementHandle tag) async {
+    //요청보러들어가기
     await tag.click();
     await p.waitForNavigation();
 
-
+    //불러오기
     await p.click('.quote-tmpl-icon.arrow');
     await p.click('.item-list .item-short:nth-child(1)');
-    await p.click('.action-btn-portal.vue-portal-target');
+    await p.click('.action-btn-wrap');
     await p.click('.swal2-confirm.btn');
 
-
+    //견적보내기
     await p.click('.btn.quote-submit-button.btn-primary.btn-block');
     await p.waitForNavigation();
   }
