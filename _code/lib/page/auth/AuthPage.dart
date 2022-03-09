@@ -7,6 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kdh_homepage/_common/abstract/KDHState.dart';
 import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
+import 'package:kdh_homepage/_common/util/PageUtil.dart';
+import 'package:kdh_homepage/page/main/MainLayout.dart';
 import 'package:kdh_homepage/util/MyAuthUtil.dart';
 import 'package:kdh_homepage/util/MyColors.dart';
 import 'package:kdh_homepage/util/MyComponents.dart';
@@ -240,6 +242,7 @@ class AuthPageService {
     if (c.authMode == AuthMode.NEED_VERIFICATION) {
       User? user = await MyAuthUtil.loginWithEmail(email);
       if (user?.emailVerified ?? false) {
+        await MyAuthUtil.delete();
         c.authMode = AuthMode.REGISTER;
         c.emailValidationText = null;
         c.emailTextFieldEnabled = false;
@@ -275,12 +278,28 @@ class AuthPageService {
     state.rebuild();
   }
 
-  void loginOrRegister() {
-    //TODO: 여기만 구현하면됨. 그리고. AnimatedOpacity의 값 변화를 이용해서 애니메이션하기.
+  void loginOrRegister() async {
     if (c.authMode == AuthMode.LOGIN) {
+      String email = c.emailController.text.trim();
+      String password = c.passwordController.text.trim();
 
+      //TODO: 비밀번호 유효성 검사 구문 필요 (비어있거나, 개수)
+
+      await MyAuthUtil.loginWithEmail(email,password);
+      PageUtil.movePage(context, MainLayout());
     } else if (c.authMode == AuthMode.REGISTER) {
+      String email = c.emailController.text.trim();
+      String password = c.passwordController.text.trim();
+      String passwordConfirm = c.passwordConfirmController.text.trim();
 
+      //TODO: 비밀번호 유효성 검사 구문 필요 (비어있거나, 개수)
+      if(password != passwordConfirm) {
+        MyComponents.toastError(context, "비밀번호가 다릅니다.");
+        return;
+      }
+
+      await MyAuthUtil.registerWithEmail(email,password);
+      PageUtil.movePage(context, MainLayout());
     } else {
       MyComponents.toastError(
         context,

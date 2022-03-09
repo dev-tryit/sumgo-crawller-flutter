@@ -7,34 +7,28 @@ import 'package:kdh_homepage/_common/util/LogUtil.dart';
 enum AuthMode { SEND_EMAIL, NEED_VERIFICATION, REGISTER, LOGIN }
 
 class MyAuthUtil {
-  static const _password = "tempNewPassword";
-
   static Future<bool> isLogin() async {
     User? user = FireauthUtil.getUser();
     return (user != null) && (user.emailVerified);
   }
 
-
   static Future<AuthMode> verifyBeforeUpdateEmail(
       {required String email}) async {
     try {
-      User? user = await FireauthUtil.loginAnonymously(password: _password);
+      User? user = await FireauthUtil.loginAnonymously();
     } on CommonException catch (e) {
-      if(e.code == "user-token-expired") {
+      if (e.code == "user-token-expired") {
         return AuthMode.LOGIN;
       }
     }
 
     try {
       await FireauthUtil.verifyBeforeUpdateEmail(email: email);
-      await FireauthUtil.delete();
-      await FireauthUtil.logout();
       return AuthMode.NEED_VERIFICATION;
     } on CommonException catch (e) {
       if (e.code == 'email-already-in-use') {
         return AuthMode.LOGIN;
-      }
-      else {
+      } else {
         return AuthMode.REGISTER;
       }
     }
@@ -44,7 +38,16 @@ class MyAuthUtil {
     await FireauthUtil.logout();
   }
 
-  static Future<User?> loginWithEmail(String email) async {
-    return FireauthUtil.loginWithEmail(email: email, password: _password);
+  static Future<User?> loginWithEmail(String email, String password) async {
+    return FireauthUtil.loginWithEmail(email: email, password: password);
+  }
+
+  static Future<void> delete() async {
+    await FireauthUtil.delete();
+    await FireauthUtil.logout();
+  }
+
+  static Future<User?> registerWithEmail(String email,String password) async {
+    return await FireauthUtil.registerWithEmail(email: email, password: password);
   }
 }

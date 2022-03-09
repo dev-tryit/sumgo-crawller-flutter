@@ -57,11 +57,12 @@ class FireauthUtil {
     }
   }
 
-  static Future<void> registerWithEmail(
+  static Future<User?> registerWithEmail(
       {required String email, required String password}) async {
     try {
       await _instance.createUserWithEmailAndPassword(
           email: email, password: password);
+      return getUser();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         throw CommonException(message: "비밀번호 형식이 안전하지 않습니다", code: e.code);
