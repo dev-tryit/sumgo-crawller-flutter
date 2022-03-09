@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kdh_homepage/_common/abstract/KDHState.dart';
 import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
+import 'package:kdh_homepage/_common/model/exception/CommonException.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
 import 'package:kdh_homepage/_common/util/PageUtil.dart';
 import 'package:kdh_homepage/page/main/MainLayout.dart';
@@ -86,6 +87,7 @@ class AuthPageComponent {
             label: "비밀번호",
             controller: passwordController,
             onChanged: (value) => _formKey.currentState?.validate(),
+            obscureText: true,
           ),
         ),
       ]);
@@ -96,12 +98,14 @@ class AuthPageComponent {
           label: "비밀번호",
           controller: passwordController,
           onChanged: (value) => _formKey.currentState?.validate(),
+          obscureText: true,
         ),
         const SizedBox(height: 30),
         inputBox(
           label: "비밀번호 확인",
           controller: passwordConfirmController,
           onChanged: (value) => _formKey.currentState?.validate(),
+          obscureText: true,
         ),
       ]);
     }
@@ -179,6 +183,7 @@ class AuthPageComponent {
     FormFieldValidator<String>? validator,
     ValueChanged<String>? onChanged,
     bool? textFieldEnabled,
+    bool obscureText = false,
   }) {
     return Padding(
       padding: const EdgeInsets.only(left: 32, right: 32),
@@ -196,6 +201,7 @@ class AuthPageComponent {
                   validator: validator,
                   onChanged: onChanged,
                   enabled: textFieldEnabled,
+                  obscureText: obscureText,
                 ),
               ),
               ...trailing != null
@@ -298,7 +304,15 @@ class AuthPageService {
         return;
       }
 
-      await MyAuthUtil.registerWithEmail(email,password);
+      try {
+        await MyAuthUtil.registerWithEmail(email, password);
+      }
+      on CommonException catch(e) {
+        MyComponents.toastError(context, e.message);
+        return;
+      }
+
+      MyComponents.toastInfo(context, "회원가입이 완료되었습니다.");
       PageUtil.movePage(context, MainLayout());
     } else {
       MyComponents.toastError(
