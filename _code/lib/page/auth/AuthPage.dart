@@ -240,7 +240,7 @@ class AuthPageService {
 
     await MyComponents.showLoadingDialog(context);
     if (c.authMode == AuthMode.NEED_VERIFICATION) {
-      User? user = await MyAuthUtil.loginWithEmail(email);
+      User? user = await MyAuthUtil.loginWithEmailDefaultPassword(email);
       if (user?.emailVerified ?? false) {
         await MyAuthUtil.delete();
         c.authMode = AuthMode.REGISTER;
