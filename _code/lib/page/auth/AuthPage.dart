@@ -134,19 +134,12 @@ class AuthPageComponent {
           child: Column(
             children: [
               const SizedBox(height: 36),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Opacity(opacity: 0, child: Icon(Icons.logout)),
-                  Text(
-                    "숨고 매니저",
-                    style: GoogleFonts.blackHanSans(
-                      fontSize: 35,
-                      color: MyColors.deepBlue,
-                    ),
-                  ),
-                  const Opacity(opacity: 1, child: Icon(Icons.logout, color: MyColors.white,)),
-                ],
+              Text(
+                "숨고 매니저",
+                style: GoogleFonts.blackHanSans(
+                  fontSize: 35,
+                  color: MyColors.deepBlue,
+                ),
               ),
               const SizedBox(height: 69),
               inputBox(
@@ -291,7 +284,13 @@ class AuthPageService {
 
       //TODO: 비밀번호 유효성 검사 구문 필요 (비어있거나, 개수)
 
-      await MyAuthUtil.loginWithEmail(email,password);
+      try {
+        await MyAuthUtil.loginWithEmail(email,password);
+      }
+      on CommonException catch(e) {
+        MyComponents.toastError(context, e.message);
+        return;
+      }
       PageUtil.movePage(context, MainLayout());
     } else if (c.authMode == AuthMode.REGISTER) {
       String email = c.emailController.text.trim();
