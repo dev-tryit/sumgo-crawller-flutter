@@ -32,7 +32,7 @@ class PuppeteerUtil {
     }
     tab = await browser.newPage();
     tab.defaultTimeout = defaultTimeout;
-    await setDefaultZoom();
+    await setPageZoom();
 
     //process
     await function();
@@ -160,9 +160,9 @@ class PuppeteerUtil {
     }''');
   }
 
-  Future<void> setDefaultZoom() async {
+  Future<void> setPageZoom({int zoom=1}) async {
     await evaluate('''
-      var scale = 'scale(1)';
+      var scale = 'scale($zoom)';
       if(document.body?.style?.webkitTransform){
           document.body.style.webkitTransform =  scale;    // Chrome, Opera, Safari
       }
