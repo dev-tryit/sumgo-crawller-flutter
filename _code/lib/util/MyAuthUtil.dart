@@ -10,8 +10,7 @@ class MyAuthUtil {
   static const _password = "tempNewPassword";
 
   static Future<bool> isLogin() async {
-    User? user = FireauthUtil.getUser();
-    return (user != null) && (user.emailVerified);
+    return (FireauthUtil.getUser() != null);
   }
 
   static Future<AuthMode> verifyBeforeUpdateEmail(
