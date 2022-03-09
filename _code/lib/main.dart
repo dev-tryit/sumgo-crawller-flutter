@@ -5,12 +5,15 @@ import 'package:kdh_homepage/_common/util/DesktopUtil.dart';
 import 'package:kdh_homepage/_common/util/FireauthUtil.dart';
 import 'package:kdh_homepage/_common/util/PlatformUtil.dart';
 import 'package:kdh_homepage/page/LoadPage.dart';
+import 'package:kdh_homepage/page/main/MainLayout.dart';
 import 'package:kdh_homepage/util/MyComponents.dart';
 import 'package:kdh_homepage/util/MyTheme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await FireauthUtil.init();
+  if (!PlatformUtil.isComputer()) {
+    await FireauthUtil.init();
+  }
   if (PlatformUtil.isComputer()) {
     DesktopUtil.setSize(
       size: const Size(350, 800),
