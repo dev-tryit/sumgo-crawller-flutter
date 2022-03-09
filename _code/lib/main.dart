@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
         return child;
       },
       initialRoute: "/",
-      home: LoadPage(),
+      home: MainLayout(),
     );
   }
 }

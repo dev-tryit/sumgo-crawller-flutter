@@ -32,6 +32,7 @@ class PuppeteerUtil {
     }
     tab = await browser.newPage();
     tab.defaultTimeout = defaultTimeout;
+    await setDefaultZoom();
 
     //process
     await function();
@@ -157,5 +158,20 @@ class PuppeteerUtil {
             }, $millisecondInterval);
         });
     }''');
+  }
+
+  Future<void> setDefaultZoom() async {
+    await evaluate('''
+      var scale = 'scale(1)';
+      if(document.body?.style?.webkitTransform){
+          document.body.style.webkitTransform =  scale;    // Chrome, Opera, Safari
+      }
+      if(document.body?.style?.msTransform){
+          document.body.style.msTransform =  scale;    // IE 9
+      }
+      if(document.body?.style?.transform){
+          document.body.style.transform =  scale;    // General
+      }
+    ''');
   }
 }

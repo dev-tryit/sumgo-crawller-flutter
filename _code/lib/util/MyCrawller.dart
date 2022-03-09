@@ -51,23 +51,18 @@ class MyCrawller {
   }
 
   Future<void> _sendRequests(ElementHandle tag) async {
-    LogUtil.info("_sendRequests");
     await tag.click();
     await p.waitForNavigation();
 
-    LogUtil.info("_sendRequests 1");
 
     await p.click('.quote-tmpl-icon.arrow');
     await p.click('.item-list .item-short:nth-child(1)');
     await p.click('.action-btn-portal.vue-portal-target');
     await p.click('.swal2-confirm.btn');
 
-    LogUtil.info("_sendRequests 2");
 
     await p.click('.btn.quote-submit-button.btn-primary.btn-block');
     await p.waitForNavigation();
-
-    LogUtil.info("_sendRequests 3");
   }
 
   Future<void> _deleteAndSendRequests() async {
