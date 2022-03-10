@@ -53,13 +53,16 @@ class MyApp extends StatelessWidget {
         // Sizedbox를 통해 비율이 결정되고,
         // FittedBox를 통해 크기를 부모에 맞추려고 하여, 축적(확대,축소)가 변경된다.
         child = FittedBox(
-            child: Container(
-                width: 350,
-                height: 700,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black, width: 1),
-                ),
-                child: child!));
+          alignment: Alignment.center,
+          child: Container(
+            width: 350,
+            height: 700,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black, width: 1),
+            ),
+            child: child!,
+          ),
+        );
         child = MyComponents.easyLoadingBuilder()(context, child);
         return child;
       },
