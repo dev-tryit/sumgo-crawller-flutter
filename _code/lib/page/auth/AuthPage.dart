@@ -32,8 +32,8 @@ class _AuthPageState extends KDHState<AuthPage> {
 
   @override
   Future<void> onLoad() async {
-    s = AuthPageService(this);
     c = AuthPageComponent(this);
+    s = AuthPageService(this, c);
   }
 
   @override
@@ -67,21 +67,21 @@ class AuthPageComponent {
   AuthPageService get s => state.s;
 
   Widget body() {
-    LogUtil.debug("body authMode:${s.authState.runtimeType}");
+    LogUtil.debug("body authStateManager.authState:${s.authStateManager.state.runtimeType}");
 
     List<Widget> elementList = [];
-    if (s.authState is AuthStateNeedVerfication) {
+    if (s.authStateManager.state is AuthStateNeedVerfication) {
       emailValidationText = "인증 확인";
       emailTextFieldEnabled = false;
       emailValidationColor = MyColors.red;
       nextButtonText = null;
-    }else if (s.authState is  AuthStateSendEmail) {
+    }else if (s.authStateManager.state is  AuthStateSendEmail) {
       emailValidationText = "인증 요청";
       emailTextFieldEnabled = true;
       emailValidationColor = MyColors.deepBlue;
       nextButtonText = "null";
     }
-    else if (s.authState is  AuthStateLogin) {
+    else if (s.authStateManager.state is  AuthStateLogin) {
       emailValidationText = null;
       emailTextFieldEnabled = false;
       nextButtonText = "로그인";
@@ -106,7 +106,7 @@ class AuthPageComponent {
           ),
         ),
       ]);
-    } else if (s.authState is AuthStateRegistration) {
+    } else if (s.authStateManager.state is AuthStateRegistration) {
       emailValidationText = null;
       emailTextFieldEnabled = false;
       nextButtonText = "회원가입";
@@ -245,38 +245,41 @@ class AuthPageComponent {
 
 class AuthPageService {
   _AuthPageState state;
-  AuthState authState;
+  AuthStateManager authStateManager;
+  AuthPageComponent c;
 
-  AuthPageService(this.state) : this.authState = AuthStateSendEmail(state.c);
-
-  AuthPageComponent get c => state.c;
+  AuthPageService(this.state, this.c) : authStateManager = AuthStateManager(c);
 
   BuildContext get context => state.context;
 
   void sendEmailVerification() async {
+    LogUtil.debug("sendEmailVerification authStateManager.authState:${authStateManager.state.runtimeType}");
+    
     String email = c.emailController.text.trim();
 
     await MyComponents.showLoadingDialog(context);
-    if (authState is AuthStateSendEmail) {
-      await authState.handle({'email': email});
-    } else if (authState is AuthStateNeedVerfication) {
-      await authState.handle({'email': email, 'context': context});
+    if (authStateManager.state is AuthStateSendEmail) {
+      await authStateManager.handle({'email': email});
+    } else if (authStateManager.state is AuthStateNeedVerfication) {
+      await authStateManager.handle({'email': email, 'context': context});
     }
     await MyComponents.dismissLoadingDialog();
     state.rebuild();
   }
 
   void loginOrRegister() async {
+    LogUtil.debug("loginOrRegister authStateManager.authState:${authStateManager.state.runtimeType}");
+    
     String email = c.emailController.text.trim();
     String password = c.passwordController.text.trim();
 
     await MyComponents.showLoadingDialog(context);
-    if (authState is AuthStateLogin) {
-      await authState
+    if (authStateManager.state is AuthStateLogin) {
+      await authStateManager.state
           .handle({'email': email, 'password': password, 'context': context});
-    } else if (authState is AuthStateRegistration) {
+    } else if (authStateManager.state is AuthStateRegistration) {
       String passwordConfirm = c.passwordConfirmController.text.trim();
-      await authState.handle({
+      await authStateManager.handle({
         'email': email,
         'password': password,
         'passwordConfirm': passwordConfirm,

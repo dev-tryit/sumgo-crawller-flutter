@@ -6,6 +6,17 @@ import 'package:kdh_homepage/page/main/MainLayout.dart';
 import 'package:kdh_homepage/util/MyAuthUtil.dart';
 import 'package:kdh_homepage/util/MyComponents.dart';
 
+class AuthStateManager<COMPONENT> {
+  AuthState state;
+  COMPONENT c;
+
+  AuthStateManager(this.c) : state = AuthStateSendEmail<COMPONENT>(c);
+
+  Future<void> handle(Map<String, dynamic> data) async {
+    state = await state.handle(data);
+  }
+}
+
 abstract class AuthState<COMPONENT> {
   COMPONENT c;
 
@@ -24,12 +35,13 @@ class AuthStateSendEmail<COMPONENT> implements AuthState<COMPONENT> {
   Future<AuthState> handle(Map<String, dynamic> data) async {
     NeededAuthBehavior neededAuthBehavior =
         await MyAuthUtil.verifyBeforeUpdateEmail(email: data['email']);
+    print("AuthStateSendEmail handle neededAuthBehavior:$neededAuthBehavior");
     if (neededAuthBehavior == NeededAuthBehavior.NEED_LOGIN) {
-      return AuthStateLogin(c);
+      return AuthStateLogin<COMPONENT>(c);
     } else if (neededAuthBehavior == NeededAuthBehavior.NEED_REGISTRATION) {
-      return AuthStateRegistration(c);
+      return AuthStateRegistration<COMPONENT>(c);
     } else if (neededAuthBehavior == NeededAuthBehavior.NEED_VERIFICATION) {
-      return AuthStateNeedVerfication(c);
+      return AuthStateNeedVerfication<COMPONENT>(c);
     }
     return this;
   }

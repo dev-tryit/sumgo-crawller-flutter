@@ -1,4 +1,3 @@
-import 'package:device_frame/device_frame.dart';
 import 'package:flutter/material.dart';
 import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/_common/config/MyCustomScrollBehavior.dart';
@@ -6,7 +5,6 @@ import 'package:kdh_homepage/_common/util/DesktopUtil.dart';
 import 'package:kdh_homepage/_common/util/FireauthUtil.dart';
 import 'package:kdh_homepage/_common/util/PlatformUtil.dart';
 import 'package:kdh_homepage/page/LoadPage.dart';
-import 'package:kdh_homepage/page/main/MainLayout.dart';
 import 'package:kdh_homepage/util/MyComponents.dart';
 import 'package:kdh_homepage/util/MyTheme.dart';
 
