@@ -1,3 +1,4 @@
+import 'package:device_frame/device_frame.dart';
 import 'package:flutter/material.dart';
 import 'package:kdh_homepage/Setting.dart';
 import 'package:kdh_homepage/_common/config/MyCustomScrollBehavior.dart';
@@ -47,11 +48,16 @@ class MyApp extends StatelessWidget {
         // ),
       ),
       builder: (context, child) {
+        child = SizedBox(
+          width: 350,
+          height: double.infinity,
+          child: child!,
+        );
         child = MyComponents.easyLoadingBuilder()(context, child);
         return child;
       },
       initialRoute: "/",
-      home: MainLayout(),
+      home: LoadPage(),
     );
   }
 }

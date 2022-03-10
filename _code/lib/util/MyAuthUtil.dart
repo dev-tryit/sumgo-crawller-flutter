@@ -16,7 +16,7 @@ class MyAuthUtil {
   static Future<AuthMode> verifyBeforeUpdateEmail(
       {required String email}) async {
     try {
-      User? user = await FireauthUtil.loginAnonymously(password: _password);
+      await FireauthUtil.loginAnonymously(password: _password);
     } on CommonException catch (e) {
       if (e.code == "user-token-expired") {
         return AuthMode.LOGIN;
@@ -32,6 +32,9 @@ class MyAuthUtil {
       } else {
         return AuthMode.REGISTER;
       }
+    }
+    finally{
+      await FireauthUtil.logout();
     }
   }
 
