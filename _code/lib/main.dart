@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
                   border: Border.all(color: Colors.black, width: 1),
                 ),
                 child: child!));
-        // child = MyComponents.easyLoadingBuilder()(context, child);
+        child = MyComponents.easyLoadingBuilder()(context, child);
         return child;
       },
       initialRoute: "/",
