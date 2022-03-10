@@ -48,9 +48,12 @@ class MyApp extends StatelessWidget {
         // ),
       ),
       builder: (context, child) {
+        //Scaffold의 크기를 지정할 수 없다.
+        //그러나, FittedBox로 축적을 결정할 순있다.
+        //FittedBox + SizedBox를 쓰면, 특정 비율이 유지되면서, 확대되거나 축소되게 할 수 있다.
         child =
             FittedBox(child: SizedBox(width: 350,height: 700, child: child!));
-        child = MyComponents.easyLoadingBuilder()(context, child);
+        // child = MyComponents.easyLoadingBuilder()(context, child);
         return child;
       },
       initialRoute: "/",
