@@ -48,9 +48,10 @@ class MyApp extends StatelessWidget {
         // ),
       ),
       builder: (context, child) {
-        //Scaffold의 크기를 지정할 수 없다.
-        //그러나, FittedBox로 축적을 결정할 순있다.
-        //FittedBox + SizedBox를 쓰면, 특정 비율이 유지되면서, 확대되거나 축소되게 할 수 있다.
+        // 1. FittedBox는 부모와 크기가 같게 만드는 성질이 있다.
+        // 2. FittedBox + SizedBox를 사용하면,
+        // Sizedbox를 통해 비율이 결정되고,
+        // FittedBox를 통해 크기를 부모에 맞추려고 하여, 축적(확대,축소)가 변경된다.
         child = FittedBox(
             child: Container(
                 width: 350,
