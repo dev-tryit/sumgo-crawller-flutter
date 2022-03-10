@@ -56,11 +56,13 @@ class MainLayoutComponent {
   MainLayoutComponent(this._state) : pageC = PageController();
 
   Widget body() {
-    return Stack(
-      children: [
-        Positioned(top: 150, bottom: 0, left: 0, right: 0, child: content()),
-        MyHeader(pageC),
-      ],
+    return SizedBox.expand(
+      child: Stack(
+        children: [
+          Positioned(top: 150, bottom: 0, left: 0, right: 0, child:content()),
+          MyHeader(pageC),
+        ],
+      ),
     );
   }
 
