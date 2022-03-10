@@ -28,16 +28,8 @@ class _LoadPageState extends KDHState<LoadPage> {
   @override
   void mustRebuild() {
     widgetToBuild =
-        () => Scaffold(body: PlatformUtil.isMobile() ? mobile() : desktop());
+        () => Scaffold(body: c.body());
     rebuild();
-  }
-
-  Widget desktop() {
-    return Center(child: c.body());
-  }
-
-  Widget mobile() {
-    return c.body();
   }
 
   @override

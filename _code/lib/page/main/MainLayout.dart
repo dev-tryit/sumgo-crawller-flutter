@@ -41,22 +41,8 @@ class _MainLayoutState extends KDHState<MainLayout> {
   @override
   void mustRebuild() {
     widgetToBuild =
-        () => Scaffold(body: PlatformUtil.isMobile() ? mobile() : desktop());
+        () => Scaffold(body: c.body());
     rebuild();
-  }
-
-  Widget desktop() {
-    return Center(
-      child: SizedBox(
-        width: 350,
-        height: double.infinity,
-        child: c.body(),
-      ),
-    );
-  }
-
-  Widget mobile() {
-    return c.body();
   }
 
   @override
