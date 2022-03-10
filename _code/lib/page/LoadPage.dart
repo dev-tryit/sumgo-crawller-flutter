@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kdh_homepage/_common/abstract/KDHState.dart';
-import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
-import 'package:kdh_homepage/_common/util/PageUtil.dart';
-import 'package:kdh_homepage/_common/util/PlatformUtil.dart';
-import 'package:kdh_homepage/page/auth/AuthPage.dart';
-import 'package:kdh_homepage/page/main/MainLayout.dart';
-import 'package:kdh_homepage/util/MyAuthUtil.dart';
-import 'package:kdh_homepage/util/MyColors.dart';
+import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
+import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
+import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
+import 'package:sumgo_crawller_flutter/page/auth/AuthPage.dart';
+import 'package:sumgo_crawller_flutter/page/main/MainLayout.dart';
+import 'package:sumgo_crawller_flutter/util/MyAuthUtil.dart';
+import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 
 class LoadPage extends StatefulWidget {
   const LoadPage({Key? key}) : super(key: key);

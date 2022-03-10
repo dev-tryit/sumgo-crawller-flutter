@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kdh_homepage/util/MyColors.dart';
-import 'package:kdh_homepage/util/MyComponents.dart';
+import 'package:sumgo_crawller_flutter/util/MyColors.dart';
+import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 
 class MenuColor {
   final Color highlightColor;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:kdh_homepage/_common/util/ExitUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/ExitUtil.dart';
 
 class PageUtil {
   static final GlobalKey<NavigatorState> navigatorKey =

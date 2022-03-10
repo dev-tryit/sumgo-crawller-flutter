@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kdh_homepage/_common/util/PageUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
 
 class ExitUtil {
   static Future<void> exit(BuildContext context, {Widget? exitedPage}) async {

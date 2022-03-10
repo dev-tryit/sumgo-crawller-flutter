@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kdh_homepage/_common/util/SizeUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/SizeUtil.dart';
 
 class WidgetToGetSize<T> {
   Enum key;

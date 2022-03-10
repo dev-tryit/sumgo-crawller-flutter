@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:kdh_homepage/_common/model/exception/CommonException.dart';
-import 'package:kdh_homepage/_common/util/LogUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.dart';
+import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 
 class FireauthUtil {
   static bool _haveEverInit = false;

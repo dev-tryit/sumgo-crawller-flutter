@@ -1,7 +1,7 @@
-import 'package:kdh_homepage/_common/util/LogUtil.dart';
-import 'package:kdh_homepage/_common/util/PlatformUtil.dart';
-import 'package:kdh_homepage/_common/util/PuppeteerUtil.dart';
-import 'package:kdh_homepage/_local/local.dart';
+import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/PuppeteerUtil.dart';
+import 'package:sumgo_crawller_flutter/_local/local.dart';
 import 'package:puppeteer/puppeteer.dart';
 
 class MyCrawller {

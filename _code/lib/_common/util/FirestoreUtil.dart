@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:kdh_homepage/_common/abstract/WithDocId.dart';
+import 'package:sumgo_crawller_flutter/_common/abstract/WithDocId.dart';
 
 class FirestoreUtil<Type extends WithDocId> {
   String collectionName;

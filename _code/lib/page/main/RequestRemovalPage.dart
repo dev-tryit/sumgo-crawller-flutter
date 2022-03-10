@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kdh_homepage/util/MyComponents.dart';
-import 'package:kdh_homepage/util/MyCrawller.dart';
-import 'package:kdh_homepage/util/MyImage.dart';
-import 'package:kdh_homepage/widget/MyCard.dart';
-import 'package:kdh_homepage/widget/MyRedButton.dart';
-import 'package:kdh_homepage/widget/MyWhiteButton.dart';
+import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
+import 'package:sumgo_crawller_flutter/util/MyCrawller.dart';
+import 'package:sumgo_crawller_flutter/util/MyImage.dart';
+import 'package:sumgo_crawller_flutter/widget/MyCard.dart';
+import 'package:sumgo_crawller_flutter/widget/MyRedButton.dart';
+import 'package:sumgo_crawller_flutter/widget/MyWhiteButton.dart';
 
 class RequestRemovalPage extends StatefulWidget {
   const RequestRemovalPage({Key? key}) : super(key: key);

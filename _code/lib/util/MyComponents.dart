@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:kdh_homepage/Setting.dart';
+import 'package:sumgo_crawller_flutter/Setting.dart';
 
 class MyComponents {
   MyComponents._();

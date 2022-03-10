@@ -1,6 +1,6 @@
-import 'package:kdh_homepage/_common/util/FirestoreUtil.dart';
-import 'package:kdh_homepage/_common/util/StringUtil.dart';
-import 'package:kdh_homepage/repository/AnalysisItem.dart';
+import 'package:sumgo_crawller_flutter/_common/util/FirestoreUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/StringUtil.dart';
+import 'package:sumgo_crawller_flutter/repository/AnalysisItem.dart';
 
 class AnalysisItemRepository {
   static final FirestoreUtil<AnalysisItem> _ = FirestoreUtil(

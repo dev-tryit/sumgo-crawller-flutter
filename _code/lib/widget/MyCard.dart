@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kdh_homepage/util/MyColors.dart';
+import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 
 class MyCard extends StatelessWidget {
   final String title;

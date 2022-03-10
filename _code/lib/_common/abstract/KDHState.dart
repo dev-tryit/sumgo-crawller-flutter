@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
-import 'package:kdh_homepage/_common/util/MediaQueryUtil.dart';
-import 'package:kdh_homepage/util/MyComponents.dart';
+import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
+import 'package:sumgo_crawller_flutter/_common/util/MediaQueryUtil.dart';
+import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 
 abstract class KDHState<T extends StatefulWidget> extends State<T> {
   bool _whenBuildCalledFirst = true;

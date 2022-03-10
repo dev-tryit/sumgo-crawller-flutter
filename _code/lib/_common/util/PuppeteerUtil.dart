@@ -1,4 +1,4 @@
-import 'package:kdh_homepage/_common/util/LogUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:puppeteer/puppeteer.dart';
 
 class PuppeteerUtil {

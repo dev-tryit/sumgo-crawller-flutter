@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:kdh_homepage/_common/abstract/KDHState.dart';
-import 'package:kdh_homepage/_common/model/WidgetToGetSize.dart';
-import 'package:kdh_homepage/_common/util/PlatformUtil.dart';
-import 'package:kdh_homepage/page/main/KeywordAnalysisPage.dart';
-import 'package:kdh_homepage/page/main/RequestRemovalPage.dart';
-import 'package:kdh_homepage/util/MyImage.dart';
-import 'package:kdh_homepage/widget/MyHeader.dart';
+import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
+import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
+import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
+import 'package:sumgo_crawller_flutter/page/main/KeywordAnalysisPage.dart';
+import 'package:sumgo_crawller_flutter/page/main/RequestRemovalPage.dart';
+import 'package:sumgo_crawller_flutter/util/MyImage.dart';
+import 'package:sumgo_crawller_flutter/widget/MyHeader.dart';
 
 class MainLayout extends StatefulWidget {
   @override

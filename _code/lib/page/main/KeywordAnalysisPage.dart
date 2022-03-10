@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kdh_homepage/_common/util/LogUtil.dart';
-import 'package:kdh_homepage/repository/AnalysisItem.dart';
-import 'package:kdh_homepage/repository/AnalysisItemRepository.dart';
-import 'package:kdh_homepage/util/MyColors.dart';
-import 'package:kdh_homepage/util/MyComponents.dart';
-import 'package:kdh_homepage/util/MyImage.dart';
-import 'package:kdh_homepage/widget/MyCard.dart';
-import 'package:kdh_homepage/widget/MyChart.dart';
-import 'package:kdh_homepage/widget/MyRedButton.dart';
+import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
+import 'package:sumgo_crawller_flutter/repository/AnalysisItem.dart';
+import 'package:sumgo_crawller_flutter/repository/AnalysisItemRepository.dart';
+import 'package:sumgo_crawller_flutter/util/MyColors.dart';
+import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
+import 'package:sumgo_crawller_flutter/util/MyImage.dart';
+import 'package:sumgo_crawller_flutter/widget/MyCard.dart';
+import 'package:sumgo_crawller_flutter/widget/MyChart.dart';
+import 'package:sumgo_crawller_flutter/widget/MyRedButton.dart';
 
 class KeywordAnalysisPage extends StatefulWidget {
   const KeywordAnalysisPage({Key? key}) : super(key: key);

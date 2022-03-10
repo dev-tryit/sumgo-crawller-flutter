@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:kdh_homepage/_common/model/exception/CommonException.dart';
-import 'package:kdh_homepage/_common/util/PageUtil.dart';
-import 'package:kdh_homepage/page/main/MainLayout.dart';
-import 'package:kdh_homepage/util/MyAuthUtil.dart';
-import 'package:kdh_homepage/util/MyComponents.dart';
+import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.dart';
+import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
+import 'package:sumgo_crawller_flutter/page/main/MainLayout.dart';
+import 'package:sumgo_crawller_flutter/util/MyAuthUtil.dart';
+import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 
 class AuthStateManager<COMPONENT> {
   AuthState state;

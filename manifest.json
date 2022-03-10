@@ -1,6 +1,6 @@
 {
-    "name": "kdh_homepage",
-    "short_name": "kdh_homepage",
+    "name": "sumgo_crawller_flutter",
+    "short_name": "sumgo_crawller_flutter",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

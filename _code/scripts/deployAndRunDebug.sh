@@ -19,8 +19,8 @@ DarkCyan='\e[1;36;40m'
 White='\e[1;37;40m'
 
 echo -e "${Red}"
-echo "----python3.9 changeVersion.py"
-python3.9 changeVersion.py
+#echo "----python3.9 changeVersion.py"
+#python changeVersion.py
 echo -e "${Clear}"
 
 echo "----flutter build web"
@@ -34,16 +34,16 @@ fi
 echo "cp -r ../build/web/* ../../"
 cp -r ../build/web/* ../../
 
-echo "----git fetch origin"
-git fetch origin
-
-echo "----git add --all"
-git add --all
-
-echo "----git commit -m $1"
-git commit -m "$1"
-
-echo "----git push origin"
-git push origin
-
-bash runDebug.sh
+#echo "----git fetch origin"
+#git fetch origin
+#
+#echo "----git add --all"
+#git add --all
+#
+#echo "----git commit -m $1"
+#git commit -m "$1"
+#
+#echo "----git push origin"
+#git push origin
+#
+#bash runDebug.sh

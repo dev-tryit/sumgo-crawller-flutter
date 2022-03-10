@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:kdh_homepage/Setting.dart';
-import 'package:kdh_homepage/_common/config/MyCustomScrollBehavior.dart';
-import 'package:kdh_homepage/_common/util/DesktopUtil.dart';
-import 'package:kdh_homepage/_common/util/FireauthUtil.dart';
-import 'package:kdh_homepage/_common/util/PlatformUtil.dart';
-import 'package:kdh_homepage/page/LoadPage.dart';
-import 'package:kdh_homepage/util/MyComponents.dart';
-import 'package:kdh_homepage/util/MyTheme.dart';
+import 'package:sumgo_crawller_flutter/Setting.dart';
+import 'package:sumgo_crawller_flutter/_common/config/MyCustomScrollBehavior.dart';
+import 'package:sumgo_crawller_flutter/_common/util/DesktopUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/FireauthUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
+import 'package:sumgo_crawller_flutter/page/LoadPage.dart';
+import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
+import 'package:sumgo_crawller_flutter/util/MyTheme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,4 +1,4 @@
-import 'package:kdh_homepage/_common/abstract/WithDocId.dart';
+import 'package:sumgo_crawller_flutter/_common/abstract/WithDocId.dart';
 
 class AnalysisItem extends WithDocId {
   String? title;
