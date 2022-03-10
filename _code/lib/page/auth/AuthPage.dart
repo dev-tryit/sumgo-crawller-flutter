@@ -10,6 +10,7 @@ import 'package:kdh_homepage/_common/model/exception/CommonException.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
 import 'package:kdh_homepage/_common/util/PageUtil.dart';
 import 'package:kdh_homepage/page/main/MainLayout.dart';
+import 'package:kdh_homepage/state/auth/AuthState.dart';
 import 'package:kdh_homepage/util/MyAuthUtil.dart';
 import 'package:kdh_homepage/util/MyColors.dart';
 import 'package:kdh_homepage/util/MyComponents.dart';
@@ -48,10 +49,9 @@ class _AuthPageState extends KDHState<AuthPage> {
 class AuthPageComponent {
   final _formKey = GlobalKey<FormState>();
 
-  final emailController = TextEditingController(text: "imkim1893@naver.com");
-  final passwordController = TextEditingController(text: "1234");
-  final passwordConfirmController = TextEditingController(text: "1234");
-  AuthMode authMode = AuthMode.SEND_EMAIL;
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final passwordConfirmController = TextEditingController();
 
   _AuthPageState state;
 
@@ -67,10 +67,25 @@ class AuthPageComponent {
   AuthPageService get s => state.s;
 
   Widget body() {
-    LogUtil.debug("body authMode:$authMode");
+    LogUtil.debug("body authMode:${s.authState.runtimeType}");
 
     List<Widget> elementList = [];
-    if (authMode == AuthMode.LOGIN) {
+    if (s.authState is AuthStateNeedVerfication) {
+      emailValidationText = "인증 확인";
+      emailTextFieldEnabled = false;
+      emailValidationColor = MyColors.red;
+      nextButtonText = null;
+    }else if (s.authState is  AuthStateSendEmail) {
+      emailValidationText = "인증 요청";
+      emailTextFieldEnabled = true;
+      emailValidationColor = MyColors.deepBlue;
+      nextButtonText = "null";
+    }
+    else if (s.authState is  AuthStateLogin) {
+      emailValidationText = null;
+      emailTextFieldEnabled = false;
+      nextButtonText = "로그인";
+
       //TODO: 로그인 코드 참고하여 ,EasyFade 위젯 만들기
       if (passwordOpacity == 0) {
         Timer(const Duration(milliseconds: 500), () {
@@ -91,7 +106,11 @@ class AuthPageComponent {
           ),
         ),
       ]);
-    } else if (authMode == AuthMode.REGISTER) {
+    } else if (s.authState is AuthStateRegistration) {
+      emailValidationText = null;
+      emailTextFieldEnabled = false;
+      nextButtonText = "회원가입";
+
       elementList.addAll([
         const SizedBox(height: 30),
         inputBox(
@@ -113,20 +132,20 @@ class AuthPageComponent {
     return Scaffold(
       bottomSheet: nextButtonText != null
           ? AnimatedOpacity(
-        opacity: 1.0,
-        duration: const Duration(milliseconds: 1500),
-        child: Container(
-          height: 82,
-          padding: const EdgeInsets.only(left: 32, right: 32, bottom: 32),
-          child: SizedBox.expand(
-            child: ElevatedButton(
-              child: Text(nextButtonText!),
-              style: ElevatedButton.styleFrom(primary: MyColors.deepBlue),
-              onPressed: s.loginOrRegister,
-            ),
-          ),
-        ),
-      )
+              opacity: 1.0,
+              duration: const Duration(milliseconds: 1500),
+              child: Container(
+                height: 82,
+                padding: const EdgeInsets.only(left: 32, right: 32, bottom: 32),
+                child: SizedBox.expand(
+                  child: ElevatedButton(
+                    child: Text(nextButtonText!),
+                    style: ElevatedButton.styleFrom(primary: MyColors.deepBlue),
+                    onPressed: s.loginOrRegister,
+                  ),
+                ),
+              ),
+            )
           : null,
       body: Form(
         key: _formKey,
@@ -198,25 +217,24 @@ class AuthPageComponent {
                 ),
               ),
               ...trailing != null
-              ? [
-              const SizedBox(width: 8),
-              Padding(
-                padding: const EdgeInsets.only(top: 25),
-                child: InkWell(
-                  onTap: onTrailingTap,
-                  child: Text(
-                    trailing,
-                    style: GoogleFonts.gothicA1(
-                      color: trailingColor ?? MyColors.deepBlue,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-
-                    ),
-                  ),
-                ),
-              ),
-            ]
-                : [],
+                  ? [
+                      const SizedBox(width: 8),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 25),
+                        child: InkWell(
+                          onTap: onTrailingTap,
+                          child: Text(
+                            trailing,
+                            style: GoogleFonts.gothicA1(
+                              color: trailingColor ?? MyColors.deepBlue,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ]
+                  : [],
             ],
           ),
         ],
@@ -227,8 +245,9 @@ class AuthPageComponent {
 
 class AuthPageService {
   _AuthPageState state;
+  AuthState authState;
 
-  AuthPageService(this.state);
+  AuthPageService(this.state) : this.authState = AuthStateSendEmail(state.c);
 
   AuthPageComponent get c => state.c;
 
@@ -238,86 +257,37 @@ class AuthPageService {
     String email = c.emailController.text.trim();
 
     await MyComponents.showLoadingDialog(context);
-    if (c.authMode == AuthMode.NEED_VERIFICATION) {
-      User? user = await MyAuthUtil.loginWithEmailDefaultPassword(email);
-      if (user?.emailVerified ?? false) {
-        await MyAuthUtil.delete();
-        c.authMode = AuthMode.REGISTER;
-        c.emailValidationText = null;
-        c.emailTextFieldEnabled = false;
-        c.nextButtonText = "회원가입";
-      } else {
-        MyComponents.toastError(context, "이메일 인증이 필요합니다.");
-      }
-    } else {
-      c.authMode = await MyAuthUtil.verifyBeforeUpdateEmail(email: email);
-
-      switch (c.authMode) {
-        case AuthMode.NEED_VERIFICATION:
-          c.emailValidationText = "인증 확인";
-          c.emailTextFieldEnabled = false;
-          c.emailValidationColor = MyColors.red;
-          c.nextButtonText = null;
-          break;
-        case AuthMode.LOGIN:
-          c.emailValidationText = null;
-          c.emailTextFieldEnabled = false;
-          c.nextButtonText = "로그인";
-          break;
-        default:
-          c.emailValidationText = "인증 요청";
-          c.emailTextFieldEnabled = true;
-          c.emailValidationColor = MyColors.deepBlue;
-          c.nextButtonText = "null";
-          break;
-      }
+    if (authState is AuthStateSendEmail) {
+      await authState.handle({'email': email});
+    } else if (authState is AuthStateNeedVerfication) {
+      await authState.handle({'email': email, 'context': context});
     }
     await MyComponents.dismissLoadingDialog();
-
     state.rebuild();
   }
 
   void loginOrRegister() async {
-    if (c.authMode == AuthMode.LOGIN) {
-      String email = c.emailController.text.trim();
-      String password = c.passwordController.text.trim();
+    String email = c.emailController.text.trim();
+    String password = c.passwordController.text.trim();
 
-      //TODO: 비밀번호 유효성 검사 구문 필요 (비어있거나, 개수)
-
-      try {
-        await MyAuthUtil.loginWithEmail(email,password);
-      }
-      on CommonException catch(e) {
-        MyComponents.toastError(context, e.message);
-        return;
-      }
-      PageUtil.movePage(context, MainLayout());
-    } else if (c.authMode == AuthMode.REGISTER) {
-      String email = c.emailController.text.trim();
-      String password = c.passwordController.text.trim();
+    await MyComponents.showLoadingDialog(context);
+    if (authState is AuthStateLogin) {
+      await authState
+          .handle({'email': email, 'password': password, 'context': context});
+    } else if (authState is AuthStateRegistration) {
       String passwordConfirm = c.passwordConfirmController.text.trim();
-
-      //TODO: 비밀번호 유효성 검사 구문 필요 (비어있거나, 개수)
-      if(password != passwordConfirm) {
-        MyComponents.toastError(context, "비밀번호가 다릅니다.");
-        return;
-      }
-
-      try {
-        await MyAuthUtil.registerWithEmail(email, password);
-      }
-      on CommonException catch(e) {
-        MyComponents.toastError(context, e.message);
-        return;
-      }
-
-      MyComponents.toastInfo(context, "회원가입이 완료되었습니다.");
-      PageUtil.movePage(context, MainLayout());
+      await authState.handle({
+        'email': email,
+        'password': password,
+        'passwordConfirm': passwordConfirm,
+        'context': context,
+      });
     } else {
       MyComponents.toastError(
         context,
         "loginOrRegister에 에러가 있습니다. 회원가입, 로그인 상태가 아닙니다.",
       );
     }
+    await MyComponents.dismissLoadingDialog();
   }
 }

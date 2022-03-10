@@ -3,8 +3,9 @@ import 'package:kdh_homepage/_common/model/exception/CommonException.dart';
 import 'package:kdh_homepage/_common/util/FireauthUtil.dart';
 import 'package:kdh_homepage/_common/util/FirestoreUtil.dart';
 import 'package:kdh_homepage/_common/util/LogUtil.dart';
+import 'package:kdh_homepage/state/auth/AuthState.dart';
 
-enum AuthMode { SEND_EMAIL, NEED_VERIFICATION, REGISTER, LOGIN }
+enum NeededAuthBehavior { NEED_LOGIN, NEED_VERIFICATION, NEED_REGISTRATION }
 
 class MyAuthUtil {
   static const _password = "tempNewPassword";
@@ -13,27 +14,26 @@ class MyAuthUtil {
     return (FireauthUtil.getUser() != null);
   }
 
-  static Future<AuthMode> verifyBeforeUpdateEmail(
+  static Future<NeededAuthBehavior> verifyBeforeUpdateEmail(
       {required String email}) async {
     try {
       await FireauthUtil.loginAnonymously(password: _password);
     } on CommonException catch (e) {
       if (e.code == "user-token-expired") {
-        return AuthMode.LOGIN;
+        return NeededAuthBehavior.NEED_LOGIN;
       }
     }
 
     try {
       await FireauthUtil.verifyBeforeUpdateEmail(email: email);
-      return AuthMode.NEED_VERIFICATION;
+      return NeededAuthBehavior.NEED_VERIFICATION;
     } on CommonException catch (e) {
       if (e.code == 'email-already-in-use') {
-        return AuthMode.LOGIN;
+        return NeededAuthBehavior.NEED_LOGIN;
       } else {
-        return AuthMode.REGISTER;
+        return NeededAuthBehavior.NEED_REGISTRATION;
       }
-    }
-    finally{
+    } finally {
       await FireauthUtil.logout();
     }
   }
@@ -55,7 +55,8 @@ class MyAuthUtil {
     await FireauthUtil.logout();
   }
 
-  static Future<User?> registerWithEmail(String email,String password) async {
-    return await FireauthUtil.registerWithEmail(email: email, password: password);
+  static Future<User?> registerWithEmail(String email, String password) async {
+    return await FireauthUtil.registerWithEmail(
+        email: email, password: password);
   }
 }
