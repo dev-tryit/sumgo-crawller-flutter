@@ -48,11 +48,8 @@ class MyApp extends StatelessWidget {
         // ),
       ),
       builder: (context, child) {
-        child = SizedBox(
-          width: 350,
-          height: double.infinity,
-          child: child!,
-        );
+        child =
+            FittedBox(child: SizedBox(width: 350,height: 700, child: child!));
         child = MyComponents.easyLoadingBuilder()(context, child);
         return child;
       },
