@@ -72,16 +72,9 @@ class LoadPageService extends KDHService<_LoadPageState, LoadPageComponent> {
   LoadPageService(_LoadPageState state, LoadPageComponent c) : super(state, c);
 
   Future<void> moveNextPage() async {
-    Widget nextPage;
-    if(PlatformUtil.isComputer()) {
-      nextPage = MainLayout();
-    }
-    else {
-      nextPage = await MyAuthUtil.isLogin() ? MainLayout() : AuthPage();
-    }
 
     await Future.delayed(const Duration(seconds: 1));
     PageUtil.movePage(
-        context, nextPage);
+        context, await MyAuthUtil.isLogin() ? MainLayout() : AuthPage());
   }
 }
