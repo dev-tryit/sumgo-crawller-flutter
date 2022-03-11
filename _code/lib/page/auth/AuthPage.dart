@@ -259,6 +259,8 @@ class AuthPageService extends KDHService<_AuthPageState, AuthPageComponent> {
 
     String email = c.emailController.text.trim();
 
+    //TODO: 유효성 검사
+
     await MyComponents.showLoadingDialog(context);
     if (authStateManager.state is AuthStateSendEmail) {
       await authStateManager.handle({'email': email});
@@ -275,6 +277,8 @@ class AuthPageService extends KDHService<_AuthPageState, AuthPageComponent> {
 
     String email = c.emailController.text.trim();
     String password = c.passwordController.text.trim();
+
+    //TODO: 유효성 검사
 
     await MyComponents.showLoadingDialog(context);
     if (authStateManager.state is AuthStateLogin) {

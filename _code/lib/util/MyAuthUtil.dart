@@ -35,7 +35,6 @@ class MyAuthUtil {
           await loginWithEmailDefaultPassword(email);
         }
         on CommonException catch (e2) {
-          print("e2:$e2");
           if (e2.code == "wrong-password") {
             return NeededAuthBehavior.NEED_LOGIN;
           }
@@ -47,8 +46,6 @@ class MyAuthUtil {
       !PlatformUtil.isComputer()
           ? await FirebaseAuthUtil.sendEmailVerification()
           : await FiredartAuthUtil.sendEmailVerification();
-
-      return NeededAuthBehavior.NEED_VERIFICATION;
     } on CommonException catch (e) {
       if (e.code == 'email-already-in-use') {
         return NeededAuthBehavior.NEED_LOGIN;
@@ -60,6 +57,7 @@ class MyAuthUtil {
           ? await FirebaseAuthUtil.logout()
           : await FiredartAuthUtil.logout();
     }
+    return NeededAuthBehavior.NEED_VERIFICATION;
   }
 
   static Future<void> logout() async {
