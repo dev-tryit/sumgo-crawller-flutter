@@ -63,67 +63,11 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
   AuthPageComponent(_AuthPageState state) : super(state);
 
   Widget body(AuthPageService s) {
+    final authState = s.authStateManager.state;
     LogUtil.debug(
-        "body authStateManager.authState:${s.authStateManager.state.runtimeType}");
+        "body authStateManager.authState:${authState.runtimeType}");
 
-    List<Widget> elementList = [];
-    if (s.authStateManager.state is AuthStateNeedVerfication) {
-      emailValidationText = "인증 확인";
-      emailTextFieldEnabled = false;
-      emailValidationColor = MyColors.red;
-      nextButtonText = null;
-    } else if (s.authStateManager.state is AuthStateSendEmail) {
-      emailValidationText = "인증 요청";
-      emailTextFieldEnabled = true;
-      emailValidationColor = MyColors.deepBlue;
-      nextButtonText = "null";
-    } else if (s.authStateManager.state is AuthStateLogin) {
-      emailValidationText = null;
-      emailTextFieldEnabled = false;
-      nextButtonText = "로그인";
-
-      //TODO: 로그인 코드 참고하여 ,EasyFade 위젯 만들기
-      if (passwordOpacity == 0) {
-        Timer(const Duration(milliseconds: 500), () {
-          passwordOpacity = 1;
-          rebuild();
-        });
-      }
-      elementList.addAll([
-        const SizedBox(height: 30),
-        AnimatedOpacity(
-          opacity: passwordOpacity,
-          duration: const Duration(milliseconds: 800),
-          child: inputBox(
-            label: "비밀번호",
-            controller: passwordController,
-            onChanged: (value) => _formKey.currentState?.validate(),
-            obscureText: true,
-          ),
-        ),
-      ]);
-    } else if (s.authStateManager.state is AuthStateRegistration) {
-      emailValidationText = null;
-      emailTextFieldEnabled = false;
-      nextButtonText = "회원가입";
-
-      elementList.addAll([
-        const SizedBox(height: 30),
-        inputBox(
-          label: "비밀번호",
-          controller: passwordController,
-          onChanged: (value) => _formKey.currentState?.validate(),
-          obscureText: true,
-        ),
-        const SizedBox(height: 30),
-        inputBox(
-          label: "비밀번호 확인",
-          controller: passwordConfirmController,
-          onChanged: (value) => _formKey.currentState?.validate(),
-          obscureText: true,
-        ),
-      ]);
-    }
+    List<Widget> elementList = uiListByAuthState(authState);
 
     return Scaffold(
       bottomSheet: nextButtonText != null
@@ -237,13 +181,76 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
       ),
     );
   }
+
+  List<Widget> uiListByAuthState(AuthState<AuthPageComponent> authState) {
+    List<Widget> elementList = [];
+    if (authState is AuthStateNeedVerfication) {
+      emailValidationText = "인증 확인";
+      emailTextFieldEnabled = false;
+      emailValidationColor = MyColors.red;
+      nextButtonText = null;
+    } else if (authState is AuthStateSendEmail) {
+      emailValidationText = "인증 요청";
+      emailTextFieldEnabled = true;
+      emailValidationColor = MyColors.deepBlue;
+      nextButtonText = "null";
+    } else if (authState is AuthStateLogin) {
+      emailValidationText = null;
+      emailTextFieldEnabled = false;
+      nextButtonText = "로그인";
+
+      //TODO: 로그인 코드 참고하여 ,EasyFade 위젯 만들기
+      if (passwordOpacity == 0) {
+        Timer(const Duration(milliseconds: 500), () {
+          passwordOpacity = 1;
+          rebuild();
+        });
+      }
+      elementList.addAll([
+        const SizedBox(height: 30),
+        AnimatedOpacity(
+          opacity: passwordOpacity,
+          duration: const Duration(milliseconds: 800),
+          child: inputBox(
+            label: "비밀번호",
+            controller: passwordController,
+            onChanged: (value) => _formKey.currentState?.validate(),
+            obscureText: true,
+          ),
+        ),
+      ]);
+    } else if (authState is AuthStateRegistration) {
+      emailValidationText = null;
+      emailTextFieldEnabled = false;
+      nextButtonText = "회원가입";
+
+      elementList.addAll([
+        const SizedBox(height: 30),
+        inputBox(
+          label: "비밀번호",
+          controller: passwordController,
+          onChanged: (value) => _formKey.currentState?.validate(),
+          obscureText: true,
+        ),
+        const SizedBox(height: 30),
+        inputBox(
+          label: "비밀번호 확인",
+          controller: passwordConfirmController,
+          onChanged: (value) => _formKey.currentState?.validate(),
+          obscureText: true,
+        ),
+      ]);
+    }
+
+    return elementList;
+  }
 }
 
 class AuthPageService extends KDHService<_AuthPageState, AuthPageComponent> {
-  AuthStateManager authStateManager;
+  AuthStateManager<AuthPageComponent> authStateManager;
 
   AuthPageService(_AuthPageState state, AuthPageComponent c)
-      : authStateManager = AuthStateManager(c),
+      : authStateManager = AuthStateManager<AuthPageComponent>(c),
         super(state, c);
 
   void sendEmailVerification() async {

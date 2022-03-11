@@ -7,7 +7,7 @@ import 'package:sumgo_crawller_flutter/util/MyAuthUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 
 class AuthStateManager<COMPONENT> {
-  AuthState state;
+  AuthState<COMPONENT> state;
   COMPONENT c;
 
   AuthStateManager(this.c) : state = AuthStateSendEmail<COMPONENT>(c);
@@ -22,7 +22,7 @@ abstract class AuthState<COMPONENT> {
 
   AuthState(this.c);
 
-  Future<AuthState> handle(Map<String, dynamic> data);
+  Future<AuthState<COMPONENT>> handle(Map<String, dynamic> data);
 }
 
 class AuthStateSendEmail<COMPONENT> implements AuthState<COMPONENT> {
@@ -32,7 +32,7 @@ class AuthStateSendEmail<COMPONENT> implements AuthState<COMPONENT> {
   AuthStateSendEmail(this.c);
 
   @override
-  Future<AuthState> handle(Map<String, dynamic> data) async {
+  Future<AuthState<COMPONENT>> handle(Map<String, dynamic> data) async {
     NeededAuthBehavior neededAuthBehavior =
         await MyAuthUtil.verifyBeforeUpdateEmail(email: data['email']);
     print("AuthStateSendEmail handle neededAuthBehavior:$neededAuthBehavior");
@@ -54,7 +54,7 @@ class AuthStateNeedVerfication<COMPONENT> implements AuthState<COMPONENT> {
   AuthStateNeedVerfication(this.c);
 
   @override
-  Future<AuthState> handle(Map<String, dynamic> data) async {
+  Future<AuthState<COMPONENT>> handle(Map<String, dynamic> data) async {
     User? user = await MyAuthUtil.loginWithEmailDefaultPassword(data['email']);
     if (user?.emailVerified ?? false) {
       await MyAuthUtil.delete();
@@ -73,7 +73,7 @@ class AuthStateRegistration<COMPONENT> implements AuthState<COMPONENT> {
   AuthStateRegistration(this.c);
 
   @override
-  Future<AuthState> handle(Map<String, dynamic> data) async {
+  Future<AuthState<COMPONENT>> handle(Map<String, dynamic> data) async {
     BuildContext context = data['context'];
     String email = data['email'];
     String password = data['password'];
@@ -105,7 +105,7 @@ class AuthStateLogin<COMPONENT> implements AuthState<COMPONENT> {
   AuthStateLogin(this.c);
 
   @override
-  Future<AuthState> handle(Map<String, dynamic> data) async {
+  Future<AuthState<COMPONENT>> handle(Map<String, dynamic> data) async {
     BuildContext context = data['context'];
     String email = data['email'];
     String password = data['password'];
