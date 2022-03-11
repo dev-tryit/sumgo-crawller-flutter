@@ -193,7 +193,7 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
       emailValidationText = "인증 요청";
       emailTextFieldEnabled = true;
       emailValidationColor = MyColors.deepBlue;
-      nextButtonText = "null";
+      nextButtonText = null;
     } else if (authState is AuthStateLogin) {
       emailValidationText = null;
       emailTextFieldEnabled = false;
