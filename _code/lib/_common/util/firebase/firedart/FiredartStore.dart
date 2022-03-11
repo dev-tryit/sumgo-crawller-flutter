@@ -46,7 +46,7 @@ class HiveStore extends TokenStore {
   HiveStore._internal(this._box);
 
   @override
-  Token read() => _box.get(keyToken);
+  Token? read() => _box.get(keyToken);
 
   @override
   void write(Token? token) => token != null ? _box.put(keyToken, token) : null;
