@@ -69,7 +69,7 @@ class FiredartAuthUtil {
     }
 
     try {
-      await _instance.requestEmailVerification();
+      await _instance.requestEmailVerification(langCode:Setting.defaultLocale.languageCode);
     } on AuthException catch (e) {
       var code = e.message;
       if (code == 'EMAIL_EXISTS') {

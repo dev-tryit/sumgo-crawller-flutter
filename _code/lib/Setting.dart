@@ -1,6 +1,12 @@
+
+import 'dart:ui';
+
 import 'package:logger/logger.dart';
 
 class Setting {
+  //Lang
+  static const Locale defaultLocale = Locale('ko','kr');
+
   // DateTime
   static const int timeZoneOffset = 9;
 
