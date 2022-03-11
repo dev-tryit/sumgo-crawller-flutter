@@ -25,11 +25,21 @@ class MyAuthUtil {
       {required String email}) async {
     try {
       !PlatformUtil.isComputer()
-          ? await FirebaseAuthUtil.loginWithEmail(email: email, password: _password)
-          : await FiredartAuthUtil.loginWithEmail(email: email, password: _password);
+          ? await FirebaseAuthUtil.registerWithEmail(
+              email: email, password: _password)
+          : await FiredartAuthUtil.registerWithEmail(
+              email: email, password: _password);
     } on CommonException catch (e) {
-      if (e.code == "user-token-expired") {
-        return NeededAuthBehavior.NEED_LOGIN;
+      if (e.code == "email-already-in-use") {
+        try {
+          await loginWithEmailDefaultPassword(email);
+        }
+        on CommonException catch (e2) {
+          print("e2:$e2");
+          if (e2.code == "wrong-password") {
+            return NeededAuthBehavior.NEED_LOGIN;
+          }
+        }
       }
     }
 
@@ -60,14 +70,14 @@ class MyAuthUtil {
 
   static Future<void> loginWithEmailDefaultPassword(String email) async {
     !PlatformUtil.isComputer()
-        ? FirebaseAuthUtil.loginWithEmail(email: email, password: _password)
-        : FiredartAuthUtil.loginWithEmail(email: email, password: _password);
+        ? await FirebaseAuthUtil.loginWithEmail(email: email, password: _password)
+        : await FiredartAuthUtil.loginWithEmail(email: email, password: _password);
   }
 
   static Future<void> loginWithEmail(String email, String password) async {
     !PlatformUtil.isComputer()
-        ? FirebaseAuthUtil.loginWithEmail(email: email, password: password)
-        : FiredartAuthUtil.loginWithEmail(email: email, password: password);
+        ? await FirebaseAuthUtil.loginWithEmail(email: email, password: password)
+        : await FiredartAuthUtil.loginWithEmail(email: email, password: password);
   }
 
   static Future<void> delete() async {
