@@ -1,11 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.dart';
+import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firebase/FirebaseAuthUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/firebase/firedart/FiredartAuthUtil.dart';
 
 enum NeededAuthBehavior { NEED_LOGIN, NEED_VERIFICATION, NEED_REGISTRATION }
 
 class MyAuthUtil {
   static const _password = "tempNewPassword";
+
+  static Future<void> init() async {
+    if(PlatformUtil.isComputer()) {
+      await FirebaseAuthUtil.init();
+    }
+    else {
+      await FiredartAuthUtil.init();
+    }
+  }
 
   static Future<bool> isLogin() async {
     return (FirebaseAuthUtil.getUser() != null);
