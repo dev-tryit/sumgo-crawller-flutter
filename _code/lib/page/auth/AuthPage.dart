@@ -59,6 +59,7 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
   Color emailValidationColor = MyColors.deepBlue;
 
   double passwordOpacity = 0;
+  List<Widget> elementList = [];
 
   AuthPageComponent(_AuthPageState state) : super(state);
 
@@ -67,7 +68,7 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
     LogUtil.debug(
         "body authStateManager.authState:${authState.runtimeType}");
 
-    List<Widget> elementList = uiListByAuthState(authState);
+    setUIByAuthState(authState);
 
     return Scaffold(
       bottomSheet: nextButtonText != null
@@ -182,8 +183,9 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
     );
   }
 
-  List<Widget> uiListByAuthState(AuthState<AuthPageComponent> authState) {
-    List<Widget> elementList = [];
+  void setUIByAuthState(AuthState<AuthPageComponent> authState) {
+    elementList.clear();
+
     if (authState is AuthStateNeedVerfication) {
       emailValidationText = "인증 확인";
       emailTextFieldEnabled = false;
@@ -241,8 +243,6 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
         ),
       ]);
     }
-
-    return elementList;
   }
 }
 
