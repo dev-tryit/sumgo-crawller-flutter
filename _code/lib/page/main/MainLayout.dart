@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
+import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
@@ -12,9 +14,8 @@ class MainLayout extends StatefulWidget {
   _MainLayoutState createState() => _MainLayoutState();
 }
 
-class _MainLayoutState extends KDHState<MainLayout> {
-  late final MainLayoutComponent c;
-
+class _MainLayoutState
+    extends KDHState<MainLayout, MainLayoutComponent, MainLayoutService> {
   @override
   bool isPage() {
     return true;
@@ -26,9 +27,13 @@ class _MainLayoutState extends KDHState<MainLayout> {
   }
 
   @override
-  Future<void> onLoad() async {
-    c = MainLayoutComponent(this);
+  MainLayoutComponent makeComponent() => MainLayoutComponent(this);
 
+  @override
+  MainLayoutService makeService() => MainLayoutService(this, c);
+
+  @override
+  Future<void> onLoad() async {
     List<Future> loadList = [];
     loadList.add(precacheImage(MyImage.backgroundTop, context));
     loadList.add(precacheImage(MyImage.boxIcon, context));
@@ -40,8 +45,7 @@ class _MainLayoutState extends KDHState<MainLayout> {
 
   @override
   void mustRebuild() {
-    widgetToBuild =
-        () => Scaffold(body: c.body());
+    widgetToBuild = () => Scaffold(body: c.body());
     rebuild();
   }
 
@@ -49,17 +53,18 @@ class _MainLayoutState extends KDHState<MainLayout> {
   Future<void> afterBuild() async {}
 }
 
-class MainLayoutComponent {
+class MainLayoutComponent extends KDHComponent<_MainLayoutState> {
   final PageController pageC;
-  final _MainLayoutState _state;
 
-  MainLayoutComponent(this._state) : pageC = PageController();
+  MainLayoutComponent(_MainLayoutState state)
+      : pageC = PageController(),
+        super(state);
 
   Widget body() {
     return SizedBox.expand(
       child: Stack(
         children: [
-          Positioned(top: 150, bottom: 0, left: 0, right: 0, child:content()),
+          Positioned(top: 150, bottom: 0, left: 0, right: 0, child: content()),
           MyHeader(pageC),
         ],
       ),
@@ -76,4 +81,10 @@ class MainLayoutComponent {
       ],
     );
   }
+}
+
+class MainLayoutService
+    extends KDHService<_MainLayoutState, MainLayoutComponent> {
+  MainLayoutService(_MainLayoutState state, MainLayoutComponent c)
+      : super(state, c);
 }

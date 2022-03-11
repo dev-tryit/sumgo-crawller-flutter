@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
+import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
@@ -16,9 +18,8 @@ class LoadPage extends StatefulWidget {
   _LoadPageState createState() => _LoadPageState();
 }
 
-class _LoadPageState extends KDHState<LoadPage> {
-  LoadPageComponent c = LoadPageComponent();
-
+class _LoadPageState
+    extends KDHState<LoadPage, LoadPageComponent, LoadPageService> {
   @override
   bool isPage() => true;
 
@@ -26,24 +27,31 @@ class _LoadPageState extends KDHState<LoadPage> {
   List<WidgetToGetSize> makeWidgetListToGetSize() => [];
 
   @override
+  LoadPageComponent makeComponent() => LoadPageComponent(this);
+
+  @override
+  LoadPageService makeService() =>
+      LoadPageService(this, c);
+
+  @override
+  Future<void> onLoad() async {}
+
+  @override
   void mustRebuild() {
-    widgetToBuild =
-        () => Scaffold(body: c.body());
+    widgetToBuild = () => Scaffold(body: c.body());
     rebuild();
   }
 
   @override
   Future<void> afterBuild() async {
-    await Future.delayed(const Duration(seconds: 1));
-    PageUtil.movePage(
-        context, await MyAuthUtil.isLogin() ? MainLayout() : AuthPage());
+    await s.moveNextPage();
   }
-
-  @override
-  Future<void> onLoad() async {}
 }
 
-class LoadPageComponent {
+class LoadPageComponent extends KDHComponent<_LoadPageState> {
+  LoadPageComponent(_LoadPageState state) : super(state);
+
+
   Widget body() {
     return Container(
       width: 350,
@@ -57,5 +65,15 @@ class LoadPageComponent {
         ),
       ),
     );
+  }
+}
+
+class LoadPageService extends KDHService<_LoadPageState, LoadPageComponent> {
+  LoadPageService(_LoadPageState state, LoadPageComponent c) : super(state, c);
+
+  Future<void> moveNextPage() async {
+    await Future.delayed(const Duration(seconds: 1));
+    PageUtil.movePage(
+        context, await MyAuthUtil.isLogin() ? MainLayout() : AuthPage());
   }
 }

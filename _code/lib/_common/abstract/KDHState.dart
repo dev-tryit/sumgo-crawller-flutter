@@ -3,18 +3,28 @@ import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/MediaQueryUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 
-abstract class KDHState<T extends StatefulWidget> extends State<T> {
-  bool _whenBuildCalledFirst = true;
-  List<WidgetToGetSize> _widgetListToGetSize = [];
+abstract class KDHState<TargetWidget extends StatefulWidget, COMPONENT, SERVICE>
+    extends State<TargetWidget> {
+  late final COMPONENT c;
+  late final SERVICE s;
 
   Map<dynamic, WidgetToGetSize> widgetMap = {};
   Widget Function()? widgetToBuild;
   late Size screenSize;
 
+  bool _whenBuildCalledFirst = true;
+  List<WidgetToGetSize> _widgetListToGetSize = [];
+
   //호출순서 : super.initState->super.build->super.afterBuild->super.prepareRebuild
   //                                                       ->onLoad->mustRebuild->super.build
 
   bool isPage();
+
+  List<WidgetToGetSize> makeWidgetListToGetSize();
+
+  COMPONENT makeComponent();
+
+  SERVICE makeService();
 
   void rebuild() {
     //Flutter는 중간에 state를 제거해놓기도 한다. 추후에 build로 다시 생성하지만..
@@ -37,7 +47,6 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
     WidgetToGetSize("maxContainer", maxContainerToGetSize)
   ];
   */
-  List<WidgetToGetSize> makeWidgetListToGetSize();
 
   Widget loadingWidget() {
     return Center(child: MyComponents.loadingWidget());
@@ -84,13 +93,15 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
     return returnWidget;
   }
 
-
   Future<void> _prepareRebuild() async {
     // LogUtil.debug("super.prepareRebuild");
 
     if (_widgetListToGetSize.isNotEmpty) {
       _getSizeOfWidgetList();
     }
+
+    c = makeComponent();
+    s = makeService();
 
     await onLoad();
 
@@ -101,10 +112,10 @@ abstract class KDHState<T extends StatefulWidget> extends State<T> {
 
   Future<void> onLoad();
 
-  Future<void> afterBuild();
-
   //widgetToBuild를 채우고, rebuild();
   void mustRebuild();
+
+  Future<void> afterBuild();
 
   void _getSizeOfWidgetList() {
     widgetMap.clear();
