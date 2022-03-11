@@ -186,7 +186,7 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
   void setUIByAuthState(AuthState<AuthPageComponent> authState) {
     elementList.clear();
 
-    if (authState is AuthStateNeedVerfication) {
+    if (authState is AuthStateNeedVerification) {
       emailValidationText = "인증 확인";
       emailTextFieldEnabled = false;
       emailValidationColor = MyColors.red;
@@ -262,7 +262,7 @@ class AuthPageService extends KDHService<_AuthPageState, AuthPageComponent> {
     await MyComponents.showLoadingDialog(context);
     if (authStateManager.state is AuthStateSendEmail) {
       await authStateManager.handle({'email': email});
-    } else if (authStateManager.state is AuthStateNeedVerfication) {
+    } else if (authStateManager.state is AuthStateNeedVerification) {
       await authStateManager.handle({'email': email, 'context': context});
     }
     await MyComponents.dismissLoadingDialog();

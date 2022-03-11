@@ -24493,7 +24493,7 @@ h=o
 j=A.T(h)
 if(j instanceof A.nj){l=j
 if(l.c==="email-already-in-use")throw A.c(A.dV(l.c,"\uc774\ubbf8 ID\uac00 \uc788\uc2b5\ub2c8\ub2e4"))
-else{j="FireauthUtil.verifyBeforeUpdateEmail "+l.c
+else{j="FireauthUtil.sendEmailVerification "+l.c
 $.j0().eo(B.db,A.jn(j),null,null)}}else throw h
 s=6
 break
@@ -37711,8 +37711,8 @@ galh(a){return a.isAnonymous},
 gtO(a){return a.providerData},
 ganT(a){return a.refreshToken},
 i3(a){return a.reload()},
-u8(a,b){return a.verifyBeforeUpdateEmail(b)},
-jT(a,b,c){return a.verifyBeforeUpdateEmail(b,c)},
+u8(a,b){return a.sendEmailVerification(b)},
+jT(a,b,c){return a.sendEmailVerification(b,c)},
 f2(a,b){return a.updatePassword(b)},
 nu(a){return a.toJSON()},
 gafu(a){return a.accessToken},
@@ -46607,7 +46607,7 @@ apg(a,b,c){var s=0,r=A.r(t.H),q=1,p,o=[],n=this,m,l,k,j
 var $async$jT=A.t(function(d,e){if(d===1){p=e
 s=q}while(true)switch(s){case 0:q=3
 s=6
-return A.j(B.b7.dc("User#verifyBeforeUpdateEmail",n.Cm(A.ae(["newEmail",b,"actionCodeSettings",null],t.N,t.z)),!1,t.H),$async$jT)
+return A.j(B.b7.dc("User#sendEmailVerification",n.Cm(A.ae(["newEmail",b,"actionCodeSettings",null],t.N,t.z)),!1,t.H),$async$jT)
 case 6:q=1
 s=5
 break

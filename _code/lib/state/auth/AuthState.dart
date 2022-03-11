@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.dart';
+import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
 import 'package:sumgo_crawller_flutter/page/main/MainLayout.dart';
 import 'package:sumgo_crawller_flutter/util/MyAuthUtil.dart';
@@ -34,24 +35,24 @@ class AuthStateSendEmail<COMPONENT> implements AuthState<COMPONENT> {
   @override
   Future<AuthState<COMPONENT>> handle(Map<String, dynamic> data) async {
     NeededAuthBehavior neededAuthBehavior =
-        await MyAuthUtil.verifyBeforeUpdateEmail(email: data['email']);
-    print("AuthStateSendEmail handle neededAuthBehavior:$neededAuthBehavior");
+        await MyAuthUtil.sendEmailVerification(email: data['email']);
+    LogUtil.info("AuthStateSendEmail handle neededAuthBehavior:$neededAuthBehavior");
     if (neededAuthBehavior == NeededAuthBehavior.NEED_LOGIN) {
       return AuthStateLogin<COMPONENT>(c);
     } else if (neededAuthBehavior == NeededAuthBehavior.NEED_REGISTRATION) {
       return AuthStateRegistration<COMPONENT>(c);
     } else if (neededAuthBehavior == NeededAuthBehavior.NEED_VERIFICATION) {
-      return AuthStateNeedVerfication<COMPONENT>(c);
+      return AuthStateNeedVerification<COMPONENT>(c);
     }
     return this;
   }
 }
 
-class AuthStateNeedVerfication<COMPONENT> implements AuthState<COMPONENT> {
+class AuthStateNeedVerification<COMPONENT> implements AuthState<COMPONENT> {
   @override
   COMPONENT c;
 
-  AuthStateNeedVerfication(this.c);
+  AuthStateNeedVerification(this.c);
 
   @override
   Future<AuthState<COMPONENT>> handle(Map<String, dynamic> data) async {

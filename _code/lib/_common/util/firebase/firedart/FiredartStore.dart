@@ -32,10 +32,6 @@ class PreferencesStore extends TokenStore {
 
 class HiveStore extends TokenStore {
   static Future<HiveStore> create() async {
-    // Make sure you call both:
-    // Hive.init(storePath);
-    // Hive.registerAdapter(TokenAdapter(), adapterId);
-
     var box = await Hive.openBox("auth_store",
         compactionStrategy: (entries, deletedEntries) => deletedEntries > 50);
     return HiveStore._internal(box);

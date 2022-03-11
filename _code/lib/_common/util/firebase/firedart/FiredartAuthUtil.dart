@@ -1,3 +1,4 @@
+
 import 'package:firedart/auth/exceptions.dart';
 import 'package:firedart/auth/user_gateway.dart';
 import 'package:firedart/firedart.dart';
@@ -24,23 +25,18 @@ class FiredartAuthUtil {
 
   static Future<User?> getUser() async {
     try {
-      User user = await _instance.getUser();
-      return user;
+      return await _instance.getUser();
     } on SignedOutException catch (e) {
       return null;
     } catch (e) {
-      LogUtil.warn("FiredartAuthUtil getUser : $e");
+      return null;
     }
   }
 
-  static Future<User?> loginAnonymously({String? password}) async {
+  static Future<User?> loginAnonymously() async {
     try {
       await _instance.signInAnonymously();
-      User? user = await getUser();
-      if (password != null) {
-        await _instance.changePassword(password);
-      }
-      return user;
+      return await getUser();
     } on AuthException catch (e) {
       var code = e.errorCode;
       if (code == 'weak-password') {
@@ -86,8 +82,7 @@ class FiredartAuthUtil {
     }
   }
 
-  static Future<void> verifyBeforeUpdateEmail(
-      {required String email, required String tempPassword}) async {
+  static Future<void> sendEmailVerification() async {
     User? user = await getUser();
     if (user == null) {
       LogUtil.error("user is null");
@@ -95,15 +90,13 @@ class FiredartAuthUtil {
     }
 
     try {
-      await _instance.deleteAccount();
-      await _instance.signUp(email, tempPassword);
       await _instance.requestEmailVerification();
     } on AuthException catch (e) {
       var code = e.errorCode;
       if (code == 'email-already-in-use') {
         throw CommonException(message: "이미 ID가 있습니다", code: code);
       } else {
-        LogUtil.error("FireauthUtil.verifyBeforeUpdateEmail ${code}");
+        LogUtil.error("FireauthUtil.sendEmailVerification ${code}");
       }
     }
   }

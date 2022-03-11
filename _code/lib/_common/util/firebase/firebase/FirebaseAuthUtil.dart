@@ -33,14 +33,10 @@ class FirebaseAuthUtil {
     return _instance.currentUser;
   }
 
-  static Future<User?> loginAnonymously({String? password}) async {
+  static Future<User?> loginAnonymously() async {
     try {
       await _instance.signInAnonymously();
-      User? user = getUser();
-      if (password != null) {
-        await user?.updatePassword(password);
-      }
-      return user;
+      return getUser();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         throw CommonException(message: "비밀번호 형식이 안전하지 않습니다", code: e.code);
@@ -85,7 +81,7 @@ class FirebaseAuthUtil {
     }
   }
 
-  static Future<void> verifyBeforeUpdateEmail({required String email}) async {
+  static Future<void> sendEmailVerification() async {
     User? user = getUser();
     if (user == null) {
       LogUtil.error("user is null");
@@ -93,12 +89,12 @@ class FirebaseAuthUtil {
     }
 
     try {
-      await user.verifyBeforeUpdateEmail(email);
+      await user.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         throw CommonException(message: "이미 ID가 있습니다", code: e.code);
       } else {
-        LogUtil.error("FireauthUtil.verifyBeforeUpdateEmail ${e.code}");
+        LogUtil.error("FireauthUtil.sendEmailVerification ${e.code}");
       }
     }
   }

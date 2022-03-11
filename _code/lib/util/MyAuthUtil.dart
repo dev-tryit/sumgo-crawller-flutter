@@ -21,13 +21,12 @@ class MyAuthUtil {
         : (await FiredartAuthUtil.getUser() != null);
   }
 
-  static Future<NeededAuthBehavior> verifyBeforeUpdateEmail(
+  static Future<NeededAuthBehavior> sendEmailVerification(
       {required String email}) async {
-    //TODO:컴퓨터 adaptor 넣어야함. adapter는 자동생성함 hive문서확인, Unhandled Exception: HiveError: Cannot write, unknown type: Token. Did you forget to register an adapter?
     try {
       !PlatformUtil.isComputer()
-          ? await FirebaseAuthUtil.loginAnonymously(password: _password)
-          : await FiredartAuthUtil.loginAnonymously(password: _password);
+          ? await FirebaseAuthUtil.loginWithEmail(email: email, password: _password)
+          : await FiredartAuthUtil.loginWithEmail(email: email, password: _password);
     } on CommonException catch (e) {
       if (e.code == "user-token-expired") {
         return NeededAuthBehavior.NEED_LOGIN;
@@ -36,9 +35,8 @@ class MyAuthUtil {
 
     try {
       !PlatformUtil.isComputer()
-          ? await FirebaseAuthUtil.verifyBeforeUpdateEmail(email: email)
-          : await FiredartAuthUtil.verifyBeforeUpdateEmail(
-              email: email, tempPassword: _password);
+          ? await FirebaseAuthUtil.sendEmailVerification()
+          : await FiredartAuthUtil.sendEmailVerification();
 
       return NeededAuthBehavior.NEED_VERIFICATION;
     } on CommonException catch (e) {
