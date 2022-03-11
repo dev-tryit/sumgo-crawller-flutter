@@ -16,6 +16,7 @@ class FiredartAuthUtil {
     if (!_haveEverInit) {
       _haveEverInit = true;
 
+
       FirebaseAuth.initialize(Setting.firebaseApiKey, await HiveStore.create());
       // _instance.signInState.listen((state) {
       //   print("Signed ${state ? "in" : "out"}");
