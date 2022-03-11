@@ -3,7 +3,6 @@ import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.d
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 
 class FireauthUtil {
-  static const String apiKey = "AIzaSyC1LzWmL9H4z1r4SyBewiLyzWbEvBjVBtw";
   static bool _haveEverInit = false;
 
   static FirebaseAuth get _instance => FirebaseAuth.instance;

@@ -11,6 +11,9 @@ class Setting {
   static const Level LogLevel = Level.info;
   static bool showLog = true;
 
+  //Firebase
+  static const String firebaseApiKey = "AIzaSyC1LzWmL9H4z1r4SyBewiLyzWbEvBjVBtw";
+
   // 중복 클릭 방지 시간
   static int milliSecondsForPreventingMultipleClicks = 300;
 
