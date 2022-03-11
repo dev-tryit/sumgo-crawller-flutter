@@ -16,22 +16,20 @@ class FiredartAuthUtil {
       _haveEverInit = true;
 
       FirebaseAuth.initialize(Setting.firebaseApiKey, await HiveStore.create());
-      _instance.signInState.listen((state) {
-        print("Signed ${state ? "in" : "out"}");
-      });
-
+      // _instance.signInState.listen((state) {
+      //   print("Signed ${state ? "in" : "out"}");
+      // });
     }
   }
 
   static Future<User?> getUser() async {
     try {
       User user = await _instance.getUser();
-      print(user);
-      // user.id
       return user;
+    } on SignedOutException catch (e) {
+      return null;
     } catch (e) {
       LogUtil.warn("FiredartAuthUtil getUser : $e");
-      return null;
     }
   }
 
