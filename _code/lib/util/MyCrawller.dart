@@ -49,6 +49,11 @@ class MyCrawller {
     bool isLoginPage = await p.existTag(".login-page");
     return !isLoginPage;
   }
+  Future<void> _deleteRequest(ElementHandle tag)async {
+    await p.click('.quote-btn.del', tag: tag);
+    await p.click('.swal2-confirm.btn');
+
+  }
 
   Future<void> _sendRequests(ElementHandle tag) async {
     //요청보러들어가기
@@ -72,7 +77,6 @@ class MyCrawller {
 
     Future<bool> refreshAndExitIfShould() async {
       await p.goto('https://soomgo.com/requests/received');
-      await p.reload();
       await p.autoScroll();
       bool existSelector =
           await p.waitForSelector('.request-list > li > .request-item');
@@ -85,34 +89,22 @@ class MyCrawller {
     Future<List<ElementHandle>> getTagList() async =>
         await p.$$('.request-list > li > .request-item');
 
-    while (true) {
-      bool haveTagToDelete = false;
-
+    while(true) {
       if (await refreshAndExitIfShould()) return;
-      for (var tag in await getTagList()) {
+      List<ElementHandle> tagList = await getTagList();
+      if(tagList.isEmpty) break;
+
+      for (var tag in tagList) {
         var messageTag = await p.$('.quote > span.message', tag: tag);
         String message = await p.html(tag: messageTag);
 
-        if (!_isValidRequest(message)) {
-          haveTagToDelete = true;
-          await p.click('.quote-btn.del', tag: tag);
-          await p.click('.swal2-confirm.btn');
+        if (_isValidRequest(message)) {
+          await _sendRequests(tag);
+          continue;
         }
-      }
-
-      if (!haveTagToDelete) {
-        break;
-      }
-    }
-
-    if (await refreshAndExitIfShould()) return;
-    for (var tag in await getTagList()) {
-      var messageTag = await p.$('.quote > span.message', tag: tag);
-      String message = await p.html(tag: messageTag);
-
-      if (_isValidRequest(message)) {
-        await _sendRequests(tag);
-        if (await refreshAndExitIfShould()) return;
+        else {
+          await _deleteRequest(tag);
+        }
       }
     }
   }
@@ -143,4 +135,5 @@ class MyCrawller {
 
     return isValid;
   }
+
 }
