@@ -35,6 +35,7 @@ class MyAuthUtil {
           await loginWithEmailDefaultPassword(email);
         }
         on CommonException catch (e2) {
+          print("e2:$e2");
           if (e2.code == "wrong-password") {
             return NeededAuthBehavior.NEED_LOGIN;
           }

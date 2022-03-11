@@ -1,4 +1,3 @@
-
 import 'package:firedart/auth/exceptions.dart';
 import 'package:firedart/auth/user_gateway.dart';
 import 'package:firedart/firedart.dart';
@@ -15,7 +14,6 @@ class FiredartAuthUtil {
   static Future<void> init() async {
     if (!_haveEverInit) {
       _haveEverInit = true;
-
 
       FirebaseAuth.initialize(Setting.firebaseApiKey, await HiveStore.create());
       // _instance.signInState.listen((state) {
@@ -39,22 +37,8 @@ class FiredartAuthUtil {
       await _instance.signInAnonymously();
       return await getUser();
     } on AuthException catch (e) {
-      var code = e.errorCode;
-      if (code == 'weak-password') {
-        throw CommonException(message: "비밀번호 형식이 안전하지 않습니다", code: code);
-      } else if (code == 'email-already-in-use') {
-        throw CommonException(message: "이미 ID가 있습니다", code: code);
-      } else if (code == 'invalid-email') {
-        throw CommonException(message: "이메일이 형식이 잘못되었습니다", code: code);
-      } else if (code == 'too-many-requests') {
-        throw CommonException(message: "잠시 후에 다시 시도해주세요", code: code);
-      } else if (code == 'network-request-failed') {
-        throw CommonException(message: "네트워크 요청이 실패하였습니다", code: code);
-      } else if (code == 'internal-error') {
-        throw CommonException(message: "에러가 발생하였습니다", code: code);
-      } else {
-        throw CommonException(code: code);
-      }
+      var code = e.message;
+      throw CommonException(code: code);
     }
   }
 
@@ -64,19 +48,13 @@ class FiredartAuthUtil {
       await _instance.signUp(email, password);
       return await getUser();
     } on AuthException catch (e) {
-      var code = e.errorCode;
-      if (code == 'weak-password') {
-        throw CommonException(message: "비밀번호 형식이 안전하지 않습니다", code: code);
-      } else if (code == 'email-already-in-use') {
-        throw CommonException(message: "이미 ID가 있습니다", code: code);
-      } else if (code == 'invalid-email') {
-        throw CommonException(message: "이메일이 형식이 잘못되었습니다", code: code);
-      } else if (code == 'too-many-requests') {
-        throw CommonException(message: "잠시 후에 다시 시도해주세요", code: code);
-      } else if (code == 'network-request-failed') {
-        throw CommonException(message: "네트워크 요청이 실패하였습니다", code: code);
-      } else if (code == 'internal-error') {
-        throw CommonException(message: "에러가 발생하였습니다", code: code);
+      var code = e.message;
+      if (code == 'EMAIL_EXISTS') {
+        throw CommonException(
+            message: "이미 ID가 있습니다", code: "email-already-in-use");
+      } else if (code == 'TOO_MANY_ATTEMPTS_TRY_LATER') {
+        throw CommonException(
+            message: "잠시 후에 다시 시도해주세요", code: "too-many-requests");
       } else {
         throw CommonException(code: code);
       }
@@ -93,9 +71,10 @@ class FiredartAuthUtil {
     try {
       await _instance.requestEmailVerification();
     } on AuthException catch (e) {
-      var code = e.errorCode;
-      if (code == 'email-already-in-use') {
-        throw CommonException(message: "이미 ID가 있습니다", code: code);
+      var code = e.message;
+      if (code == 'EMAIL_EXISTS') {
+        throw CommonException(
+            message: "이미 ID가 있습니다", code: "email-already-in-use");
       } else {
         LogUtil.error("FireauthUtil.sendEmailVerification ${code}");
       }
@@ -105,22 +84,14 @@ class FiredartAuthUtil {
   static Future<User?> loginWithEmail(
       {required String email, required String password}) async {
     try {
-      await _instance.signUp(email, password);
+      await _instance.signIn(email, password);
       return await getUser();
     } on AuthException catch (e) {
-      var code = e.errorCode;
-      if (code == 'user-not-found') {
+      var code = e.message;
+      if (code == 'EMAIL_NOT_FOUND') {
         return null;
-      } else if (code == 'invalid-email') {
-        throw CommonException(message: "이메일이 형식이 잘못되었습니다", code: code);
-      } else if (code == 'wrong-password') {
-        throw CommonException(message: "비밀번호가 틀렸습니다", code: code);
-      } else if (code == 'too-many-requests') {
-        throw CommonException(message: "잠시 후에 다시 시도해주세요", code: code);
-      } else if (code == 'network-request-failed') {
-        throw CommonException(message: "네트워크 요청이 실패하였습니다", code: code);
-      } else if (code == 'internal-error') {
-        throw CommonException(message: "에러가 발생하였습니다", code: code);
+      } else if (code == 'INVALID_PASSWORD') {
+        throw CommonException(message: "비밀번호가 틀렸습니다", code: "wrong-password");
       } else {
         throw CommonException(code: code);
       }
