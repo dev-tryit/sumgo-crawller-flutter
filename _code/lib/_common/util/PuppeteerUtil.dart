@@ -45,6 +45,9 @@ class PuppeteerUtil {
     } catch (e) {}
   }
 
+  Future<Response> reload() async {
+    return await tab.reload();
+  }
   Future<void> goto(String url) async {
     await tab.goto(url, wait: Until.networkIdle, timeout: defaultTimeout);
   }

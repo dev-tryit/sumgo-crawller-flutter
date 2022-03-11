@@ -72,6 +72,7 @@ class MyCrawller {
 
     Future<bool> refreshAndExitIfShould() async {
       await p.goto('https://soomgo.com/requests/received');
+      await p.reload();
       await p.autoScroll();
       bool existSelector =
           await p.waitForSelector('.request-list > li > .request-item');
