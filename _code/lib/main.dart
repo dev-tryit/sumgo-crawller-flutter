@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sumgo_crawller_flutter/Setting.dart';
 import 'package:sumgo_crawller_flutter/_common/config/MyCustomScrollBehavior.dart';
 import 'package:sumgo_crawller_flutter/_common/util/DesktopUtil.dart';
-import 'package:sumgo_crawller_flutter/_common/util/firebase/firebase/FireauthUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/firebase/firebase/FirebaseAuthUtil.dart';
 import 'package:sumgo_crawller_flutter/page/LoadPage.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 import 'package:sumgo_crawller_flutter/util/MyTheme.dart';
@@ -11,7 +11,7 @@ import 'package:sumgo_crawller_flutter/util/MyTheme.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (!PlatformUtil.isComputer()) {
-    await FireauthUtil.init();
+    await FirebaseAuthUtil.init();
   }
   if (PlatformUtil.isComputer()) {
     DesktopUtil.setSize(

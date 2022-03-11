@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 
-class FireauthUtil {
+class FirebaseAuthUtil {
   static bool _haveEverInit = false;
 
   static FirebaseAuth get _instance => FirebaseAuth.instance;

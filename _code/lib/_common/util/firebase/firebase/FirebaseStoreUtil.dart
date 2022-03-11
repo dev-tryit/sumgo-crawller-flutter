@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/WithDocId.dart';
 
-class FirestoreUtil<Type extends WithDocId> {
+class FirebaseStoreUtil<Type extends WithDocId> {
   String collectionName;
   Type Function(Map<String, dynamic> map) fromMap;
   Map<String, dynamic> Function(Type instance) toMap;
 
-  FirestoreUtil(
+  FirebaseStoreUtil(
       {required this.collectionName,
       required this.fromMap,
       required this.toMap});
