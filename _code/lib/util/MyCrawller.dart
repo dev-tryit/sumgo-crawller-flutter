@@ -15,10 +15,10 @@ class MyCrawller {
   Future<void> start() async {
     bool headless = false;
     headless =
-    PlatformUtil.isComputer() ? false : headless; //데스크탑에서 headless면 동작 안나함.
+        PlatformUtil.isComputer() ? false : headless; //데스크탑에서 headless면 동작 안나함.
 
     await p.openBrowser(
-          () async {
+      () async {
         await _login(localData["id"], localData["pw"]);
         await _deleteAndSendRequests();
       },
@@ -54,7 +54,7 @@ class MyCrawller {
     //요청보러들어가기
     await tag.click();
     await p.waitForNavigation();
-    
+
     //불러오기
     await p.click('.quote-tmpl-icon.arrow');
     await p.click('.item-list .item-short:nth-child(1)');
@@ -63,51 +63,55 @@ class MyCrawller {
 
     //견적보내기
     await p.waitForSelector('.file-wrap .delete');
-    await p.evaluate("document.querySelector('.btn.btn-primary.btn-block').click();");
+    await p.evaluate(
+        "document.querySelector('.btn.btn-primary.btn-block').click();");
   }
 
   Future<void> _deleteAndSendRequests() async {
     LogUtil.info("_deleteAndSendRequests 시작");
 
-    while (true) {
+    Future<bool> refreshAndExitIfShould() async {
       await p.goto('https://soomgo.com/requests/received');
       await p.autoScroll();
-
       bool existSelector =
-      await p.waitForSelector('.request-list > li > .request-item');
+          await p.waitForSelector('.request-list > li > .request-item');
       if (!existSelector) {
-        return;
+        return true;
       }
+      return false;
+    }
 
-      bool checkSendRequest = false;
+    Future<List<ElementHandle>> getTagList() async =>
+        await p.$$('.request-list > li > .request-item');
+
+    while (true) {
       bool haveTagToDelete = false;
-      List<ElementHandle> tagList =
-      await p.$$('.request-list > li > .request-item');
-      for (var tag in tagList) {
+
+      if (await refreshAndExitIfShould()) return;
+      for (var tag in await getTagList()) {
         var messageTag = await p.$('.quote > span.message', tag: tag);
         String message = await p.html(tag: messageTag);
 
-        if (_isValidRequest(message)) {
-          await _sendRequests(tag);
-          checkSendRequest = true;
-          break;
+        if (!_isValidRequest(message)) {
+          haveTagToDelete = true;
+          await p.click('.quote-btn.del', tag: tag);
+          await p.click('.swal2-confirm.btn');
         }
-
-        //잘못된 Requests 삭제.
-        haveTagToDelete = true;
-        await p.click('.quote-btn.del', tag: tag);
-        // await p.click('.sv-col-small-button-bw.sv__btn-close');
-        // FileUtil.writeFile(
-        //     "${DateTimeUtil.now().toIso8601String()}.html", await p.html());
-        await p.click('.swal2-confirm.btn');
-      }
-
-      if(checkSendRequest) {
-        continue;
       }
 
       if (!haveTagToDelete) {
-        return;
+        break;
+      }
+    }
+
+    if (await refreshAndExitIfShould()) return;
+    for (var tag in await getTagList()) {
+      var messageTag = await p.$('.quote > span.message', tag: tag);
+      String message = await p.html(tag: messageTag);
+
+      if (_isValidRequest(message)) {
+        await _sendRequests(tag);
+        if (await refreshAndExitIfShould()) return;
       }
     }
   }
