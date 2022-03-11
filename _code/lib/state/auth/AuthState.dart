@@ -55,8 +55,8 @@ class AuthStateNeedVerfication<COMPONENT> implements AuthState<COMPONENT> {
 
   @override
   Future<AuthState<COMPONENT>> handle(Map<String, dynamic> data) async {
-    User? user = await MyAuthUtil.loginWithEmailDefaultPassword(data['email']);
-    if (user?.emailVerified ?? false) {
+    await MyAuthUtil.loginWithEmailDefaultPassword(data['email']);
+    if (await MyAuthUtil.emailIsVerified()) {
       await MyAuthUtil.delete();
       return AuthStateRegistration<COMPONENT>(c);
     } else {
