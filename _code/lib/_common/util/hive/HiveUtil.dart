@@ -1,13 +1,13 @@
-import 'dart:io';
 
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firedart/FiredartStore.dart';
 
 class HiveUtil {
   static Future<void> init() async {
-    var path = Directory.current.path;
-    Hive
-      ..init(path)
-      ..registerAdapter(TokenAdapter()); //FiredartAuthUtil를 위해서 Adapter 추가.
+    Hive.initFlutter();
+    if(PlatformUtil.isComputer()) {
+      Hive.registerAdapter(TokenAdapter()); //FiredartAuthUtil를 위해서 Adapter 추가.
+    }
   }
 }
