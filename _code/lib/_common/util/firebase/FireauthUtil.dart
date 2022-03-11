@@ -3,6 +3,7 @@ import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.d
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 
 class FireauthUtil {
+  static const String apiKey = "AIzaSyC1LzWmL9H4z1r4SyBewiLyzWbEvBjVBtw";
   static bool _haveEverInit = false;
 
   static FirebaseAuth get _instance => FirebaseAuth.instance;
@@ -10,6 +11,9 @@ class FireauthUtil {
   static Future<void> init() async {
     if (!_haveEverInit) {
       _haveEverInit = true;
+
+      //이외 플랫폼(firebase_auth, 정식)
+
       await _instance.setLanguageCode('ko'); //이메일 보낼 때 한국어로 보냄
 
       //setPersistence를 통해서, 웹의 경우, 로그인 유지를 시킬지, 세션에만 시킬지, 안시킬지 결정할 수 있다.

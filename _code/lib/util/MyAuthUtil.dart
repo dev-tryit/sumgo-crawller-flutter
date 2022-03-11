@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.dart';
-import 'package:sumgo_crawller_flutter/_common/util/FireauthUtil.dart';
-import 'package:sumgo_crawller_flutter/_common/util/FirestoreUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/firebase/FireauthUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/firebase/FirestoreUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/state/auth/AuthState.dart';
 

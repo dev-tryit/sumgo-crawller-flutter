@@ -1,4 +1,4 @@
-import 'package:sumgo_crawller_flutter/_common/util/FirestoreUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/firebase/FirestoreUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/StringUtil.dart';
 import 'package:sumgo_crawller_flutter/repository/AnalysisItem.dart';
 

@@ -37,6 +37,8 @@ dependencies:
     #MOBILE
     #    package_info_plus: ^1.4.0
 
+    #DESKTOP + MOBILE
+    firedart: ^0.9.0+1
 
     #DESKTOP + WEB + MOBILE
     uuid: ^3.0.6
@@ -56,9 +58,9 @@ dependencies:
     puppeteer: ^2.7.0
     sign_button: ^2.0.2 # 동그란 signButton
     flutter_signin_button: ^2.0.0 # 네모난 signButton
-    firedart: ^0.9.0+1
-    firebase_auth: ^3.3.9
+    firebase_auth: ^3.3.10
     email_validator: ^2.0.1
+    hive: ^2.0.6
 #    device_frame: ^1.0.0
 
     #https://pub.dev/packages/firedart windows에서 firebase store 사용하기
