@@ -23,7 +23,7 @@ class MyAuthUtil {
 
   static Future<NeededAuthBehavior> verifyBeforeUpdateEmail(
       {required String email}) async {
-    //TODO:컴퓨터 adaptor 넣어야함. Unhandled Exception: HiveError: Cannot write, unknown type: Token. Did you forget to register an adapter?
+    //TODO:컴퓨터 adaptor 넣어야함. adapter는 자동생성함 hive문서확인, Unhandled Exception: HiveError: Cannot write, unknown type: Token. Did you forget to register an adapter?
     try {
       !PlatformUtil.isComputer()
           ? await FirebaseAuthUtil.loginAnonymously(password: _password)
