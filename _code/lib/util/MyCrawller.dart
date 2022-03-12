@@ -13,19 +13,15 @@ class MyCrawller {
   final List<String> listToExclude = const ["초등학생", "중학생"];
 
   Future<void> start() async {
-    bool headless = false;
-    headless =
-        PlatformUtil.isComputer() ? false : headless; //데스크탑에서 headless면 동작 안나함.
-
     await p.openBrowser(
       () async {
         await _login(localData["id"], localData["pw"]);
         await _deleteAndSendRequests();
       },
-      width: 500,
-      height: 500,
-      isConnect: true,
-      headless: headless,
+      width: 1280,
+      height: 1024,
+      isConnect: false,
+      headless: true,
     );
   }
 
