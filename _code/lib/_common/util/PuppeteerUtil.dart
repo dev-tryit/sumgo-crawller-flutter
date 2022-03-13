@@ -10,8 +10,8 @@ class PuppeteerUtil {
   //데스크탑 모드가 아닌 경우에는, 다른 컴퓨터에 켜져있는 pupueteer를 이용할 수 있다.
 
   Future<void> openBrowser(Future<void> Function() function,
-      {int width = 1280,
-      int height = 1024,
+      {int width = 1920,
+      int height = 1600,
       bool headless = true,
       bool isConnect = false}) async {
     if (isConnect) {

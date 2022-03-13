@@ -18,8 +18,6 @@ class MyCrawller {
         await _login(localData["id"], localData["pw"]);
         await _deleteAndSendRequests();
       },
-      width: 1280,
-      height: 1024,
       isConnect: false,
       headless: true,
     );
@@ -91,18 +89,12 @@ class MyCrawller {
       List<ElementHandle> tagList = await getTagList();
       if(tagList.isEmpty) break;
 
-      for (var tag in tagList) {
-        var messageTag = await p.$('.quote > span.message', tag: tag);
-        String message = await p.html(tag: messageTag);
 
-        if (_isValidRequest(message)) {
-          await _sendRequests(tag);
-          continue;
-        }
-        else {
-          await _deleteRequest(tag);
-        }
-      }
+      var tag = tagList[0];
+      var messageTag = await p.$('.quote > span.message', tag: tag);
+      String message = await p.html(tag: messageTag);
+
+      _isValidRequest(message) ? await _sendRequests(tag) : await _deleteRequest(tag);
     }
   }
 
