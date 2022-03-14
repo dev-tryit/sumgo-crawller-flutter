@@ -6,6 +6,16 @@ import 'package:sumgo_crawller_flutter/_common/util/firebase/firedart/FiredartAu
 enum NeededAuthBehavior { NEED_LOGIN, NEED_VERIFICATION, NEED_REGISTRATION }
 
 class MyAuthUtil {
+  /*
+  무료로 이메일 인증을 사용하기 위한 정책.
+  1. 이메일+기본값 비밀번호로 회원가입 시키고, 이메일 인증을 요청함
+  2. 회원가입이 되었다면, 기본값 회원가입+로그인이 실패할 것임,
+  3. 회원가입이 안되었다면, 기본값 회원가입+로그인이 성공할 것임.
+  4. 이메일 인증을 파악하기 위해서, 해당 유저의 user.displayName를 사용하기로 한다.
+      회원가입이 완료되면, user.displayName을 ""로 변경할 것임 (기본값 null)
+  5. 따라서, isLogin에서 displayName이 null이라면, 로그아웃시키고, 로그인안된것으로 처리해야한다.
+   */
+
   static late final _firebaseAuthUtilInterface;
   static const _password = "tempNewPassword";
 
@@ -18,9 +28,13 @@ class MyAuthUtil {
   }
 
   static Future<bool> isLogin() async {
-    //user.displayName가 있어야지 이메일 인증이 된 것으로 파악, 이메일 인증이 안되면 null, 되면 ""으로 설정하겠음.
     dynamic user = await _firebaseAuthUtilInterface.getUser();
-    return (user != null && user.displayName);
+    if(user != null && user.displayName == null) {
+      await logout();
+      return false;
+    }
+
+    return (user != null);
   }
 
   static Future<NeededAuthBehavior> sendEmailVerification(
@@ -74,7 +88,6 @@ class MyAuthUtil {
   }
 
   static Future<void> registerWithEmail(String email, String password) async {
-    //user.displayName의 기본값은 null, 회원가입이 되었을 때 ""로 만드는 정책;
     await _firebaseAuthUtilInterface.registerWithEmail(email: email, password: password);
     await _firebaseAuthUtilInterface.updateProfile(displayName: "");
   }
