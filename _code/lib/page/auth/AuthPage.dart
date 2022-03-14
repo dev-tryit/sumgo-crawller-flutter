@@ -8,6 +8,7 @@ import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/widget/EasyFade.dart';
 import 'package:sumgo_crawller_flutter/state/auth/AuthState.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
@@ -58,7 +59,6 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
   String? nextButtonText;
   Color emailValidationColor = MyColors.deepBlue;
 
-  double passwordOpacity = 0;
   List<Widget> elementList = [];
 
   AuthPageComponent(_AuthPageState state) : super(state);
@@ -201,18 +201,9 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
       emailTextFieldEnabled = false;
       nextButtonText = "로그인";
 
-      //TODO: 로그인 코드 참고하여 ,EasyFade 위젯 만들기
-      if (passwordOpacity == 0) {
-        Timer(const Duration(milliseconds: 500), () {
-          passwordOpacity = 1;
-          rebuild();
-        });
-      }
       elementList.addAll([
         const SizedBox(height: 30),
-        AnimatedOpacity(
-          opacity: passwordOpacity,
-          duration: const Duration(milliseconds: 800),
+        EasyFade(
           child: inputBox(
             label: "비밀번호",
             controller: passwordController,
