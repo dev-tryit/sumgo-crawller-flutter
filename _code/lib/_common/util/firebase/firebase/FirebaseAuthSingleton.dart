@@ -4,26 +4,26 @@ import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.d
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseAuthUtilInterface.dart';
 
-class FirebaseAuthSingleton extends FirebaseAuthUtilInterface {
-  static final FirebaseAuthSingleton _singleton = FirebaseAuthSingleton._internal();
+class FirebaseAuthSingleton extends FirebaseAuthUtilInterface<User> {
+  static final FirebaseAuthSingleton _singleton =
+      FirebaseAuthSingleton._internal();
+
   factory FirebaseAuthSingleton() {
     return _singleton;
   }
+
   FirebaseAuthSingleton._internal();
-
-
-
-  bool _haveEverInit = false;
 
   FirebaseAuth get _instance => FirebaseAuth.instance;
 
   Future<void> init() async {
-    if (!_haveEverInit) {
-      _haveEverInit = true;
+    if (!haveEverInit) {
+      haveEverInit = true;
 
       //이외 플랫폼(firebase_auth, 정식)
 
-      await _instance.setLanguageCode(Setting.defaultLocale.languageCode); //이메일 보낼 때 한국어로 보냄
+      await _instance.setLanguageCode(
+          Setting.defaultLocale.languageCode); //이메일 보낼 때 한국어로 보냄
 
       //setPersistence를 통해서, 웹의 경우, 로그인 유지를 시킬지, 세션에만 시킬지, 안시킬지 결정할 수 있다.
 
@@ -39,23 +39,22 @@ class FirebaseAuthSingleton extends FirebaseAuthUtilInterface {
     }
   }
 
-  User? getUser() {
+  Future<User?> getUser() async {
     return _instance.currentUser;
   }
 
   Future<void> updateProfile({String? displayName, String? photoUrl}) async {
-    User? user = getUser();
+    User? user = await getUser();
     if (user == null) {
       LogUtil.error("user is null");
       return;
     }
 
-    if(displayName != null) {
+    if (displayName != null) {
       await user.updateDisplayName(displayName);
     }
 
-
-    if(photoUrl != null) {
+    if (photoUrl != null) {
       await user.updatePhotoURL(photoUrl);
     }
   }
@@ -109,7 +108,7 @@ class FirebaseAuthSingleton extends FirebaseAuthUtilInterface {
   }
 
   Future<void> sendEmailVerification() async {
-    User? user = getUser();
+    User? user = await getUser();
     if (user == null) {
       LogUtil.error("user is null");
       return;
@@ -157,12 +156,11 @@ class FirebaseAuthSingleton extends FirebaseAuthUtilInterface {
 
   Future<void> delete() async {
     try {
-      User? user = getUser();
+      User? user = await getUser();
       if (user != null) {
         await user.delete();
       }
-    }
-    catch (e) {
+    } catch (e) {
       LogUtil.error("FireauthUtil.delete error $e");
     }
   }

@@ -7,26 +7,41 @@ import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseAuthUtilInterface.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firedart/FiredartStore.dart';
 
-class FiredartAuthSingleton extends FirebaseAuthUtilInterface {
-  static final FiredartAuthSingleton _singleton = FiredartAuthSingleton._internal();
+class FiredartAuthSingleton extends FirebaseAuthUtilInterface<User> {
+  static final FiredartAuthSingleton _singleton =
+      FiredartAuthSingleton._internal();
+
   factory FiredartAuthSingleton() {
     return _singleton;
   }
-  FiredartAuthSingleton._internal();
 
-  bool _haveEverInit = false;
+  FiredartAuthSingleton._internal();
 
   FirebaseAuth get _instance => FirebaseAuth.instance;
 
   Future<void> init() async {
-    if (!_haveEverInit) {
-      _haveEverInit = true;
+    if (!haveEverInit) {
+      haveEverInit = true;
 
       FirebaseAuth.initialize(Setting.firebaseApiKey, await HiveStore.create());
       // _instance.signInState.listen((state) {
       //   LogUtil.debug("Signed ${state ? "in" : "out"}");
       // });
     }
+  }
+
+  @override
+  Future<void> updateProfile({String? displayName, String? photoUrl}) async {
+    User? user = await getUser();
+    if (user == null) {
+      LogUtil.error("user is null");
+      return;
+    }
+
+    await _instance.updateProfile(
+      displayName: displayName,
+      photoUrl: photoUrl,
+    );
   }
 
   Future<User?> getUser() async {
@@ -76,7 +91,8 @@ class FiredartAuthSingleton extends FirebaseAuthUtilInterface {
     }
 
     try {
-      await _instance.requestEmailVerification(langCode:Setting.defaultLocale.languageCode);
+      await _instance.requestEmailVerification(
+          langCode: Setting.defaultLocale.languageCode);
     } on AuthException catch (e) {
       var code = e.message;
       if (code == 'EMAIL_EXISTS') {
