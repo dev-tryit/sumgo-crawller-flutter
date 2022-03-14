@@ -108,6 +108,7 @@ class AuthStateRegistration<COMPONENT> implements AuthState<COMPONENT> {
       return this;
     }
 
+
     MyComponents.toastInfo(context, "회원가입이 완료되었습니다.");
     PageUtil.movePage(context, MainLayout());
     return this;

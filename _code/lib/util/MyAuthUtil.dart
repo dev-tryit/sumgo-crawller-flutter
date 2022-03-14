@@ -18,9 +18,9 @@ class MyAuthUtil {
   }
 
   static Future<bool> isLogin() async {
-    //TODO: 인증했는지 플래그를 두어야 한다.
-    //TODO: 기본 비밀번호 로그인이 되었는지 또는, 파이어베이스 저장소를 통해서 해결 가능
-    return (await _firebaseAuthUtilInterface.getUser() != null);
+    //user.displayName가 있어야지 이메일 인증이 된 것으로 파악, 이메일 인증이 안되면 null, 되면 ""으로 설정하겠음.
+    dynamic user = await _firebaseAuthUtilInterface.getUser();
+    return (user != null && user.displayName);
   }
 
   static Future<NeededAuthBehavior> sendEmailVerification(
@@ -74,7 +74,9 @@ class MyAuthUtil {
   }
 
   static Future<void> registerWithEmail(String email, String password) async {
+    //user.displayName의 기본값은 null, 회원가입이 되었을 때 ""로 만드는 정책;
     await _firebaseAuthUtilInterface.registerWithEmail(email: email, password: password);
+    await _firebaseAuthUtilInterface.updateProfile(displayName: "");
   }
 
   static Future<bool> emailIsVerified() async {
