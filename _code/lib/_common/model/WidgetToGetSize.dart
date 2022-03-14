@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/SizeUtil.dart';
 
 class WidgetToGetSize<T> {
@@ -19,6 +20,6 @@ class WidgetToGetSize<T> {
     size = SizeUtil.getSizeByKey(_globalKey);
     w = size.width;
     h = size.height;
-    print("[$key] size: $size");
+    LogUtil.debug("[$key] size: $size");
   }
 }

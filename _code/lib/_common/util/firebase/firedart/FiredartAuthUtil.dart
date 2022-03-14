@@ -17,7 +17,7 @@ class FiredartAuthUtil {
 
       FirebaseAuth.initialize(Setting.firebaseApiKey, await HiveStore.create());
       // _instance.signInState.listen((state) {
-      //   print("Signed ${state ? "in" : "out"}");
+      //   LogUtil.debug("Signed ${state ? "in" : "out"}");
       // });
     }
   }

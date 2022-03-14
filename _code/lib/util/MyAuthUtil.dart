@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firebase/FirebaseAuthUtil.dart';
@@ -34,7 +33,6 @@ class MyAuthUtil {
         try {
           await loginWithEmailDefaultPassword(email);
         } on CommonException catch (e2) {
-          print("e2:$e2");
           if (e2.code == "wrong-password") {
             return NeededAuthBehavior.NEED_LOGIN;
           }
