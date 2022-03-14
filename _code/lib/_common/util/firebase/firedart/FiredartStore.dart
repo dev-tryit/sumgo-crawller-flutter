@@ -6,13 +6,11 @@ import 'package:hive/hive.dart';
 
 const keyToken = "auth_token";
 
-/// Stores tokens as preferences in Android and iOS.
-/// Depends on the shared_preferences plugin: https://pub.dev/packages/shared_preferences
 class PreferencesStore extends TokenStore {
   static Future<PreferencesStore> create() async =>
       PreferencesStore._internal(await SharedPreferences.getInstance());
 
-  SharedPreferences _prefs;
+  final SharedPreferences _prefs;
 
   PreferencesStore._internal(this._prefs);
 
@@ -56,8 +54,8 @@ class TokenAdapter extends TypeAdapter<Token> {
   final typeId = 42;
 
   @override
-  void write(BinaryWriter writer, Token token) =>
-      writer.writeMap(token.toMap());
+  void write(BinaryWriter writer, Token obj) =>
+      writer.writeMap(obj.toMap());
 
   @override
   Token read(BinaryReader reader) =>
