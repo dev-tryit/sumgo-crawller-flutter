@@ -22,6 +22,8 @@ class MyAuthUtil {
 
   static Future<NeededAuthBehavior> sendEmailVerification(
       {required String email}) async {
+    //TODO: 인증했는지 플래그를 두어야 한다.
+    //TODO: 기본 비밀번호 로그인이 되었는지 또는, 파이어베이스 저장소를 통해서 해결 가능
     try {
       !PlatformUtil.isComputer()
           ? await FirebaseAuthUtil.registerWithEmail(
