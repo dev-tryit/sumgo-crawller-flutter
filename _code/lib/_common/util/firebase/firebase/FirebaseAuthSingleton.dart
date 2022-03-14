@@ -2,13 +2,22 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sumgo_crawller_flutter/Setting.dart';
 import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseAuthUtilInterface.dart';
 
-class FirebaseAuthUtil {
-  static bool _haveEverInit = false;
+class FirebaseAuthSingleton extends FirebaseAuthUtilInterface {
+  static final FirebaseAuthSingleton _singleton = FirebaseAuthSingleton._internal();
+  factory FirebaseAuthSingleton() {
+    return _singleton;
+  }
+  FirebaseAuthSingleton._internal();
 
-  static FirebaseAuth get _instance => FirebaseAuth.instance;
 
-  static Future<void> init() async {
+
+  bool _haveEverInit = false;
+
+  FirebaseAuth get _instance => FirebaseAuth.instance;
+
+  Future<void> init() async {
     if (!_haveEverInit) {
       _haveEverInit = true;
 
@@ -30,11 +39,28 @@ class FirebaseAuthUtil {
     }
   }
 
-  static User? getUser() {
+  User? getUser() {
     return _instance.currentUser;
   }
 
-  static Future<User?> loginAnonymously() async {
+  Future<void> updateProfile({String? displayName, String? photoUrl}) async {
+    User? user = getUser();
+    if (user == null) {
+      LogUtil.error("user is null");
+      return;
+    }
+
+    if(displayName != null) {
+      await user.updateDisplayName(displayName);
+    }
+
+
+    if(photoUrl != null) {
+      await user.updatePhotoURL(photoUrl);
+    }
+  }
+
+  Future<User?> loginAnonymously() async {
     try {
       await _instance.signInAnonymously();
       return getUser();
@@ -57,7 +83,7 @@ class FirebaseAuthUtil {
     }
   }
 
-  static Future<User?> registerWithEmail(
+  Future<User?> registerWithEmail(
       {required String email, required String password}) async {
     try {
       await _instance.createUserWithEmailAndPassword(
@@ -82,7 +108,7 @@ class FirebaseAuthUtil {
     }
   }
 
-  static Future<void> sendEmailVerification() async {
+  Future<void> sendEmailVerification() async {
     User? user = getUser();
     if (user == null) {
       LogUtil.error("user is null");
@@ -100,7 +126,7 @@ class FirebaseAuthUtil {
     }
   }
 
-  static Future<User?> loginWithEmail(
+  Future<User?> loginWithEmail(
       {required String email, required String password}) async {
     try {
       await _instance.signInWithEmailAndPassword(
@@ -125,11 +151,11 @@ class FirebaseAuthUtil {
     }
   }
 
-  static Future<void> logout() async {
+  Future<void> logout() async {
     await _instance.signOut();
   }
 
-  static Future<void> delete() async {
+  Future<void> delete() async {
     try {
       User? user = getUser();
       if (user != null) {

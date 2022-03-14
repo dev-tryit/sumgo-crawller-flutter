@@ -4,14 +4,21 @@ import 'package:firedart/firedart.dart';
 import 'package:sumgo_crawller_flutter/Setting.dart';
 import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseAuthUtilInterface.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firedart/FiredartStore.dart';
 
-class FiredartAuthUtil {
-  static bool _haveEverInit = false;
+class FiredartAuthSingleton extends FirebaseAuthUtilInterface {
+  static final FiredartAuthSingleton _singleton = FiredartAuthSingleton._internal();
+  factory FiredartAuthSingleton() {
+    return _singleton;
+  }
+  FiredartAuthSingleton._internal();
 
-  static FirebaseAuth get _instance => FirebaseAuth.instance;
+  bool _haveEverInit = false;
 
-  static Future<void> init() async {
+  FirebaseAuth get _instance => FirebaseAuth.instance;
+
+  Future<void> init() async {
     if (!_haveEverInit) {
       _haveEverInit = true;
 
@@ -22,7 +29,7 @@ class FiredartAuthUtil {
     }
   }
 
-  static Future<User?> getUser() async {
+  Future<User?> getUser() async {
     try {
       return await _instance.getUser();
     } on SignedOutException catch (e) {
@@ -32,7 +39,7 @@ class FiredartAuthUtil {
     }
   }
 
-  static Future<User?> loginAnonymously() async {
+  Future<User?> loginAnonymously() async {
     try {
       await _instance.signInAnonymously();
       return await getUser();
@@ -42,7 +49,7 @@ class FiredartAuthUtil {
     }
   }
 
-  static Future<User?> registerWithEmail(
+  Future<User?> registerWithEmail(
       {required String email, required String password}) async {
     try {
       await _instance.signUp(email, password);
@@ -61,7 +68,7 @@ class FiredartAuthUtil {
     }
   }
 
-  static Future<void> sendEmailVerification() async {
+  Future<void> sendEmailVerification() async {
     User? user = await getUser();
     if (user == null) {
       LogUtil.error("user is null");
@@ -81,7 +88,7 @@ class FiredartAuthUtil {
     }
   }
 
-  static Future<User?> loginWithEmail(
+  Future<User?> loginWithEmail(
       {required String email, required String password}) async {
     try {
       await _instance.signIn(email, password);
@@ -98,11 +105,11 @@ class FiredartAuthUtil {
     }
   }
 
-  static Future<void> logout() async {
+  Future<void> logout() async {
     _instance.signOut();
   }
 
-  static Future<void> delete() async {
+  Future<void> delete() async {
     try {
       User? user = await getUser();
       if (user != null) {
