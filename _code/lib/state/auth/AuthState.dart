@@ -89,28 +89,23 @@ class AuthStateRegistration<COMPONENT> implements AuthState<COMPONENT> {
     String password = data['password'];
     String passwordConfirm = data['passwordConfirm'];
 
-    print("test");
 
     if (StringUtil.isNullOrEmpty(email)) {
-      print("test2");
       MyComponents.toastError(context, "이메일이 비어있습니다");
       return this;
     }
 
     if (StringUtil.isNullOrEmpty(password)) {
-      print("test3");
       MyComponents.toastError(context, "비밀번호가 비어있습니다");
       return this;
     }
 
     if (StringUtil.isNullOrEmpty(passwordConfirm)) {
-      print("test4");
       MyComponents.toastError(context, "비밀번호 확인이 비어있습니다");
       return this;
     }
 
     if (password != passwordConfirm) {
-      print("test5");
       MyComponents.toastError(context, "비밀번호가 다릅니다.");
       return this;
     }

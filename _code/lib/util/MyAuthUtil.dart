@@ -31,7 +31,6 @@ class MyAuthUtil {
   static Future<void> checkIsRegistered() async {
     dynamic user = await _firebaseAuthUtilInterface.getUser();
 
-    print("dispalyname : ${user?.displayName}");
     if (user != null && user.displayName != _nameRegistered) {
       await logout();
     }
