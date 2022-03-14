@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/StringUtil.dart';
 import 'package:sumgo_crawller_flutter/page/main/MainLayout.dart';
 import 'package:sumgo_crawller_flutter/util/MyAuthUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
@@ -80,12 +80,27 @@ class AuthStateRegistration<COMPONENT> implements AuthState<COMPONENT> {
     String password = data['password'];
     String passwordConfirm = data['passwordConfirm'];
 
-    //TODO: 비밀번호 유효성 검사 구문 필요 (비어있거나, 개수)
+    if (StringUtil.isNullOrEmpty(email)) {
+      MyComponents.toastError(context, "이메일이 비어있습니다");
+      return this;
+    }
+
+    if (StringUtil.isNullOrEmpty(password)) {
+      MyComponents.toastError(context, "비밀번호가 비어있습니다");
+      return this;
+    }
+
+    if (StringUtil.isNullOrEmpty(passwordConfirm)) {
+      MyComponents.toastError(context, "비밀번호 확인이 비어있습니다");
+      return this;
+    }
+
     if (password != passwordConfirm) {
       MyComponents.toastError(context, "비밀번호가 다릅니다.");
       return this;
     }
 
+    //다른 안내는 파이어베이스에서 해준다.
     try {
       await MyAuthUtil.registerWithEmail(email, password);
     } on CommonException catch (e) {
@@ -111,8 +126,17 @@ class AuthStateLogin<COMPONENT> implements AuthState<COMPONENT> {
     String email = data['email'];
     String password = data['password'];
 
-    //TODO: 비밀번호 유효성 검사 구문 필요 (비어있거나, 개수)
+    if (StringUtil.isNullOrEmpty(email)) {
+      MyComponents.toastError(context, "이메일이 비어있습니다");
+      return this;
+    }
 
+    if (StringUtil.isNullOrEmpty(password)) {
+      MyComponents.toastError(context, "비밀번호가 비어있습니다");
+      return this;
+    }
+
+    //다른 안내는 파이어베이스에서 해준다.
     try {
       await MyAuthUtil.loginWithEmail(email, password);
     } on CommonException catch (e) {

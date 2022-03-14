@@ -6,6 +6,10 @@ class StringUtil {
     return returnStr;
   }
 
+  static isEmpty(String str) {
+    return str.isEmpty;
+  }
+
   static isNullOrEmpty(String? str) {
     return str == null || str.isEmpty;
   }
