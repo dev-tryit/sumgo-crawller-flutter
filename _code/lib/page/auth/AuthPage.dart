@@ -261,7 +261,7 @@ class AuthPageService extends KDHService<_AuthPageState, AuthPageComponent> {
 
     await MyComponents.showLoadingDialog(context);
     if (authStateManager.state is AuthStateSendEmail) {
-      await authStateManager.handle({'email': email});
+      await authStateManager.handle({'email': email, 'context': context});
     } else if (authStateManager.state is AuthStateNeedVerification) {
       await authStateManager.handle({'email': email, 'context': context});
     }
@@ -276,7 +276,6 @@ class AuthPageService extends KDHService<_AuthPageState, AuthPageComponent> {
     String email = c.emailController.text.trim();
     String password = c.passwordController.text.trim();
 
-    await MyComponents.showLoadingDialog(context);
     if (authStateManager.state is AuthStateLogin) {
       await authStateManager.state
           .handle({'email': email, 'password': password, 'context': context});
@@ -294,6 +293,5 @@ class AuthPageService extends KDHService<_AuthPageState, AuthPageComponent> {
         "loginOrRegister에 에러가 있습니다. 회원가입, 로그인 상태가 아닙니다.",
       );
     }
-    await MyComponents.dismissLoadingDialog();
   }
 }

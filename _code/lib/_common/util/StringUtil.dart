@@ -6,11 +6,11 @@ class StringUtil {
     return returnStr;
   }
 
-  static isEmpty(String str) {
+  static bool isEmpty(String str) {
     return str.isEmpty;
   }
 
-  static isNullOrEmpty(String? str) {
+  static bool isNullOrEmpty(String? str) {
     return str == null || str.isEmpty;
   }
 }

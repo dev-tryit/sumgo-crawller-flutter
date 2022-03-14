@@ -18,6 +18,7 @@ class MyAuthUtil {
 
   static late final _firebaseAuthUtilInterface;
   static const _password = "tempNewPassword";
+  static const _nameRegistered = "nameRegistered";
 
   static Future<void> init() async {
     _firebaseAuthUtilInterface = (!PlatformUtil.isComputer())
@@ -27,21 +28,26 @@ class MyAuthUtil {
     _firebaseAuthUtilInterface.init();
   }
 
-  static Future<bool> isLogin() async {
+  static Future<void> checkIsRegistered() async {
     dynamic user = await _firebaseAuthUtilInterface.getUser();
-    if(user != null && user.displayName == null) {
-      await logout();
-      return false;
-    }
 
-    return (user != null);
+    print("dispalyname : ${user?.displayName}");
+    if (user != null && user.displayName != _nameRegistered) {
+      await logout();
+    }
+  }
+
+  static Future<bool> isLogin() async {
+    await checkIsRegistered();
+
+    return (await _firebaseAuthUtilInterface.getUser() != null);
   }
 
   static Future<NeededAuthBehavior> sendEmailVerification(
       {required String email}) async {
     try {
-      await _firebaseAuthUtilInterface
-          .registerWithEmail(email: email, password: _password);
+      await _firebaseAuthUtilInterface.registerWithEmail(
+          email: email, password: _password);
     } on CommonException catch (e) {
       if (e.code == "email-already-in-use") {
         try {
@@ -73,13 +79,13 @@ class MyAuthUtil {
   }
 
   static Future<void> loginWithEmailDefaultPassword(String email) async {
-    await _firebaseAuthUtilInterface
-        .loginWithEmail(email: email, password: _password);
+    await _firebaseAuthUtilInterface.loginWithEmail(
+        email: email, password: _password);
   }
 
   static Future<void> loginWithEmail(String email, String password) async {
-    await _firebaseAuthUtilInterface
-        .loginWithEmail(email: email, password: password);
+    await _firebaseAuthUtilInterface.loginWithEmail(
+        email: email, password: password);
   }
 
   static Future<void> delete() async {
@@ -88,11 +94,14 @@ class MyAuthUtil {
   }
 
   static Future<void> registerWithEmail(String email, String password) async {
-    await _firebaseAuthUtilInterface.registerWithEmail(email: email, password: password);
-    await _firebaseAuthUtilInterface.updateProfile(displayName: "");
+    await _firebaseAuthUtilInterface.registerWithEmail(
+        email: email, password: password);
+    await _firebaseAuthUtilInterface.updateProfile(
+        displayName: _nameRegistered);
   }
 
   static Future<bool> emailIsVerified() async {
-    return ((await _firebaseAuthUtilInterface.getUser())?.emailVerified ?? false);
+    return ((await _firebaseAuthUtilInterface.getUser())?.emailVerified ??
+        false);
   }
 }
