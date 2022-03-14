@@ -65,9 +65,6 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
 
   Widget body(AuthPageService s) {
     final authState = s.authStateManager.state;
-    LogUtil.debug(
-        "body authStateManager.authState:${authState.runtimeType}");
-
     setUIByAuthState(authState);
 
     return Scaffold(
@@ -184,8 +181,7 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
   }
 
   void setUIByAuthState(AuthState<AuthPageComponent> authState) {
-    elementList.clear();
-
+    // 상태별 위젯 상태 변경.
     if (authState is AuthStateNeedVerification) {
       emailValidationText = "인증 확인";
       emailTextFieldEnabled = false;
@@ -199,11 +195,22 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
     } else if (authState is AuthStateLogin) {
       emailValidationText = null;
       emailTextFieldEnabled = false;
+      emailValidationColor = MyColors.deepBlue;
       nextButtonText = "로그인";
+    } else if (authState is AuthStateRegistration) {
+      emailValidationText = null;
+      emailTextFieldEnabled = false;
+      emailValidationColor = MyColors.deepBlue;
+      nextButtonText = "회원가입";
+    }
 
+    // 상태별 위젯 배치.
+    elementList.clear();
+    if (authState is AuthStateLogin) {
       elementList.addAll([
         const SizedBox(height: 30),
         EasyFade(
+          afterAFewMilliseconds: 500,
           child: inputBox(
             label: "비밀번호",
             controller: passwordController,
@@ -213,24 +220,26 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
         ),
       ]);
     } else if (authState is AuthStateRegistration) {
-      emailValidationText = null;
-      emailTextFieldEnabled = false;
-      nextButtonText = "회원가입";
-
       elementList.addAll([
         const SizedBox(height: 30),
-        inputBox(
-          label: "비밀번호",
-          controller: passwordController,
-          onChanged: (value) => _formKey.currentState?.validate(),
-          obscureText: true,
+        EasyFade(
+          afterAFewMilliseconds: 500,
+          child: inputBox(
+            label: "비밀번호",
+            controller: passwordController,
+            onChanged: (value) => _formKey.currentState?.validate(),
+            obscureText: true,
+          ),
         ),
         const SizedBox(height: 30),
-        inputBox(
-          label: "비밀번호 확인",
-          controller: passwordConfirmController,
-          onChanged: (value) => _formKey.currentState?.validate(),
-          obscureText: true,
+        EasyFade(
+          afterAFewMilliseconds: 1000,
+          child: inputBox(
+            label: "비밀번호 확인",
+            controller: passwordConfirmController,
+            onChanged: (value) => _formKey.currentState?.validate(),
+            obscureText: true,
+          ),
         ),
       ]);
     }

@@ -4,7 +4,15 @@ import 'package:flutter/material.dart';
 
 class EasyFade extends StatefulWidget {
   final Widget child;
-  const EasyFade({Key? key,required this.child}) : super(key: key);
+  final int afterAFewMilliseconds;
+  final int timeToBeShown;
+
+  const EasyFade(
+      {Key? key,
+      required this.child,
+      this.afterAFewMilliseconds = 500,
+      this.timeToBeShown = 800})
+      : super(key: key);
 
   @override
   _EasyFadeState createState() => _EasyFadeState();
@@ -16,14 +24,14 @@ class _EasyFadeState extends State<EasyFade> {
   @override
   Widget build(BuildContext context) {
     if (opacity == 0) {
-      Timer(const Duration(milliseconds: 500), () {
+      Timer(Duration(milliseconds: widget.afterAFewMilliseconds), () {
         opacity = 1;
         setState(() {});
       });
     }
     return AnimatedOpacity(
       opacity: opacity,
-      duration: const Duration(milliseconds: 800),
+      duration: Duration(milliseconds: widget.timeToBeShown),
       child: widget.child,
     );
   }
