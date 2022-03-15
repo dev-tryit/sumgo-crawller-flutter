@@ -47,4 +47,14 @@ class FiredartStoreUtil<Type extends WithDocId>
         .toList());
     return list;
   }
+  Future<Type?> add({required Type instance}) async {
+    dynamic ref = dRef();
+
+    instance.documentId = ref.id;
+
+    return await updateByDocumentId(
+      instance: instance,
+      documentId: ref.id,
+    );
+  }
 }

@@ -33,16 +33,6 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
   Type? applyInstance(Map<String, dynamic>? map) =>
       (map == null || map.isEmpty) ? null : fromMap(map);
 
-  Future<Type?> add({required Type instance}) async {
-    dynamic ref = dRef();
-
-    instance.documentId = ref.id;
-
-    return await updateByDocumentId(
-      instance: instance,
-      documentId: ref.id,
-    );
-  }
 
   Future<Type?> updateByDocumentId(
       {required Type instance, required String documentId}) async {
@@ -72,4 +62,6 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
 
   Future<List<Type>> getListByField(
       {required String key, required String value});
+
+  Future<Type?> add({required Type instance});
 }

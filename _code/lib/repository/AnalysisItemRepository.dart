@@ -4,20 +4,23 @@ import 'package:sumgo_crawller_flutter/repository/AnalysisItem.dart';
 
 class AnalysisItemRepository {
   static final AnalysisItemRepository _singleton =
-  AnalysisItemRepository._internal();
+      AnalysisItemRepository._internal();
+
   factory AnalysisItemRepository() {
     return _singleton;
   }
+
   AnalysisItemRepository._internal();
 
-  final _ = FirebaseStoreUtilInterface.init<AnalysisItem>(
+  final FirebaseStoreUtilInterface<AnalysisItem> _ =
+      FirebaseStoreUtilInterface.init<AnalysisItem>(
     collectionName: StringUtil.classToString(AnalysisItem.empty()),
     fromMap: AnalysisItem.fromMap,
     toMap: AnalysisItem.toMap,
   );
 
   Future<AnalysisItem?> add({required AnalysisItem analysisItem}) async {
-    return await _.add(instance: analysisItem) ;
+    return await _.add(instance: analysisItem);
   }
 
   Future<bool> existDocumentId({required String documentId}) async {
