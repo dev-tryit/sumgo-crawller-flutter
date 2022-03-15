@@ -38,7 +38,7 @@ dependencies:
     #    package_info_plus: ^1.4.0
 
     #DESKTOP + MOBILE
-    firedart: ^0.9.0+1
+#    firedart: ^0.9.0+1
 
     #DESKTOP + WEB + MOBILE
     firebase_core: ^1.13.1
