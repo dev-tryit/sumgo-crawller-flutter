@@ -85,8 +85,9 @@ class MyCrawller {
     Future<List<ElementHandle>> getTagList() async =>
         await p.$$('.request-list > li > .request-item');
 
+    Map<String, int> keywordMap = {};
     while (true) {
-      if (await refreshAndExitIfShould()) return;
+      if (await refreshAndExitIfShould()) break;
       List<ElementHandle> tagList = await getTagList();
       if (tagList.isEmpty) break;
 
@@ -94,12 +95,51 @@ class MyCrawller {
       var messageTag = await p.$('.quote > span.message', tag: tag);
       String message = await p.html(tag: messageTag);
 
-      await _countAndSaveKeyword(message);
+      Future<Map<String, int>> countKeyword(String message) async {
+        Map<String, int> keywordMap = {};
+        for (var eachWord in message.trim().split(",")) {
+          eachWord = eachWord.trim();
+          if (!keywordMap.containsKey(eachWord)) {
+            keywordMap[eachWord] = 0;
+          }
+          keywordMap[eachWord] = keywordMap[eachWord]! + 1;
+        }
+        LogUtil.info("keywordMap: $keywordMap");
+        return keywordMap;
+      }
+      keywordMap.addAll(await countKeyword(message));
 
       _isValidRequest(message)
           ? await _sendRequests(tag)
           : await _deleteRequest(tag);
     }
+
+    Future<void> saveFirestore(Map<String, int> keywordMap) async {
+      for (var entry in keywordMap.entries) {
+        String eachWord = entry.key;
+        int count = entry.value;
+
+        KeywordItem? keywordItem =
+        await KeywordItemRepository.getKeywordItem(keyword: eachWord);
+        if (keywordItem == null) {
+          await KeywordItemRepository.add(
+            keywordItem: KeywordItem(
+              keyword: eachWord,
+              count: count,
+            ),
+          );
+        } else {
+          await KeywordItemRepository.update(
+            KeywordItem(
+              keyword: eachWord,
+              count: (keywordItem.count ?? 0) + count,
+            ),
+          );
+        }
+      }
+    }
+    await saveFirestore(keywordMap);
+
   }
 
   bool _isValidRequest(String message) {
@@ -129,47 +169,4 @@ class MyCrawller {
     return isValid;
   }
 
-  Future<void> _countAndSaveKeyword(String message) async {
-    Future<Map<String, int>> countKeyword(String message) async {
-      Map<String, int> keywordMap = {};
-      for (var eachWord in message.trim().split(",")) {
-        eachWord = eachWord.trim();
-        if (!keywordMap.containsKey(eachWord)) {
-          keywordMap[eachWord] = 0;
-        }
-        keywordMap[eachWord] = keywordMap[eachWord]! + 1;
-      }
-      LogUtil.info("keywordMap: $keywordMap");
-      return keywordMap;
-    }
-
-    Map<String, int> keywordMap = await countKeyword(message);
-
-    Future<void> saveFirestore(Map<String, int> keywordMap) async {
-      for (var entry in keywordMap.entries) {
-        String eachWord = entry.key;
-        int count = entry.value;
-
-        KeywordItem? keywordItem =
-            await KeywordItemRepository.getKeywordItem(keyword: eachWord);
-        if (keywordItem == null) {
-          await KeywordItemRepository.add(
-            keywordItem: KeywordItem(
-              keyword: eachWord,
-              count: count,
-            ),
-          );
-        } else {
-          await KeywordItemRepository.update(
-            KeywordItem(
-              keyword: eachWord,
-              count: (keywordItem.count ?? 0) + count,
-            ),
-          );
-        }
-      }
-    }
-
-    await saveFirestore(keywordMap);
-  }
 }
