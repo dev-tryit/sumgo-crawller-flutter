@@ -1,8 +1,8 @@
 import 'package:firedart/firedart.dart';
-import 'package:sumgo_crawller_flutter/Setting.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/WithDocId.dart';
 import 'package:sumgo_crawller_flutter/_common/util/UUIDUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseStoreUtilInterface.dart';
+import 'package:sumgo_crawller_flutter/firebase_options.dart';
 
 class FiredartStoreUtil<Type extends WithDocId>
     extends FirebaseStoreUtilInterface<Type> {
@@ -11,7 +11,7 @@ class FiredartStoreUtil<Type extends WithDocId>
       required Type Function(Map<String, dynamic> map) fromMap,
       required Map<String, dynamic> Function(Type instance) toMap})
       : super(collectionName: collectionName, fromMap: fromMap, toMap: toMap) {
-    Firestore.initialize(Setting.firebaseProjectId);
+    Firestore.initialize(DefaultFirebaseOptions.web.projectId);
   }
 
   @override

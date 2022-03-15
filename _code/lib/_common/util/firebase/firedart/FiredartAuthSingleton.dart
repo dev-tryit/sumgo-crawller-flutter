@@ -9,6 +9,7 @@ import 'package:sumgo_crawller_flutter/Setting.dart';
 import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseAuthUtilInterface.dart';
+import 'package:sumgo_crawller_flutter/firebase_options.dart';
 
 class FiredartAuthSingleton extends FirebaseAuthUtilInterface {
   static final FiredartAuthSingleton _singleton =
@@ -27,7 +28,7 @@ class FiredartAuthSingleton extends FirebaseAuthUtilInterface {
     if (!haveEverInit) {
       haveEverInit = true;
 
-      FirebaseAuth.initialize(Setting.firebaseApiKey, await HiveStore.create());
+      FirebaseAuth.initialize(DefaultFirebaseOptions.web.apiKey, await HiveStore.create());
       // _instance.signInState.listen((state) {
       //   LogUtil.debug("Signed ${state ? "in" : "out"}");
       // });
