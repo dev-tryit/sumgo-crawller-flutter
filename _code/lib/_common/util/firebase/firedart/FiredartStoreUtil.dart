@@ -1,28 +1,40 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firedart/firedart.dart';
+import 'package:sumgo_crawller_flutter/Setting.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/WithDocId.dart';
+import 'package:sumgo_crawller_flutter/_common/util/UUIDUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseStoreUtilInterface.dart';
 
-class FirebaseStoreUtil<Type extends WithDocId>
+class FiredartStoreUtil<Type extends WithDocId>
     extends FirebaseStoreUtilInterface<Type, CollectionReference,
         DocumentReference> {
-  FirebaseStoreUtil(
+  bool init = false;
+
+  FiredartStoreUtil(
       {required String collectionName,
       required Type Function(Map<String, dynamic> map) fromMap,
       required Map<String, dynamic> Function(Type instance) toMap})
       : super(collectionName: collectionName, fromMap: fromMap, toMap: toMap);
 
   @override
-  CollectionReference cRef() =>
-      FirebaseFirestore.instance.collection(collectionName);
+  CollectionReference cRef() {
+    if (!init) {
+      init = true;
+      Firestore.initialize(Setting.firebaseProjectId);
+    }
+
+    return Firestore.instance.collection(collectionName);
+  }
 
   @override
-  DocumentReference dRef({String? documentId}) =>
-      documentId != null ? cRef().doc(documentId) : cRef().doc();
+  DocumentReference dRef({String? documentId}) {
+    return documentId != null
+        ? cRef().document(documentId)
+        : cRef().document(UUIDUtil.makeUuid());
+  }
 
   @override
   Future<Map<String, dynamic>> dRefToMap(DocumentReference dRef) async =>
-      ((await dRef.get()).data() as Map<String, dynamic>?) ?? {};
-
+      (await dRef.get()).map;
 
   @override
   Future<Type?> add({required Type instance}) async {
@@ -41,7 +53,7 @@ class FirebaseStoreUtil<Type extends WithDocId>
       {required Type instance, required String documentId}) async {
     DocumentReference ref = dRef(documentId: documentId);
     await ref.set(toMap(instance));
-    return applyInstance((await dRefToMap(ref)));
+    return applyInstance((await ref.get()).map);
   }
 
   @override
@@ -49,7 +61,7 @@ class FirebaseStoreUtil<Type extends WithDocId>
       {required String documentId,
       required Type Function() onMakeInstanc}) async {
     DocumentReference ref = dRef(documentId: documentId);
-    return applyInstance((await dRefToMap(ref)));
+    return applyInstance((await ref.get()).map);
   }
 
   @override
@@ -67,9 +79,9 @@ class FirebaseStoreUtil<Type extends WithDocId>
   @override
   Future<List<Type>> getListByField(
       {required String key, required String value}) async {
-    Query query = cRef().where(key, isEqualTo: value);
-    List<Type> list = List.from((await query.get()).docs
-        .map((e) => applyInstance(e.data() as Map<String, dynamic>?))
+    QueryReference query = cRef().where(key, isEqualTo: value);
+    List<Type> list = List.from((await query.get())
+        .map((e) => applyInstance(e.map))
         .where((e) => e != null)
         .toList());
     return list;

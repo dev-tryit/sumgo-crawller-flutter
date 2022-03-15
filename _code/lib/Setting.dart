@@ -19,6 +19,7 @@ class Setting {
 
   //Firebase
   static const String firebaseApiKey = "AIzaSyC1LzWmL9H4z1r4SyBewiLyzWbEvBjVBtw";
+  static const String firebaseProjectId = "sumgo-crawller-flutter";
 
   // 중복 클릭 방지 시간
   static int milliSecondsForPreventingMultipleClicks = 300;

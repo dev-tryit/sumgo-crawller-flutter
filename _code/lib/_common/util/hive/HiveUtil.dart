@@ -1,7 +1,7 @@
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
-import 'package:sumgo_crawller_flutter/_common/util/firebase/firedart/FiredartStore.dart';
+import 'package:sumgo_crawller_flutter/_common/util/firebase/firedart/FiredartAuthSingleton.dart';
 
 class HiveUtil {
   static Future<void> init() async {
