@@ -120,16 +120,16 @@ class MyCrawller {
         int count = entry.value;
 
         KeywordItem? keywordItem =
-        await KeywordItemRepository.getKeywordItem(keyword: eachWord);
+        await KeywordItemRepository().getKeywordItem(keyword: eachWord);
         if (keywordItem == null) {
-          await KeywordItemRepository.add(
+          await KeywordItemRepository().add(
             keywordItem: KeywordItem(
               keyword: eachWord,
               count: count,
             ),
           );
         } else {
-          await KeywordItemRepository.update(
+          await KeywordItemRepository().update(
             KeywordItem(
               keyword: eachWord,
               count: (keywordItem.count ?? 0) + count,

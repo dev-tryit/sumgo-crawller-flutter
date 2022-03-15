@@ -175,7 +175,7 @@ class KeywordAnalysisPageService {
     List<String> keywordList =
         keyword.split(",").map((str) => str.trim()).toList();
     LogUtil.info("에러없음 $keywordList");
-    AnalysisItemRepository.add(
+    AnalysisItemRepository().add(
         analysisItem: AnalysisItem(title: title, keywordList: keywordList));
     Navigator.pop(context);
   }
