@@ -8,7 +8,9 @@ class FirebaseStoreUtil<Type extends WithDocId>
       {required String collectionName,
       required Type Function(Map<String, dynamic> map) fromMap,
       required Map<String, dynamic> Function(Type instance) toMap})
-      : super(collectionName: collectionName, fromMap: fromMap, toMap: toMap);
+      : super(collectionName: collectionName, fromMap: fromMap, toMap: toMap) {
+    // FirebaseFirestore.instance.
+  }
 
   @override
   CollectionReference cRef() =>
