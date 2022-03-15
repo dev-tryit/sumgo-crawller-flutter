@@ -12,7 +12,7 @@ import 'package:sumgo_crawller_flutter/util/MyTheme.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MyStoreUtil.init();
-  await MyAuthUtil.init();
+  await MyAuthUtil().init();
   if (PlatformUtil.isComputer()) {
     DesktopUtil.setSize(
       size: const Size(350, 800),

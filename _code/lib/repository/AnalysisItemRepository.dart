@@ -10,14 +10,14 @@ class AnalysisItemRepository {
   }
   AnalysisItemRepository._internal();
 
-  final _ = FirebaseStoreUtilInterface.init(
+  final _ = FirebaseStoreUtilInterface.init<AnalysisItem>(
     collectionName: StringUtil.classToString(AnalysisItem.empty()),
     fromMap: AnalysisItem.fromMap,
     toMap: AnalysisItem.toMap,
   );
 
   Future<AnalysisItem?> add({required AnalysisItem analysisItem}) async {
-    return await _.add(instance: analysisItem);
+    return await _.add(instance: analysisItem) ;
   }
 
   Future<bool> existDocumentId({required String documentId}) async {

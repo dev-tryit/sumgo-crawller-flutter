@@ -3,8 +3,7 @@ import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firebase/FirebaseStoreUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firedart/FiredartStoreUtil.dart';
 
-abstract class FirebaseStoreUtilInterface<Type extends WithDocId,
-    CollectionReference, DocumentReference> {
+abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
   String collectionName;
   Type Function(Map<String, dynamic> map) fromMap;
   Map<String, dynamic> Function(Type instance) toMap;
@@ -14,7 +13,8 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId,
       required this.fromMap,
       required this.toMap});
 
-  static init<Type extends WithDocId>({collectionName, fromMap, toMap}) {
+  static FirebaseStoreUtilInterface<Type> init<Type extends WithDocId>(
+      {collectionName, fromMap, toMap}) {
     if (PlatformUtil.isComputer()) {
       return FiredartStoreUtil<Type>(
           collectionName: collectionName, fromMap: fromMap, toMap: toMap);
@@ -24,11 +24,11 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId,
     }
   }
 
-  CollectionReference cRef();
+  cRef();
 
-  DocumentReference dRef({String? documentId});
+  dRef({String? documentId});
 
-  Future<Map<String, dynamic>> dRefToMap(DocumentReference dRef);
+  Future<Map<String, dynamic>> dRefToMap(dRef);
 
   Type? applyInstance(Map<String, dynamic>? map) =>
       (map == null || map.isEmpty) ? null : fromMap(map);

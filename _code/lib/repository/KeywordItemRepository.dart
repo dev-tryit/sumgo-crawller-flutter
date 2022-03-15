@@ -9,8 +9,8 @@ class KeywordItemRepository {
     return _singleton;
   }
   KeywordItemRepository._internal();
-  
-  final _ = FirebaseStoreUtilInterface.init(
+
+  final _ = FirebaseStoreUtilInterface.init<KeywordItem>(
     collectionName: StringUtil.classToString(KeywordItem.empty()),
     fromMap: KeywordItem.fromMap,
     toMap: KeywordItem.toMap,

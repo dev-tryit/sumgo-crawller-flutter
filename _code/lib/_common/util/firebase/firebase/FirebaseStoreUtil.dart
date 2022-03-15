@@ -3,8 +3,7 @@ import 'package:sumgo_crawller_flutter/_common/abstract/WithDocId.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseStoreUtilInterface.dart';
 
 class FirebaseStoreUtil<Type extends WithDocId>
-    extends FirebaseStoreUtilInterface<Type, CollectionReference,
-        DocumentReference> {
+    extends FirebaseStoreUtilInterface<Type> {
   FirebaseStoreUtil(
       {required String collectionName,
       required Type Function(Map<String, dynamic> map) fromMap,
@@ -20,9 +19,8 @@ class FirebaseStoreUtil<Type extends WithDocId>
       documentId != null ? cRef().doc(documentId) : cRef().doc();
 
   @override
-  Future<Map<String, dynamic>> dRefToMap(DocumentReference dRef) async =>
+  Future<Map<String, dynamic>> dRefToMap(dRef) async =>
       ((await dRef.get()).data() as Map<String, dynamic>?) ?? {};
-
 
   @override
   Future<Type?> add({required Type instance}) async {
@@ -68,7 +66,8 @@ class FirebaseStoreUtil<Type extends WithDocId>
   Future<List<Type>> getListByField(
       {required String key, required String value}) async {
     Query query = cRef().where(key, isEqualTo: value);
-    List<Type> list = List.from((await query.get()).docs
+    List<Type> list = List.from((await query.get())
+        .docs
         .map((e) => applyInstance(e.data() as Map<String, dynamic>?))
         .where((e) => e != null)
         .toList());

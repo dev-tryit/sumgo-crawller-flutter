@@ -1,11 +1,20 @@
 import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseAuthUtilInterface.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firebase/FirebaseAuthSingleton.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firedart/FiredartAuthSingleton.dart';
 
 enum NeededAuthBehavior { NEED_LOGIN, NEED_VERIFICATION, NEED_REGISTRATION }
 
 class MyAuthUtil {
+  static final MyAuthUtil _singleton = MyAuthUtil._internal();
+
+  factory MyAuthUtil() {
+    return _singleton;
+  }
+
+  MyAuthUtil._internal();
+
   /*
   무료로 이메일 인증을 사용하기 위한 정책.
   1. 이메일+기본값 비밀번호로 회원가입 시키고, 이메일 인증을 요청함
@@ -16,11 +25,11 @@ class MyAuthUtil {
   5. 따라서, isLogin에서 displayName이 null이라면, 로그아웃시키고, 로그인안된것으로 처리해야한다.
    */
 
-  static late final _firebaseAuthUtilInterface;
+  late final FirebaseAuthUtilInterface _firebaseAuthUtilInterface;
   static const _password = "tempNewPassword";
   static const _nameRegistered = "nameRegistered";
 
-  static Future<void> init() async {
+  Future<void> init() async {
     _firebaseAuthUtilInterface = (!PlatformUtil.isComputer())
         ? FirebaseAuthSingleton()
         : FiredartAuthSingleton();
@@ -28,7 +37,7 @@ class MyAuthUtil {
     _firebaseAuthUtilInterface.init();
   }
 
-  static Future<void> checkIsRegistered() async {
+  Future<void> checkIsRegistered() async {
     dynamic user = await _firebaseAuthUtilInterface.getUser();
 
     if (user != null && user.displayName != _nameRegistered) {
@@ -36,13 +45,13 @@ class MyAuthUtil {
     }
   }
 
-  static Future<bool> isLogin() async {
+  Future<bool> isLogin() async {
     await checkIsRegistered();
 
     return (await _firebaseAuthUtilInterface.getUser() != null);
   }
 
-  static Future<NeededAuthBehavior> sendEmailVerification(
+  Future<NeededAuthBehavior> sendEmailVerification(
       {required String email}) async {
     try {
       await _firebaseAuthUtilInterface.registerWithEmail(
@@ -73,33 +82,33 @@ class MyAuthUtil {
     return NeededAuthBehavior.NEED_VERIFICATION;
   }
 
-  static Future<void> logout() async {
+  Future<void> logout() async {
     await _firebaseAuthUtilInterface.logout();
   }
 
-  static Future<void> loginWithEmailDefaultPassword(String email) async {
+  Future<void> loginWithEmailDefaultPassword(String email) async {
     await _firebaseAuthUtilInterface.loginWithEmail(
         email: email, password: _password);
   }
 
-  static Future<void> loginWithEmail(String email, String password) async {
+  Future<void> loginWithEmail(String email, String password) async {
     await _firebaseAuthUtilInterface.loginWithEmail(
         email: email, password: password);
   }
 
-  static Future<void> delete() async {
+  Future<void> delete() async {
     await _firebaseAuthUtilInterface.delete();
     await _firebaseAuthUtilInterface.logout();
   }
 
-  static Future<void> registerWithEmail(String email, String password) async {
+  Future<void> registerWithEmail(String email, String password) async {
     await _firebaseAuthUtilInterface.registerWithEmail(
         email: email, password: password);
     await _firebaseAuthUtilInterface.updateProfile(
         displayName: _nameRegistered);
   }
 
-  static Future<bool> emailIsVerified() async {
+  Future<bool> emailIsVerified() async {
     return ((await _firebaseAuthUtilInterface.getUser())?.emailVerified ??
         false);
   }

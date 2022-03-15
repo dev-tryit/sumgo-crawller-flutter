@@ -5,8 +5,7 @@ import 'package:sumgo_crawller_flutter/_common/util/UUIDUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseStoreUtilInterface.dart';
 
 class FiredartStoreUtil<Type extends WithDocId>
-    extends FirebaseStoreUtilInterface<Type, CollectionReference,
-        DocumentReference> {
+    extends FirebaseStoreUtilInterface<Type> {
   bool init = false;
 
   FiredartStoreUtil(
@@ -33,7 +32,7 @@ class FiredartStoreUtil<Type extends WithDocId>
   }
 
   @override
-  Future<Map<String, dynamic>> dRefToMap(DocumentReference dRef) async =>
+  Future<Map<String, dynamic>> dRefToMap(dRef) async =>
       (await dRef.get()).map;
 
   @override
@@ -71,7 +70,6 @@ class FiredartStoreUtil<Type extends WithDocId>
     return list.isNotEmpty ? list.first : null;
   }
 
-  @override
   Future<void> deleteOne({required String documentId}) async {
     return await dRef(documentId: documentId).delete();
   }
@@ -87,7 +85,6 @@ class FiredartStoreUtil<Type extends WithDocId>
     return list;
   }
 
-  @override
   Future<bool> exist({required String key, required String value}) async {
     var data = await getOneByField(key: key, value: value);
     return data != null;

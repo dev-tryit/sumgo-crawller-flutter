@@ -5,7 +5,6 @@ import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
-import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/page/auth/AuthPage.dart';
 import 'package:sumgo_crawller_flutter/page/main/MainLayout.dart';
 import 'package:sumgo_crawller_flutter/util/MyAuthUtil.dart';
@@ -75,6 +74,6 @@ class LoadPageService extends KDHService<_LoadPageState, LoadPageComponent> {
 
     await Future.delayed(const Duration(seconds: 1));
     PageUtil.movePage(
-        context, await MyAuthUtil.isLogin() ? MainLayout() : AuthPage());
+        context, await MyAuthUtil().isLogin() ? MainLayout() : AuthPage());
   }
 }

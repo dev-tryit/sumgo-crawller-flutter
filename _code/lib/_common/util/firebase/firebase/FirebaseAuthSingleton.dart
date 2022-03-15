@@ -4,7 +4,7 @@ import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.d
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseAuthUtilInterface.dart';
 
-class FirebaseAuthSingleton extends FirebaseAuthUtilInterface<User> {
+class FirebaseAuthSingleton extends FirebaseAuthUtilInterface {
   static final FirebaseAuthSingleton _singleton =
       FirebaseAuthSingleton._internal();
 
@@ -16,6 +16,7 @@ class FirebaseAuthSingleton extends FirebaseAuthUtilInterface<User> {
 
   FirebaseAuth get _instance => FirebaseAuth.instance;
 
+  @override
   Future<void> init() async {
     if (!haveEverInit) {
       haveEverInit = true;
@@ -39,10 +40,12 @@ class FirebaseAuthSingleton extends FirebaseAuthUtilInterface<User> {
     }
   }
 
+  @override
   Future<User?> getUser() async {
     return _instance.currentUser;
   }
 
+  @override
   Future<void> updateProfile({String? displayName, String? photoUrl}) async {
     User? user = await getUser();
     if (user == null) {
@@ -59,6 +62,7 @@ class FirebaseAuthSingleton extends FirebaseAuthUtilInterface<User> {
     }
   }
 
+  @override
   Future<User?> loginAnonymously() async {
     try {
       await _instance.signInAnonymously();
@@ -82,6 +86,7 @@ class FirebaseAuthSingleton extends FirebaseAuthUtilInterface<User> {
     }
   }
 
+  @override
   Future<User?> registerWithEmail(
       {required String email, required String password}) async {
     try {
@@ -107,6 +112,7 @@ class FirebaseAuthSingleton extends FirebaseAuthUtilInterface<User> {
     }
   }
 
+  @override
   Future<void> sendEmailVerification() async {
     User? user = await getUser();
     if (user == null) {
@@ -125,6 +131,7 @@ class FirebaseAuthSingleton extends FirebaseAuthUtilInterface<User> {
     }
   }
 
+  @override
   Future<User?> loginWithEmail(
       {required String email, required String password}) async {
     try {
@@ -150,10 +157,12 @@ class FirebaseAuthSingleton extends FirebaseAuthUtilInterface<User> {
     }
   }
 
+  @override
   Future<void> logout() async {
     await _instance.signOut();
   }
 
+  @override
   Future<void> delete() async {
     try {
       User? user = await getUser();

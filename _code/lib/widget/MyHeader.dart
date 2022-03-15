@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
 import 'package:sumgo_crawller_flutter/page/LoadPage.dart';
 import 'package:sumgo_crawller_flutter/util/MyAuthUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyImage.dart';
 import 'package:sumgo_crawller_flutter/widget/MyMenu.dart';
-import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
 
 class MyHeader extends StatelessWidget {
   final PageController pageC;
@@ -53,7 +53,7 @@ class MyHeader extends StatelessWidget {
           ),
           InkWell(
             onTap: () async {
-              await MyAuthUtil.logout();
+              await MyAuthUtil().logout();
               PageUtil.movePage(context, LoadPage());
             },
             child: const Opacity(
