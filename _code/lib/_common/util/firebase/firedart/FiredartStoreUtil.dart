@@ -10,7 +10,7 @@ class FiredartStoreUtil<Type extends WithDocId>
       {required String collectionName,
       required Type Function(Map<String, dynamic> map) fromMap,
       required Map<String, dynamic> Function(Type instance) toMap})
-      : super(collectionName: collectionName, fromMap: fromMap, toMap: toMap){
+      : super(collectionName: collectionName, fromMap: fromMap, toMap: toMap) {
     Firestore.initialize(Setting.firebaseProjectId);
   }
 
@@ -27,14 +27,12 @@ class FiredartStoreUtil<Type extends WithDocId>
   }
 
   @override
-  Future<Map<String, dynamic>> dRefToMap(dRef) async =>
-      (await dRef.get()).map;
-
+  Future<Map<String, dynamic>> dRefToMap(dRef) async => (await dRef.get()).map;
 
   @override
   Future<Type?> getOne(
       {required String documentId,
-      required Type Function() onMakeInstanc}) async {
+      required Type Function() onMakeInstance}) async {
     DocumentReference ref = dRef(documentId: documentId);
     return applyInstance((await ref.get()).map);
   }
@@ -49,5 +47,4 @@ class FiredartStoreUtil<Type extends WithDocId>
         .toList());
     return list;
   }
-
 }

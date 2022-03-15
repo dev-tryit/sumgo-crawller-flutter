@@ -14,7 +14,7 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
       required this.toMap});
 
   static FirebaseStoreUtilInterface<Type> init<Type extends WithDocId>(
-      {collectionName, fromMap, toMap}) {
+      {required String collectionName, required Type Function(Map<String, dynamic>) fromMap, required Map<String, dynamic> Function(Type instance) toMap}) {
     if (PlatformUtil.isComputer()) {
       return FiredartStoreUtil<Type>(
           collectionName: collectionName, fromMap: fromMap, toMap: toMap);
@@ -46,6 +46,7 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
 
   Future<Type?> updateByDocumentId(
       {required Type instance, required String documentId}) async {
+    print("updateByDocumentId");
     dynamic ref = dRef(documentId: documentId);
     await ref.set(toMap(instance));
     return applyInstance((await ref.get()).map);
@@ -67,7 +68,7 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
   }
 
   Future<Type?> getOne(
-      {required String documentId, required Type Function() onMakeInstanc});
+      {required String documentId, required Type Function() onMakeInstance});
 
   Future<List<Type>> getListByField(
       {required String key, required String value});

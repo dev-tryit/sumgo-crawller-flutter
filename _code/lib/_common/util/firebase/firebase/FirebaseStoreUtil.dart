@@ -25,7 +25,7 @@ class FirebaseStoreUtil<Type extends WithDocId>
   @override
   Future<Type?> getOne(
       {required String documentId,
-      required Type Function() onMakeInstanc}) async {
+      required Type Function() onMakeInstance}) async {
     DocumentReference ref = dRef(documentId: documentId);
     return applyInstance((await dRefToMap(ref)));
   }
