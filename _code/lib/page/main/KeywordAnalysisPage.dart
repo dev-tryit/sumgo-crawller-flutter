@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/repository/AnalysisItem.dart';
 import 'package:sumgo_crawller_flutter/repository/AnalysisItemRepository.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
@@ -166,7 +165,6 @@ class KeywordAnalysisPageService {
 
     String? errorMessage = AnalysisItem.getErrorMessageForAdd(title, keyword);
     if (errorMessage != null) {
-      LogUtil.info("에러있음 $errorMessage");
       setErrorMessage(errorMessage);
       return;
     }
@@ -174,7 +172,6 @@ class KeywordAnalysisPageService {
 
     List<String> keywordList =
         keyword.split(",").map((str) => str.trim()).toList();
-    LogUtil.info("에러없음 $keywordList");
     await AnalysisItemRepository().add(
         analysisItem: AnalysisItem(title: title, keywordList: keywordList));
     Navigator.pop(context);
