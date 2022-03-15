@@ -42,7 +42,7 @@ class FirebaseStoreUtil<Type extends WithDocId>
     return list;
   }
   Future<Type?> add({required Type instance}) async {
-    dynamic ref = dRef();
+    DocumentReference ref = dRef();
 
     instance.documentId = ref.id;
 
@@ -50,5 +50,15 @@ class FirebaseStoreUtil<Type extends WithDocId>
       instance: instance,
       documentId: ref.id,
     );
+  }
+
+  Future<Type?> updateByDocumentId(
+      {required Type instance, required String documentId}) async {
+    print("updateByDocumentId");
+    DocumentReference ref = dRef(documentId: documentId);
+    print("updateByDocumentId1");
+    await ref.set(toMap(instance));
+    print("updateByDocumentId2");
+    return applyInstance((await ref.get()).data() as Map<String, dynamic>?);
   }
 }
