@@ -44,6 +44,13 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
     );
   }
 
+  Future<Type?> updateByDocumentId(
+      {required Type instance, required String documentId}) async {
+    dynamic ref = dRef(documentId: documentId);
+    await ref.set(toMap(instance));
+    return applyInstance((await ref.get()).map);
+  }
+
   Future<Type?> getOneByField(
       {required String key, required String value}) async {
     List<Type?> list = await getListByField(key: key, value: value);
@@ -58,9 +65,6 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
     var data = await getOneByField(key: key, value: value);
     return data != null;
   }
-
-  Future<Type?> updateByDocumentId(
-      {required Type instance, required String documentId});
 
   Future<Type?> getOne(
       {required String documentId, required Type Function() onMakeInstanc});

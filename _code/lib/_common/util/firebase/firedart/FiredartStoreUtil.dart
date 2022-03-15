@@ -30,13 +30,6 @@ class FiredartStoreUtil<Type extends WithDocId>
   Future<Map<String, dynamic>> dRefToMap(dRef) async =>
       (await dRef.get()).map;
 
-  @override
-  Future<Type?> updateByDocumentId(
-      {required Type instance, required String documentId}) async {
-    DocumentReference ref = dRef(documentId: documentId);
-    await ref.set(toMap(instance));
-    return applyInstance((await ref.get()).map);
-  }
 
   @override
   Future<Type?> getOne(
