@@ -1,8 +1,9 @@
+import 'package:puppeteer/puppeteer.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
-import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PuppeteerUtil.dart';
 import 'package:sumgo_crawller_flutter/_local/local.dart';
-import 'package:puppeteer/puppeteer.dart';
+import 'package:sumgo_crawller_flutter/repository/KeywordItem.dart';
+import 'package:sumgo_crawller_flutter/repository/KeywordItemRepository.dart';
 
 class MyCrawller {
   final p = PuppeteerUtil();
@@ -43,10 +44,10 @@ class MyCrawller {
     bool isLoginPage = await p.existTag(".login-page");
     return !isLoginPage;
   }
-  Future<void> _deleteRequest(ElementHandle tag)async {
+
+  Future<void> _deleteRequest(ElementHandle tag) async {
     await p.click('.quote-btn.del', tag: tag);
     await p.click('.swal2-confirm.btn');
-
   }
 
   Future<void> _sendRequests(ElementHandle tag) async {
@@ -84,17 +85,20 @@ class MyCrawller {
     Future<List<ElementHandle>> getTagList() async =>
         await p.$$('.request-list > li > .request-item');
 
-    while(true) {
+    while (true) {
       if (await refreshAndExitIfShould()) return;
       List<ElementHandle> tagList = await getTagList();
-      if(tagList.isEmpty) break;
-
+      if (tagList.isEmpty) break;
 
       var tag = tagList[0];
       var messageTag = await p.$('.quote > span.message', tag: tag);
       String message = await p.html(tag: messageTag);
 
-      _isValidRequest(message) ? await _sendRequests(tag) : await _deleteRequest(tag);
+      await _countAndSaveKeyword(message);
+
+      _isValidRequest(message)
+          ? await _sendRequests(tag)
+          : await _deleteRequest(tag);
     }
   }
 
@@ -125,4 +129,47 @@ class MyCrawller {
     return isValid;
   }
 
+  Future<void> _countAndSaveKeyword(String message) async {
+    Future<Map<String, int>> countKeyword(String message) async {
+      Map<String, int> keywordMap = {};
+      for (var eachWord in message.trim().split(",")) {
+        eachWord = eachWord.trim();
+        if (!keywordMap.containsKey(eachWord)) {
+          keywordMap[eachWord] = 0;
+        }
+        keywordMap[eachWord] = keywordMap[eachWord]! + 1;
+      }
+      LogUtil.info("keywordMap: $keywordMap");
+      return keywordMap;
+    }
+
+    Map<String, int> keywordMap = await countKeyword(message);
+
+    Future<void> saveFirestore(Map<String, int> keywordMap) async {
+      for (var entry in keywordMap.entries) {
+        String eachWord = entry.key;
+        int count = entry.value;
+
+        KeywordItem? keywordItem =
+            await KeywordItemRepository.getKeywordItem(keyword: eachWord);
+        if (keywordItem == null) {
+          await KeywordItemRepository.add(
+            keywordItem: KeywordItem(
+              keyword: eachWord,
+              count: count,
+            ),
+          );
+        } else {
+          await KeywordItemRepository.update(
+            KeywordItem(
+              keyword: eachWord,
+              count: (keywordItem.count ?? 0) + count,
+            ),
+          );
+        }
+      }
+    }
+
+    await saveFirestore(keywordMap);
+  }
 }
