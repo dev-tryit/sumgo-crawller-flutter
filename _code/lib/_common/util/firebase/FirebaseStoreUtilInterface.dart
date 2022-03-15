@@ -1,4 +1,7 @@
 import 'package:sumgo_crawller_flutter/_common/abstract/WithDocId.dart';
+import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/firebase/firebase/FirebaseStoreUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/firebase/firedart/FiredartStoreUtil.dart';
 
 abstract class FirebaseStoreUtilInterface<Type extends WithDocId,
     CollectionReference, DocumentReference> {
@@ -10,6 +13,16 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId,
       {required this.collectionName,
       required this.fromMap,
       required this.toMap});
+
+  static init<Type extends WithDocId>({collectionName, fromMap, toMap}) {
+    if (PlatformUtil.isComputer()) {
+      return FiredartStoreUtil<Type>(
+          collectionName: collectionName, fromMap: fromMap, toMap: toMap);
+    } else {
+      return FirebaseStoreUtil<Type>(
+          collectionName: collectionName, fromMap: fromMap, toMap: toMap);
+    }
+  }
 
   CollectionReference cRef();
 

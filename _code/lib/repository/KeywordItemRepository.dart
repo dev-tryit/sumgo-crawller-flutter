@@ -1,9 +1,9 @@
 import 'package:sumgo_crawller_flutter/_common/util/StringUtil.dart';
-import 'package:sumgo_crawller_flutter/_common/util/firebase/firebase/FirebaseStoreUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseStoreUtilInterface.dart';
 import 'package:sumgo_crawller_flutter/repository/KeywordItem.dart';
 
 class KeywordItemRepository {
-  static final FirebaseStoreUtil<KeywordItem> _ = FirebaseStoreUtil(
+  static final _ = FirebaseStoreUtilInterface.init(
     collectionName: StringUtil.classToString(KeywordItem.empty()),
     fromMap: KeywordItem.fromMap,
     toMap: KeywordItem.toMap,

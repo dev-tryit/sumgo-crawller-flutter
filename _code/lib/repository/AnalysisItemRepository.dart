@@ -1,9 +1,9 @@
-import 'package:sumgo_crawller_flutter/_common/util/firebase/firebase/FirebaseStoreUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/StringUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseStoreUtilInterface.dart';
 import 'package:sumgo_crawller_flutter/repository/AnalysisItem.dart';
 
 class AnalysisItemRepository {
-  static final FirebaseStoreUtil<AnalysisItem> _ = FirebaseStoreUtil(
+  static final _ = FirebaseStoreUtilInterface.init(
     collectionName: StringUtil.classToString(AnalysisItem.empty()),
     fromMap: AnalysisItem.fromMap,
     toMap: AnalysisItem.toMap,

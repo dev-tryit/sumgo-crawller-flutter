@@ -22,7 +22,6 @@ class FiredartAuthSingleton extends FirebaseAuthUtilInterface<User> {
 
   FirebaseAuth get _instance => FirebaseAuth.instance;
 
-  @override
   Future<void> init() async {
     if (!haveEverInit) {
       haveEverInit = true;
@@ -48,7 +47,6 @@ class FiredartAuthSingleton extends FirebaseAuthUtilInterface<User> {
     );
   }
 
-  @override
   Future<User?> getUser() async {
     try {
       return await _instance.getUser();
@@ -59,7 +57,6 @@ class FiredartAuthSingleton extends FirebaseAuthUtilInterface<User> {
     }
   }
 
-  @override
   Future<User?> loginAnonymously() async {
     try {
       await _instance.signInAnonymously();
@@ -70,7 +67,6 @@ class FiredartAuthSingleton extends FirebaseAuthUtilInterface<User> {
     }
   }
 
-  @override
   Future<User?> registerWithEmail(
       {required String email, required String password}) async {
     try {
@@ -90,7 +86,6 @@ class FiredartAuthSingleton extends FirebaseAuthUtilInterface<User> {
     }
   }
 
-  @override
   Future<void> sendEmailVerification() async {
     User? user = await getUser();
     if (user == null) {
@@ -112,7 +107,6 @@ class FiredartAuthSingleton extends FirebaseAuthUtilInterface<User> {
     }
   }
 
-  @override
   Future<User?> loginWithEmail(
       {required String email, required String password}) async {
     try {
@@ -130,12 +124,10 @@ class FiredartAuthSingleton extends FirebaseAuthUtilInterface<User> {
     }
   }
 
-  @override
   Future<void> logout() async {
     _instance.signOut();
   }
 
-  @override
   Future<void> delete() async {
     try {
       User? user = await getUser();
