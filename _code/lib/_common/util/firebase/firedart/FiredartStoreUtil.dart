@@ -31,18 +31,6 @@ class FiredartStoreUtil<Type extends WithDocId>
       (await dRef.get()).map;
 
   @override
-  Future<Type?> add({required Type instance}) async {
-    DocumentReference ref = dRef();
-
-    instance.documentId = ref.id;
-
-    return await updateByDocumentId(
-      instance: instance,
-      documentId: ref.id,
-    );
-  }
-
-  @override
   Future<Type?> updateByDocumentId(
       {required Type instance, required String documentId}) async {
     DocumentReference ref = dRef(documentId: documentId);
@@ -59,17 +47,6 @@ class FiredartStoreUtil<Type extends WithDocId>
   }
 
   @override
-  Future<Type?> getOneByField(
-      {required String key, required String value}) async {
-    List<Type?> list = await getListByField(key: key, value: value);
-    return list.isNotEmpty ? list.first : null;
-  }
-
-  Future<void> deleteOne({required String documentId}) async {
-    return await dRef(documentId: documentId).delete();
-  }
-
-  @override
   Future<List<Type>> getListByField(
       {required String key, required String value}) async {
     QueryReference query = cRef().where(key, isEqualTo: value);
@@ -80,8 +57,4 @@ class FiredartStoreUtil<Type extends WithDocId>
     return list;
   }
 
-  Future<bool> exist({required String key, required String value}) async {
-    var data = await getOneByField(key: key, value: value);
-    return data != null;
-  }
 }

@@ -158,7 +158,7 @@ class KeywordAnalysisPageService {
 
   BuildContext get context => state.context;
 
-  void addAnalysisItem(String title, String keyword, StateSetter setState) {
+  void addAnalysisItem(String title, String keyword, StateSetter setState) async {
     void setErrorMessage(String errorMessage) {
       state.errorMessage = errorMessage;
       setState(() {});
@@ -175,7 +175,7 @@ class KeywordAnalysisPageService {
     List<String> keywordList =
         keyword.split(",").map((str) => str.trim()).toList();
     LogUtil.info("에러없음 $keywordList");
-    AnalysisItemRepository().add(
+    await AnalysisItemRepository().add(
         analysisItem: AnalysisItem(title: title, keywordList: keywordList));
     Navigator.pop(context);
   }

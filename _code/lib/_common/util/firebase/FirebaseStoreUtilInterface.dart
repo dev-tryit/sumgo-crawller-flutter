@@ -16,11 +16,9 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
   static FirebaseStoreUtilInterface<Type> init<Type extends WithDocId>(
       {collectionName, fromMap, toMap}) {
     if (PlatformUtil.isComputer()) {
-      print("FiredartStoreUtil");
       return FiredartStoreUtil<Type>(
           collectionName: collectionName, fromMap: fromMap, toMap: toMap);
     } else {
-      print("FirebaseStoreUtil");
       return FirebaseStoreUtil<Type>(
           collectionName: collectionName, fromMap: fromMap, toMap: toMap);
     }
@@ -35,7 +33,31 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
   Type? applyInstance(Map<String, dynamic>? map) =>
       (map == null || map.isEmpty) ? null : fromMap(map);
 
-  Future<Type?> add({required Type instance});
+  Future<Type?> add({required Type instance}) async {
+    dynamic ref = dRef();
+
+    instance.documentId = ref.id;
+
+    return await updateByDocumentId(
+      instance: instance,
+      documentId: ref.id,
+    );
+  }
+
+  Future<Type?> getOneByField(
+      {required String key, required String value}) async {
+    List<Type?> list = await getListByField(key: key, value: value);
+    return list.isNotEmpty ? list.first : null;
+  }
+
+  Future<void> deleteOne({required String documentId}) async {
+    return await dRef(documentId: documentId).delete();
+  }
+
+  Future<bool> exist({required String key, required String value}) async {
+    var data = await getOneByField(key: key, value: value);
+    return data != null;
+  }
 
   Future<Type?> updateByDocumentId(
       {required Type instance, required String documentId});
@@ -43,12 +65,6 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
   Future<Type?> getOne(
       {required String documentId, required Type Function() onMakeInstanc});
 
-  Future<Type?> getOneByField({required String key, required String value});
-
-  Future<void> deleteOne({required String documentId});
-
   Future<List<Type>> getListByField(
       {required String key, required String value});
-
-  Future<bool> exist({required String key, required String value});
 }
