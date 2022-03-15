@@ -16,9 +16,11 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
   static FirebaseStoreUtilInterface<Type> init<Type extends WithDocId>(
       {collectionName, fromMap, toMap}) {
     if (PlatformUtil.isComputer()) {
+      print("FiredartStoreUtil");
       return FiredartStoreUtil<Type>(
           collectionName: collectionName, fromMap: fromMap, toMap: toMap);
     } else {
+      print("FirebaseStoreUtil");
       return FirebaseStoreUtil<Type>(
           collectionName: collectionName, fromMap: fromMap, toMap: toMap);
     }
