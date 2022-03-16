@@ -4,8 +4,7 @@ import 'package:sumgo_crawller_flutter/Setting.dart';
 import 'package:sumgo_crawller_flutter/_common/config/MyCustomScrollBehavior.dart';
 import 'package:sumgo_crawller_flutter/_common/util/DesktopUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
-import 'package:sumgo_crawller_flutter/page/test/TestCountPage.dart';
-import 'package:sumgo_crawller_flutter/page/test/TestLoginPager.dart';
+import 'package:sumgo_crawller_flutter/page/test/TestSignUpPage.dart';
 import 'package:sumgo_crawller_flutter/util/MyAuthUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 import 'package:sumgo_crawller_flutter/util/MyStoreUtil.dart';
@@ -72,7 +71,7 @@ class MyApp extends StatelessWidget {
         return child;
       },
       initialRoute: "/",
-      home: TestCountPage(),
+      home: TestSignUpPage(),
     );
   }
 }

@@ -10,52 +10,52 @@ class TestSignUpPage extends StatefulWidget {
 }
 
 class _TestSignUpPageState extends State<TestSignUpPage> {
-  final idController = TextEditingController();
+  final emailController = TextEditingController();
   final pwController = TextEditingController();
   final pwConfirmController = TextEditingController();
-  String message = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("회원가입 페이지"),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          TextField(
-            controller: idController,
-            decoration: InputDecoration(hintText: "아이디를 입력해주세요"),
-          ),
-          TextField(
-            controller: pwController,
-            obscureText: true,
-            decoration: InputDecoration(hintText: "비밀번호를 입력해주세요"),
-          ),
-          TextField(
-            controller: pwConfirmController,
-            obscureText: true,
-            decoration: InputDecoration(hintText: "비밀번호 확인을 입력해주세요"),
-          ),
-          ElevatedButton(
-            onPressed: onRegisterButtonPressed,
-            child: Text("회원가입"),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(message),
-            ],
-          ),
-        ],
+      body: Container(
+        padding:
+            const EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 30),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            title(),
+            const SizedBox(height: 40),
+            inputBox("이메일",
+                controller: emailController),
+            const SizedBox(height: 20),
+            inputBox("비밀번호",
+                controller: pwController, obscureText: true),
+            const SizedBox(height: 20),
+            inputBox("비밀번호 확인",
+                controller: pwConfirmController, obscureText: true),
+            const SizedBox(height: 40),
+            SizedBox(
+              width: double.infinity,
+              child: TextButton(
+                onPressed: onRegisterButtonPressed,
+                child: const Text("완료"),
+                style: TextButton.styleFrom(
+                  shape: const ContinuousRectangleBorder(),
+                  padding: const EdgeInsets.all(22),
+                  primary: Colors.black,
+                  side: const BorderSide(width: 1.0, color: Colors.black),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   void onRegisterButtonPressed() async {
-    String email = idController.text;
+    String email = emailController.text;
     String pw = pwController.text;
     String pwConfirm = pwConfirmController.text;
 
@@ -106,5 +106,32 @@ class _TestSignUpPageState extends State<TestSignUpPage> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(message),
     ));
+  }
+
+  Widget title() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text("회원가입", style: TextStyle(fontSize: 20)),
+        SizedBox(width: 10),
+        Text("/", style: TextStyle(fontSize: 20, color: Colors.grey[400])),
+        SizedBox(width: 10),
+        Text("로그인", style: TextStyle(fontSize: 20, color: Colors.grey[400]))
+      ],
+    );
+  }
+
+  Widget inputBox(String label,
+      {TextEditingController? controller, bool obscureText=false}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextField(
+          controller: controller,
+          obscureText: obscureText,
+          decoration: InputDecoration(hintText: "$label 입력해주세요", labelText: label),
+        ),
+      ],
+    );
   }
 }
