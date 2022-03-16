@@ -11,7 +11,7 @@ class MyCrawller {
   final timeout = Duration(seconds: 20);
   final List<String> listToIncludeAlways = const ["flutter"];
   final List<String> listToInclude = const ["앱 개발", "취미/자기개발"];
-  final List<String> listToExclude = const ["초등학생", "중학생"];
+  final List<String> listToExclude = const ["초등학생", "중학생", "과제"];
 
   Future<void> start() async {
     await p.openBrowser(
