@@ -26,11 +26,9 @@ class _TestSignUpPageState extends State<TestSignUpPage> {
           children: [
             title(),
             const SizedBox(height: 40),
-            inputBox("이메일",
-                controller: emailController),
+            inputBox("이메일", controller: emailController),
             const SizedBox(height: 20),
-            inputBox("비밀번호",
-                controller: pwController, obscureText: true),
+            inputBox("비밀번호", controller: pwController, obscureText: true),
             const SizedBox(height: 20),
             inputBox("비밀번호 확인",
                 controller: pwConfirmController, obscureText: true),
@@ -122,14 +120,19 @@ class _TestSignUpPageState extends State<TestSignUpPage> {
   }
 
   Widget inputBox(String label,
-      {TextEditingController? controller, bool obscureText=false}) {
+      {TextEditingController? controller, bool obscureText = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextField(
           controller: controller,
           obscureText: obscureText,
-          decoration: InputDecoration(hintText: "$label 입력해주세요", labelText: label),
+          decoration: InputDecoration(
+            labelText: label,
+            hintText: "$label 입력해주세요",
+            hintStyle: const TextStyle(fontSize: 12),
+            contentPadding: const EdgeInsets.only(top: 1.5),
+          ),
         ),
       ],
     );
