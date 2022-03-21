@@ -30,51 +30,11 @@ class FiredartStoreUtil<Type extends WithDocId>
   Future<Map<String, dynamic>> dRefToMap(dRef) async => (await dRef.get()).map;
 
   @override
-  Future<Type?> getOne(
-      {required String documentId,
-      required Type Function() onMakeInstance}) async {
-    DocumentReference ref = dRef(documentId: documentId);
-    return applyInstance((await ref.get()).map);
-  }
+  Map<String, dynamic> dSnapshotToMap(dSnapshot) => dSnapshot.map;
 
   @override
-  List<Type> getListFromDocs(docs) {
-    return List.from(docs
-        .map((e) => applyInstance(e.map))
-        .where((e) => e != null)
-        .toList());
-  }
-  
+  Future<List> cRefToList() async => (await cRef().get());
 
   @override
-  Future<List<Type>> getListByField(
-      {required String key, required String value}) async {
-    QueryReference query = cRef().where(key, isEqualTo: value);
-    return getListFromDocs((await query.get()));
-  }
-
-  @override
-  Future<List<Type>> getList() async {
-    return getListFromDocs((await cRef().get()));
-  }
-
-  @override
-  Future<Type?> add({required Type instance}) async {
-    DocumentReference ref = dRef();
-
-    instance.documentId = ref.id;
-
-    return await updateByDocumentId(
-      instance: instance,
-      documentId: ref.id,
-    );
-  }
-
-  @override
-  Future<Type?> updateByDocumentId(
-      {required Type instance, required String documentId}) async {
-    DocumentReference ref = dRef(documentId: documentId);
-    await ref.set(toMap(instance));
-    return applyInstance((await ref.get()).map);
-  }
+  Future<List> queryToList(query) async => (await query.get());
 }

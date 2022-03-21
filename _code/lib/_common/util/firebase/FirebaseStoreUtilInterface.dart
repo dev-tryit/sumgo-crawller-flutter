@@ -10,13 +10,13 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
 
   FirebaseStoreUtilInterface(
       {required this.collectionName,
-        required this.fromMap,
-        required this.toMap});
+      required this.fromMap,
+      required this.toMap});
 
   static FirebaseStoreUtilInterface<Type> init<Type extends WithDocId>(
       {required String collectionName,
-        required Type Function(Map<String, dynamic>) fromMap,
-        required Map<String, dynamic> Function(Type instance) toMap}) {
+      required Type Function(Map<String, dynamic>) fromMap,
+      required Map<String, dynamic> Function(Type instance) toMap}) {
     if (PlatformUtil.isComputer()) {
       return FiredartStoreUtil<Type>(
           collectionName: collectionName, fromMap: fromMap, toMap: toMap);
@@ -35,9 +35,6 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
   Type? applyInstance(Map<String, dynamic>? map) =>
       (map == null || map.isEmpty) ? null : fromMap(map);
 
-  Future<Type?> updateByDocumentId(
-      {required Type instance, required String documentId});
-
   Future<Type?> getOneByField(
       {required String key, required String value}) async {
     List<Type?> list = await getListByField(key: key, value: value);
@@ -54,14 +51,48 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
   }
 
   Future<Type?> getOne(
-      {required String documentId, required Type Function() onMakeInstance});
+      {required String documentId,
+      required Type Function() onMakeInstance}) async {
+    return applyInstance(await dRefToMap(dRef(documentId: documentId)));
+  }
+
+  Map<String, dynamic> dSnapshotToMap(dSnapshot);
+
+  List<Type> getListFromDocs(List docs) {
+    return List.from(docs
+        .map((e) => applyInstance(dSnapshotToMap(e)))
+        .where((e) => e != null)
+        .toList());
+  }
+
+  Future<List> cRefToList();
+
+  Future<List<Type>> getList() async {
+    return getListFromDocs(await cRefToList());
+  }
+
+  Future<List> queryToList(query);
 
   Future<List<Type>> getListByField(
-      {required String key, required String value});
-      
-  Future<List<Type>> getList();
-  
-  List<Type> getListFromDocs(docs);
+      {required String key, required String value}) async {
+    return getListFromDocs(
+        await queryToList(cRef().where(key, isEqualTo: value)));
+  }
+  Future<Type?> add({required Type instance}) async {
+    var ref = dRef();
 
-  Future<Type?> add({required Type instance});
+    instance.documentId = ref.id;
+
+    return await updateByDocumentId(
+      instance: instance,
+      documentId: ref.id,
+    );
+  }
+  Future<Type?> updateByDocumentId(
+      {required Type instance, required String documentId}) async {
+    var ref = dRef(documentId: documentId);
+    await ref.set(toMap(instance));
+    return applyInstance(await dRefToMap(ref));
+  }
+
 }

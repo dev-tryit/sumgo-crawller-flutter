@@ -25,50 +25,10 @@ class FirebaseStoreUtil<Type extends WithDocId>
       ((await dRef.get()).data() as Map<String, dynamic>?) ?? {};
 
   @override
-  Future<Type?> getOne(
-      {required String documentId,
-      required Type Function() onMakeInstance}) async {
-    DocumentReference ref = dRef(documentId: documentId);
-    return applyInstance((await dRefToMap(ref)));
-  }
-  
+  Map<String, dynamic> dSnapshotToMap(dSnapshot) =>
+      (dSnapshot.data() as Map<String, dynamic>?) ?? {};
   @override
-  List<Type> getListFromDocs(docs) {
-    return List.from(docs
-        .map((e) => applyInstance(e.data() as Map<String, dynamic>?))
-        .where((e) => e != null)
-        .toList());
-  }
-
+  Future<List> cRefToList() async => (await cRef().get()).docs;
   @override
-  Future<List<Type>> getListByField(
-      {required String key, required String value}) async {
-    Query query = cRef().where(key, isEqualTo: value);
-    return getListFromDocs((await query.get()).docs);
-  }
-
-  @override
-  Future<List<Type>> getList() async {
-    return getListFromDocs((await cRef().get()).docs);
-  }
-
-  @override
-  Future<Type?> add({required Type instance}) async {
-    DocumentReference ref = dRef();
-
-    instance.documentId = ref.id;
-
-    return await updateByDocumentId(
-      instance: instance,
-      documentId: ref.id,
-    );
-  }
-
-  @override
-  Future<Type?> updateByDocumentId(
-      {required Type instance, required String documentId}) async {
-    DocumentReference ref = dRef(documentId: documentId);
-    await ref.set(toMap(instance));
-    return applyInstance((await ref.get()).data() as Map<String, dynamic>?);
-  }
+  Future<List> queryToList(query) async => (await query.get()).docs;
 }
