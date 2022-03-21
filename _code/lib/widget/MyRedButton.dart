@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
+import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 
 class MyRedButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -17,7 +18,7 @@ class MyRedButton extends StatelessWidget {
       onPressed: onPressed,
       child: Text(
         text,
-        style: GoogleFonts.gothicA1(
+        style: MyFonts.gothicA1(
           color: MyColors.white,
           fontSize: 12.5,
         ),

@@ -12,6 +12,7 @@ import 'package:sumgo_crawller_flutter/_common/widget/EasyFade.dart';
 import 'package:sumgo_crawller_flutter/state/auth/AuthState.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
+import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 
 class AuthPage extends StatefulWidget {
   @override
@@ -33,8 +34,7 @@ class _AuthPageState
   AuthPageService makeService() => AuthPageService(this, c);
 
   @override
-  Future<void> onLoad() async {
-  }
+  Future<void> onLoad() async {}
 
   @override
   void mustRebuild() {
@@ -47,7 +47,6 @@ class _AuthPageState
 }
 
 class AuthPageComponent extends KDHComponent<_AuthPageState> {
-
   final _formKey = GlobalKey<FormState>();
 
   final emailController = TextEditingController();
@@ -93,7 +92,7 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
               const SizedBox(height: 36),
               Text(
                 "숨고 매니저",
-                style: GoogleFonts.blackHanSans(
+                style: MyFonts.blackHanSans(
                   fontSize: 35,
                   color: MyColors.deepBlue,
                 ),
@@ -163,7 +162,7 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
                           onTap: onTrailingTap,
                           child: Text(
                             trailing,
-                            style: GoogleFonts.gothicA1(
+                            style: MyFonts.gothicA1(
                               color: trailingColor ?? MyColors.deepBlue,
                               fontSize: 12,
                               fontWeight: FontWeight.bold,

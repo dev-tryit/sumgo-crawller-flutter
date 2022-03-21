@@ -4,10 +4,12 @@ import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
+import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/repository/AnalysisItem.dart';
 import 'package:sumgo_crawller_flutter/repository/AnalysisItemRepository.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
+import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 import 'package:sumgo_crawller_flutter/util/MyImage.dart';
 import 'package:sumgo_crawller_flutter/widget/MyCard.dart';
 import 'package:sumgo_crawller_flutter/widget/MyChart.dart';
@@ -36,7 +38,7 @@ class _KeywordAnalysisPageState extends KDHState<KeywordAnalysisPage,
 
   @override
   Future<void> onLoad() async {
-    await s.onLoad();
+    await s.resetAnalysisItemList();
   }
 
   @override
@@ -57,15 +59,16 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
       _KeywordAnalysisPageState state, KeywordAnalysisPageComponent c)
       : super(state, c);
 
-  Future<void> onLoad() async {
-    analysisItemList.addAll(await AnalysisItemRepository().getList());
+  Future<void> resetAnalysisItemList() async {
+    analysisItemList = await AnalysisItemRepository().getList();
+    LogUtil.info("analysisItemList ${analysisItemList}");
   }
 
   void addAnalysisItem(
-      String title, String keyword, StateSetter setState) async {
+      String title, String keyword, StateSetter setStateOfParent) async {
     void setErrorMessage(String errorMessage) {
       c.errorMessage = errorMessage;
-      setState(() {});
+      setStateOfParent(() {});
     }
 
     String? errorMessage = AnalysisItem.getErrorMessageForAdd(title, keyword);
@@ -75,10 +78,15 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
     }
     setErrorMessage('');
 
+    await MyComponents.showLoadingDialog(context);
     List<String> keywordList =
         keyword.split(",").map((str) => str.trim()).toList();
     await AnalysisItemRepository().add(
         analysisItem: AnalysisItem(title: title, keywordList: keywordList));
+    await resetAnalysisItemList();
+    setStateOfParent(() {});
+    await MyComponents.dismissLoadingDialog();
+
     Navigator.pop(context);
   }
 }
@@ -158,13 +166,13 @@ class KeywordAnalysisPageComponent
                 child: Row(
                   children: [
                     Text('키워드 분류 생성하기',
-                        style: GoogleFonts.gothicA1(
+                        style: MyFonts.gothicA1(
                             color: MyColors.black,
                             fontSize: 14,
                             fontWeight: FontWeight.w500)),
                     const Spacer(),
                     Text(errorMessage,
-                        style: GoogleFonts.gothicA1(
+                        style: MyFonts.gothicA1(
                             color: MyColors.red, fontSize: 12)),
                     const SizedBox(width: 10),
                     MyRedButton(
@@ -185,7 +193,7 @@ class KeywordAnalysisPageComponent
                 dense: true,
                 minLeadingWidth: 100,
                 leading: Text("분류 이름",
-                    style: GoogleFonts.gothicA1(
+                    style: MyFonts.gothicA1(
                         color: MyColors.black, fontSize: 12.5)),
                 title: TextField(
                   controller: titleController,
@@ -198,7 +206,7 @@ class KeywordAnalysisPageComponent
                 dense: true,
                 minLeadingWidth: 100,
                 leading: Text("분류 기준 텍스트",
-                    style: GoogleFonts.gothicA1(
+                    style: MyFonts.gothicA1(
                         color: MyColors.black, fontSize: 12.5)),
                 title: TextField(
                   controller: keywordController,

@@ -1,4 +1,5 @@
 import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.dart';
+import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseAuthUtilInterface.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firebase/FirebaseAuthSingleton.dart';
@@ -34,19 +35,29 @@ class MyAuthUtil {
         ? FiredartAuthSingleton()
         : FirebaseAuthSingleton();
 
-    _firebaseAuthUtilInterface.init();
+    await _firebaseAuthUtilInterface.init();
   }
 
   Future<void> checkIsRegistered() async {
+    LogUtil.info("checkIsRegistered 1");
     dynamic user = await _firebaseAuthUtilInterface.getUser();
+    LogUtil.info("checkIsRegistered 2");
 
     if (user != null && user.displayName != _nameRegistered) {
+      LogUtil.info("checkIsRegistered 3");
       await logout();
+      LogUtil.info("checkIsRegistered 4");
     }
   }
 
   Future<bool> isLogin() async {
+    LogUtil.info("isLogin 1");
     await checkIsRegistered();
+    LogUtil.info("isLogin 2");
+
+//음... User가 안오나?
+    dynamic user = await _firebaseAuthUtilInterface.getUser();
+    LogUtil.info("user : ${user}");
 
     return (await _firebaseAuthUtilInterface.getUser() != null);
   }

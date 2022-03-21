@@ -9,6 +9,7 @@ import 'package:sumgo_crawller_flutter/page/auth/AuthPage.dart';
 import 'package:sumgo_crawller_flutter/page/main/MainLayout.dart';
 import 'package:sumgo_crawller_flutter/util/MyAuthUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
+import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 
 class LoadPage extends StatefulWidget {
   const LoadPage({Key? key}) : super(key: key);
@@ -29,8 +30,7 @@ class _LoadPageState
   LoadPageComponent makeComponent() => LoadPageComponent(this);
 
   @override
-  LoadPageService makeService() =>
-      LoadPageService(this, c);
+  LoadPageService makeService() => LoadPageService(this, c);
 
   @override
   Future<void> onLoad() async {}
@@ -50,7 +50,6 @@ class _LoadPageState
 class LoadPageComponent extends KDHComponent<_LoadPageState> {
   LoadPageComponent(_LoadPageState state) : super(state);
 
-
   Widget body() {
     return Container(
       width: 350,
@@ -58,7 +57,7 @@ class LoadPageComponent extends KDHComponent<_LoadPageState> {
       alignment: Alignment.center,
       child: Text(
         "숨고 매니저",
-        style: GoogleFonts.blackHanSans(
+        style: MyFonts.blackHanSans(
           fontSize: 35,
           color: MyColors.white,
         ),
@@ -71,7 +70,6 @@ class LoadPageService extends KDHService<_LoadPageState, LoadPageComponent> {
   LoadPageService(_LoadPageState state, LoadPageComponent c) : super(state, c);
 
   Future<void> moveNextPage() async {
-
     await Future.delayed(const Duration(seconds: 1));
     PageUtil.movePage(
         context, await MyAuthUtil().isLogin() ? MainLayout() : AuthPage());

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
+import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 
 class MyWhiteButton extends StatelessWidget {
   final String text;
@@ -19,7 +20,7 @@ class MyWhiteButton extends StatelessWidget {
           onPressed: onPressed,
           child: Text(
             text,
-            style: GoogleFonts.gothicA1(
+            style: MyFonts.gothicA1(
                 color: MyColors.black,
                 fontSize: 12,
                 fontWeight: FontWeight.w600),

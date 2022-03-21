@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
+import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 
 class MyCard extends StatelessWidget {
   final String title;
@@ -8,13 +9,17 @@ class MyCard extends StatelessWidget {
   final Widget? rightButton;
   final Widget? bottomButton;
   const MyCard(
-      {Key? key, required this.title, required this.contents, this.rightButton, this.bottomButton})
+      {Key? key,
+      required this.title,
+      required this.contents,
+      this.rightButton,
+      this.bottomButton})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     List bottomButtonList = [];
-    if(bottomButton != null) bottomButtonList.add(bottomButton);
+    if (bottomButton != null) bottomButtonList.add(bottomButton);
 
     return Card(
       shape: RoundedRectangleBorder(
@@ -51,13 +56,13 @@ class MyCard extends StatelessWidget {
     if (rightButton != null) {
       buttonList.add(rightButton);
     }
-    
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           title,
-          style: GoogleFonts.gothicA1(
+          style: MyFonts.gothicA1(
             color: MyColors.black,
             fontSize: 20,
             fontWeight: FontWeight.w500,

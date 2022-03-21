@@ -28,7 +28,8 @@ class FiredartAuthSingleton extends FirebaseAuthUtilInterface {
     if (!haveEverInit) {
       haveEverInit = true;
 
-      FirebaseAuth.initialize(DefaultFirebaseOptions.web.apiKey, await HiveStore.create());
+      FirebaseAuth.initialize(
+          DefaultFirebaseOptions.web.apiKey, await HiveStore.create());
       // _instance.signInState.listen((state) {
       //   LogUtil.debug("Signed ${state ? "in" : "out"}");
       // });
@@ -149,7 +150,6 @@ class FiredartAuthSingleton extends FirebaseAuthUtilInterface {
   }
 }
 
-
 const keyToken = "auth_token";
 
 class PreferencesStore extends TokenStore {
@@ -200,12 +200,10 @@ class TokenAdapter extends TypeAdapter<Token> {
   final typeId = 42;
 
   @override
-  void write(BinaryWriter writer, Token obj) =>
-      writer.writeMap(obj.toMap());
+  void write(BinaryWriter writer, Token obj) => writer.writeMap(obj.toMap());
 
   @override
   Token read(BinaryReader reader) =>
       Token.fromMap(reader.readMap().map<String, dynamic>(
-              (key, value) => MapEntry<String, dynamic>(key, value)));
+          (key, value) => MapEntry<String, dynamic>(key, value)));
 }
-
