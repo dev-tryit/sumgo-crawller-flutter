@@ -5,6 +5,7 @@ class MyFonts {
   static Future<void> init() async {
     blackHanSans();
     gothicA1();
+    GoogleFonts.config.allowRuntimeFetching = false;
     // GoogleFonts.pacifico();
     // GoogleFonts.pending;
   }
@@ -17,12 +18,13 @@ class MyFonts {
     FontStyle? fontStyle,
   }) {
     return GoogleFonts.blackHanSans(
-      textStyle:textStyle,
+      textStyle: textStyle,
       fontSize: fontSize,
       fontWeight: fontWeight,
       color: color,
     );
   }
+
   static TextStyle gothicA1({
     TextStyle? textStyle,
     Color? color,
@@ -31,7 +33,7 @@ class MyFonts {
     FontStyle? fontStyle,
   }) {
     return GoogleFonts.gothicA1(
-      textStyle:textStyle,
+      textStyle: textStyle,
       fontSize: fontSize,
       fontWeight: fontWeight,
       color: color,
