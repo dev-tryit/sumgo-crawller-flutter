@@ -4,7 +4,7 @@ import 'package:sumgo_crawller_flutter/Setting.dart';
 import 'package:sumgo_crawller_flutter/_common/config/MyCustomScrollBehavior.dart';
 import 'package:sumgo_crawller_flutter/_common/util/DesktopUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
-import 'package:sumgo_crawller_flutter/page/test/TestSignUpPage.dart';
+import 'package:sumgo_crawller_flutter/page/LoadPage.dart';
 import 'package:sumgo_crawller_flutter/util/MyAuthUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 import 'package:sumgo_crawller_flutter/util/MyStoreUtil.dart';
@@ -14,11 +14,16 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+
+  if (!PlatformUtil.isComputer()) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
+
   await MyStoreUtil.init();
   await MyAuthUtil().init();
+
   if (PlatformUtil.isComputer()) {
     DesktopUtil.setSize(
       size: const Size(350, 800),
@@ -26,6 +31,7 @@ Future<void> main() async {
       maximumSize: const Size(350, 800),
     );
   }
+
   runApp(MyApp());
 }
 
@@ -71,7 +77,7 @@ class MyApp extends StatelessWidget {
         return child;
       },
       initialRoute: "/",
-      home: TestSignUpPage(),
+      home: LoadPage(),
     );
   }
 }

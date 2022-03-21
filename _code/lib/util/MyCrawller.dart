@@ -11,7 +11,7 @@ class MyCrawller {
   final timeout = Duration(seconds: 20);
   final List<String> listToIncludeAlways = const ["flutter"];
   final List<String> listToInclude = const ["앱 개발", "취미/자기개발"];
-  final List<String> listToExclude = const ["초등학생", "중학생", "과제"];
+  final List<String> listToExclude = const ["초등학생", "중학생", "과제", "swift", "kotlin", "스위프트", "코틀린"];
 
   Future<void> start() async {
     await p.openBrowser(
@@ -146,14 +146,14 @@ class MyCrawller {
     bool isValid = true;
     //이 키워드가 없으면, !isValid
     for (String toInclude in listToInclude) {
-      if (!message.contains(toInclude)) {
+      if (!message.toLowerCase().contains(toInclude.toLowerCase())) {
         isValid = false;
         break;
       }
     }
     //이 키워드가 있으면, !isValid
     for (String toExclude in listToExclude) {
-      if (message.contains(toExclude)) {
+      if (message.toLowerCase().contains(toExclude.toLowerCase())) {
         isValid = false;
         break;
       }

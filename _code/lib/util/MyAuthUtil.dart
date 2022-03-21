@@ -1,6 +1,8 @@
 import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.dart';
+import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseAuthUtilInterface.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firebase/FirebaseAuthSingleton.dart';
+import 'package:sumgo_crawller_flutter/_common/util/firebase/firedart/FiredartAuthSingleton.dart';
 
 enum NeededAuthBehavior { NEED_LOGIN, NEED_VERIFICATION, NEED_REGISTRATION }
 
@@ -28,7 +30,9 @@ class MyAuthUtil {
   static const _nameRegistered = "nameRegistered";
 
   Future<void> init() async {
-    _firebaseAuthUtilInterface =FirebaseAuthSingleton();
+    _firebaseAuthUtilInterface = PlatformUtil.isComputer()
+        ? FiredartAuthSingleton()
+        : FirebaseAuthSingleton();
 
     _firebaseAuthUtilInterface.init();
   }
