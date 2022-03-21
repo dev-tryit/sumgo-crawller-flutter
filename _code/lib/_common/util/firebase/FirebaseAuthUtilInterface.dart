@@ -1,5 +1,5 @@
-
 abstract class FirebaseAuthUtilInterface<USER> {
+  bool haveEverGetUser = false;
   bool haveEverInit = false;
 
   Future<void> init();

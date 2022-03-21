@@ -5,9 +5,7 @@ class MyFonts {
   static Future<void> init() async {
     blackHanSans();
     gothicA1();
-    GoogleFonts.config.allowRuntimeFetching = false;
-    // GoogleFonts.pacifico();
-    // GoogleFonts.pending;
+    // GoogleFonts.config.allowRuntimeFetching = false; //false이면 asset에서 갖고옴.
   }
 
   static TextStyle blackHanSans({

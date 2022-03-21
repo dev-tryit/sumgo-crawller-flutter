@@ -42,7 +42,14 @@ class FirebaseAuthSingleton extends FirebaseAuthUtilInterface {
 
   @override
   Future<User?> getUser() async {
-    return _instance.currentUser;
+    if (!haveEverGetUser) {
+      haveEverGetUser = true;
+      await for (var user in _instance.idTokenChanges()) {
+        return user;
+      }
+    }
+
+    return _instance.currentUser; //빠르게 얻기
   }
 
   @override

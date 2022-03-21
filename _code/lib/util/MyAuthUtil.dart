@@ -39,25 +39,24 @@ class MyAuthUtil {
   }
 
   Future<void> checkIsRegistered() async {
-    LogUtil.info("checkIsRegistered 1");
+    LogUtil.debug("checkIsRegistered 1");
     dynamic user = await _firebaseAuthUtilInterface.getUser();
-    LogUtil.info("checkIsRegistered 2");
+    LogUtil.debug("checkIsRegistered 2");
 
     if (user != null && user.displayName != _nameRegistered) {
-      LogUtil.info("checkIsRegistered 3");
+      LogUtil.debug("checkIsRegistered 3");
       await logout();
-      LogUtil.info("checkIsRegistered 4");
+      LogUtil.debug("checkIsRegistered 4");
     }
   }
 
   Future<bool> isLogin() async {
-    LogUtil.info("isLogin 1");
+    LogUtil.debug("isLogin 1");
     await checkIsRegistered();
-    LogUtil.info("isLogin 2");
+    LogUtil.debug("isLogin 2");
 
-//음... User가 안오나?
     dynamic user = await _firebaseAuthUtilInterface.getUser();
-    LogUtil.info("user : ${user}");
+    LogUtil.debug("user : ${user}");
 
     return (await _firebaseAuthUtilInterface.getUser() != null);
   }
