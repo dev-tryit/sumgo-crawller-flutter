@@ -41,11 +41,14 @@ class AnalysisItemRepository {
     await _.deleteOne(documentId: documentId);
   }
 
-// Future<List<AnalysisItem>> getListByUserId(
-//     {required String userId}) async {
-//   return await _.getListByField(
-//     key: "userId",
-//     value: userId,
-//   );
-// }
+  Future<AnalysisItem?> getOneByTitle({required String title}) async {
+    return await _.getOneByField(
+      key: "title",
+      value: title,
+    );
+  }
+
+  Future<List<AnalysisItem>> getList() async {
+    return await _.getList();
+  }
 }

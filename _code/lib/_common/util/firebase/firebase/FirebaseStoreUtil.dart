@@ -31,17 +31,25 @@ class FirebaseStoreUtil<Type extends WithDocId>
     DocumentReference ref = dRef(documentId: documentId);
     return applyInstance((await dRefToMap(ref)));
   }
+  
+  @override
+  List<Type> getListFromDocs(docs) {
+    return List.from(docs
+        .map((e) => applyInstance(e.data() as Map<String, dynamic>?))
+        .where((e) => e != null)
+        .toList());
+  }
 
   @override
   Future<List<Type>> getListByField(
       {required String key, required String value}) async {
     Query query = cRef().where(key, isEqualTo: value);
-    List<Type> list = List.from((await query.get())
-        .docs
-        .map((e) => applyInstance(e.data() as Map<String, dynamic>?))
-        .where((e) => e != null)
-        .toList());
-    return list;
+    return getListFromDocs((await query.get()).docs);
+  }
+
+  @override
+  Future<List<Type>> getList() async {
+    return getListFromDocs((await cRef().get()).docs);
   }
 
   @override

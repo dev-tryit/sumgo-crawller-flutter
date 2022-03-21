@@ -32,7 +32,7 @@ class MyCrawller {
     );
   }
 
-  Future<void> _login(String id, String pw) async {
+  Future<void> _login(String? id, String? pw) async {
     for (int i = 0; i < 5; i++) {
       await p.goto('https://soomgo.com/requests/received');
       if (await _isLoginSuccess()) {
@@ -41,8 +41,8 @@ class MyCrawller {
       }
 
       LogUtil.info("로그인 필요함");
-      await p.type('[name="email"]', id, delay: delay);
-      await p.type('[name="password"]', pw, delay: delay);
+      await p.type('[name="email"]', id??"", delay: delay);
+      await p.type('[name="password"]', pw??"", delay: delay);
       await p.clickAndWaitForNavigation('.btn.btn-login.btn-primary',
           timeout: timeout);
     }

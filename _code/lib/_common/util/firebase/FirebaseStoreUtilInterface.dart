@@ -58,6 +58,10 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
 
   Future<List<Type>> getListByField(
       {required String key, required String value});
+      
+  Future<List<Type>> getList();
+  
+  List<Type> getListFromDocs(docs);
 
   Future<Type?> add({required Type instance});
 }

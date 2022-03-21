@@ -38,7 +38,10 @@ dependencies:
     #    package_info_plus: ^1.4.0
 
     #DESKTOP + MOBILE
-    firedart: ^0.9.0+1
+    firedart:
+      git:
+        url: https://github.com/dev-tryit/firedart.git
+        ref: addXFirebaseLocaleHeader # branch name
 
     #DESKTOP + WEB + MOBILE
     firebase_core: ^1.13.1

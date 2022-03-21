@@ -38,14 +38,24 @@ class FiredartStoreUtil<Type extends WithDocId>
   }
 
   @override
-  Future<List<Type>> getListByField(
-      {required String key, required String value}) async {
-    QueryReference query = cRef().where(key, isEqualTo: value);
-    List<Type> list = List.from((await query.get())
+  List<Type> getListFromDocs(docs) {
+    return List.from(docs
         .map((e) => applyInstance(e.map))
         .where((e) => e != null)
         .toList());
-    return list;
+  }
+  
+
+  @override
+  Future<List<Type>> getListByField(
+      {required String key, required String value}) async {
+    QueryReference query = cRef().where(key, isEqualTo: value);
+    return getListFromDocs((await query.get()));
+  }
+
+  @override
+  Future<List<Type>> getList() async {
+    return getListFromDocs((await cRef().get()));
   }
 
   @override
