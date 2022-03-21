@@ -11,7 +11,15 @@ class MyCrawller {
   final timeout = Duration(seconds: 20);
   final List<String> listToIncludeAlways = const ["flutter"];
   final List<String> listToInclude = const ["앱 개발", "취미/자기개발"];
-  final List<String> listToExclude = const ["초등학생", "중학생", "과제", "swift", "kotlin", "스위프트", "코틀린"];
+  final List<String> listToExclude = const [
+    "초등학생",
+    "중학생",
+    "과제",
+    "swift",
+    "kotlin",
+    "스위프트",
+    "코틀린"
+  ];
 
   Future<void> start() async {
     await p.openBrowser(
@@ -107,6 +115,7 @@ class MyCrawller {
         LogUtil.info("keywordMap: $keywordMap");
         return keywordMap;
       }
+
       keywordMap.addAll(await countKeyword(message));
 
       _isValidRequest(message)
@@ -120,7 +129,7 @@ class MyCrawller {
         int count = entry.value;
 
         KeywordItem? keywordItem =
-        await KeywordItemRepository().getKeywordItem(keyword: eachWord);
+            await KeywordItemRepository().getKeywordItem(keyword: eachWord);
         if (keywordItem == null) {
           await KeywordItemRepository().add(
             keywordItem: KeywordItem(
@@ -130,16 +139,15 @@ class MyCrawller {
           );
         } else {
           await KeywordItemRepository().update(
-            KeywordItem(
-              keyword: eachWord,
-              count: (keywordItem.count ?? 0) + count,
-            ),
+            keywordItem
+              ..keyword = eachWord
+              ..count = ((keywordItem.count ?? 0) + count),
           );
         }
       }
     }
-    await saveFirestore(keywordMap);
 
+    await saveFirestore(keywordMap);
   }
 
   bool _isValidRequest(String message) {
@@ -168,5 +176,4 @@ class MyCrawller {
 
     return isValid;
   }
-
 }
