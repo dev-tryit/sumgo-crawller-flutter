@@ -1,7 +1,8 @@
 #!/bin/bash
 
-hostName='158.247.217.214'
+hostName='0.0.0.0'
 hostPort='5000'
 
+flutter pub get
 bash killProcessPort.sh $hostPort
 flutter run -d web-server --web-port $hostPort --web-hostname $hostName
