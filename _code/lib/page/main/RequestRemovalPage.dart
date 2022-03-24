@@ -97,8 +97,7 @@ class RequestRemovalPageComponent
   }
 
   void showCreateItemBottomSheet(RequestRemovalPageService s) {
-    final TextEditingController titleController = TextEditingController();
-    final TextEditingController keywordController = TextEditingController();
+    final TextEditingController contentController = TextEditingController();
 
     showModalBottomSheet(
       context: context,
@@ -122,7 +121,7 @@ class RequestRemovalPageComponent
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text('키워드 분류 생성하기',
+                    Text('정리 조건 생성하기',
                         style: MyFonts.gothicA1(
                             color: MyColors.black,
                             fontSize: 13,
@@ -142,8 +141,7 @@ class RequestRemovalPageComponent
                       "생성",
                       useShadow: false,
                       onPressed: () => s.addRemovalCondition(
-                        titleController.text.trim(),
-                        keywordController.text.trim(),
+                        contentController.text.trim(),
                         setState,
                       ),
                     ),
@@ -151,28 +149,17 @@ class RequestRemovalPageComponent
                 ),
               ),
               const Divider(),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                dense: true,
-                minLeadingWidth: 100,
-                leading: Text("분류 이름",
-                    style: MyFonts.gothicA1(
-                        color: MyColors.black, fontSize: 12.5)),
-                title: TextField(
-                  controller: titleController,
-                  decoration: const InputDecoration(isDense: true),
-                ),
-              ),
+              //TODO: 여기에다가 Comobox같은거 넣기.
               const SizedBox(height: 10),
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 dense: true,
                 minLeadingWidth: 100,
-                leading: Text("분류 기준 텍스트",
+                leading: Text("내용",
                     style: MyFonts.gothicA1(
                         color: MyColors.black, fontSize: 12.5)),
                 title: TextField(
-                  controller: keywordController,
+                  controller: contentController,
                   decoration: const InputDecoration(isDense: true),
                 ),
               ),
@@ -202,8 +189,7 @@ class RequestRemovalPageService
     }
   }
 
-  Future<void> addRemovalCondition(
-      String trim, String trim2, StateSetter setState) async {}
+  Future<void> addRemovalCondition(String content, StateSetter setState) async {}
 
   Future<void> resetRemovalConditionList() async {}
 }
