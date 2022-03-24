@@ -1,18 +1,14 @@
 import 'dart:async';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/AnimationUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
-import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
-import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/repository/AnalysisItemRepository.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';

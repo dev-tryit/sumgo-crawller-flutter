@@ -3,7 +3,6 @@ import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
-import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/page/main/KeywordAnalysisPage.dart';
 import 'package:sumgo_crawller_flutter/page/main/RequestRemovalPage.dart';
 import 'package:sumgo_crawller_flutter/util/MyImage.dart';
