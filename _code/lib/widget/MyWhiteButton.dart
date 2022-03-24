@@ -23,16 +23,18 @@ class MyWhiteButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
           ),
           color: MyColors.white,
-          child: Padding(
+          child: Container(
+            alignment: Alignment.center,
             padding: const EdgeInsets.only(top: 12, bottom: 12),
             child: MyComponents.bounce(
               onPressed: onPressed,
               child: Text(
                 text,
                 style: MyFonts.gothicA1(
-                    color: MyColors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600),
+                  color: MyColors.black,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ),
