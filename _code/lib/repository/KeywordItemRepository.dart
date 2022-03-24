@@ -20,21 +20,21 @@ class KeywordItemRepository {
     return await _.add(instance: keywordItem);
   }
 
-  Future<bool> existDocumentId({required String documentId}) async {
+  Future<bool> existDocumentId({required int documentId}) async {
     return await _.exist(
       key: "documentId",
-      value: documentId,
+      value: documentId.toString(),
     );
   }
 
   Future<void> update(KeywordItem keywordItem) async {
     await _.updateByDocumentId(
-      documentId: keywordItem.documentId ?? "",
+      documentId: keywordItem.documentId ?? 0,
       instance: keywordItem,
     );
   }
 
-  Future<void> delete({required String documentId}) async {
+  Future<void> delete({required int documentId}) async {
     await _.deleteOne(documentId: documentId);
   }
 

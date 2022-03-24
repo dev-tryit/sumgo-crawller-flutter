@@ -17,8 +17,8 @@ class FirebaseStoreUtil<Type extends WithDocId>
       FirebaseFirestore.instance.collection(collectionName);
 
   @override
-  DocumentReference dRef({String? documentId}) =>
-      documentId != null ? cRef().doc(documentId) : cRef().doc();
+  DocumentReference dRef({int? documentId}) =>
+      documentId != null ? cRef().doc(documentId.toString()) : cRef().doc();
 
   @override
   Future<Map<String, dynamic>> dRefToMap(dRef) async =>

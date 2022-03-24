@@ -20,9 +20,9 @@ class FiredartStoreUtil<Type extends WithDocId>
   }
 
   @override
-  DocumentReference dRef({String? documentId}) {
+  DocumentReference dRef({int? documentId}) {
     return documentId != null
-        ? cRef().document(documentId)
+        ? cRef().document(documentId.toString())
         : cRef().document(UUIDUtil.makeUuid());
   }
 

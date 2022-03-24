@@ -233,7 +233,7 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
     );
     if (result == OkCancelResult.ok) {
       await MyComponents.showLoadingDialog(context);
-      await AnalysisItemRepository().delete(documentId: item.documentId ?? "");
+      await AnalysisItemRepository().delete(documentId: item.documentId??-1);
       analysisItemList.remove(item);
       await MyComponents.dismissLoadingDialog();
 

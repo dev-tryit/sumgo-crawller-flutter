@@ -4,9 +4,7 @@ class AnalysisItem extends WithDocId {
   String? title;
   List? keywordList;
 
-  AnalysisItem(
-      {String? documentId, required this.title, required this.keywordList})
-      : super(documentId: documentId);
+  AnalysisItem({required this.title, required this.keywordList}) : super(documentId: DateTime.now().microsecondsSinceEpoch);
 
   AnalysisItem.empty();
 
@@ -14,12 +12,15 @@ class AnalysisItem extends WithDocId {
 
   Map<String, dynamic> toJson() => toMap(this);
 
+
+  @override
+  bool operator ==(dynamic other) => documentId == other.documentId;
+
   static AnalysisItem fromMap(Map<String, dynamic> map) {
     return AnalysisItem(
-      documentId: map['documentId'],
       title: map['title'],
       keywordList: map['keywordList'],
-    );
+    )..documentId = map['documentId'];
   }
 
   static Map<String, dynamic> toMap(AnalysisItem instance) {
@@ -35,4 +36,5 @@ class AnalysisItem extends WithDocId {
     if (keyword.isEmpty) return '분류 기준 텍스트를 입력해주세요';
     return null;
   }
+
 }

@@ -4,9 +4,8 @@ class KeywordItem extends WithDocId {
   String? keyword;
   int? count;
 
-  KeywordItem(
-      {String? documentId, required this.keyword, required this.count})
-      : super(documentId: documentId);
+  KeywordItem({required this.keyword, required this.count})
+      : super(documentId: DateTime.now().microsecondsSinceEpoch);
 
   KeywordItem.empty();
 
@@ -16,10 +15,9 @@ class KeywordItem extends WithDocId {
 
   static KeywordItem fromMap(Map<String, dynamic> map) {
     return KeywordItem(
-      documentId: map['documentId'],
       keyword: map['keyword'],
       count: map['count'],
-    );
+    )..documentId = map['documentId'];
   }
 
   static Map<String, dynamic> toMap(KeywordItem instance) {

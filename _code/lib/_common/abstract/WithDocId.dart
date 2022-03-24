@@ -1,5 +1,8 @@
 abstract class WithDocId {
-  String? documentId;
+  int? documentId;
 
   WithDocId({this.documentId});
+  
+  @override
+  bool operator ==(dynamic other) => documentId == other.documentId;
 }

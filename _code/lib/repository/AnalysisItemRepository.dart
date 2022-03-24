@@ -32,12 +32,12 @@ class AnalysisItemRepository {
 
   void update(AnalysisItem analysisItem) async {
     await _.updateByDocumentId(
-      documentId: analysisItem.documentId ?? "",
+      documentId: analysisItem.documentId ?? 0,
       instance: analysisItem,
     );
   }
 
-  Future<void> delete({required String documentId}) async {
+  Future<void> delete({required int documentId}) async {
     await _.deleteOne(documentId: documentId);
   }
 

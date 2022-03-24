@@ -28,7 +28,7 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
 
   cRef();
 
-  dRef({String? documentId});
+  dRef({int? documentId});
 
   Future<Map<String, dynamic>> dRefToMap(dRef);
 
@@ -41,7 +41,7 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
     return list.isNotEmpty ? list.first : null;
   }
 
-  Future<void> deleteOne({required String documentId}) async {
+  Future<void> deleteOne({required int documentId}) async {
     return await dRef(documentId: documentId).delete();
   }
 
@@ -51,7 +51,7 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
   }
 
   Future<Type?> getOne(
-      {required String documentId,
+      {required int documentId,
       required Type Function() onMakeInstance}) async {
     return applyInstance(await dRefToMap(dRef(documentId: documentId)));
   }
@@ -74,10 +74,15 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
   Future<List> queryToList(query);
 
   Future<List<Type>> getListByField(
-      {required String key, required String value}) async {
-    return getListFromDocs(
-        await queryToList(cRef().where(key, isEqualTo: value)));
+      {required String key,
+      required String value,
+      bool useSort = true,
+      bool descending = false}) async {
+    return getListFromDocs(await queryToList(cRef()
+        .where(key, isEqualTo: value)
+        .orderBy(key, descending: descending)));
   }
+
   Future<Type?> add({required Type instance}) async {
     var ref = dRef();
 
@@ -88,11 +93,11 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
       documentId: ref.id,
     );
   }
+
   Future<Type?> updateByDocumentId(
-      {required Type instance, required String documentId}) async {
+      {required Type instance, required int documentId}) async {
     var ref = dRef(documentId: documentId);
     await ref.set(toMap(instance));
     return applyInstance(await dRefToMap(ref));
   }
-
 }
