@@ -240,6 +240,7 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
       await MyComponents.dismissLoadingDialog();
 
       if (myListTile.animateController != null) {
+        myListTile.animateController!.duration = Duration(milliseconds: 600);
         await myListTile.animateController!.reverse(); //forward or reverse
       }
 
@@ -263,6 +264,8 @@ class MyListTile extends StatelessWidget {
 
     return AnimationUtil.slideInLeft(
       manualTrigger: true,
+      duration: const Duration(milliseconds: 0),
+      delay: const Duration(milliseconds: 0),
       from: 200,
       controller: (aController) => animateController = aController,
       child: Slidable(
