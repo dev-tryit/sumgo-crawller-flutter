@@ -1,14 +1,20 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bounce/flutter_bounce.dart';
 
-class AnimationUtil{
+class AnimationUtil {
+  static Widget bounceInDown(
+      {required Widget child,
+      Duration duration = const Duration(milliseconds: 100)}) {
+    return BounceInUp(
+      child: child,
+    );
+  }
 
-  static Widget bounce(
+  static Widget fadeOutLeft(
       {required Widget child,
       Duration duration = const Duration(milliseconds: 100),
       required VoidCallback onPressed}) {
-    return Bounce(
-      onPressed:onPressed,
+    return FadeOutLeft(
       duration: duration,
       child: child,
     );

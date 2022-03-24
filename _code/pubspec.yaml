@@ -68,11 +68,10 @@ dependencies:
     hive: ^2.0.6
     hive_flutter: ^1.1.0 #hive 플랫폼별 init하는 Hive.InitFlutter 추가하는 라이브러리
     adaptive_dialog: ^1.4.0
-    flutter_bounce: ^1.1.0
+    animate_do: ^2.1.0
 
 #    device_frame: ^1.0.0
 
-    #https://pub.dev/packages/firedart windows에서 firebase store 사용하기
     #another_transformer_page_view
     #cube_transition 
     #https://pub.dev/packages/flip_card 돌리는 효과에 사용

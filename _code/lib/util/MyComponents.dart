@@ -1,8 +1,5 @@
-import 'package:firedart/generated/google/firestore/v1/query.pb.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sumgo_crawller_flutter/Setting.dart';
 import 'package:sumgo_crawller_flutter/_common/util/AnimationUtil.dart';
@@ -376,12 +373,11 @@ class MyComponents {
 
   static Widget bounceButton(
       {required Widget child,
-      Duration duration = const Duration(milliseconds: 100),
       VoidCallback? onPressed}) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
-      child: AnimationUtil.bounce(
-        onPressed: () {
+      child: GestureDetector(
+        onTap: () {
           DateTime now = DateTime.now();
           if (_lastClickDateTime != null &&
               _lastClickDateTime!.difference(now).inMilliseconds.abs() <
@@ -394,8 +390,9 @@ class MyComponents {
             onPressed();
           }
         },
-        duration: duration,
-        child: child,
+        child: AnimationUtil.bounceInDown(
+          child: child,
+        ),
       ),
     );
   }
