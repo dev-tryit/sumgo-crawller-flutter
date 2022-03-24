@@ -12,6 +12,7 @@ import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/AnimationUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/repository/AnalysisItem.dart';
 import 'package:sumgo_crawller_flutter/repository/AnalysisItemRepository.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
@@ -233,7 +234,7 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
     );
     if (result == OkCancelResult.ok) {
       await MyComponents.showLoadingDialog(context);
-      await AnalysisItemRepository().delete(documentId: item.documentId??-1);
+      await AnalysisItemRepository().delete(documentId: item.documentId ?? -1);
       analysisItemList.remove(item);
       await MyComponents.dismissLoadingDialog();
 

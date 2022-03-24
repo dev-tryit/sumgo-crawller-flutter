@@ -20,20 +20,19 @@ class AnalysisItemRepository {
   );
 
   Future<AnalysisItem?> add({required AnalysisItem analysisItem}) async {
-    return await _.add(instance: analysisItem);
+    return await _.saveByDocumentId(instance: analysisItem);
+  }
+
+  void update(AnalysisItem analysisItem) async {
+    await _.saveByDocumentId(
+      instance: analysisItem,
+    );
   }
 
   Future<bool> existDocumentId({required String documentId}) async {
     return await _.exist(
       key: "documentId",
       value: documentId,
-    );
-  }
-
-  void update(AnalysisItem analysisItem) async {
-    await _.updateByDocumentId(
-      documentId: analysisItem.documentId ?? 0,
-      instance: analysisItem,
     );
   }
 

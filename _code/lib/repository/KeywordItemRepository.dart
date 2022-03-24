@@ -4,7 +4,7 @@ import 'package:sumgo_crawller_flutter/repository/KeywordItem.dart';
 
 class KeywordItemRepository {
   static final KeywordItemRepository _singleton =
-  KeywordItemRepository._internal();
+      KeywordItemRepository._internal();
   factory KeywordItemRepository() {
     return _singleton;
   }
@@ -17,7 +17,13 @@ class KeywordItemRepository {
   );
 
   Future<KeywordItem?> add({required KeywordItem keywordItem}) async {
-    return await _.add(instance: keywordItem);
+    return await _.saveByDocumentId(instance: keywordItem);
+  }
+
+  Future<void> update(KeywordItem keywordItem) async {
+    await _.saveByDocumentId(
+      instance: keywordItem,
+    );
   }
 
   Future<bool> existDocumentId({required int documentId}) async {
@@ -27,19 +33,11 @@ class KeywordItemRepository {
     );
   }
 
-  Future<void> update(KeywordItem keywordItem) async {
-    await _.updateByDocumentId(
-      documentId: keywordItem.documentId ?? 0,
-      instance: keywordItem,
-    );
-  }
-
   Future<void> delete({required int documentId}) async {
     await _.deleteOne(documentId: documentId);
   }
 
-  Future<KeywordItem?> getKeywordItem(
-      {required String keyword}) async {
+  Future<KeywordItem?> getKeywordItem({required String keyword}) async {
     return await _.getOneByField(
       key: "keyword",
       value: keyword,

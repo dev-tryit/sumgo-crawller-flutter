@@ -1,4 +1,5 @@
 import 'package:sumgo_crawller_flutter/_common/abstract/WithDocId.dart';
+import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firebase/FirebaseStoreUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firedart/FiredartStoreUtil.dart';
@@ -83,20 +84,9 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
         .orderBy(key, descending: descending)));
   }
 
-  Future<Type?> add({required Type instance}) async {
-    var ref = dRef();
-
-    instance.documentId = ref.id;
-
-    return await updateByDocumentId(
-      instance: instance,
-      documentId: ref.id,
-    );
-  }
-
-  Future<Type?> updateByDocumentId(
-      {required Type instance, required int documentId}) async {
-    var ref = dRef(documentId: documentId);
+  Future<Type?> saveByDocumentId(
+      {required Type instance, int? documentId}) async {
+    var ref = dRef(documentId: documentId ?? instance.documentId);
     await ref.set(toMap(instance));
     return applyInstance(await dRefToMap(ref));
   }
