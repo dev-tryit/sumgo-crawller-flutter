@@ -1,10 +1,13 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
 import 'package:sumgo_crawller_flutter/repository/AnalysisItem.dart';
 import 'package:sumgo_crawller_flutter/repository/AnalysisItemRepository.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
@@ -51,46 +54,6 @@ class _KeywordAnalysisPageState extends KDHState<KeywordAnalysisPage,
   Future<void> afterBuild() async {}
 }
 
-class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
-    KeywordAnalysisPageComponent> {
-  List<AnalysisItem> analysisItemList = [];
-
-  KeywordAnalysisPageService(
-      _KeywordAnalysisPageState state, KeywordAnalysisPageComponent c)
-      : super(state, c);
-
-  Future<void> resetAnalysisItemList() async {
-    analysisItemList = await AnalysisItemRepository().getList();
-    LogUtil.info("analysisItemList ${analysisItemList}");
-  }
-
-  void addAnalysisItem(
-      String title, String keyword, StateSetter setStateOfParent) async {
-    void setErrorMessage(String errorMessage) {
-      c.errorMessage = errorMessage;
-      setStateOfParent(() {});
-    }
-
-    String? errorMessage = AnalysisItem.getErrorMessageForAdd(title, keyword);
-    if (errorMessage != null) {
-      setErrorMessage(errorMessage);
-      return;
-    }
-    setErrorMessage('');
-
-    await MyComponents.showLoadingDialog(context);
-    List<String> keywordList =
-        keyword.split(",").map((str) => str.trim()).toList();
-    await AnalysisItemRepository().add(
-        analysisItem: AnalysisItem(title: title, keywordList: keywordList));
-    await resetAnalysisItemList();
-    setStateOfParent(() {});
-    await MyComponents.dismissLoadingDialog();
-
-    Navigator.pop(context);
-  }
-}
-
 class KeywordAnalysisPageComponent
     extends KDHComponent<_KeywordAnalysisPageState> {
   String errorMessage = "";
@@ -108,8 +71,11 @@ class KeywordAnalysisPageComponent
             rightButton: MyRedButton("생성하기",
                 onPressed: () => showCreateItemBottomSheet(s)),
             contents: s.analysisItemList
-                .map((e) => cardListTile(
-                    e.title, (e.keywordList ?? []).join(", ".trim())))
+                .map((e) => MyListTile(
+                      title: e.title ?? "",
+                      subtitle: (e.keywordList ?? []).join(", ".trim()),
+                      s: s,
+                    ))
                 .toList(),
           ),
           MyCard(title: "연령 분석", contents: [
@@ -120,23 +86,6 @@ class KeywordAnalysisPageComponent
           ]),
         ],
       ),
-    );
-  }
-
-  ListTile cardListTile(String? title, String? subtitle) {
-    title ??= "";
-    subtitle ??= "";
-
-    return ListTile(
-      leading: const Padding(
-        padding: EdgeInsets.only(top: 6),
-        child: Image(image: MyImage.boxIcon),
-      ),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-      horizontalTitleGap: 6,
-      title: MyComponents.text(text: title),
-      subtitle: Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis),
-      dense: true,
     );
   }
 
@@ -217,6 +166,101 @@ class KeywordAnalysisPageComponent
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
+    KeywordAnalysisPageComponent> {
+  List<AnalysisItem> analysisItemList = [];
+
+  KeywordAnalysisPageService(
+      _KeywordAnalysisPageState state, KeywordAnalysisPageComponent c)
+      : super(state, c);
+
+  Future<void> resetAnalysisItemList() async {
+    analysisItemList = await AnalysisItemRepository().getList();
+    LogUtil.info("analysisItemList ${analysisItemList}");
+  }
+
+  void addAnalysisItem(
+      String title, String keyword, StateSetter setStateOfParent) async {
+    void setErrorMessage(String errorMessage) {
+      c.errorMessage = errorMessage;
+      setStateOfParent(() {});
+    }
+
+    String? errorMessage = AnalysisItem.getErrorMessageForAdd(title, keyword);
+    if (errorMessage != null) {
+      setErrorMessage(errorMessage);
+      return;
+    }
+    setErrorMessage('');
+
+    await MyComponents.showLoadingDialog(context);
+    List<String> keywordList =
+        keyword.split(",").map((str) => str.trim()).toList();
+    await AnalysisItemRepository().add(
+        analysisItem: AnalysisItem(title: title, keywordList: keywordList));
+    await resetAnalysisItemList();
+    setStateOfParent(() {});
+    await MyComponents.dismissLoadingDialog();
+
+    Navigator.pop(context);
+  }
+
+  Future<void> deleteAnalysisItem(BuildContext context) async {
+    final result = await showOkCancelAlertDialog(
+      context: context,
+      title: "알림",
+      message: "정말 삭제하시겠습니까?",
+      okLabel: "예",
+      cancelLabel: "아니오",
+    );
+    if (result == OkCancelResult.ok) {
+      MyComponents.snackBar(context, "OK");
+    }
+  }
+}
+
+class MyListTile extends StatelessWidget {
+  String title;
+  String subtitle;
+  KeywordAnalysisPageService s;
+  MyListTile(
+      {Key? key, required this.title, required this.subtitle, required this.s})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Slidable(
+      key: const ValueKey(0), //1.반드시 키가 있어야함
+      child: ListTile(
+        //2. 슬라이드할 대상 설정
+        leading: const Padding(
+          padding: EdgeInsets.only(top: 6),
+          child: Image(image: MyImage.boxIcon),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+        horizontalTitleGap: 6,
+        title: MyComponents.text(text: title),
+        subtitle: Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis),
+        dense: true,
+      ),
+      endActionPane: ActionPane(
+        //3. startActionPane: 오른쪽으로 드래그하면 나오는액션, endActionPane: 왼쪽
+        extentRatio: 0.2, //각각 child의 크기
+        motion:
+            const BehindMotion(), //동작 애니메이션 설정 BehindMotion, DrawerMotion, ScrollMotion, StretchMotion
+        children: [
+          SlidableAction(
+            onPressed: (c) => s.deleteAnalysisItem(context),
+            backgroundColor: const Color(0xFFFE4A49),
+            foregroundColor: Colors.white,
+            icon: Icons.delete,
+          ),
+        ],
       ),
     );
   }
