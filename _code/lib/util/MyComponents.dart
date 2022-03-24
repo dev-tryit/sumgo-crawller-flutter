@@ -361,10 +361,11 @@ class MyComponents {
   }
 
   static Widget buttonDefault(
-      {required Widget child, required VoidCallback? onPressed}) {
+      {required Widget child, required VoidCallback? onPressed, required style}) {
     return _buttonToPreventMultipleClicks(
       child: child,
       onPressed: onPressed,
+      style: style,
     );
   }
 

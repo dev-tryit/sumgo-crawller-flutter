@@ -184,10 +184,10 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
   }
 
   void addAnalysisItem(
-      String title, String keyword, StateSetter setStateOfParent) async {
+      String title, String keyword, StateSetter setStateOfBottomSheet) async {
     void setErrorMessage(String errorMessage) {
       c.errorMessage = errorMessage;
-      setStateOfParent(() {});
+      setStateOfBottomSheet(() {});
     }
 
     String? errorMessage = AnalysisItem.getErrorMessageForAdd(title, keyword);
@@ -200,13 +200,15 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
     await MyComponents.showLoadingDialog(context);
     List<String> keywordList =
         keyword.split(",").map((str) => str.trim()).toList();
-    await AnalysisItemRepository().add(
-        analysisItem: AnalysisItem(title: title, keywordList: keywordList));
-    await resetAnalysisItemList();
-    setStateOfParent(() {});
+    var item = AnalysisItem(title: title, keywordList: keywordList);
+    await AnalysisItemRepository().add(analysisItem: item);
+    analysisItemList.add(item);
     await MyComponents.dismissLoadingDialog();
 
     Navigator.pop(context);
+    rebuild();
+
+    MyComponents.snackBar(context, "생성되었습니다");
   }
 
   Future<void> deleteAnalysisItem(
@@ -219,8 +221,11 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
       cancelLabel: "아니오",
     );
     if (result == OkCancelResult.ok) {
+      await MyComponents.showLoadingDialog(context);
       await AnalysisItemRepository().delete(documentId: item.documentId ?? "");
       analysisItemList.remove(item);
+      await MyComponents.dismissLoadingDialog();
+
       rebuild();
 
       MyComponents.snackBar(context, "삭제되었습니다");
