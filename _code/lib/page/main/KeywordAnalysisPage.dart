@@ -212,7 +212,8 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
     await MyComponents.showLoadingDialog(context);
     List<String> keywordList =
         keyword.split(",").map((str) => str.trim()).toList();
-    var item = AnalysisItem(title: title, keywordList: keywordList);
+    var item = AnalysisItem(
+        title: title.replaceAll("분류", ""), keywordList: keywordList);
     await AnalysisItemRepository().add(analysisItem: item);
     analysisItemList.add(item);
     await MyComponents.dismissLoadingDialog();
@@ -274,7 +275,7 @@ class MyListTile extends StatelessWidget {
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 5),
           horizontalTitleGap: 6,
-          title: MyComponents.text(text: title),
+          title: MyComponents.text(text: "${title} 분류"),
           subtitle:
               Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis),
           dense: true,
