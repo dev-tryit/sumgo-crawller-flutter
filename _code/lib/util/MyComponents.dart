@@ -300,6 +300,7 @@ class MyComponents {
   }
 
   static void snackBar(BuildContext context, String text) {
+    ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(text),
@@ -371,9 +372,7 @@ class MyComponents {
     );
   }
 
-  static Widget bounceButton(
-      {required Widget child,
-      VoidCallback? onPressed}) {
+  static Widget bounceButton({required Widget child, VoidCallback? onPressed}) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
