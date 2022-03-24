@@ -15,22 +15,24 @@ class MyRedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MyComponents.bounceableDefault(
+    return MyComponents.bounce(
       onPressed: onPressed,
-      child: Text(
-        text,
-        style: MyFonts.gothicA1(
-          color: MyColors.white,
-          fontSize: 12.5,
-        ),
-      ),
-      style: ElevatedButton.styleFrom(
-        shadowColor: useShadow ? MyColors.black : null,
-        elevation: useShadow ? 7 : null,
-        padding:
-            const EdgeInsets.only(left: 23, right: 23, top: 14, bottom: 14),
-        primary: MyColors.red,
+      child: Material(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        color: MyColors.red,
+        shadowColor: useShadow ? MyColors.black : null,
+        elevation: useShadow ? 7 : 0,
+        child: Padding(
+          padding:
+              const EdgeInsets.only(left: 23, right: 23, top: 8, bottom: 8),
+          child: Text(
+            text,
+            style: MyFonts.gothicA1(
+              color: MyColors.white,
+              fontSize: 12.5,
+            ),
+          ),
+        ),
       ),
     );
   }

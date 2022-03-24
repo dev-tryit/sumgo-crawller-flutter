@@ -1,6 +1,8 @@
+import 'package:firedart/generated/google/firestore/v1/query.pb.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sumgo_crawller_flutter/Setting.dart';
 
@@ -361,20 +363,37 @@ class MyComponents {
   }
 
   static Widget buttonDefault(
-      {required Widget child, required VoidCallback? onPressed, required style}) {
+      {required Widget child,
+      required VoidCallback onPressed,
+      required style}) {
     return _buttonToPreventMultipleClicks(
       child: child,
       onPressed: onPressed,
       style: style,
     );
   }
-  
-  static Widget bounceableDefault(
-      {required Widget child, required VoidCallback? onPressed, required style}) {
-    return _buttonToPreventMultipleClicks(
-      child: child,
-      onPressed: onPressed,
-      style: style,
+
+  static Widget bounce(
+      {required Widget child,
+      Duration duration = const Duration(milliseconds: 100),
+      required VoidCallback onPressed}) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: Bounce(
+        onPressed: () {
+          DateTime now = DateTime.now();
+          if (_lastClickDateTime != null &&
+              _lastClickDateTime!.difference(now).inMilliseconds.abs() <
+                  Setting.milliSecondsForPreventingMultipleClicks) {
+            return;
+          }
+          _lastClickDateTime = now;
+
+          onPressed();
+        },
+        duration: duration,
+        child: child,
+      ),
     );
   }
 
@@ -383,7 +402,7 @@ class MyComponents {
       width: 40,
       height: 40,
       alignment: Alignment.center,
-      child: CircularProgressIndicator(),
+      child: const CircularProgressIndicator(),
     );
   }
 
