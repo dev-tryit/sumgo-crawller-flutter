@@ -270,14 +270,14 @@ class MyListTile extends StatelessWidget {
         motion:
             const BehindMotion(), //동작 애니메이션 설정 BehindMotion, DrawerMotion, ScrollMotion, StretchMotion
         children: [
-          SlidableAction(
+          CustomSlidableAction(
             onPressed: (c) => s.deleteAnalysisItem(
               context,
               item,
             ),
             backgroundColor: const Color(0xFFFE4A49),
             foregroundColor: Colors.white,
-            icon: Icons.delete,
+            child: const Icon(Icons.delete),
           ),
         ],
       ),

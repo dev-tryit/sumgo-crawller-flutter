@@ -26,7 +26,7 @@ class MyWhiteButton extends StatelessWidget {
           child: Container(
             alignment: Alignment.center,
             padding: const EdgeInsets.only(top: 12, bottom: 12),
-            child: MyComponents.bounce(
+            child: MyComponents.bounceButton(
               onPressed: onPressed,
               child: Text(
                 text,

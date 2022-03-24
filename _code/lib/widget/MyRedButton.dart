@@ -15,7 +15,7 @@ class MyRedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MyComponents.bounce(
+    return MyComponents.bounceButton(
       onPressed: onPressed,
       child: Material(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),

@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sumgo_crawller_flutter/Setting.dart';
+import 'package:sumgo_crawller_flutter/_common/util/AnimationUtil.dart';
 
 class MyComponents {
   MyComponents._();
@@ -373,13 +374,13 @@ class MyComponents {
     );
   }
 
-  static Widget bounce(
+  static Widget bounceButton(
       {required Widget child,
       Duration duration = const Duration(milliseconds: 100),
-      required VoidCallback onPressed}) {
+      VoidCallback? onPressed}) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
-      child: Bounce(
+      child: AnimationUtil.bounce(
         onPressed: () {
           DateTime now = DateTime.now();
           if (_lastClickDateTime != null &&
@@ -389,7 +390,9 @@ class MyComponents {
           }
           _lastClickDateTime = now;
 
-          onPressed();
+          if (onPressed != null) {
+            onPressed();
+          }
         },
         duration: duration,
         child: child,
