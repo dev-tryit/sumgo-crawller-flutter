@@ -14,10 +14,6 @@ class AnalysisItem extends WithDocId {
 
   Map<String, dynamic> toJson() => toMap(this);
 
-
-  @override
-  bool operator ==(dynamic other) => documentId == other.documentId;
-
   static AnalysisItem fromMap(Map<String, dynamic> map) {
     return AnalysisItem(
       title: map['title'],
