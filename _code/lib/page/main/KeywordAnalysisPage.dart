@@ -112,7 +112,7 @@ class KeywordAnalysisPageComponent
               Padding(
                 padding: const EdgeInsets.only(left: 5, top: 5, bottom: 5),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text('키워드 분류 생성하기',
                         style: MyFonts.gothicA1(

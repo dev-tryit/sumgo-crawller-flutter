@@ -24,7 +24,7 @@ class MyRedButton extends StatelessWidget {
         elevation: useShadow ? 7 : 0,
         child: Padding(
           padding:
-              const EdgeInsets.only(left: 23, right: 23, top: 8, bottom: 8),
+              const EdgeInsets.only(left: 23, right: 23, top: 7, bottom: 7),
           child: Text(
             text,
             style: MyFonts.gothicA1(

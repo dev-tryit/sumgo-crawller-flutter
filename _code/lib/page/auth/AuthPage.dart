@@ -82,7 +82,7 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
                       color: MyColors.deepBlue,
                       child: Padding(
                         padding: const EdgeInsets.only(
-                            left: 23, right: 23, top: 8, bottom: 8),
+                            left: 23, right: 23, top: 7, bottom: 7),
                         child: Text(nextButtonText!),
                       ),
                     ),
