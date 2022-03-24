@@ -75,7 +75,7 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
                 height: 82,
                 padding: const EdgeInsets.only(left: 32, right: 32, bottom: 32),
                 child: SizedBox.expand(
-                  child: MyComponents.buttonDefault(
+                  child: MyComponents.bounceableDefault(
                     child: Text(nextButtonText!),
                     style: ElevatedButton.styleFrom(primary: MyColors.deepBlue),
                     onPressed: s.loginOrRegister,

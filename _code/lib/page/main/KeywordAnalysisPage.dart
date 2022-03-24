@@ -112,16 +112,23 @@ class KeywordAnalysisPageComponent
               Padding(
                 padding: const EdgeInsets.only(left: 5, top: 5, bottom: 5),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text('키워드 분류 생성하기',
                         style: MyFonts.gothicA1(
                             color: MyColors.black,
-                            fontSize: 14,
+                            fontSize: 13,
                             fontWeight: FontWeight.w500)),
-                    const Spacer(),
-                    Text(errorMessage,
+                    Expanded(
+                      child: Text(
+                        errorMessage,
+                        textAlign: TextAlign.right,
                         style: MyFonts.gothicA1(
-                            color: MyColors.red, fontSize: 12)),
+                          color: MyColors.red,
+                          fontSize: 9,
+                        ),
+                      ),
+                    ),
                     const SizedBox(width: 10),
                     MyRedButton(
                       "생성",

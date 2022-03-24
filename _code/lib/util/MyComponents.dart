@@ -368,6 +368,15 @@ class MyComponents {
       style: style,
     );
   }
+  
+  static Widget bounceableDefault(
+      {required Widget child, required VoidCallback? onPressed, required style}) {
+    return _buttonToPreventMultipleClicks(
+      child: child,
+      onPressed: onPressed,
+      style: style,
+    );
+  }
 
   static Widget loadingWidget() {
     return Container(

@@ -17,7 +17,7 @@ class MyWhiteButton extends StatelessWidget {
       widthFactor: 1.0,
       child: Padding(
         padding: const EdgeInsets.only(left: 14, right: 14, top: 20),
-        child: MyComponents.buttonDefault(
+        child: MyComponents.bounceableDefault(
           onPressed: onPressed,
           child: Text(
             text,

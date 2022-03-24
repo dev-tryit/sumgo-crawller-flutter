@@ -15,7 +15,7 @@ class MyRedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MyComponents.buttonDefault(
+    return MyComponents.bounceableDefault(
       onPressed: onPressed,
       child: Text(
         text,
