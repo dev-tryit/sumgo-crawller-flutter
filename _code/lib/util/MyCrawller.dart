@@ -2,7 +2,6 @@ import 'package:puppeteer/puppeteer.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PuppeteerUtil.dart';
 import 'package:sumgo_crawller_flutter/_local/local.dart';
-import 'package:sumgo_crawller_flutter/repository/KeywordItem.dart';
 import 'package:sumgo_crawller_flutter/repository/KeywordItemRepository.dart';
 
 class MyCrawller {
