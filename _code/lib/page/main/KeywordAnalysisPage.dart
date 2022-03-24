@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,6 +9,7 @@ import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
+import 'package:sumgo_crawller_flutter/_common/util/AnimationUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
 import 'package:sumgo_crawller_flutter/repository/AnalysisItem.dart';
@@ -219,7 +223,7 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
   }
 
   Future<void> deleteAnalysisItem(
-      BuildContext context, AnalysisItem item) async {
+      BuildContext context, AnalysisItem item, MyListTile myListTile) async {
     final result = await showOkCancelAlertDialog(
       context: context,
       title: "알림",
@@ -233,6 +237,10 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
       analysisItemList.remove(item);
       await MyComponents.dismissLoadingDialog();
 
+      if (myListTile.animateController != null) {
+        await myListTile.animateController!.reverse(); //forward or reverse
+      }
+
       rebuild();
 
       MyComponents.snackBar(context, "삭제되었습니다");
@@ -243,6 +251,7 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
 class MyListTile extends StatelessWidget {
   AnalysisItem item;
   KeywordAnalysisPageService s;
+  AnimationController? animateController;
   MyListTile({Key? key, required this.item, required this.s}) : super(key: key);
 
   @override
@@ -250,36 +259,39 @@ class MyListTile extends StatelessWidget {
     String title = item.title ?? "";
     String subtitle = (item.keywordList ?? []).join(", ".trim());
 
-    return Slidable(
-      key: const ValueKey(0), //1.반드시 키가 있어야함
-      child: ListTile(
-        //2. 슬라이드할 대상 설정
-        leading: const Padding(
-          padding: EdgeInsets.only(top: 6),
-          child: Image(image: MyImage.boxIcon),
-        ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-        horizontalTitleGap: 6,
-        title: MyComponents.text(text: title),
-        subtitle: Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis),
-        dense: true,
-      ),
-      endActionPane: ActionPane(
-        //3. startActionPane: 오른쪽으로 드래그하면 나오는액션, endActionPane: 왼쪽
-        extentRatio: 0.2, //각각 child의 크기
-        motion:
-            const BehindMotion(), //동작 애니메이션 설정 BehindMotion, DrawerMotion, ScrollMotion, StretchMotion
-        children: [
-          CustomSlidableAction(
-            onPressed: (c) => s.deleteAnalysisItem(
-              context,
-              item,
-            ),
-            backgroundColor: const Color(0xFFFE4A49),
-            foregroundColor: Colors.white,
-            child: const Icon(Icons.delete),
+    return AnimationUtil.slideInLeft(
+      manualTrigger: true,
+      from: 200,
+      controller: (aController) => animateController = aController,
+      child: Slidable(
+        key: GlobalKey(), //1.반드시 키가 있어야함
+        child: ListTile(
+          //2. 슬라이드할 대상 설정
+          leading: const Padding(
+            padding: EdgeInsets.only(top: 6),
+            child: Image(image: MyImage.boxIcon),
           ),
-        ],
+          contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+          horizontalTitleGap: 6,
+          title: MyComponents.text(text: title),
+          subtitle:
+              Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis),
+          dense: true,
+        ),
+        endActionPane: ActionPane(
+          //3. startActionPane: 오른쪽으로 드래그하면 나오는액션, endActionPane: 왼쪽
+          extentRatio: 0.2, //각각 child의 크기
+          motion:
+              const BehindMotion(), //동작 애니메이션 설정 BehindMotion, DrawerMotion, ScrollMotion, StretchMotion
+          children: [
+            CustomSlidableAction(
+              onPressed: (c) => s.deleteAnalysisItem(context, item, this),
+              backgroundColor: const Color(0xFFFE4A49),
+              foregroundColor: Colors.white,
+              child: const Icon(Icons.delete),
+            ),
+          ],
+        ),
       ),
     );
   }

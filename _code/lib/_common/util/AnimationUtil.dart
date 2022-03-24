@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/src/slidable.dart';
 
 class AnimationUtil {
   static Widget bounceInDown(
@@ -18,6 +19,24 @@ class AnimationUtil {
       duration: duration,
       child: child,
     );
+  }
+
+  static Widget slideInLeft(
+      {required Widget child,
+      Duration duration = const Duration(milliseconds: 600),
+      Duration delay = const Duration(milliseconds: 0),
+      Function(AnimationController)? controller,
+      bool manualTrigger = false,
+      bool animate = true,
+      double from = 100}) {
+    return SlideInLeft(
+        child: child,
+        duration: duration,
+        delay: delay,
+        controller: controller,
+        manualTrigger: manualTrigger,
+        animate: animate,
+        from: from);
   }
 }
 
