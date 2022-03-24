@@ -72,8 +72,7 @@ class KeywordAnalysisPageComponent
                 onPressed: () => showCreateItemBottomSheet(s)),
             contents: s.analysisItemList
                 .map((e) => MyListTile(
-                      title: e.title ?? "",
-                      subtitle: (e.keywordList ?? []).join(", ".trim()),
+                      item: e,
                       s: s,
                     ))
                 .toList(),
@@ -210,7 +209,8 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
     Navigator.pop(context);
   }
 
-  Future<void> deleteAnalysisItem(BuildContext context) async {
+  Future<void> deleteAnalysisItem(
+      BuildContext context, AnalysisItem item) async {
     final result = await showOkCancelAlertDialog(
       context: context,
       title: "알림",
@@ -219,21 +219,25 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
       cancelLabel: "아니오",
     );
     if (result == OkCancelResult.ok) {
-      MyComponents.snackBar(context, "OK");
+      await AnalysisItemRepository().delete(documentId: item.documentId ?? "");
+      analysisItemList.remove(item);
+      rebuild();
+
+      MyComponents.snackBar(context, "삭제되었습니다");
     }
   }
 }
 
 class MyListTile extends StatelessWidget {
-  String title;
-  String subtitle;
+  AnalysisItem item;
   KeywordAnalysisPageService s;
-  MyListTile(
-      {Key? key, required this.title, required this.subtitle, required this.s})
-      : super(key: key);
+  MyListTile({Key? key, required this.item, required this.s}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String title = item.title ?? "";
+    String subtitle = (item.keywordList ?? []).join(", ".trim());
+
     return Slidable(
       key: const ValueKey(0), //1.반드시 키가 있어야함
       child: ListTile(
@@ -255,7 +259,10 @@ class MyListTile extends StatelessWidget {
             const BehindMotion(), //동작 애니메이션 설정 BehindMotion, DrawerMotion, ScrollMotion, StretchMotion
         children: [
           SlidableAction(
-            onPressed: (c) => s.deleteAnalysisItem(context),
+            onPressed: (c) => s.deleteAnalysisItem(
+              context,
+              item,
+            ),
             backgroundColor: const Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: Icons.delete,
