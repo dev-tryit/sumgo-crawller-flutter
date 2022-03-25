@@ -120,9 +120,9 @@ class RequestRemovalPageComponent
         const SizedBox(height: 10),
       ],
       buttonStr: "생성",
-      onAdd: (setStateOfBottomSheet) => s.addRemovalCondition(
+      onAdd: (setErrorMessage) => s.addRemovalCondition(
         contentController.text.trim(),
-        setStateOfBottomSheet,
+        setErrorMessage,
       ),
     );
   }
@@ -146,7 +146,27 @@ class RequestRemovalPageService
   }
 
   Future<void> addRemovalCondition(
-      String content, StateSetter setState) async {}
+      String content, void Function(String errorMessage) setErrorMessage) async {
+    // String? errorMessage = AnalysisItem.getErrorMessageForAdd(title, keyword);
+    // if (errorMessage != null) {
+    //   setErrorMessage(errorMessage);
+    //   return;
+    // }
+    // setErrorMessage('');
+
+    // List<String> keywordList =
+    //     keyword.split(",").map((str) => str.trim()).toList();
+    // var item = AnalysisItem(
+    //     title: title.replaceAll("분류", ""), keywordList: keywordList);
+
+    // analysisItemList.add(item);
+    // AnalysisItemRepository().add(analysisItem: item);
+
+    // Navigator.pop(context);
+    // rebuild();
+
+    // MyComponents.snackBar(context, "생성되었습니다");
+  }
 
   Future<void> resetRemovalConditionList() async {}
 }

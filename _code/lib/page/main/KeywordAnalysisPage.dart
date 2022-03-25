@@ -57,7 +57,6 @@ class _KeywordAnalysisPageState extends KDHState<KeywordAnalysisPage,
 
 class KeywordAnalysisPageComponent
     extends KDHComponent<_KeywordAnalysisPageState> {
-  String errorMessage = "";
 
   KeywordAnalysisPageComponent(_KeywordAnalysisPageState state) : super(state);
 
@@ -123,10 +122,10 @@ class KeywordAnalysisPageComponent
         const SizedBox(height: 10),
       ],
       buttonStr: "생성",
-      onAdd: (setStateOfBottomSheet) => s.addAnalysisItem(
+      onAdd: (setErrorMessage) => s.addAnalysisItem(
         titleController.text.trim(),
         keywordController.text.trim(),
-        setStateOfBottomSheet,
+        setErrorMessage,
       ),
     );
   }
@@ -146,12 +145,7 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
   }
 
   void addAnalysisItem(
-      String title, String keyword, StateSetter setStateOfBottomSheet) async {
-    void setErrorMessage(String errorMessage) {
-      c.errorMessage = errorMessage;
-      setStateOfBottomSheet(() {});
-    }
-
+      String title, String keyword, void Function(String errorMessage) setErrorMessage) async {
     String? errorMessage = AnalysisItem.getErrorMessageForAdd(title, keyword);
     if (errorMessage != null) {
       setErrorMessage(errorMessage);

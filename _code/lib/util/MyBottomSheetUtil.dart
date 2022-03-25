@@ -3,14 +3,14 @@ import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 import 'package:sumgo_crawller_flutter/widget/MyRedButton.dart';
 
-typedef onSetState = void Function(void Function(VoidCallback fn) setState);
+typedef AddFunctionWithSetErrorMessage = void Function(void Function(String errorMessage) setErrorMessage);
 
 class MyBottomSheetUtil {
   static void showInputBottomSheet(
       {required BuildContext context,
       required String title,
       required List<Widget> children,
-      required onSetState onAdd, required String buttonStr}) {
+      required AddFunctionWithSetErrorMessage onAdd, required String buttonStr}) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -24,7 +24,7 @@ class InputBottomSheet extends StatefulWidget {
   String title;
   String buttonStr;
   List<Widget> children;
-  onSetState onAdd;
+  AddFunctionWithSetErrorMessage onAdd;
   InputBottomSheet(
       {Key? key,
       required this.title,
@@ -38,6 +38,11 @@ class InputBottomSheet extends StatefulWidget {
 
 class _InputBottomSheetState extends State<InputBottomSheet> {
   String errorMessage = "";
+
+  void setErrorMessage(String errorMessage) {
+    this.errorMessage = errorMessage;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +83,7 @@ class _InputBottomSheetState extends State<InputBottomSheet> {
                 MyRedButton(
                   widget.buttonStr,
                   useShadow: false,
-                  onPressed: () => widget.onAdd(setState),
+                  onPressed: () => widget.onAdd(setErrorMessage),
                 ),
               ],
             ),
