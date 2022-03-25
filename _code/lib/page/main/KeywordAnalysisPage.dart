@@ -204,14 +204,13 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
     }
     setErrorMessage('');
 
-    await MyComponents.showLoadingDialog(context);
     List<String> keywordList =
         keyword.split(",").map((str) => str.trim()).toList();
     var item = AnalysisItem(
         title: title.replaceAll("분류", ""), keywordList: keywordList);
-    await AnalysisItemRepository().add(analysisItem: item);
+
     analysisItemList.add(item);
-    await MyComponents.dismissLoadingDialog();
+    AnalysisItemRepository().add(analysisItem: item);
 
     Navigator.pop(context);
     rebuild();
@@ -229,15 +228,13 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
       cancelLabel: "아니오",
     );
     if (result == OkCancelResult.ok) {
-      await MyComponents.showLoadingDialog(context);
-      await AnalysisItemRepository().delete(documentId: item.documentId ?? -1);
-      analysisItemList.remove(item);
-      await MyComponents.dismissLoadingDialog();
-
       if (myListTile.animateController != null) {
-        myListTile.animateController!.duration = Duration(milliseconds: 600);
+        myListTile.animateController!.duration = Duration(milliseconds: 100);
         await myListTile.animateController!.reverse(); //forward or reverse
       }
+
+      analysisItemList.remove(item);
+      AnalysisItemRepository().delete(documentId: item.documentId ?? -1);
 
       rebuild();
 
@@ -261,7 +258,7 @@ class MyListTile extends StatelessWidget {
       manualTrigger: true,
       duration: const Duration(milliseconds: 0),
       delay: const Duration(milliseconds: 0),
-      from: 200,
+      from: 15,
       controller: (aController) => animateController = aController,
       child: Slidable(
         key: GlobalKey(), //1.반드시 키가 있어야함
