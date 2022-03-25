@@ -147,25 +147,23 @@ class RequestRemovalPageService
 
   Future<void> addRemovalCondition(
       String content, void Function(String errorMessage) setErrorMessage) async {
-    // String? errorMessage = AnalysisItem.getErrorMessageForAdd(title, keyword);
-    // if (errorMessage != null) {
-    //   setErrorMessage(errorMessage);
-    //   return;
-    // }
-    // setErrorMessage('');
+    //TODO: type 넣을예쩡
+    String? errorMessage = RemovalCondition.getErrorMessageForAdd(content);
+    if (errorMessage != null) {
+      setErrorMessage(errorMessage);
+      return;
+    }
+    setErrorMessage('');
 
-    // List<String> keywordList =
-    //     keyword.split(",").map((str) => str.trim()).toList();
-    // var item = AnalysisItem(
-    //     title: title.replaceAll("분류", ""), keywordList: keywordList);
+    var item = RemovalCondition(content: content, type: '');
 
-    // analysisItemList.add(item);
-    // AnalysisItemRepository().add(analysisItem: item);
+    removalConditionList.add(item);
+    RemovalConditionRepository().add(removalCondition: item);
 
-    // Navigator.pop(context);
-    // rebuild();
+    Navigator.pop(context);
+    rebuild();
 
-    // MyComponents.snackBar(context, "생성되었습니다");
+    MyComponents.snackBar(context, "생성되었습니다");
   }
 
   Future<void> resetRemovalConditionList() async {}

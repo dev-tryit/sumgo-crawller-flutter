@@ -28,6 +28,11 @@ class RemovalCondition extends WithDocId {
       'content': instance.content,
     };
   }
+
+  static String? getErrorMessageForAdd(String content) {
+    if (content.isEmpty) return '내용을 입력해주세요';
+    return null;
+  }
 }
 
 class RemovalConditionRepository {
@@ -47,13 +52,13 @@ class RemovalConditionRepository {
     toMap: RemovalCondition.toMap,
   );
 
-  Future<RemovalCondition?> add({required RemovalCondition analysisItem}) async {
-    return await _.saveByDocumentId(instance: analysisItem);
+  Future<RemovalCondition?> add({required RemovalCondition removalCondition}) async {
+    return await _.saveByDocumentId(instance: removalCondition);
   }
 
-  void update(RemovalCondition analysisItem) async {
+  void update(RemovalCondition removalCondition) async {
     await _.saveByDocumentId(
-      instance: analysisItem,
+      instance: removalCondition,
     );
   }
 
