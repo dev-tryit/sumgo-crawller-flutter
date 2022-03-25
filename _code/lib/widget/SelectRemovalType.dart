@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_awesome_select/flutter_awesome_select.dart';
+import 'package:sumgo_crawller_flutter/util/MyColors.dart';
+import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 
 class RemovalType {
   static RemovalType get best => const RemovalType.internal("최우선키워드", "best");
@@ -30,6 +32,7 @@ class _SelectRemovalTypeState extends State<SelectRemovalType> {
   @override
   Widget build(BuildContext context) {
     return SmartSelect<String?>.single(
+      title: "정리 타입",
       selectedValue: typeValue,
       choiceItems: RemovalType.values
           .map((type) =>
@@ -43,15 +46,20 @@ class _SelectRemovalTypeState extends State<SelectRemovalType> {
         // --즉, state.selected?.value, state.selected?.title을 활용할 수 있다.
         //state.showModal이라는 함수를 통해 modalType에 대한 기능을 실행한다.
         return ListTile(
-          title: Text(state.title ?? ''),
-          subtitle: Text(
-            state.selected?.title ?? "",
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-          ),
-          trailing: const Icon(
-            Icons.keyboard_arrow_right,
-            color: Colors.grey,
+          contentPadding: EdgeInsets.zero,
+          dense: true,
+          minLeadingWidth: 100,
+          leading: Text(state.title ?? '',
+              style: MyFonts.gothicA1(color: MyColors.black, fontSize: 12.5)),
+          title: Row(
+            children: [
+              Spacer(),
+              Text(state.selected?.title ?? ""),
+              const Icon(
+                Icons.keyboard_arrow_right,
+                color: Colors.grey,
+              ),
+            ],
           ),
           onTap: state.showModal,
         );

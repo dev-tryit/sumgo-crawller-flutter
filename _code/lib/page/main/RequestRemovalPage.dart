@@ -145,8 +145,8 @@ class RequestRemovalPageService
     }
   }
 
-  Future<void> addRemovalCondition(
-      String content, void Function(String errorMessage) setErrorMessage) async {
+  Future<void> addRemovalCondition(String content,
+      void Function(String errorMessage) setErrorMessage) async {
     //TODO: type 넣을예쩡
     String? errorMessage = RemovalCondition.getErrorMessageForAdd(content);
     if (errorMessage != null) {
