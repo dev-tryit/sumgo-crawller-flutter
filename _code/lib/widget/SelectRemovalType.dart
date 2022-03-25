@@ -23,6 +23,7 @@ class SelectRemovalTypeController {
   late _SelectRemovalTypeState state;
 
   String get type => state.typeValue ?? "";
+  String get typeDisplay => state.typeDisplay ?? "";
   void init(_SelectRemovalTypeState state) {
     this.state = state;
   }
@@ -39,6 +40,7 @@ class SelectRemovalType extends StatefulWidget {
 
 class _SelectRemovalTypeState extends State<SelectRemovalType> {
   String? typeValue = RemovalType.include.value;
+  String? typeDisplay = RemovalType.include.display;
 
   @override
   void initState() {
@@ -56,7 +58,11 @@ class _SelectRemovalTypeState extends State<SelectRemovalType> {
           .map((type) =>
               S2Choice<String>(title: type.display, value: type.value))
           .toList(),
-      onChange: (selected) => setState(() => typeValue = selected.value),
+      onChange: (selected) {
+        typeValue = selected.value;
+        typeDisplay = selected.title;
+        setState(() {});
+      },
       modalType: S2ModalType.popupDialog,
       tileBuilder: (context, state) {
         //state.title이 위에서 지정한 title을 의미한다.

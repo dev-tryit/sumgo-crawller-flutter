@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_awesome_select/flutter_awesome_select.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
+import 'package:sumgo_crawller_flutter/_common/util/AnimationUtil.dart';
 import 'package:sumgo_crawller_flutter/repository/RemovalConditionRepository.dart';
 import 'package:sumgo_crawller_flutter/util/MyBottomSheetUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
@@ -67,33 +69,17 @@ class RequestRemovalPageComponent
             title: "정리 조건",
             rightButton: MyRedButton("생성하기",
                 onPressed: () => showCreateItemBottomSheet(s)),
-            contents: [
-              cardListTile("[최우선키워드] Flutter"),
-              cardListTile("[최우선키워드] Flutter"),
-              cardListTile("[포함] Flutter"),
-              cardListTile("[포함] Flutter"),
-              cardListTile("[포함] Flutter", isPlusIcon: false),
-              cardListTile("[제외] Flutter", isPlusIcon: false),
-              cardListTile("[제외] Flutter", isPlusIcon: false),
-            ],
+            contents: s.removalConditionList
+                .map((e) => RequestRemovalListTile(
+                      item: e,
+                      s: s,
+                      isPlusIcon: e.type != "exclude",
+                    ))
+                .toList(),
             bottomButton: MyWhiteButton("요청 정리하기", onPressed: s.removeRequests),
           ),
         ],
       ),
-    );
-  }
-
-  ListTile cardListTile(String title, {bool isPlusIcon = true}) {
-    return ListTile(
-      leading: Padding(
-        padding: EdgeInsets.only(top: 6),
-        child:
-            Image(image: (isPlusIcon ? MyImage.plusIcon : MyImage.minusIcon)),
-      ),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-      horizontalTitleGap: 6,
-      title: MyComponents.text(text: title),
-      dense: true,
     );
   }
 
@@ -124,6 +110,7 @@ class RequestRemovalPageComponent
       onAdd: (setErrorMessage) => s.addRemovalCondition(
         contentController.text.trim(),
         typeController.type,
+        typeController.typeDisplay,
         setErrorMessage,
       ),
     );
@@ -138,6 +125,10 @@ class RequestRemovalPageService
       _RequestRemovalPageState state, RequestRemovalPageComponent c)
       : super(state, c);
 
+  Future<void> resetRemovalConditionList() async {
+    removalConditionList = await RemovalConditionRepository().getList();
+  }
+
   Future<void> removeRequests() async {
     try {
       await MyComponents.showLoadingDialog(context);
@@ -147,17 +138,21 @@ class RequestRemovalPageService
     }
   }
 
-  Future<void> addRemovalCondition(String content, String type,
+  Future<void> addRemovalCondition(
+      String content,
+      String type,
+      String typeDisplay,
       void Function(String errorMessage) setErrorMessage) async {
     String? errorMessage =
-        RemovalCondition.getErrorMessageForAdd(content, type);
+        RemovalCondition.getErrorMessageForAdd(content, type, typeDisplay);
     if (errorMessage != null) {
       setErrorMessage(errorMessage);
       return;
     }
     setErrorMessage('');
 
-    var item = RemovalCondition(content: content, type: type);
+    var item = RemovalCondition(
+        content: content, type: type, typeDisplay: typeDisplay);
 
     removalConditionList.add(item);
     RemovalConditionRepository().add(removalCondition: item);
@@ -168,5 +163,56 @@ class RequestRemovalPageService
     MyComponents.snackBar(context, "생성되었습니다");
   }
 
-  Future<void> resetRemovalConditionList() async {}
+  deleteRemovalCondition(BuildContext context, RemovalCondition item,
+      RequestRemovalListTile requestRemovalListTile) {}
+}
+
+class RequestRemovalListTile extends StatelessWidget {
+  RemovalCondition item;
+  RequestRemovalPageService s;
+  AnimationController? animateController;
+  bool isPlusIcon;
+  RequestRemovalListTile(
+      {Key? key, required this.item, required this.s, this.isPlusIcon = true})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimationUtil.slideInLeft(
+      manualTrigger: true,
+      duration: const Duration(milliseconds: 0),
+      delay: const Duration(milliseconds: 0),
+      from: 15,
+      controller: (aController) => animateController = aController,
+      child: Slidable(
+        key: GlobalKey(), //1.반드시 키가 있어야함
+        child: ListTile(
+          leading: Padding(
+            padding: EdgeInsets.only(top: 6),
+            child: Image(
+                image: (isPlusIcon ? MyImage.plusIcon : MyImage.minusIcon)),
+          ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+          horizontalTitleGap: 6,
+          title: MyComponents.text(
+              text: "[${item.typeDisplay ?? ""}] ${item.content ?? ""}"),
+          dense: true,
+        ),
+        endActionPane: ActionPane(
+          //3. startActionPane: 오른쪽으로 드래그하면 나오는액션, endActionPane: 왼쪽
+          extentRatio: 0.2, //각각 child의 크기
+          motion:
+              const BehindMotion(), //동작 애니메이션 설정 BehindMotion, DrawerMotion, ScrollMotion, StretchMotion
+          children: [
+            CustomSlidableAction(
+              onPressed: (c) => s.deleteRemovalCondition(context, item, this),
+              backgroundColor: const Color(0xFFFE4A49),
+              foregroundColor: Colors.white,
+              child: const Icon(Icons.delete),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

@@ -6,8 +6,9 @@ import 'package:sumgo_crawller_flutter/widget/SelectRemovalType.dart';
 class RemovalCondition extends WithDocId {
   String? type;
   String? content;
+  String? typeDisplay;
 
-  RemovalCondition({required this.type, required this.content})
+  RemovalCondition({required this.type, required this.content, required this.typeDisplay})
       : super(documentId: DateTime.now().microsecondsSinceEpoch);
 
   RemovalCondition.empty();
@@ -20,6 +21,7 @@ class RemovalCondition extends WithDocId {
     return RemovalCondition(
       type: map['type'],
       content: map['content'],
+      typeDisplay: map['typeDisplay'],
     )..documentId = map['documentId'];
   }
 
@@ -28,12 +30,13 @@ class RemovalCondition extends WithDocId {
       'documentId': instance.documentId,
       'type': instance.type,
       'content': instance.content,
+      'typeDisplay': instance.typeDisplay,
     };
   }
 
-  static String? getErrorMessageForAdd(String content, String type) {
+  static String? getErrorMessageForAdd(String content, String type, String typeDisplay) {
     if (content.isEmpty) return '내용을 입력해주세요';
-    if (type.isEmpty) return '정리 타입을 선택해주세요';
+    if (type.isEmpty || typeDisplay.isEmpty) return '정리 타입을 선택해주세요';
     if (RemovalType.values.where((element) => element.value == type).isEmpty) {
       return '잘못된 정리 타입입니다.';
     }

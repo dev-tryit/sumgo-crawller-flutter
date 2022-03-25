@@ -71,7 +71,7 @@ class KeywordAnalysisPageComponent
             rightButton: MyRedButton("생성하기",
                 onPressed: () => showCreateItemBottomSheet(s)),
             contents: s.analysisItemList
-                .map((e) => MyListTile(
+                .map((e) => KeywrodAnalysisListTile(
                       item: e,
                       s: s,
                     ))
@@ -168,7 +168,7 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
   }
 
   Future<void> deleteAnalysisItem(
-      BuildContext context, AnalysisItem item, MyListTile myListTile) async {
+      BuildContext context, AnalysisItem item, KeywrodAnalysisListTile myListTile) async {
     final result = await showOkCancelAlertDialog(
       context: context,
       title: "알림",
@@ -192,11 +192,11 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
   }
 }
 
-class MyListTile extends StatelessWidget {
+class KeywrodAnalysisListTile extends StatelessWidget {
   AnalysisItem item;
   KeywordAnalysisPageService s;
   AnimationController? animateController;
-  MyListTile({Key? key, required this.item, required this.s}) : super(key: key);
+  KeywrodAnalysisListTile({Key? key, required this.item, required this.s}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
