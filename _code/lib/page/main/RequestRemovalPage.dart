@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_awesome_select/flutter_awesome_select.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -163,8 +164,30 @@ class RequestRemovalPageService
     MyComponents.snackBar(context, "생성되었습니다");
   }
 
-  deleteRemovalCondition(BuildContext context, RemovalCondition item,
-      RequestRemovalListTile requestRemovalListTile) {}
+  Future<void> deleteRemovalCondition(BuildContext context,
+      RemovalCondition item, RequestRemovalListTile myListTile) async {
+    final result = await showOkCancelAlertDialog(
+      context: context,
+      title: "알림",
+      message: "정말 삭제하시겠습니까?",
+      okLabel: "예",
+      cancelLabel: "아니오",
+    );
+    if (result == OkCancelResult.ok) {
+      if (myListTile.animateController != null) {
+        myListTile.animateController!.duration =
+            const Duration(milliseconds: 100);
+        await myListTile.animateController!.reverse(); //forward or reverse
+      }
+
+      removalConditionList.remove(item);
+      RemovalConditionRepository().delete(documentId: item.documentId ?? -1);
+
+      rebuild();
+
+      MyComponents.snackBar(context, "삭제되었습니다");
+    }
+  }
 }
 
 class RequestRemovalListTile extends StatelessWidget {

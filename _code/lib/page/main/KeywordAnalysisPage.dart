@@ -178,7 +178,7 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
     );
     if (result == OkCancelResult.ok) {
       if (myListTile.animateController != null) {
-        myListTile.animateController!.duration = Duration(milliseconds: 100);
+        myListTile.animateController!.duration = const Duration(milliseconds: 100);
         await myListTile.animateController!.reverse(); //forward or reverse
       }
 
