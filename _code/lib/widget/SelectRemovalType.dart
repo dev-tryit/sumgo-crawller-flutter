@@ -19,8 +19,19 @@ class RemovalType {
   const RemovalType.internal(this.display, this.value);
 }
 
+class SelectRemovalTypeController {
+  late _SelectRemovalTypeState state;
+
+  String get type => state.typeValue ?? "";
+  void init(_SelectRemovalTypeState state) {
+    this.state = state;
+  }
+}
+
 class SelectRemovalType extends StatefulWidget {
-  const SelectRemovalType({Key? key}) : super(key: key);
+  SelectRemovalTypeController typeController;
+
+  SelectRemovalType({Key? key, required this.typeController}) : super(key: key);
 
   @override
   _SelectRemovalTypeState createState() => _SelectRemovalTypeState();
@@ -28,6 +39,13 @@ class SelectRemovalType extends StatefulWidget {
 
 class _SelectRemovalTypeState extends State<SelectRemovalType> {
   String? typeValue = RemovalType.include.value;
+
+  @override
+  void initState() {
+    super.initState();
+
+    widget.typeController.init(this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +71,10 @@ class _SelectRemovalTypeState extends State<SelectRemovalType> {
               style: MyFonts.gothicA1(color: MyColors.black, fontSize: 12.5)),
           title: Row(
             children: [
-              Spacer(),
-              Text(state.selected?.title ?? ""),
+              const Spacer(),
+              Text(state.selected?.title ?? "",
+                  style:
+                      MyFonts.gothicA1(color: MyColors.black, fontSize: 12.5)),
               const Icon(
                 Icons.keyboard_arrow_right,
                 color: Colors.grey,

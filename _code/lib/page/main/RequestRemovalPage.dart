@@ -98,13 +98,14 @@ class RequestRemovalPageComponent
   }
 
   void showCreateItemBottomSheet(RequestRemovalPageService s) {
-    final TextEditingController contentController = TextEditingController();
+    final contentController = TextEditingController();
+    final typeController = SelectRemovalTypeController();
 
     MyBottomSheetUtil.showInputBottomSheet(
       context: context,
       title: '정리 조건 생성하기',
       children: [
-        const SelectRemovalType(),
+        SelectRemovalType(typeController: typeController),
         const SizedBox(height: 10),
         ListTile(
           contentPadding: EdgeInsets.zero,
@@ -122,6 +123,7 @@ class RequestRemovalPageComponent
       buttonStr: "생성",
       onAdd: (setErrorMessage) => s.addRemovalCondition(
         contentController.text.trim(),
+        typeController.type,
         setErrorMessage,
       ),
     );
@@ -145,17 +147,17 @@ class RequestRemovalPageService
     }
   }
 
-  Future<void> addRemovalCondition(String content,
+  Future<void> addRemovalCondition(String content, String type,
       void Function(String errorMessage) setErrorMessage) async {
-    //TODO: type 넣을예쩡
-    String? errorMessage = RemovalCondition.getErrorMessageForAdd(content);
+    String? errorMessage =
+        RemovalCondition.getErrorMessageForAdd(content, type);
     if (errorMessage != null) {
       setErrorMessage(errorMessage);
       return;
     }
     setErrorMessage('');
 
-    var item = RemovalCondition(content: content, type: '');
+    var item = RemovalCondition(content: content, type: type);
 
     removalConditionList.add(item);
     RemovalConditionRepository().add(removalCondition: item);

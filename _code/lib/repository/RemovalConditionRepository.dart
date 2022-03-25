@@ -1,12 +1,14 @@
 import 'package:sumgo_crawller_flutter/_common/abstract/WithDocId.dart';
 import 'package:sumgo_crawller_flutter/_common/util/StringUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseStoreUtilInterface.dart';
+import 'package:sumgo_crawller_flutter/widget/SelectRemovalType.dart';
 
 class RemovalCondition extends WithDocId {
   String? type;
   String? content;
 
-  RemovalCondition({required this.type, required this.content}) : super(documentId: DateTime.now().microsecondsSinceEpoch);
+  RemovalCondition({required this.type, required this.content})
+      : super(documentId: DateTime.now().microsecondsSinceEpoch);
 
   RemovalCondition.empty();
 
@@ -29,8 +31,12 @@ class RemovalCondition extends WithDocId {
     };
   }
 
-  static String? getErrorMessageForAdd(String content) {
+  static String? getErrorMessageForAdd(String content, String type) {
     if (content.isEmpty) return '내용을 입력해주세요';
+    if (type.isEmpty) return '정리 타입을 선택해주세요';
+    if (RemovalType.values.where((element) => element.value == type).isEmpty) {
+      return '잘못된 정리 타입입니다.';
+    }
     return null;
   }
 }
@@ -52,7 +58,8 @@ class RemovalConditionRepository {
     toMap: RemovalCondition.toMap,
   );
 
-  Future<RemovalCondition?> add({required RemovalCondition removalCondition}) async {
+  Future<RemovalCondition?> add(
+      {required RemovalCondition removalCondition}) async {
     return await _.saveByDocumentId(instance: removalCondition);
   }
 
