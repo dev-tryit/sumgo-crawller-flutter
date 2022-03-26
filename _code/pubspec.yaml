@@ -70,6 +70,7 @@ dependencies:
     adaptive_dialog: ^1.4.0
     animate_do: ^2.1.0
     flutter_awesome_select: ^6.1.2-beta
+    modal_bottom_sheet: ^2.0.1
 
 #    device_frame: ^1.0.0
 

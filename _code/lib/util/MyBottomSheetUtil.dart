@@ -1,21 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 import 'package:sumgo_crawller_flutter/widget/MyRedButton.dart';
 
-typedef AddFunctionWithSetErrorMessage = void Function(void Function(String errorMessage) setErrorMessage);
+// typedef AddFunctionWithSetErrorMessage = void Function(
+//     void Function(String errorMessage) setErrorMessage);
+typedef void AddFunctionWithSetErrorMessage(
+    void setErrorMessage(String errorMessage));
 
 class MyBottomSheetUtil {
   static void showInputBottomSheet(
       {required BuildContext context,
       required String title,
       required List<Widget> children,
-      required AddFunctionWithSetErrorMessage onAdd, required String buttonStr}) {
+      required AddFunctionWithSetErrorMessage onAdd,
+      required String buttonStr}) {
+    showBottomSheet(
+      context: context,
+      child: InputBottomSheet(
+        title: title,
+        children: children,
+        onAdd: onAdd,
+        buttonStr: buttonStr,
+      ),
+    );
+  }
+
+  static void showBottomSheet(
+      {required BuildContext context, required Widget child}) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (context) =>
-          InputBottomSheet(title: title, children: children, onAdd: onAdd, buttonStr:buttonStr),
+      builder: (context) => Container(
+        decoration: const BoxDecoration(
+          color: MyColors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+        ),
+        padding: const EdgeInsets.all(15),
+        child: Material(child: child), //Material이 있어야, 하위에서 InkWell이 제대로 작동함
+      ),
     );
   }
 }
@@ -29,7 +56,8 @@ class InputBottomSheet extends StatefulWidget {
       {Key? key,
       required this.title,
       required this.children,
-      required this.onAdd, required this.buttonStr})
+      required this.onAdd,
+      required this.buttonStr})
       : super(key: key);
 
   @override
@@ -46,52 +74,42 @@ class _InputBottomSheetState extends State<InputBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: MyColors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-      ),
-      padding: const EdgeInsets.all(15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 5, top: 5, bottom: 5),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(widget.title,
-                    style: MyFonts.gothicA1(
-                        color: MyColors.black,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500)),
-                Expanded(
-                  child: Text(
-                    errorMessage,
-                    textAlign: TextAlign.right,
-                    style: MyFonts.gothicA1(
-                      color: MyColors.red,
-                      fontSize: 9,
-                    ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(left: 5, top: 5, bottom: 5),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(widget.title,
+                  style: MyFonts.gothicA1(
+                      color: MyColors.black,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500)),
+              Expanded(
+                child: Text(
+                  errorMessage,
+                  textAlign: TextAlign.right,
+                  style: MyFonts.gothicA1(
+                    color: MyColors.red,
+                    fontSize: 9,
                   ),
                 ),
-                const SizedBox(width: 10),
-                MyRedButton(
-                  widget.buttonStr,
-                  useShadow: false,
-                  onPressed: () => widget.onAdd(setErrorMessage),
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(width: 10),
+              MyRedButton(
+                widget.buttonStr,
+                useShadow: false,
+                onPressed: () => widget.onAdd(setErrorMessage),
+              ),
+            ],
           ),
-          const Divider(),
-          ...widget.children
-        ],
-      ),
+        ),
+        const Divider(),
+        ...widget.children,
+      ],
     );
   }
 }
