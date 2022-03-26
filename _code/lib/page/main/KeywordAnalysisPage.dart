@@ -52,8 +52,7 @@ class _KeywordAnalysisPageState extends KDHState<KeywordAnalysisPage,
   }
 
   @override
-  Future<void> afterBuild() async {
-  }
+  Future<void> afterBuild() async {}
 }
 
 class KeywordAnalysisPageComponent
@@ -171,13 +170,14 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
     AnalysisItemRepository().add(analysisItem: item);
 
     Navigator.pop(context);
-    rebuild();
+    rebuild(afterBuild: () {
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.ease,
+      );
+    });
 
-    // scrollController.animateTo(
-    //   scrollController.position.maxScrollExtent,
-    //   duration: const Duration(milliseconds: 500),
-    //   curve: Curves.ease,
-    // );
     MyComponents.snackBar(context, "생성되었습니다");
   }
 

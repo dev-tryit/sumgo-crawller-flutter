@@ -9,7 +9,7 @@ abstract class KDHService<STATE extends KDHState, COMPONENT> {
   final COMPONENT c;
 
   BuildContext get context => _state.context;
-  VoidCallback get rebuild => _state.rebuild;
+  void rebuild({Function? afterBuild}) => _state.rebuild(afterBuild: afterBuild);
   Size get screenSize => _state.screenSize;
   Map<dynamic, WidgetToGetSize> get widgetMap => _state.widgetMap;
   set widgetToBuild(Widget Function() widgetToBuild) => _state.widgetToBuild = widgetToBuild;
