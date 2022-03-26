@@ -131,31 +131,26 @@ class RequestRemovalPageService
   }
 
   Future<void> removeRequests() async {
-    
-  /* final List<String> listToIncludeAlways = const ["flutter", "플루터"];
-  final List<String> listToInclude = const [
-    "앱 개발",
-    "관련 지식 없음",
-    "취미/자기개발",
-    "이른 오전 (9시 이전)||오전 (9~12시)||늦은 저녁 (9시 이후)",
-    "개인 레슨||온라인/화상 레슨||무관",
-  ];
-  final List<String> listToExclude = const [
-    "미취학 아동",
-    "초등학생",
-    "중학생",
-    "고등학생",
-    "자바 스크립트",
-    "javascipt",
-    "swift",
-    "kotlin",
-    "스위프트",
-    "코틀린"
-  ]; */
-  
+    final List<String> listToIncludeAlways = (await RemovalConditionRepository()
+            .getListByType(type: RemovalType.best.value))
+        .map((e) => e.content ?? "")
+        .toList();
+    final List<String> listToInclude = (await RemovalConditionRepository()
+            .getListByType(type: RemovalType.include.value))
+        .map((e) => e.content ?? "")
+        .toList();
+    final List<String> listToExclude = (await RemovalConditionRepository()
+            .getListByType(type: RemovalType.exclude.value))
+        .map((e) => e.content ?? "")
+        .toList();
+
     try {
       await MyComponents.showLoadingDialog(context);
-      await MyCrawller().start();
+      await MyCrawller(
+              listToIncludeAlways: listToIncludeAlways,
+              listToInclude: listToInclude,
+              listToExclude: listToExclude)
+          .start();
     } finally {
       await MyComponents.dismissLoadingDialog();
     }

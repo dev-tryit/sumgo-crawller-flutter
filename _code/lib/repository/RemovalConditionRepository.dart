@@ -93,4 +93,11 @@ class RemovalConditionRepository {
   Future<List<RemovalCondition>> getList() async {
     return await _.getList();
   }
+  
+  Future<List<RemovalCondition>> getListByType({required String type}) async {
+    return await _.getListByField(
+      key: "type",
+      value: type,
+    );
+  }
 }
