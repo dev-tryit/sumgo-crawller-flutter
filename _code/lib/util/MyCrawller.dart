@@ -8,12 +8,21 @@ class MyCrawller {
   final p = PuppeteerUtil();
   final delay = Duration(milliseconds: 100);
   final timeout = Duration(seconds: 20);
-  final List<String> listToIncludeAlways = const ["flutter"];
-  final List<String> listToInclude = const ["앱 개발", "취미/자기개발"];
+  final List<String> listToIncludeAlways = const ["flutter", "플루터"];
+  final List<String> listToInclude = const [
+    "앱 개발",
+    "관련 지식 없음",
+    "취미/자기개발",
+    "이른 오전 (9시 이전)||오전 (9~12시)||늦은 저녁 (9시 이후)",
+    "개인 레슨||온라인/화상 레슨||무관",
+  ];
   final List<String> listToExclude = const [
+    "미취학 아동",
     "초등학생",
     "중학생",
-    "과제",
+    "고등학생",
+    "자바 스크립트",
+    "javascipt",
     "swift",
     "kotlin",
     "스위프트",
@@ -40,8 +49,8 @@ class MyCrawller {
       }
 
       LogUtil.info("로그인 필요함");
-      await p.type('[name="email"]', id??"", delay: delay);
-      await p.type('[name="password"]', pw??"", delay: delay);
+      await p.type('[name="email"]', id ?? "", delay: delay);
+      await p.type('[name="password"]', pw ?? "", delay: delay);
       await p.clickAndWaitForNavigation('.btn.btn-login.btn-primary',
           timeout: timeout);
     }
@@ -117,9 +126,11 @@ class MyCrawller {
 
       keywordMap.addAll(await countKeyword(message));
 
-      _isValidRequest(message)
-          ? await _sendRequests(tag)
-          : await _deleteRequest(tag);
+      await decideMethod(
+        message,
+        () async => await _sendRequests(tag),
+        () async => await _deleteRequest(tag),
+      );
     }
 
     Future<void> saveFirestore(Map<String, int> keywordMap) async {
@@ -149,30 +160,61 @@ class MyCrawller {
     await saveFirestore(keywordMap);
   }
 
-  bool _isValidRequest(String message) {
-    bool isValid = true;
-    //이 키워드가 없으면, !isValid
-    for (String toInclude in listToInclude) {
-      if (!message.toLowerCase().contains(toInclude.toLowerCase())) {
-        isValid = false;
-        break;
-      }
-    }
-    //이 키워드가 있으면, !isValid
-    for (String toExclude in listToExclude) {
-      if (message.toLowerCase().contains(toExclude.toLowerCase())) {
-        isValid = false;
-        break;
-      }
-    }
-    //이 키워드가 있으면, 무조건 isValid
+  Future<void> decideMethod(String message, Future<void> Function() send,
+      Future<void> Function() delete) async {
+    //아래 키워드가 있으면 바로 메시지 보낸다.
     for (String toIncludeAlways in listToIncludeAlways) {
       if (message.toLowerCase().contains(toIncludeAlways.toLowerCase())) {
-        isValid = true;
+        await send();
+        return;
+      }
+    }
+
+    //아래 조건이 모두 포함되면 메시지를 보낸다.
+    List<String> listToIncludeForOr =
+        listToInclude.where((element) => element.contains("||")).toList();
+    List<String> listToIncludeForAnd =
+        listToInclude.where((element) => !element.contains("||")).toList();
+
+    //아래 조건에 해당하는게 없다면, 제거 대상.
+    bool isValid = true;
+    for (String toIncludeForAnd in listToIncludeForAnd) {
+      if (!message.toLowerCase().contains(toIncludeForAnd.toLowerCase())) {
+        LogUtil.info(
+            "condition1 message:$message, toIncludeForAnd:$toIncludeForAnd");
+        isValid = false;
+        break;
+      }
+    }
+    //아래 조건에 해당하는게 없다면, 제거 대상.
+    //1개 조건에 대해 A||B||C일 때, 메시지가 A or B or C에 해당하는게 없다면, 제거 대상
+    for (String toIncludeForOr in listToIncludeForOr) {
+      List<String> orStrList = toIncludeForOr.split("||").toList();
+      bool existOr = orStrList
+          .where(
+              (orStr) => !message.toLowerCase().contains(orStr.toLowerCase()))
+          .isNotEmpty;
+      if (!existOr) {
+        LogUtil.info("condition2 message:$message, orStrList:$orStrList");
+        isValid = false;
+        break;
+      }
+    }
+    //이 키워드가 있으면, 제거대상
+    for (String toExclude in listToExclude) {
+      if (message.toLowerCase().contains(toExclude.toLowerCase())) {
+        LogUtil.info("condition3 message:$message, toExclude:$toExclude");
+        isValid = false;
         break;
       }
     }
 
-    return isValid;
+    if (isValid) {
+      LogUtil.info("decideMethod send message:$message");
+      await send();
+    } else {
+      LogUtil.info("decideMethod delete message:$message");
+      await delete();
+    }
   }
 }
