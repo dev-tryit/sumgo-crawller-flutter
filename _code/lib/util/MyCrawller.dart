@@ -5,30 +5,20 @@ import 'package:sumgo_crawller_flutter/_local/local.dart';
 import 'package:sumgo_crawller_flutter/repository/KeywordItemRepository.dart';
 
 class MyCrawller {
-  final p = PuppeteerUtil();
-  final delay = Duration(milliseconds: 100);
-  final timeout = Duration(seconds: 20);
-  final List<String> listToIncludeAlways = const ["flutter", "플루터"];
-  final List<String> listToInclude = const [
-    "앱 개발",
-    "관련 지식 없음",
-    "취미/자기개발",
-    "이른 오전 (9시 이전)||오전 (9~12시)||늦은 저녁 (9시 이후)",
-    "개인 레슨||온라인/화상 레슨||무관",
-  ];
-  final List<String> listToExclude = const [
-    "미취학 아동",
-    "초등학생",
-    "중학생",
-    "고등학생",
-    "자바 스크립트",
-    "javascipt",
-    "swift",
-    "kotlin",
-    "스위프트",
-    "코틀린"
-  ];
+  final p;
+  final delay;
+  final timeout;
+  final List<String> listToIncludeAlways;
+  final List<String> listToInclude;
+  final List<String> listToExclude;
 
+  MyCrawller(
+      {required this.listToIncludeAlways,
+      required this.listToInclude,
+      required this.listToExclude})
+      : this.p = PuppeteerUtil(),
+        this.delay = const Duration(milliseconds: 100),
+        this.timeout = Duration(seconds: 20);
   Future<void> start() async {
     await p.openBrowser(
       () async {
