@@ -4,17 +4,21 @@ import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 
 class MyCard extends StatelessWidget {
-  final String title;
-  final List<Widget> contents;
-  final Widget? rightButton;
-  final Widget? bottomButton;
-  const MyCard(
-      {Key? key,
-      required this.title,
-      required this.contents,
-      this.rightButton,
-      this.bottomButton})
-      : super(key: key);
+  ScrollController scrollController;
+  String title;
+  List<Widget> contents;
+  Widget? rightButton;
+  Widget? bottomButton;
+
+  MyCard({
+    Key? key,
+    required this.title,
+    required this.contents,
+    this.rightButton,
+    this.bottomButton,
+    ScrollController? scrollController,
+  })  : this.scrollController = scrollController ?? ScrollController(),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +46,19 @@ class MyCard extends StatelessWidget {
             children: [
               cardTitle(title),
               const SizedBox(height: 10),
-              ...contents,
-              ...bottomButtonList,
+              SizedBox(
+                height: 200,
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ...contents,
+                      ...bottomButtonList,
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),

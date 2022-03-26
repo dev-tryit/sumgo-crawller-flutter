@@ -1,9 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
+import 'package:sumgo_crawller_flutter/repository/AnalysisItemRepository.dart';
 
 class MyChart extends StatefulWidget {
-  MyChart({Key? key}) : super(key: key);
+  AnalysisItem analysisItem;
+  MyChart(this.analysisItem, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => MyChartState();

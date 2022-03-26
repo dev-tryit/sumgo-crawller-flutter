@@ -52,11 +52,19 @@ class _KeywordAnalysisPageState extends KDHState<KeywordAnalysisPage,
   }
 
   @override
-  Future<void> afterBuild() async {}
+  Future<void> afterBuild() async {
+    print('afterBuild test');
+    c.scrollController.animateTo(
+      c.scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.ease,
+    );
+  }
 }
 
 class KeywordAnalysisPageComponent
     extends KDHComponent<_KeywordAnalysisPageState> {
+  final scrollController = ScrollController();
 
   KeywordAnalysisPageComponent(_KeywordAnalysisPageState state) : super(state);
 
@@ -67,6 +75,7 @@ class KeywordAnalysisPageComponent
         children: [
           const SizedBox(height: 60),
           MyCard(
+            scrollController: scrollController,
             title: "키워드 분류",
             rightButton: MyRedButton("생성하기",
                 onPressed: () => showCreateItemBottomSheet(s)),
@@ -77,12 +86,14 @@ class KeywordAnalysisPageComponent
                     ))
                 .toList(),
           ),
-          MyCard(title: "연령 분석", contents: [
-            MyChart(),
-          ]),
-          MyCard(title: "연령 분석", contents: [
-            MyChart(),
-          ]),
+          ...(s.analysisItemList.isNotEmpty
+              ? [
+                  MyCard(
+                    title: s.analysisItemList[0].title ?? "",
+                    contents: [MyChart(s.analysisItemList[0])],
+                  )
+                ]
+              : []),
         ],
       ),
     );
@@ -126,6 +137,7 @@ class KeywordAnalysisPageComponent
         titleController.text.trim(),
         keywordController.text.trim(),
         setErrorMessage,
+        scrollController,
       ),
     );
   }
@@ -145,7 +157,10 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
   }
 
   void addAnalysisItem(
-      String title, String keyword, void Function(String errorMessage) setErrorMessage) async {
+      String title,
+      String keyword,
+      void Function(String errorMessage) setErrorMessage,
+      ScrollController scrollController) async {
     String? errorMessage = AnalysisItem.getErrorMessageForAdd(title, keyword);
     if (errorMessage != null) {
       setErrorMessage(errorMessage);
@@ -167,8 +182,8 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
     MyComponents.snackBar(context, "생성되었습니다");
   }
 
-  Future<void> deleteAnalysisItem(
-      BuildContext context, AnalysisItem item, KeywrodAnalysisListTile myListTile) async {
+  Future<void> deleteAnalysisItem(BuildContext context, AnalysisItem item,
+      KeywrodAnalysisListTile myListTile) async {
     final result = await showOkCancelAlertDialog(
       context: context,
       title: "알림",
@@ -178,7 +193,8 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
     );
     if (result == OkCancelResult.ok) {
       if (myListTile.animateController != null) {
-        myListTile.animateController!.duration = const Duration(milliseconds: 100);
+        myListTile.animateController!.duration =
+            const Duration(milliseconds: 100);
         await myListTile.animateController!.reverse(); //forward or reverse
       }
 
@@ -196,7 +212,8 @@ class KeywrodAnalysisListTile extends StatelessWidget {
   AnalysisItem item;
   KeywordAnalysisPageService s;
   AnimationController? animateController;
-  KeywrodAnalysisListTile({Key? key, required this.item, required this.s}) : super(key: key);
+  KeywrodAnalysisListTile({Key? key, required this.item, required this.s})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
+import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/MediaQueryUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 
@@ -64,7 +65,6 @@ abstract class KDHState<TargetWidget extends StatefulWidget, COMPONENT, SERVICE>
 
   @override
   Widget build(BuildContext context) {
-    // LogUtil.debug("super.build");
     screenSize = MediaQueryUtil.getScreenSize(context);
 
     bool existWidgetToBuild = widgetToBuild != null;
@@ -105,9 +105,10 @@ abstract class KDHState<TargetWidget extends StatefulWidget, COMPONENT, SERVICE>
 
     await onLoad();
 
-    mustRebuild();
+    //build할 때, afterBuild 불리도록 작업.
+    WidgetsBinding.instance?.addPostFrameCallback((_) => afterBuild());
 
-    await afterBuild();
+    mustRebuild();
   }
 
   Future<void> onLoad();
