@@ -8,7 +8,8 @@ class RemovalCondition extends WithDocId {
   String? content;
   String? typeDisplay;
 
-  RemovalCondition({required this.type, required this.content, required this.typeDisplay})
+  RemovalCondition(
+      {required this.type, required this.content, required this.typeDisplay})
       : super(documentId: DateTime.now().microsecondsSinceEpoch);
 
   RemovalCondition.empty();
@@ -34,7 +35,8 @@ class RemovalCondition extends WithDocId {
     };
   }
 
-  static String? getErrorMessageForAdd(String content, String type, String typeDisplay) {
+  static String? getErrorMessageForAdd(
+      String content, String type, String typeDisplay) {
     if (content.isEmpty) return '내용을 입력해주세요';
     if (type.isEmpty || typeDisplay.isEmpty) return '정리 타입을 선택해주세요';
     if (RemovalType.values.where((element) => element.value == type).isEmpty) {
@@ -93,11 +95,9 @@ class RemovalConditionRepository {
   Future<List<RemovalCondition>> getList() async {
     return await _.getList();
   }
-  
+
   Future<List<RemovalCondition>> getListByType({required String type}) async {
-    return await _.getListByField(
-      key: "type",
-      value: type,
-    );
+    //TODO:useSort :true일때, 정식 파이어베이스에서 에러남.
+    return await _.getListByField(key: "type", value: type, useSort: false);
   }
 }

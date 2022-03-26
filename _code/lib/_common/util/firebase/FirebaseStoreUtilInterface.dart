@@ -37,8 +37,12 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
       (map == null || map.isEmpty) ? null : fromMap(map);
 
   Future<Type?> getOneByField(
-      {required String key, required String value}) async {
-    List<Type?> list = await getListByField(key: key, value: value);
+      {required String key,
+      required String value,
+      bool useSort = true,
+      bool descending = false}) async {
+    List<Type?> list = await getListByField(
+        key: key, value: value, useSort: useSort, descending: descending);
     return list.isNotEmpty ? list.first : null;
   }
 
@@ -79,9 +83,15 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
       required String value,
       bool useSort = true,
       bool descending = false}) async {
-    return getListFromDocs(await queryToList(cRef()
-        .where(key, isEqualTo: value)
-        .orderBy(key, descending: descending)));
+    if (useSort) {
+      return getListFromDocs(await queryToList(cRef()
+          .where(key, isEqualTo: value)
+          .orderBy(key, descending: descending)));
+    }
+    {
+      return getListFromDocs(await queryToList(cRef()
+          .where(key, isEqualTo: value)));
+    }
   }
 
   Future<Type?> saveByDocumentId(

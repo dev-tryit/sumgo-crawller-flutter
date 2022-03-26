@@ -8,6 +8,8 @@ import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/AnimationUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/repository/RemovalConditionRepository.dart';
 import 'package:sumgo_crawller_flutter/util/MyBottomSheetUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
@@ -131,6 +133,7 @@ class RequestRemovalPageService
   }
 
   Future<void> removeRequests() async {
+    await MyComponents.showLoadingDialog(context);
     final List<String> listToIncludeAlways = (await RemovalConditionRepository()
             .getListByType(type: RemovalType.best.value))
         .map((e) => e.content ?? "")
@@ -143,6 +146,14 @@ class RequestRemovalPageService
             .getListByType(type: RemovalType.exclude.value))
         .map((e) => e.content ?? "")
         .toList();
+    await MyComponents.dismissLoadingDialog();
+
+    if (PlatformUtil.isWeb()) {
+      MyComponents.snackBar(context, "웹에서는 크롤링할 수 없습니다. 해당 앱을 윈도우에 다운로드해주세요");
+      LogUtil.debug(
+          "listToIncludeAlways: $listToIncludeAlways, listToInclude: $listToInclude, listToExclude: $listToExclude, ");
+      return;
+    }
 
     try {
       await MyComponents.showLoadingDialog(context);
