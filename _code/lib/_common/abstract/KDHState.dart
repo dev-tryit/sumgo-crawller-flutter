@@ -100,7 +100,6 @@ abstract class KDHState<TargetWidget extends StatefulWidget, COMPONENT, SERVICE>
 
   Future<void> _prepareRebuild() async {
     // LogUtil.debug("super.prepareRebuild");
-
     if (_widgetListToGetSize.isNotEmpty) {
       _getSizeOfWidgetList();
     }
@@ -121,7 +120,6 @@ abstract class KDHState<TargetWidget extends StatefulWidget, COMPONENT, SERVICE>
 
     mustRebuild();
   }
-
   Future<void> onLoad();
 
   //widgetToBuild를 채우고, rebuild();

@@ -9,25 +9,21 @@ import 'package:sumgo_crawller_flutter/_common/util/SizeUtil.dart';
 import 'package:sumgo_crawller_flutter/repository/AnalysisItemRepository.dart';
 
 class MyChart extends StatefulWidget {
-  AnalysisItem analysisItem;
-  MyChart(this.analysisItem, {Key? key}) : super(key: key);
+  final AnalysisItem analysisItem;
+  const MyChart(this.analysisItem, {Key? key}) : super(key: key);
 
   @override
   MyChartState createState() => MyChartState();
 }
 
-class MyChartState extends KDHState<MyChart, dynamic, dynamic> {
+class MyChartState extends State<MyChart> {
   late final List<PieChartSectionData> sectionDataList;
   int touchedIndex = -1;
 
   final gridViewCount = 4;
-  double get gridHeight => (sectionDataList.length / gridViewCount);
 
   @override
-  bool isPage() => false;
-
-  @override
-  Future<void> onLoad() async {
+  void initState() {
     // keyword 바탕으로 KeywordItem 모두 갖고오기.
     // keywordItem을 바탕으로 {키워드,퍼센트} 만들기
     /*
@@ -60,35 +56,29 @@ class MyChartState extends KDHState<MyChart, dynamic, dynamic> {
   }
 
   @override
-  void mustRebuild() {
-    widgetToBuild = () {
-      return AspectRatio(
-        aspectRatio: 1.3,
-        child: Column(
-          children: <Widget>[
-            const SizedBox(height: 20),
-            header(),
-            const SizedBox(height: 18),
-            Expanded(
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: chart(),
-              ),
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 1.3,
+      child: Column(
+        children: <Widget>[
+          const SizedBox(height: 20),
+          header(),
+          const SizedBox(height: 18),
+          Expanded(
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: chart(),
             ),
-          ],
-        ),
-      );
-    };
-    rebuild();
+          ),
+        ],
+      ),
+    );
   }
-
-  @override
-  Future<void> afterBuild() async {}
 
   Widget header() {
     return GridView.count(
       crossAxisCount: gridViewCount,
-      childAspectRatio: 1.1,
+      childAspectRatio: 2.3,
       shrinkWrap: true,
       children: sectionDataList
           .asMap()

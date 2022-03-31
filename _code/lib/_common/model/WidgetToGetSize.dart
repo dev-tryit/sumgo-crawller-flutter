@@ -3,7 +3,7 @@ import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/SizeUtil.dart';
 
 class WidgetToGetSize<T> {
-  Enum key;
+  dynamic key;
   late Widget Function() make;
   final _globalKey = GlobalKey();
   late Size size;
