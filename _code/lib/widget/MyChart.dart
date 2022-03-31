@@ -1,6 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
+import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
+import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/ColorUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/SizeUtil.dart';
@@ -14,21 +16,18 @@ class MyChart extends StatefulWidget {
   MyChartState createState() => MyChartState();
 }
 
-class MyChartState extends State<MyChart> {
-  bool isLoaded = false;
+class MyChartState extends KDHState<MyChart, dynamic, dynamic> {
   late final List<PieChartSectionData> sectionDataList;
   int touchedIndex = -1;
 
-  //TODO: 음... 사이즈를 미리 정하고, 그것으로 header를 계산하자.
-
-  final int gridViewCount = 3;
-  Size get size => SizeUtil.getSizeByContext(context);
-  double get itemHeight =>
-      size.height / (sectionDataList.length / gridViewCount);
-  double get itemWidth => size.width / gridViewCount;
+  final gridViewCount = 4;
+  double get gridHeight => (sectionDataList.length / gridViewCount);
 
   @override
-  void initState() {
+  bool isPage() => false;
+
+  @override
+  Future<void> onLoad() async {
     // keyword 바탕으로 KeywordItem 모두 갖고오기.
     // keywordItem을 바탕으로 {키워드,퍼센트} 만들기
     /*
@@ -58,41 +57,38 @@ class MyChartState extends State<MyChart> {
         showTitle: false,
       );
     }).toList();
-
-    WidgetsBinding.instance?.addPostFrameCallback((_) => afterBuild());
   }
 
   @override
-  Widget build(BuildContext context) {
-    return !isLoaded
-        ? Container(
-            alignment: Alignment.center,
-            child: const CircularProgressIndicator())
-        : AspectRatio(
-            aspectRatio: 1.3,
-            child: Column(
-              children: <Widget>[
-                const SizedBox(height: 20),
-                header(),
-                const SizedBox(height: 18),
-                Expanded(
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: chart(),
-                  ),
-                ),
-              ],
+  void mustRebuild() {
+    widgetToBuild = () {
+      return AspectRatio(
+        aspectRatio: 1.3,
+        child: Column(
+          children: <Widget>[
+            const SizedBox(height: 20),
+            header(),
+            const SizedBox(height: 18),
+            Expanded(
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: chart(),
+              ),
             ),
-          );
+          ],
+        ),
+      );
+    };
+    rebuild();
   }
 
+  @override
+  Future<void> afterBuild() async {}
+
   Widget header() {
-    var childAspectRatio = itemWidth / itemHeight;
-    print("size : $size");
-    print("childAspectRatio : $childAspectRatio, [$itemWidth,$itemHeight]");
     return GridView.count(
       crossAxisCount: gridViewCount,
-      childAspectRatio: childAspectRatio,
+      childAspectRatio: 1.1,
       shrinkWrap: true,
       children: sectionDataList
           .asMap()
@@ -133,12 +129,6 @@ class MyChartState extends State<MyChart> {
           centerSpaceRadius: 0,
           sections: sectionDataList),
     );
-  }
-
-  void afterBuild() {
-    isLoaded = true;
-
-    setState(() {});
   }
 
   // return List.generate(

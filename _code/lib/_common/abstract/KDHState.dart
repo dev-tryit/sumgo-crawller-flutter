@@ -21,14 +21,14 @@ abstract class KDHState<TargetWidget extends StatefulWidget, COMPONENT, SERVICE>
 
   bool isPage();
 
-  List<WidgetToGetSize> makeWidgetListToGetSize();
+  List<WidgetToGetSize> makeWidgetListToGetSize() => [];
 
-  COMPONENT makeComponent();
+  COMPONENT? makeComponent() => null;
 
-  SERVICE makeService();
+  SERVICE? makeService() => null;
 
   void rebuild({Function? afterBuild}) {
-    if(afterBuild != null) {
+    if (afterBuild != null) {
       //build 때, afterBuild 불리도록 요청.
       WidgetsBinding.instance?.addPostFrameCallback((_) => afterBuild());
     }
@@ -105,8 +105,14 @@ abstract class KDHState<TargetWidget extends StatefulWidget, COMPONENT, SERVICE>
       _getSizeOfWidgetList();
     }
 
-    c = makeComponent();
-    s = makeService();
+    var component = makeComponent();
+    if (component != null) {
+      c = component;
+    }
+    var service = makeService();
+    if (service != null) {
+      s = service;
+    }
 
     await onLoad();
 
