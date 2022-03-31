@@ -149,7 +149,7 @@ class RequestRemovalPageService
     await MyComponents.dismissLoadingDialog();
 
     if (PlatformUtil.isWeb()) {
-      MyComponents.snackBar(context, "웹에서는 크롤링할 수 없습니다. 해당 앱을 윈도우에 다운로드해주세요");
+      MyComponents.snackBar(context, "웹에서는 크롤링할 수 없습니다.\n해당 앱을 윈도우에 다운로드해주세요");
       LogUtil.debug(
           "listToIncludeAlways: $listToIncludeAlways, listToInclude: $listToInclude, listToExclude: $listToExclude, ");
       return;

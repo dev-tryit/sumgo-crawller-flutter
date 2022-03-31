@@ -5,13 +5,11 @@ import 'package:sumgo_crawller_flutter/_common/config/MyCustomScrollBehavior.dar
 import 'package:sumgo_crawller_flutter/_common/util/DesktopUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/page/LoadPage.dart';
-import 'package:sumgo_crawller_flutter/page/test/TestTabPage.dart';
 import 'package:sumgo_crawller_flutter/util/MyAuthUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 import 'package:sumgo_crawller_flutter/util/MyStoreUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyTheme.dart';
-
 import 'firebase_options.dart';
 
 Future<void> main() async {
