@@ -79,14 +79,15 @@ class KeywordAnalysisPageComponent
                     ))
                 .toList(),
           ),
-          ...(s.analysisItemList.isNotEmpty
-              ? [
-                  MyCard(
-                    title: s.analysisItemList[0].title ?? "",
-                    contents: [MyChart(s.analysisItemList[0])],
-                  )
-                ]
-              : []),
+          // ...(s.analysisItemList.isNotEmpty
+          //     ? [
+          //         MyCard(
+          //           title: s.analysisItemList[0].title ?? "",
+          //           useScroll: false,
+          //           contents: [MyChart(s.analysisItemList[0])],
+          //         )
+          //       ]
+          //     : []),
         ],
       ),
     );
@@ -234,7 +235,7 @@ class KeywrodAnalysisListTile extends StatelessWidget {
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 5),
           horizontalTitleGap: 6,
-          title: MyComponents.text(text: "${title} 분류"),
+          title: MyComponents.text(text: "$title 분류"),
           subtitle:
               Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis),
           dense: true,

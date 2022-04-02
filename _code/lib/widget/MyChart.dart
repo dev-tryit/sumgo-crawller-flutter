@@ -25,7 +25,7 @@ class MyChartState extends State<MyChart> {
 
   @override
   void initState() {
-    // TODO: keyword 바탕으로 KeywordItem 모두 갖고오기.
+    // TODO:keyword 바탕으로 KeywordItem 모두 갖고오기.
     // keywordItem을 바탕으로 {키워드,퍼센트} 만들기
     /*
     // [
@@ -78,11 +78,10 @@ class MyChartState extends State<MyChart> {
           const SizedBox(height: 20),
           header(),
           const SizedBox(height: 18),
-          Expanded(
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: chart(),
-            ),
+          SizedBox(
+            width: double.infinity,
+            height: 100,
+            child: chart(),
           ),
         ],
       ),
