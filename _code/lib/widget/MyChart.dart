@@ -17,14 +17,15 @@ class MyChart extends StatefulWidget {
 }
 
 class MyChartState extends State<MyChart> {
-  late final List<PieChartSectionData> sectionDataList;
+  List<PieChartSectionData> sectionDataList = [];
+  List<Color> colorList = [];
   int touchedIndex = -1;
 
-  final gridViewCount = 4;
+  final gridViewCount = 3;
 
   @override
   void initState() {
-    // keyword 바탕으로 KeywordItem 모두 갖고오기.
+    // TODO: keyword 바탕으로 KeywordItem 모두 갖고오기.
     // keywordItem을 바탕으로 {키워드,퍼센트} 만들기
     /*
     // [
@@ -44,19 +45,32 @@ class MyChartState extends State<MyChart> {
     //   ),
     // ];
     */
-
-    // 해당 맵으로 PieChartSectionData 만들기
-    sectionDataList = (widget.analysisItem.keywordList ?? []).map((keyword) {
-      return PieChartSectionData(
-        title: keyword,
-        color: ColorUtil.random(),
-        showTitle: false,
-      );
-    }).toList();
+    colorList = (widget.analysisItem.keywordList ?? [])
+        .map((e) => ColorUtil.random())
+        .toList();
   }
 
   @override
   Widget build(BuildContext context) {
+    sectionDataList = (widget.analysisItem.keywordList ?? [])
+        .asMap()
+        .map((i, keyword) {
+          final color = colorList[i];
+          final isTouched = touchedIndex == i;
+          return MapEntry(
+              i,
+              PieChartSectionData(
+                title: keyword,
+                color: color.withOpacity(isTouched ? 1.0 : 0.7),
+                showTitle: false,
+                borderSide: isTouched
+                    ? BorderSide(color: color, width: 6)
+                    : BorderSide(color: color.withOpacity(0)),
+              ));
+        })
+        .values
+        .toList();
+
     return AspectRatio(
       aspectRatio: 1.3,
       child: Column(
@@ -78,19 +92,22 @@ class MyChartState extends State<MyChart> {
   Widget header() {
     return GridView.count(
       crossAxisCount: gridViewCount,
-      childAspectRatio: 2.3,
+      childAspectRatio: 3.4,
       shrinkWrap: true,
       children: sectionDataList
           .asMap()
-          .map((i, sectionData) => MapEntry(
-              i,
-              Indicator(
-                color: const Color(0xff0293ee),
-                text: sectionData.title,
-                isSquare: false,
-                size: touchedIndex == 0 ? 18 : 16,
-                textColor: touchedIndex == 0 ? Colors.black : Colors.grey,
-              )))
+          .map((i, sectionData) {
+            final isTouched = touchedIndex == i;
+            return MapEntry(
+                i,
+                Indicator(
+                  color: sectionData.color.withOpacity(isTouched ? 1.0 : 0.7),
+                  text: sectionData.title,
+                  isSquare: false,
+                  size: isTouched ? 18 : 16,
+                  textColor: isTouched ? Colors.black : Colors.grey,
+                ));
+          })
           .values
           .toList(),
     );
@@ -108,7 +125,6 @@ class MyChartState extends State<MyChart> {
               return;
             }
             touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
-            LogUtil.info("touch");
             setState(() {});
           }),
           startDegreeOffset: 180,
@@ -120,84 +136,6 @@ class MyChartState extends State<MyChart> {
           sections: sectionDataList),
     );
   }
-
-  // return List.generate(
-  //   4,
-  //   (i) {
-  //     final isTouched = i == touchedIndex;
-  //     final opacity = isTouched ? 1.0 : 0.6;
-
-  //     const color0 = Color(0xff0293ee);
-  //     const color1 = Color(0xfff8b250);
-  //     const color2 = Color(0xff845bef);
-  //     const color3 = Color(0xff13d38e);
-
-  //     switch (i) {
-  //       case 0:
-  //         return PieChartSectionData(
-  //           color: color0.withOpacity(opacity),
-  //           value: 25,
-  //           title: '',
-  //           radius: 80,
-  //           titleStyle: const TextStyle(
-  //               fontSize: 18,
-  //               fontWeight: FontWeight.bold,
-  //               color: Color(0xff044d7c)),
-  //           titlePositionPercentageOffset: 0.55,
-  //           borderSide: isTouched
-  //               ? BorderSide(color: color0, width: 6)
-  //               : BorderSide(color: color0.withOpacity(0)),
-  //         );
-  //       case 1:
-  //         return PieChartSectionData(
-  //           color: color1.withOpacity(opacity),
-  //           value: 25,
-  //           title: '',
-  //           radius: 65,
-  //           titleStyle: const TextStyle(
-  //               fontSize: 18,
-  //               fontWeight: FontWeight.bold,
-  //               color: Color(0xff90672d)),
-  //           titlePositionPercentageOffset: 0.55,
-  //           borderSide: isTouched
-  //               ? BorderSide(color: color1, width: 6)
-  //               : BorderSide(color: color2.withOpacity(0)),
-  //         );
-  //       case 2:
-  //         return PieChartSectionData(
-  //           color: color2.withOpacity(opacity),
-  //           value: 25,
-  //           title: '',
-  //           radius: 60,
-  //           titleStyle: const TextStyle(
-  //               fontSize: 18,
-  //               fontWeight: FontWeight.bold,
-  //               color: Color(0xff4c3788)),
-  //           titlePositionPercentageOffset: 0.6,
-  //           borderSide: isTouched
-  //               ? BorderSide(color: color2, width: 6)
-  //               : BorderSide(color: color2.withOpacity(0)),
-  //         );
-  //       case 3:
-  //         return PieChartSectionData(
-  //           color: color3.withOpacity(opacity),
-  //           value: 25,
-  //           title: '',
-  //           radius: 100,
-  //           titleStyle: const TextStyle(
-  //               fontSize: 18,
-  //               fontWeight: FontWeight.bold,
-  //               color: Color(0xff0c7f55)),
-  //           titlePositionPercentageOffset: 0.55,
-  //           borderSide: isTouched
-  //               ? BorderSide(color: color3, width: 6)
-  //               : BorderSide(color: color2.withOpacity(0)),
-  //         );
-  //       default:
-  //         throw Error();
-  //     }
-  //   },
-  // );
 }
 
 class Indicator extends StatelessWidget {
