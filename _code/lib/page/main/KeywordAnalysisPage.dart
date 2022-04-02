@@ -146,7 +146,6 @@ class KeywordAnalysisPageService extends KDHService<_KeywordAnalysisPageState,
 
   Future<void> resetAnalysisItemList() async {
     analysisItemList = await AnalysisItemRepository().getList();
-    LogUtil.info("analysisItemList ${analysisItemList}");
   }
 
   void addAnalysisItem(

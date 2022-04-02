@@ -39,24 +39,24 @@ class MyAuthUtil {
   }
 
   Future<void> checkIsRegistered() async {
-    LogUtil.debug("checkIsRegistered 1");
+    // LogUtil.debug("checkIsRegistered 1");
     dynamic user = await _firebaseAuthUtilInterface.getUser();
-    LogUtil.debug("checkIsRegistered 2");
+    // LogUtil.debug("checkIsRegistered 2");
 
     if (user != null && user.displayName != _nameRegistered) {
-      LogUtil.debug("checkIsRegistered 3");
+      // LogUtil.debug("checkIsRegistered 3");
       await logout();
-      LogUtil.debug("checkIsRegistered 4");
+      // LogUtil.debug("checkIsRegistered 4");
     }
   }
 
   Future<bool> isLogin() async {
-    LogUtil.debug("isLogin 1");
+    // LogUtil.debug("isLogin 1");
     await checkIsRegistered();
-    LogUtil.debug("isLogin 2");
+    // LogUtil.debug("isLogin 2");
 
     dynamic user = await _firebaseAuthUtilInterface.getUser();
-    LogUtil.debug("user : ${user}");
+    // LogUtil.debug("user : ${user}");
 
     return (await _firebaseAuthUtilInterface.getUser() != null);
   }
