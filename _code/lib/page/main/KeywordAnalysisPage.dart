@@ -80,15 +80,11 @@ class KeywordAnalysisPageComponent
                     ))
                 .toList(),
           ),
-          ...(s.analysisItemList.isNotEmpty
-              ? [
-                  MyCard(
-                    title: s.analysisItemList[0].title ?? "",
-                    useScroll: false,
-                    contents: [MyChart(s.analysisItemList[0])],
-                  )
-                ]
-              : []),
+          ...(s.analysisItemList.map((e) => MyCard(
+                title: e.title ?? "",
+                useScroll: false,
+                contents: [MyChart(e)],
+              ))).toList(),
         ],
       ),
     );

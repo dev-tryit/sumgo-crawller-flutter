@@ -1,3 +1,4 @@
+import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
@@ -87,26 +88,24 @@ class MyChartState extends State<MyChart> {
   }
 
   Widget header() {
-    return GridView.count(
-      crossAxisCount: gridViewCount,
-      childAspectRatio: 3.4,
+    return DynamicHeightGridView(
       shrinkWrap: true,
-      children: sectionDataList
-          .asMap()
-          .map((i, sectionData) {
-            final isTouched = touchedIndex == i;
-            return MapEntry(
-                i,
-                Indicator(
-                  color: sectionData.color.withOpacity(isTouched ? 1.0 : 0.7),
-                  text: sectionData.title,
-                  isSquare: false,
-                  size: isTouched ? 18 : 16,
-                  textColor: isTouched ? Colors.black : Colors.grey,
-                ));
-          })
-          .values
-          .toList(),
+      itemCount: sectionDataList.length,
+      crossAxisCount: gridViewCount,
+      crossAxisSpacing: 10,
+      mainAxisSpacing: 20,
+      builder: (c, i) {
+        final sectionData = sectionDataList[i];
+
+        final isTouched = touchedIndex == i;
+        return Indicator(
+          color: sectionData.color.withOpacity(isTouched ? 1.0 : 0.7),
+          text: sectionData.title,
+          isSquare: false,
+          size: isTouched ? 18 : 16,
+          textColor: isTouched ? Colors.black : Colors.grey,
+        );
+      },
     );
   }
 
@@ -154,7 +153,7 @@ class Indicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: <Widget>[
+      children: [
         Container(
           width: size,
           height: size,
@@ -163,13 +162,16 @@ class Indicator extends StatelessWidget {
             color: color,
           ),
         ),
-        const SizedBox(
-          width: 4,
-        ),
-        Text(
-          text,
-          style: TextStyle(
-              fontSize: 10, fontWeight: FontWeight.bold, color: textColor),
+        const SizedBox(width: 4),
+        Expanded(
+          child: Text(
+            text,
+            style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+                color: textColor,
+                overflow: TextOverflow.ellipsis),
+          ),
         )
       ],
     );
