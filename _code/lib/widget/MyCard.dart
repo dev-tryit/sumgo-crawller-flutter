@@ -10,6 +10,7 @@ class MyCard extends StatelessWidget {
   Widget? rightButton;
   Widget? bottomButton;
   bool useScroll;
+  double? contentHeight;
 
   MyCard({
     Key? key,
@@ -18,6 +19,7 @@ class MyCard extends StatelessWidget {
     this.rightButton,
     this.bottomButton,
     this.useScroll = true,
+    this.contentHeight,
     ScrollController? scrollController,
   })  : this.scrollController = scrollController ?? ScrollController(),
         super(key: key);
@@ -27,14 +29,12 @@ class MyCard extends StatelessWidget {
     List bottomButtonList = [];
     if (bottomButton != null) bottomButtonList.add(bottomButton);
 
-    Widget child = IntrinsicHeight(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ...contents,
-          ...bottomButtonList,
-        ],
-      ),
+    Widget child = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ...contents,
+        ...bottomButtonList,
+      ],
     );
 
     if (useScroll) {
@@ -60,18 +60,18 @@ class MyCard extends StatelessWidget {
             const EdgeInsets.only(left: 14, right: 14, top: 24, bottom: 30),
         child: FractionallySizedBox(
           widthFactor: 1.0,
-          child: IntrinsicHeight(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                cardTitle(title),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: 200,
-                  child: child,
-                ),
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              cardTitle(title),
+              const SizedBox(height: 10),
+              contentHeight != null
+                  ? SizedBox(
+                      height: contentHeight,
+                      child: child,
+                    )
+                  : child,
+            ],
           ),
         ),
       ),

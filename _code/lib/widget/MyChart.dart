@@ -63,6 +63,7 @@ class MyChartState extends State<MyChart> {
                 title: keyword,
                 color: color.withOpacity(isTouched ? 1.0 : 0.7),
                 showTitle: false,
+                radius: 50,
                 borderSide: isTouched
                     ? BorderSide(color: color, width: 6)
                     : BorderSide(color: color.withOpacity(0)),
@@ -71,20 +72,17 @@ class MyChartState extends State<MyChart> {
         .values
         .toList();
 
-    return AspectRatio(
-      aspectRatio: 1.3,
-      child: Column(
-        children: <Widget>[
-          const SizedBox(height: 20),
-          header(),
-          const SizedBox(height: 18),
-          SizedBox(
-            width: double.infinity,
-            height: 100,
-            child: chart(),
-          ),
-        ],
-      ),
+    return Column(
+      children: <Widget>[
+        const SizedBox(height: 20),
+        header(),
+        const SizedBox(height: 18),
+        SizedBox(
+          width: 100,
+          height: 100,
+          child: chart(),
+        ),
+      ],
     );
   }
 

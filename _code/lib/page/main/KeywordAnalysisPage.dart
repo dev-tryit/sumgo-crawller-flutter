@@ -72,6 +72,7 @@ class KeywordAnalysisPageComponent
             title: "키워드 분류",
             rightButton: MyRedButton("생성하기",
                 onPressed: () => showCreateItemBottomSheet(s)),
+            contentHeight: 200,
             contents: s.analysisItemList
                 .map((e) => KeywrodAnalysisListTile(
                       item: e,
@@ -79,15 +80,15 @@ class KeywordAnalysisPageComponent
                     ))
                 .toList(),
           ),
-          // ...(s.analysisItemList.isNotEmpty
-          //     ? [
-          //         MyCard(
-          //           title: s.analysisItemList[0].title ?? "",
-          //           useScroll: false,
-          //           contents: [MyChart(s.analysisItemList[0])],
-          //         )
-          //       ]
-          //     : []),
+          ...(s.analysisItemList.isNotEmpty
+              ? [
+                  MyCard(
+                    title: s.analysisItemList[0].title ?? "",
+                    useScroll: false,
+                    contents: [MyChart(s.analysisItemList[0])],
+                  )
+                ]
+              : []),
         ],
       ),
     );
