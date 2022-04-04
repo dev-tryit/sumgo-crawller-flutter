@@ -56,7 +56,7 @@ class UserRepository {
     }
 
     User tempUser = user!;
-    var allowedUidList = tempUser.allowedUidList!;
+    var allowedUidList = List.from(tempUser.allowedUidList!);
     if(!allowedUidList.contains(uid)) {
       allowedUidList.add(uid);
     }
@@ -71,7 +71,7 @@ class UserRepository {
       return;
     }
 
-    var allowedUidList = user.allowedUidList!;
+    var allowedUidList = List.from(user.allowedUidList!);
     if(allowedUidList.contains(uid)) {
       allowedUidList.remove(uid);
     }
