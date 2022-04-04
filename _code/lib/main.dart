@@ -2,14 +2,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:sumgo_crawller_flutter/Setting.dart';
 import 'package:sumgo_crawller_flutter/_common/config/MyCustomScrollBehavior.dart';
+import 'package:sumgo_crawller_flutter/_common/util/AuthUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/DesktopUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/page/LoadPage.dart';
-import 'package:sumgo_crawller_flutter/util/MyAuthUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 import 'package:sumgo_crawller_flutter/util/MyStoreUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyTheme.dart';
+
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -23,7 +24,7 @@ Future<void> main() async {
 
   await MyFonts.init();
   await MyStoreUtil.init();
-  await MyAuthUtil().init();
+  await AuthUtil().init();
 
   if (PlatformUtil.isComputer()) {
     DesktopUtil.setSize(

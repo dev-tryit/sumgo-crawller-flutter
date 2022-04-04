@@ -4,18 +4,19 @@ import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseAuthUtilInterface.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firebase/FirebaseAuthSingleton.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firedart/FiredartAuthSingleton.dart';
-import 'package:sumgo_crawller_flutter/_common/util/firebase/repository/UserRepository.dart';
 
 enum NeededAuthBehavior { NEED_LOGIN, NEED_VERIFICATION, NEED_REGISTRATION }
 
-class MyAuthUtil {
-  static final MyAuthUtil _singleton = MyAuthUtil._internal();
+class AuthUtil {
+  String? email;
 
-  factory MyAuthUtil() {
+  static final AuthUtil _singleton = AuthUtil._internal();
+
+  factory AuthUtil() {
     return _singleton;
   }
 
-  MyAuthUtil._internal();
+  AuthUtil._internal();
 
   /*
   무료로 이메일 인증을 사용하기 위한 정책.
@@ -105,6 +106,7 @@ class MyAuthUtil {
   Future<void> loginWithEmail(String email, String password) async {
     await _firebaseAuthUtilInterface.loginWithEmail(
         email: email, password: password);
+    this.email = email;
   }
 
   Future<void> delete() async {
@@ -117,6 +119,7 @@ class MyAuthUtil {
         email: email, password: password);
     await _firebaseAuthUtilInterface.updateProfile(
         displayName: _nameRegistered);
+    this.email = email;
   }
 
 

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
-import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/AuthUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
 import 'package:sumgo_crawller_flutter/page/auth/AuthPage.dart';
 import 'package:sumgo_crawller_flutter/page/main/MainLayout.dart';
-import 'package:sumgo_crawller_flutter/util/MyAuthUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 
@@ -73,6 +71,6 @@ class LoadPageService extends KDHService<_LoadPageState, LoadPageComponent> {
   Future<void> moveNextPage() async {
     await Future.delayed(const Duration(seconds: 1));
     PageUtil.movePage(
-        context, await MyAuthUtil().isLogin() ? MainLayout() : AuthPage());
+        context, await AuthUtil().isLogin() ? MainLayout() : AuthPage());
   }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.dart';
+import 'package:sumgo_crawller_flutter/_common/util/AuthUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/StringUtil.dart';
 import 'package:sumgo_crawller_flutter/page/main/MainLayout.dart';
-import 'package:sumgo_crawller_flutter/util/MyAuthUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 
 class AuthStateManager<COMPONENT> {
@@ -38,7 +38,7 @@ class AuthStateSendEmail<COMPONENT> implements AuthState<COMPONENT> {
 
     MyComponents.showLoadingDialog(context);
     NeededAuthBehavior neededAuthBehavior =
-        await MyAuthUtil().sendEmailVerification(email: data['email']);
+        await AuthUtil().sendEmailVerification(email: data['email']);
     LogUtil.info("AuthStateSendEmail handle neededAuthBehavior:$neededAuthBehavior");
     if (neededAuthBehavior == NeededAuthBehavior.NEED_LOGIN) {
       return AuthStateLogin<COMPONENT>(c);
@@ -63,9 +63,9 @@ class AuthStateNeedVerification<COMPONENT> implements AuthState<COMPONENT> {
     BuildContext context = data['context'];
 
     MyComponents.showLoadingDialog(context);
-    await MyAuthUtil().loginWithEmailDefaultPassword(data['email']);
-    if (await MyAuthUtil().emailIsVerified()) {
-      await MyAuthUtil().delete();
+    await AuthUtil().loginWithEmailDefaultPassword(data['email']);
+    if (await AuthUtil().emailIsVerified()) {
+      await AuthUtil().delete();
       MyComponents.dismissLoadingDialog();
       return AuthStateRegistration<COMPONENT>(c);
     } else {
@@ -113,7 +113,7 @@ class AuthStateRegistration<COMPONENT> implements AuthState<COMPONENT> {
     MyComponents.showLoadingDialog(context);
     //다른 안내는 파이어베이스에서 해준다.
     try {
-      await MyAuthUtil().registerWithEmail(email, password);
+      await AuthUtil().registerWithEmail(email, password);
     } on CommonException catch (e) {
       MyComponents.dismissLoadingDialog();
       MyComponents.toastError(context, e.message);
@@ -153,7 +153,7 @@ class AuthStateLogin<COMPONENT> implements AuthState<COMPONENT> {
     MyComponents.showLoadingDialog(context);
     //다른 안내는 파이어베이스에서 해준다.
     try {
-      await MyAuthUtil().loginWithEmail(email, password);
+      await AuthUtil().loginWithEmail(email, password);
     } on CommonException catch (e) {
       MyComponents.dismissLoadingDialog();
       MyComponents.toastError(context, e.message);
