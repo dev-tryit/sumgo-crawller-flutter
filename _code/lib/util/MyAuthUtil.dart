@@ -94,7 +94,6 @@ class MyAuthUtil {
   }
 
   Future<void> logout() async {
-    await removeAllowedUid();
     await _firebaseAuthUtilInterface.logout();
   }
 
@@ -106,8 +105,6 @@ class MyAuthUtil {
   Future<void> loginWithEmail(String email, String password) async {
     await _firebaseAuthUtilInterface.loginWithEmail(
         email: email, password: password);
-
-    await addAllowedUid(email);
   }
 
   Future<void> delete() async {
@@ -120,44 +117,8 @@ class MyAuthUtil {
         email: email, password: password);
     await _firebaseAuthUtilInterface.updateProfile(
         displayName: _nameRegistered);
-
-    await addAllowedUid(email);
   }
 
-  Future<void> addAllowedUid(String email) async {
-    dynamic user = await _firebaseAuthUtilInterface.getUser();
-    if (user == null) {
-      LogUtil.error("해당 유저가 없어 addAllowedUid를 할 수 없습니다.");
-      return;
-    }
-
-    String uid;
-    try{
-      uid = user.uid;
-    }
-    catch(e){
-      uid = user.id;
-    }
-    await UserRepository().addAllowedUid(email: email, uid: uid);
-  }
-
-  Future<void> removeAllowedUid() async {
-    dynamic user = await _firebaseAuthUtilInterface.getUser();
-    if (user == null) {
-      LogUtil.error("해당 유저가 없어 removeAllowedUid를 할 수 없습니다.");
-      return;
-    }
-
-    String uid;
-    try{
-      uid = user.uid;
-    }
-    catch(e){
-      uid = user.id;
-    }
-    String email = user.email ?? "";
-    await UserRepository().removeAllowedUid(email: email, uid: uid );
-  }
 
   Future<bool> emailIsVerified() async {
     return ((await _firebaseAuthUtilInterface.getUser())?.emailVerified ??
