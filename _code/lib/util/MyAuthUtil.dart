@@ -138,7 +138,7 @@ class MyAuthUtil {
     catch(e){
       uid = user.id;
     }
-    await UserRepository().addAllowedUid(email: email, uid: user.uid ?? "");
+    await UserRepository().addAllowedUid(email: email, uid: uid);
   }
 
   Future<void> removeAllowedUid() async {
@@ -155,7 +155,8 @@ class MyAuthUtil {
     catch(e){
       uid = user.id;
     }
-    await UserRepository().removeAllowedUid(email: user.email ?? "", uid: uid ?? "");
+    String email = user.email ?? "";
+    await UserRepository().removeAllowedUid(email: email, uid: uid );
   }
 
   Future<bool> emailIsVerified() async {
