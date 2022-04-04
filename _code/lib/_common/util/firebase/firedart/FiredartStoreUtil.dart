@@ -11,7 +11,10 @@ class FiredartStoreUtil<Type extends WithDocId>
       required Type Function(Map<String, dynamic> map) fromMap,
       required Map<String, dynamic> Function(Type instance) toMap})
       : super(collectionName: collectionName, fromMap: fromMap, toMap: toMap) {
-    Firestore.initialize(DefaultFirebaseOptions.web.projectId);
+    try{
+      Firestore.initialize(DefaultFirebaseOptions.web.projectId);
+    }
+    catch(pass){}
   }
 
   @override
