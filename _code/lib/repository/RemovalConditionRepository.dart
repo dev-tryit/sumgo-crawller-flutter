@@ -97,7 +97,6 @@ class RemovalConditionRepository {
   }
 
   Future<List<RemovalCondition>> getListByType({required String type}) async {
-    //TODO:useSort :true일때, 정식 파이어베이스에서 에러남.
-    return await _.getListByField(key: "type", value: type, useSort: false);
+    return await _.getListByField(key: "type", value: type);
   }
 }

@@ -63,17 +63,28 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
 
   Map<String, dynamic> dSnapshotToMap(dSnapshot);
 
-  List<Type> getListFromDocs(List docs) {
-    return List.from(docs
+  List<Type> getListFromDocs(List docs,
+      {bool useSort = true, bool descending = false}) {
+    List<Type> typeList = List.from(docs
         .map((e) => applyInstance(dSnapshotToMap(e)))
         .where((e) => e != null)
         .toList());
+
+    if (useSort) {
+      typeList.sort((a, b) => (((a.documentId ?? 0) < (b.documentId ?? 0))
+          ? (descending ? 1 : 0)
+          : (descending ? 0 : 1)));
+    }
+
+    return typeList;
   }
 
   Future<List> cRefToList();
 
-  Future<List<Type>> getList() async {
-    return getListFromDocs(await cRefToList());
+  Future<List<Type>> getList(
+      {bool useSort = true, bool descending = false}) async {
+    return getListFromDocs(await cRefToList(),
+        useSort: useSort, descending: descending);
   }
 
   Future<List> queryToList(query);
@@ -83,15 +94,11 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
       required String value,
       bool useSort = true,
       bool descending = false}) async {
-    if (useSort) {
-      return getListFromDocs(await queryToList(cRef()
-          .where(key, isEqualTo: value)
-          .orderBy(key, descending: descending)));
-    }
-    {
-      return getListFromDocs(await queryToList(cRef()
-          .where(key, isEqualTo: value)));
-    }
+    return getListFromDocs(
+      await queryToList(cRef().where(key, isEqualTo: value)),
+      useSort: useSort,
+      descending: descending,
+    );
   }
 
   Future<Type?> saveByDocumentId(

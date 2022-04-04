@@ -1,58 +1,65 @@
+import 'dart:async';
+
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
+import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
+import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/ColorUtil.dart';
-import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
-import 'package:sumgo_crawller_flutter/_common/util/SizeUtil.dart';
 import 'package:sumgo_crawller_flutter/repository/AnalysisItemRepository.dart';
+import 'package:sumgo_crawller_flutter/repository/KeywordItemRepository.dart';
 
 class MyChart extends StatefulWidget {
   final AnalysisItem analysisItem;
   const MyChart(this.analysisItem, {Key? key}) : super(key: key);
 
   @override
-  MyChartState createState() => MyChartState();
+  _MyChartState createState() => _MyChartState();
 }
 
-class MyChartState extends State<MyChart> {
+class _MyChartState
+    extends KDHState<MyChart, MyChartComponent, MyChartService> {
+  @override
+  bool isPage() => false;
+
+  @override
+  makeComponent() => MyChartComponent(this);
+
+  @override
+  makeService() => MyChartService(this, c);
+
+  @override
+  List<WidgetToGetSize> makeWidgetListToGetSize() => [];
+
+  @override
+  Future<void> onLoad() async {
+    await s.onLoad(widget);
+  }
+
+  @override
+  void mustRebuild() {
+    widgetToBuild = () => c.body(s, widget);
+    rebuild();
+  }
+
+  @override
+  Future<void> afterBuild() async {}
+}
+
+class MyChartComponent extends KDHComponent<_MyChartState> {
   List<PieChartSectionData> sectionDataList = [];
   List<Color> colorList = [];
   int touchedIndex = -1;
 
   final gridViewCount = 3;
 
-  @override
-  void initState() {
-    // TODO:keyword 바탕으로 KeywordItem 모두 갖고오기.
-    // keywordItem을 바탕으로 {키워드,퍼센트} 만들기
-    /*
-    // [
-    //   PieChartSectionData(
-    //     color: color0.withOpacity(opacity),
-    //     value: 25,
-    //     title: '',
-    //     radius: 80,
-    //     titleStyle: const TextStyle(
-    //         fontSize: 18,
-    //         fontWeight: FontWeight.bold,
-    //         color: Color(0xff044d7c)),
-    //     titlePositionPercentageOffset: 0.55,
-    //     borderSide: isTouched
-    //         ? BorderSide(color: color0, width: 6)
-    //         : BorderSide(color: color0.withOpacity(0)),
-    //   ),
-    // ];
-    */
-    colorList = (widget.analysisItem.keywordList ?? [])
-        .map((e) => ColorUtil.random())
-        .toList();
-  }
+  final scrollController = ScrollController();
 
-  @override
-  Widget build(BuildContext context) {
+  MyChartComponent(_MyChartState state) : super(state);
+
+  Widget body(MyChartService s, MyChart widget) {
     sectionDataList = (widget.analysisItem.keywordList ?? [])
         .asMap()
         .map((i, keyword) {
@@ -121,7 +128,7 @@ class MyChartState extends State<MyChart> {
               return;
             }
             touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
-            setState(() {});
+            rebuild();
           }),
           startDegreeOffset: 180,
           borderData: FlBorderData(
@@ -131,6 +138,41 @@ class MyChartState extends State<MyChart> {
           centerSpaceRadius: 0,
           sections: sectionDataList),
     );
+  }
+}
+
+class MyChartService extends KDHService<_MyChartState, MyChartComponent> {
+  List<KeywordItem?> keywordItemList = [];
+  MyChartService(_MyChartState state, MyChartComponent c) : super(state, c);
+
+  Future<void> onLoad(MyChart widget) async {
+    keywordItemList = await Future.wait((widget.analysisItem.keywordList ?? [])
+        .map((keyword) =>
+            KeywordItemRepository().getKeywordItem(keyword: keyword)));
+
+    // keywordItem을 바탕으로 {키워드,퍼센트} 만들기
+    /*
+    // [
+    //   PieChartSectionData(
+    //     color: color0.withOpacity(opacity),
+    //     value: 25,
+    //     title: '',
+    //     radius: 80,
+    //     titleStyle: const TextStyle(
+    //         fontSize: 18,
+    //         fontWeight: FontWeight.bold,
+    //         color: Color(0xff044d7c)),
+    //     titlePositionPercentageOffset: 0.55,
+    //     borderSide: isTouched
+    //         ? BorderSide(color: color0, width: 6)
+    //         : BorderSide(color: color0.withOpacity(0)),
+    //   ),
+    // ];
+    */
+
+    c.colorList = (widget.analysisItem.keywordList ?? [])
+        .map((e) => ColorUtil.random())
+        .toList();
   }
 }
 

@@ -8,7 +8,6 @@ import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/AnimationUtil.dart';
-import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/repository/AnalysisItemRepository.dart';
 import 'package:sumgo_crawller_flutter/util/MyBottomSheetUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
