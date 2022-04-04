@@ -94,7 +94,7 @@ class MyChartComponent extends KDHComponent<_MyChartState> {
               ),
             ],
           )
-        : const SizedBox.shrink();
+        : Text("관련 데이터가 없습니다");
   }
 
   Widget header() {

@@ -213,7 +213,7 @@ class KeywrodAnalysisListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String title = item.title ?? "";
-    String subtitle = (item.keywordList ?? []).join(", ".trim());
+    String subtitle = (item.keywordList ?? []).join(",  ".trim());
 
     return AnimationUtil.slideInLeft(
       manualTrigger: true,
@@ -231,9 +231,11 @@ class KeywrodAnalysisListTile extends StatelessWidget {
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 5),
           horizontalTitleGap: 6,
-          title: MyComponents.text(text: "$title 분류"),
-          subtitle:
-              Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis),
+          title: Text("$title 분류", style: MyFonts.gothicA1()),
+          subtitle: Text(subtitle,
+              // maxLines: 1,
+              // overflow: TextOverflow.ellipsis,
+              style: MyFonts.gothicA1(fontSize: 9)),
           dense: true,
         ),
         endActionPane: ActionPane(
