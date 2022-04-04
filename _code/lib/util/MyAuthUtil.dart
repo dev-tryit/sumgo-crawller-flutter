@@ -4,6 +4,7 @@ import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseAuthUtilInterface.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firebase/FirebaseAuthSingleton.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firedart/FiredartAuthSingleton.dart';
+import 'package:sumgo_crawller_flutter/_common/util/firebase/repository/UserRepository.dart';
 
 enum NeededAuthBehavior { NEED_LOGIN, NEED_VERIFICATION, NEED_REGISTRATION }
 
@@ -56,9 +57,9 @@ class MyAuthUtil {
     // LogUtil.debug("isLogin 2");
 
     dynamic user = await _firebaseAuthUtilInterface.getUser();
-    // LogUtil.debug("user : ${user}");
+    LogUtil.debug("user : ${user}");
 
-    return (await _firebaseAuthUtilInterface.getUser() != null);
+    return (user != null);
   }
 
   Future<NeededAuthBehavior> sendEmailVerification(
@@ -93,6 +94,21 @@ class MyAuthUtil {
   }
 
   Future<void> logout() async {
+    dynamic user = await _firebaseAuthUtilInterface.getUser();
+    if (user == null) {
+      LogUtil.error("해당 유저가 없어 removeAllowedUid를 할 수 없습니다.");
+      return;
+    }
+
+    String uid;
+    try{
+      uid = user.uid;
+    }
+    catch(e){
+      uid = user.id;
+    }
+    await UserRepository().removeAllowedUid(email: user.email ?? "", uid: uid ?? "");
+
     await _firebaseAuthUtilInterface.logout();
   }
 
@@ -116,6 +132,21 @@ class MyAuthUtil {
         email: email, password: password);
     await _firebaseAuthUtilInterface.updateProfile(
         displayName: _nameRegistered);
+
+    dynamic user = await _firebaseAuthUtilInterface.getUser();
+    if (user == null) {
+      LogUtil.error("해당 유저가 없어 addAllowedUid를 할 수 없습니다.");
+      return;
+    }
+
+    String uid;
+    try{
+      uid = user.uid;
+    }
+    catch(e){
+      uid = user.id;
+    }
+    await UserRepository().addAllowedUid(email: email, uid: user.uid ?? "");
   }
 
   Future<bool> emailIsVerified() async {

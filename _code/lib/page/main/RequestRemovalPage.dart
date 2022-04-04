@@ -1,7 +1,7 @@
 import 'dart:async';
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_awesome_select/flutter_awesome_select.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
@@ -245,8 +245,7 @@ class RequestRemovalListTile extends StatelessWidget {
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 5),
           horizontalTitleGap: 6,
-          title: MyComponents.text(
-              text: "[${item.typeDisplay ?? ""}] ${item.content ?? ""}"),
+          title: Text("[${item.typeDisplay ?? ""}] ${item.content ?? ""}", style: MyFonts.gothicA1()),
           dense: true,
         ),
         endActionPane: ActionPane(

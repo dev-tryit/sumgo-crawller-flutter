@@ -150,19 +150,13 @@ class MyChartService extends KDHService<_MyChartState, MyChartComponent> {
 
   Future<void> onLoad(MyChart widget) async {
     List<KeywordItem> keywordItemList = [];
-    int allCount = 0;
     try {
       keywordItemList = List.from((await Future.wait(
               (widget.analysisItem.keywordList ?? []).map((keyword) =>
                   KeywordItemRepository().getKeywordItem(keyword: keyword))))
           .where((element) => element != null));
-
-      allCount = keywordItemList
-          .map((e) => e.count ?? 0)
-          .reduce((value, element) => value += element);
     } catch (e) {
       keywordItemList = [];
-      allCount = 0;
     }
 
     percentByKeyword = {};
@@ -172,7 +166,7 @@ class MyChartService extends KDHService<_MyChartState, MyChartComponent> {
         percentByKeyword[keyword] = 0;
       }
 
-      percentByKeyword[keyword] = (keywordItem.count ?? 0.0) / allCount;
+      percentByKeyword[keyword] = (keywordItem.count ?? 0.0).toDouble();
     }
 
     c.colorList = (widget.analysisItem.keywordList ?? [])

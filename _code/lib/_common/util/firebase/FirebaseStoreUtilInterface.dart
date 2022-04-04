@@ -50,6 +50,7 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
     return await dRef(documentId: documentId).delete();
   }
 
+
   Future<bool> exist({required String key, required String value}) async {
     var data = await getOneByField(key: key, value: value);
     return data != null;
@@ -106,5 +107,22 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
     var ref = dRef(documentId: documentId ?? instance.documentId);
     await ref.set(toMap(instance));
     return applyInstance(await dRefToMap(ref));
+  }
+
+  Future<void> deleteListByField({required String key, required String value}) async {
+    List list = await queryToList(cRef().where(key, isEqualTo: value));
+    for(var documentSnapshot in list) {
+      await documentSnapshot.reference.delete();
+    }
+  }
+
+  Future<void> deleteOneByField({required String key, required String value}) async {
+    List list = await queryToList(cRef().where(key, isEqualTo: value));
+    if(list.length!=1) {
+      LogUtil.error("해당 key, value에 해당하는 문서가 1개가 아닙니다.");
+      return;
+    }
+
+    await list[0].reference.delete();
   }
 }
