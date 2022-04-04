@@ -59,6 +59,7 @@ class UserRepository {
     var allowedUidList = List.from(tempUser.allowedUidList!);
     if(!allowedUidList.contains(uid)) {
       allowedUidList.add(uid);
+      tempUser.allowedUidList = allowedUidList;
     }
 
     await _.saveByDocumentId(instance: tempUser);
@@ -74,6 +75,7 @@ class UserRepository {
     var allowedUidList = List.from(user.allowedUidList!);
     if(allowedUidList.contains(uid)) {
       allowedUidList.remove(uid);
+      user.allowedUidList = allowedUidList;
     }
 
     await _.saveByDocumentId(instance: user);
