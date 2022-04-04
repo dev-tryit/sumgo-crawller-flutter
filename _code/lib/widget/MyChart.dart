@@ -60,38 +60,41 @@ class MyChartComponent extends KDHComponent<_MyChartState> {
   MyChartComponent(_MyChartState state) : super(state);
 
   Widget body(MyChartService s, MyChart widget) {
-    sectionDataList = (widget.analysisItem.keywordList ?? [])
-        .asMap()
-        .map((i, keyword) {
-          final color = colorList[i];
-          final isTouched = touchedIndex == i;
-          return MapEntry(
-              i,
-              PieChartSectionData(
-                title: keyword,
-                color: color.withOpacity(isTouched ? 1.0 : 0.7),
-                showTitle: false,
-                radius: 50,
-                borderSide: isTouched
-                    ? BorderSide(color: color, width: 6)
-                    : BorderSide(color: color.withOpacity(0)),
-              ));
-        })
-        .values
-        .toList();
-
-    return Column(
-      children: <Widget>[
-        const SizedBox(height: 20),
-        header(),
-        const SizedBox(height: 18),
-        SizedBox(
-          width: 100,
-          height: 100,
-          child: chart(),
+    int i = 0;
+    sectionDataList = [];
+    for (MapEntry<String, double> entry in s.percentByKeyword.entries) {
+      final color = colorList[i];
+      final isTouched = touchedIndex == i;
+      sectionDataList.add(
+        PieChartSectionData(
+          title: entry.key,
+          value: entry.value,
+          color: color.withOpacity(isTouched ? 1.0 : 0.7),
+          showTitle: false,
+          radius: 50,
+          borderSide: isTouched
+              ? BorderSide(color: color, width: 6)
+              : BorderSide(color: color.withOpacity(0)),
         ),
-      ],
-    );
+      );
+
+      i++;
+    }
+
+    return sectionDataList.isNotEmpty
+        ? Column(
+            children: <Widget>[
+              const SizedBox(height: 20),
+              header(),
+              const SizedBox(height: 18),
+              SizedBox(
+                width: 100,
+                height: 100,
+                child: chart(),
+              ),
+            ],
+          )
+        : const SizedBox.shrink();
   }
 
   Widget header() {
@@ -142,33 +145,35 @@ class MyChartComponent extends KDHComponent<_MyChartState> {
 }
 
 class MyChartService extends KDHService<_MyChartState, MyChartComponent> {
-  List<KeywordItem?> keywordItemList = [];
+  Map<String, double> percentByKeyword = {};
   MyChartService(_MyChartState state, MyChartComponent c) : super(state, c);
 
   Future<void> onLoad(MyChart widget) async {
-    keywordItemList = await Future.wait((widget.analysisItem.keywordList ?? [])
-        .map((keyword) =>
-            KeywordItemRepository().getKeywordItem(keyword: keyword)));
+    List<KeywordItem> keywordItemList = [];
+    int allCount = 0;
+    try {
+      keywordItemList = List.from((await Future.wait(
+              (widget.analysisItem.keywordList ?? []).map((keyword) =>
+                  KeywordItemRepository().getKeywordItem(keyword: keyword))))
+          .where((element) => element != null));
 
-    // keywordItem을 바탕으로 {키워드,퍼센트} 만들기
-    /*
-    // [
-    //   PieChartSectionData(
-    //     color: color0.withOpacity(opacity),
-    //     value: 25,
-    //     title: '',
-    //     radius: 80,
-    //     titleStyle: const TextStyle(
-    //         fontSize: 18,
-    //         fontWeight: FontWeight.bold,
-    //         color: Color(0xff044d7c)),
-    //     titlePositionPercentageOffset: 0.55,
-    //     borderSide: isTouched
-    //         ? BorderSide(color: color0, width: 6)
-    //         : BorderSide(color: color0.withOpacity(0)),
-    //   ),
-    // ];
-    */
+      allCount = keywordItemList
+          .map((e) => e.count ?? 0)
+          .reduce((value, element) => value += element);
+    } catch (e) {
+      keywordItemList = [];
+      allCount = 0;
+    }
+
+    percentByKeyword = {};
+    for (var keywordItem in keywordItemList) {
+      var keyword = keywordItem.keyword ?? "";
+      if (!percentByKeyword.containsKey(keyword)) {
+        percentByKeyword[keyword] = 0;
+      }
+
+      percentByKeyword[keyword] = (keywordItem.count ?? 0.0) / allCount;
+    }
 
     c.colorList = (widget.analysisItem.keywordList ?? [])
         .map((e) => ColorUtil.random())
