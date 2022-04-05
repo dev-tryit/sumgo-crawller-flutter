@@ -23,12 +23,15 @@ class RemovalCondition extends WithDocId {
       type: map['type'],
       content: map['content'],
       typeDisplay: map['typeDisplay'],
-    )..documentId = map['documentId'];
+    )
+      ..documentId = map['documentId']
+      ..email = map['email'];
   }
 
   static Map<String, dynamic> toMap(RemovalCondition instance) {
     return {
       'documentId': instance.documentId,
+      'email': instance.email,
       'type': instance.type,
       'content': instance.content,
       'typeDisplay': instance.typeDisplay,
@@ -89,14 +92,15 @@ class RemovalConditionRepository {
     return await _.getOneByField(
       key: "title",
       value: title,
+      onlyMyData: true,
     );
   }
 
   Future<List<RemovalCondition>> getList() async {
-    return await _.getList();
+    return await _.getList(onlyMyData: true);
   }
 
   Future<List<RemovalCondition>> getListByType({required String type}) async {
-    return await _.getListByField(key: "type", value: type);
+    return await _.getList(key: "type", value: type, onlyMyData: true);
   }
 }

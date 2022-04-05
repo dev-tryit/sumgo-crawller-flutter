@@ -1,4 +1,5 @@
 import 'package:sumgo_crawller_flutter/_common/abstract/WithDocId.dart';
+import 'package:sumgo_crawller_flutter/_common/util/AuthUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firebase/FirebaseStoreUtil.dart';
@@ -39,17 +40,21 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
   Future<Type?> getOneByField(
       {required String key,
       required String value,
+      bool onlyMyData = false,
       bool useSort = true,
       bool descending = false}) async {
-    List<Type?> list = await getListByField(
-        key: key, value: value, useSort: useSort, descending: descending);
+    List<Type?> list = await getList(
+        key: key,
+        value: value,
+        onlyMyData: onlyMyData,
+        useSort: useSort,
+        descending: descending);
     return list.isNotEmpty ? list.first : null;
   }
 
   Future<void> deleteOne({required int documentId}) async {
     return await dRef(documentId: documentId).delete();
   }
-
 
   Future<bool> exist({required String key, required String value}) async {
     var data = await getOneByField(key: key, value: value);
@@ -82,21 +87,31 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
 
   Future<List> cRefToList();
 
-  Future<List<Type>> getList(
-      {bool useSort = true, bool descending = false}) async {
-    return getListFromDocs(await cRefToList(),
-        useSort: useSort, descending: descending);
-  }
-
   Future<List> queryToList(query);
 
-  Future<List<Type>> getListByField(
-      {required String key,
-      required String value,
-      bool useSort = true,
-      bool descending = false}) async {
+  Future<List<Type>> getList({
+    String? key,
+    String? value,
+    bool onlyMyData = false,
+    bool useSort = true,
+    bool descending = false,
+  }) async {
+    if ((key != null && value == null) || (key == null && value != null)) {
+      LogUtil.error("getList 둘 중에 1개가 비어 있습니다.");
+      return [];
+    }
+
+    dynamic query = cRef();
+    if (key != null && value != null) {
+      query = query.where(key, isEqualTo: value);
+    }
+
+    if (onlyMyData) {
+      query = query.where("email", isEqualTo: AuthUtil().email);
+    }
+
     return getListFromDocs(
-      await queryToList(cRef().where(key, isEqualTo: value)),
+      await queryToList(query),
       useSort: useSort,
       descending: descending,
     );
@@ -109,16 +124,18 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
     return applyInstance(await dRefToMap(ref));
   }
 
-  Future<void> deleteListByField({required String key, required String value}) async {
+  Future<void> deleteListByField(
+      {required String key, required String value}) async {
     List list = await queryToList(cRef().where(key, isEqualTo: value));
-    for(var documentSnapshot in list) {
+    for (var documentSnapshot in list) {
       await documentSnapshot.reference.delete();
     }
   }
 
-  Future<void> deleteOneByField({required String key, required String value}) async {
+  Future<void> deleteOneByField(
+      {required String key, required String value}) async {
     List list = await queryToList(cRef().where(key, isEqualTo: value));
-    if(list.length!=1) {
+    if (list.length != 1) {
       LogUtil.error("해당 key, value에 해당하는 문서가 1개가 아닙니다.");
       return;
     }

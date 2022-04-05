@@ -19,12 +19,15 @@ class KeywordItem extends WithDocId {
     return KeywordItem(
       keyword: map['keyword'],
       count: map['count'],
-    )..documentId = map['documentId'];
+    )
+    ..documentId = map['documentId']
+    ..email = map['email'];
   }
 
   static Map<String, dynamic> toMap(KeywordItem instance) {
     return {
       'documentId': instance.documentId,
+      'email': instance.email,
       'keyword': instance.keyword,
       'count': instance.count,
     };
@@ -76,6 +79,7 @@ class KeywordItemRepository {
     return await _.getOneByField(
       key: "keyword",
       value: keyword,
+      onlyMyData:true,
     );
   }
 }

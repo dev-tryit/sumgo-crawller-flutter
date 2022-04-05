@@ -18,12 +18,15 @@ class AnalysisItem extends WithDocId {
     return AnalysisItem(
       title: map['title'],
       keywordList: map['keywordList'],
-    )..documentId = map['documentId'];
+    )
+    ..documentId = map['documentId']
+    ..email = map['email'];
   }
 
   static Map<String, dynamic> toMap(AnalysisItem instance) {
     return {
       'documentId': instance.documentId,
+      'email': instance.email,
       'title': instance.title,
       'keywordList': instance.keywordList,
     };
@@ -75,14 +78,7 @@ class AnalysisItemRepository {
     await _.deleteOne(documentId: documentId);
   }
 
-  Future<AnalysisItem?> getOneByTitle({required String title}) async {
-    return await _.getOneByField(
-      key: "title",
-      value: title,
-    );
-  }
-
   Future<List<AnalysisItem>> getList() async {
-    return await _.getList();
+    return await _.getList(onlyMyData:true);
   }
 }
