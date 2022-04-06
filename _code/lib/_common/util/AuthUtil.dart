@@ -107,6 +107,7 @@ class AuthUtil {
     await _firebaseAuthUtilInterface.loginWithEmail(
         email: email, password: password);
     this.email = email;
+    LogUtil.debug("loginWithEmail user : ${await _firebaseAuthUtilInterface.getUser()}");
   }
 
   Future<void> delete() async {

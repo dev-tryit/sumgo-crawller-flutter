@@ -1,5 +1,7 @@
 import 'dart:io' show Platform;
+
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 
 enum os { Unknown, Web, Android, Fuchsia, IOS, Linux, MacOS, Windows }
 
@@ -24,20 +26,30 @@ class PlatformUtil {
   }
 
   static bool isWeb() {
-    return (getPlatform() == os.Web);
+    os platform = getPlatform();
+    bool b = (platform == os.Web);
+
+    LogUtil.debug("isWeb");
+    return b;
   }
 
   static bool isMobile() {
     os platform = getPlatform();
-    return (platform == os.Android ||
+    bool b =  (platform == os.Android ||
         platform == os.IOS ||
         platform == os.Fuchsia);
+
+    LogUtil.debug("isMobile");
+    return b;
   }
 
   static bool isComputer() {
     os platform = getPlatform();
-    return (platform == os.Linux ||
+    bool b =  (platform == os.Linux ||
         platform == os.MacOS ||
         platform == os.Windows);
+
+    LogUtil.debug("isComputer");
+    return b;
   }
 }
