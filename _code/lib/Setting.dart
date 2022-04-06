@@ -20,6 +20,8 @@ class Setting {
   // 중복 클릭 방지 시간
   static int milliSecondsForPreventingMultipleClicks = 300;
 
+  static bool isRelease = false ; // kReleaseMode;
+
 // static String appVersion = "";
 //
 // static String appBuildNumber = "";

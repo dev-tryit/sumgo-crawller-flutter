@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger_flutter/logger_flutter.dart';
+import 'package:sumgo_crawller_flutter/Setting.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
@@ -67,7 +67,7 @@ class MainLayoutComponent extends KDHComponent<_MainLayoutState> {
         children: [
           Positioned(top: 150, bottom: 0, left: 0, right: 0, child: content()),
           MyHeader(pageC),
-          ...(!kReleaseMode?[Positioned(bottom: 10, right: 10, child: FloatingActionButton(child: const Icon(Icons.bug_report), onPressed: ()=>LogConsole.openLogConsole(context)))]:[]),
+          ...(!Setting.isRelease?[Positioned(bottom: 10, right: 10, child: FloatingActionButton(child: const Icon(Icons.bug_report), onPressed: ()=>LogConsole.openLogConsole(context)))]:[]),
         ],
       ),
     );
