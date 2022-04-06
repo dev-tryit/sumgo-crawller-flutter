@@ -53,7 +53,9 @@ class FiredartAuthSingleton extends FirebaseAuthUtilInterface {
   @override
   Future<User?> getUser() async {
     try {
-      return await _instance.getUser();
+      var user = await _instance.getUser();
+      LogUtil.debug("user : $user");
+      return user;
     } on SignedOutException catch (e) {
       return null;
     } catch (e) {
