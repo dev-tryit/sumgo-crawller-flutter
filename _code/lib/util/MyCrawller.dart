@@ -152,6 +152,10 @@ class MyCrawller {
 
   Future<void> decideMethod(String message, Future<void> Function() send,
       Future<void> Function() delete) async {
+    LogUtil.debug("listToIncludeAlways : $listToIncludeAlways");
+    LogUtil.debug("listToInclude : $listToInclude");
+    LogUtil.debug("listToExclude : $listToExclude");
+
     //아래 키워드가 있으면 바로 메시지 보낸다.
     for (String toIncludeAlways in listToIncludeAlways) {
       if (message.toLowerCase().contains(toIncludeAlways.toLowerCase())) {

@@ -10,6 +10,7 @@ import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/AnimationUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/UrlUtil.dart';
 import 'package:sumgo_crawller_flutter/repository/RemovalConditionRepository.dart';
 import 'package:sumgo_crawller_flutter/util/MyBottomSheetUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
@@ -150,6 +151,7 @@ class RequestRemovalPageService
 
     if (PlatformUtil.isWeb()) {
       MyComponents.snackBar(context, "웹에서는 크롤링할 수 없습니다.\n해당 앱을 윈도우에 다운로드해주세요");
+      await UrlUtil.openUrl('https://github.com/dev-tryit/sumgo_crawller_flutter/raw/master/deploy/SumgoManager.zip');
       LogUtil.debug(
           "listToIncludeAlways: $listToIncludeAlways, listToInclude: $listToInclude, listToExclude: $listToExclude, ");
       return;

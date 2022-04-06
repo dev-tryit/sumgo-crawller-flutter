@@ -1,5 +1,6 @@
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sumgo_crawller_flutter/util/MyCrawller.dart';
 
 class Counter {
   int value = 0;
@@ -39,27 +40,33 @@ teardownAll()
 파일 하나에 한번만 실행됩니다. ( setupAll() 함수랑 동일합니다 )
 
    */
-
-  group('Counter', () {
+  group('MyCrawller 테스트', () {
     test('value should start at 0', () {
+      List<String> listToIncludeAlways = [];
+      List<String> listToExclude = [];
+      List<String> listToInclude = [];
+      var function = MyCrawller(listToIncludeAlways: listToIncludeAlways,listToExclude: listToExclude, listToInclude: listToInclude).decideMethod;
+
+      function();
+
       expect(Counter().value, 0);
     });
 
-    test('value should be incremented', () {
-      final counter = Counter();
-
-      counter.increment();
-
-      expect(counter.value, 1);
-    });
-
-    test('value should be decremented', () {
-      final counter = Counter();
-
-      counter.decrement();
-
-      expect(counter.value, -1);
-    });
+    // test('value should be incremented', () {
+    //   final counter = Counter();
+    //
+    //   counter.increment();
+    //
+    //   expect(counter.value, 1);
+    // });
+    //
+    // test('value should be decremented', () {
+    //   final counter = Counter();
+    //
+    //   counter.decrement();
+    //
+    //   expect(counter.value, -1);
+    // });
   });
 }
 /*
