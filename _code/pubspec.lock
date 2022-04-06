@@ -374,7 +374,16 @@ packages:
       name: logger
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "1.0.0"
+  logger_flutter:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: d000e1cf50c2ac6b428438df485fcd00d371a903
+      url: "https://github.com/AdrianKlm/logger_flutter.git"
+    source: git
+    version: "0.7.1"
   logging:
     dependency: transitive
     description:
@@ -536,6 +545,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.7.0"
+  sensors:
+    dependency: transitive
+    description:
+      name: sensors
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3"
   shared_preferences:
     dependency: "direct main"
     description:

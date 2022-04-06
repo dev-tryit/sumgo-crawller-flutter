@@ -48,12 +48,17 @@ dependencies:
     cloud_firestore: ^3.1.10
     firebase_auth: ^3.3.10
 
+    logger: ^1.1.0
+    logger_flutter:
+        git:
+            url: https://github.com/AdrianKlm/logger_flutter.git
+            ref: master # branch name
+
     uuid: ^3.0.6
     cupertino_icons: ^1.0.4
     intl: ^0.17.0
     page_transition: ^2.0.5
     flutter_easyloading: ^3.0.3
-    logger: ^1.1.0
     unsplash_client: ^2.1.0+1
     transparent_image: ^2.0.0
     shared_preferences: ^2.0.13
