@@ -1,6 +1,7 @@
-import 'package:sumgo_crawller_flutter/Setting.dart';
 import 'package:logger/logger.dart';
+import 'package:logger_flutter/logger_flutter.dart';
 import "package:stack_trace/stack_trace.dart";
+import 'package:sumgo_crawller_flutter/Setting.dart';
 
 class MyLogFilter extends LogFilter {
   @override
@@ -16,7 +17,8 @@ class LogUtil {
   static final Logger _logger = Logger(
     filter: MyLogFilter(),
     level: Setting.LogLevel,
-    printer: SimplePrinter(printTime: true, colors: true),
+    printer: PrettyPrinter(printTime: true, colors: true),
+    output: LogConsole.wrap(innerOutput: ConsoleOutput()),
     // printer: new PrettyPrinter(
     //     methodCount: 0,
     //     // // number of method calls to be displayed

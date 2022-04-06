@@ -51,7 +51,7 @@ dependencies:
     logger: ^1.0.0
     logger_flutter:
         git:
-            url: https://github.com/dev-tryit/logger_flutter.git
+            url: https://github.com/xaynetwork/logger_flutter.git
             ref: master # branch name
 
     uuid: ^3.0.6

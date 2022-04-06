@@ -8,13 +8,13 @@ class ErrorUtil {
     runZonedGuarded(() async {
       WidgetsFlutterBinding.ensureInitialized();
       FlutterError.onError = (FlutterErrorDetails details) {
-        FlutterError.presentError(details);
-        LogUtil.error("error:${details.exception.toString()}, stack:${details.stack.toString()}");
+        // FlutterError.presentError(details);
+        LogUtil.error("FlutterError.onError error:${details.exception.toString()}, stack:${details.stack.toString()}");
       };
 
       await init();
     }, (Object error, StackTrace stack) {
-      LogUtil.error("error:${error.toString()}, stack:${stack.toString()}");
+      LogUtil.error("runZonedGuarded error:${error.toString()}, stack:${stack.toString()}");
     });
   }
 }
