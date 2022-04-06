@@ -49,8 +49,42 @@ teardownAll()
   var function = MyCrawller(listToIncludeAlways: listToIncludeAlways,listToExclude: listToExclude, listToInclude: listToInclude).decideMethod;
 
   group('MyCrawller 테스트', () {
-    test('필터 테스트1', () {
-      const String message="플루터, Flutter, 앱 개발합니다, 고등학생";
+    test('always 1개(true)', () {
+      const String message="flutter";
+
+      bool isSent = true;
+      var testFuture = Future(() {
+        var completer = Completer();
+        function(message, () async {
+          completer.complete(true);
+        },() async {
+          completer.complete(false);
+        });
+
+        return completer.future;
+
+      });
+      expect(testFuture, completion(isSent));
+    });
+    test('always 1개, include 1개(true)', () {
+      const String message="flutter, 오전 (9~12시) ";
+
+      bool isSent = true;
+      var testFuture = Future(() {
+        var completer = Completer();
+        function(message, () async {
+          completer.complete(true);
+        },() async {
+          completer.complete(false);
+        });
+
+        return completer.future;
+
+      });
+      expect(testFuture, completion(isSent));
+    });
+    test('always 1개, exclude 1개(true)', () {
+      const String message="flutter, 자바 스크립트 ";
 
       bool isSent = true;
       var testFuture = Future(() {
@@ -67,10 +101,80 @@ teardownAll()
       expect(testFuture, completion(isSent));
     });
 
-    test('필터 테스트2', () {
-      const String message="플루터, Flutter, 앱 개발합니다, 고등학생";
+    test('include 1개(false)', () {
+      const String message="취미/자기개발 ";
 
       bool isSent = false;
+      var testFuture = Future(() {
+        var completer = Completer();
+        function(message, () async {
+          completer.complete(true);
+        },() async {
+          completer.complete(false);
+        });
+
+        return completer.future;
+
+      });
+      expect(testFuture, completion(isSent));
+    });
+    test('include 1개, exclude 1개(false)', () {
+      const String message="관련 지식 없음 , 자바 스크립트 ";
+
+      bool isSent = false;
+      var testFuture = Future(() {
+        var completer = Completer();
+        function(message, () async {
+          completer.complete(true);
+        },() async {
+          completer.complete(false);
+        });
+
+        return completer.future;
+
+      });
+      expect(testFuture, completion(isSent));
+    });
+
+    test('include 모두 포함하지 않음 (false)', () { //시간이 빠졌는데 통과함...
+      const String message="취미/자기개발, 관련 지식 없음, 앱 개발 ";
+
+      bool isSent = false;
+      var testFuture = Future(() {
+        var completer = Completer();
+        function(message, () async {
+          completer.complete(true);
+        },() async {
+          completer.complete(false);
+        });
+
+        return completer.future;
+
+      });
+      expect(testFuture, completion(isSent));
+    });
+
+    test('always 1개, include 1개, exclude 1개(true)', () {
+      const String message="플루터, Flutter, 앱 개발합니다, 고등학생";
+
+      bool isSent = true;
+      var testFuture = Future(() {
+        var completer = Completer();
+        function(message, () async {
+          completer.complete(true);
+        },() async {
+          completer.complete(false);
+        });
+
+        return completer.future;
+
+      });
+      expect(testFuture, completion(isSent));
+    });
+    test('include 1개, exclude 1개(false)', () {
+      const String message="앱 개발합니다, 고등학생";
+      bool isSent = false;
+
       var testFuture = Future(() {
         var completer = Completer();
         function(message, () async {
