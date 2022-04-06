@@ -381,7 +381,7 @@ packages:
       path: "."
       ref: master
       resolved-ref: d000e1cf50c2ac6b428438df485fcd00d371a903
-      url: "https://github.com/AdrianKlm/logger_flutter.git"
+      url: "https://github.com/dev-tryit/logger_flutter.git"
     source: git
     version: "0.7.1"
   logging:
