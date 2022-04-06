@@ -1,0 +1,20 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
+
+class ErrorUtil {
+  static void catchError(Future<void> Function() init) {
+    runZonedGuarded(() async {
+      WidgetsFlutterBinding.ensureInitialized();
+      FlutterError.onError = (FlutterErrorDetails details) {
+        FlutterError.presentError(details);
+        LogUtil.error("error:${details.exception.toString()}, stack:${details.stack.toString()}");
+      };
+
+      await init();
+    }, (Object error, StackTrace stack) {
+      LogUtil.error("error:${error.toString()}, stack:${stack.toString()}");
+    });
+  }
+}

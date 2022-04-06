@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:sumgo_crawller_flutter/Setting.dart';
 import 'package:sumgo_crawller_flutter/_common/config/MyCustomScrollBehavior.dart';
 import 'package:sumgo_crawller_flutter/_common/util/AuthUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/DesktopUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/ErrorUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/page/LoadPage.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
@@ -14,27 +17,26 @@ import 'package:sumgo_crawller_flutter/util/MyTheme.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  ErrorUtil.catchError(() async {
+    if (!PlatformUtil.isComputer()) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
 
-  if (!PlatformUtil.isComputer()) {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-  }
+    await MyFonts.init();
+    await MyStoreUtil.init();
+    await AuthUtil().init();
 
-  await MyFonts.init();
-  await MyStoreUtil.init();
-  await AuthUtil().init();
-
-  if (PlatformUtil.isComputer()) {
-    DesktopUtil.setSize(
-      size: const Size(350, 800),
-      minimumSize: const Size(350, 800),
-      maximumSize: const Size(350, 800),
-    );
-  }
-
-  runApp(MyApp());
+    if (PlatformUtil.isComputer()) {
+      DesktopUtil.setSize(
+        size: const Size(350, 800),
+        minimumSize: const Size(350, 800),
+        maximumSize: const Size(350, 800),
+      );
+    }
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
