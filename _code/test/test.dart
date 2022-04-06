@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sumgo_crawller_flutter/util/MyCrawller.dart';
 
@@ -40,16 +42,47 @@ teardownAll()
 파일 하나에 한번만 실행됩니다. ( setupAll() 함수랑 동일합니다 )
 
    */
+
+  final List<String> listToIncludeAlways = ["플루터", "Flutter"];
+  final List<String> listToInclude =  ["앱 개발", "관련 지식 없음", "취미/자기개발", "이른 오전 (9시 이전)||오전 (9~12시)||늦은 저녁 (9시 이후)", "개인 레슨||온라인/화상 레슨||무관"];
+  final List<String> listToExclude =["미취학 아동", "초등학생", "중학생", "고등학생", "자바 스크립트", "javascipt", "swift", "kotlin", "스위프트", "코틀린"];
+  var function = MyCrawller(listToIncludeAlways: listToIncludeAlways,listToExclude: listToExclude, listToInclude: listToInclude).decideMethod;
+
   group('MyCrawller 테스트', () {
-    test('value should start at 0', () {
-      List<String> listToIncludeAlways = [];
-      List<String> listToExclude = [];
-      List<String> listToInclude = [];
-      var function = MyCrawller(listToIncludeAlways: listToIncludeAlways,listToExclude: listToExclude, listToInclude: listToInclude).decideMethod;
+    test('필터 테스트1', () {
+      const String message="플루터, Flutter, 앱 개발합니다, 고등학생";
 
-      function();
+      bool isSent = true;
+      var testFuture = Future(() {
+        var completer = Completer();
+        function(message, () async {
+          completer.complete(true);
+        },() async {
+          completer.complete(false);
+        });
 
-      expect(Counter().value, 0);
+        return completer.future;
+
+      });
+      expect(testFuture, completion(isSent));
+    });
+
+    test('필터 테스트2', () {
+      const String message="플루터, Flutter, 앱 개발합니다, 고등학생";
+
+      bool isSent = false;
+      var testFuture = Future(() {
+        var completer = Completer();
+        function(message, () async {
+          completer.complete(true);
+        },() async {
+          completer.complete(false);
+        });
+
+        return completer.future;
+
+      });
+      expect(testFuture, completion(isSent));
     });
 
     // test('value should be incremented', () {
