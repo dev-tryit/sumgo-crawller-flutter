@@ -58,6 +58,9 @@ class AuthUtil {
     // LogUtil.debug("isLogin 2");
 
     dynamic user = await _firebaseAuthUtilInterface.getUser();
+    if(user != null) {
+      this.email = user.email??"";
+    }
     LogUtil.debug("user : ${user}");
 
     return (user != null);
@@ -122,7 +125,6 @@ class AuthUtil {
         displayName: _nameRegistered);
     this.email = email;
   }
-
 
   Future<bool> emailIsVerified() async {
     return ((await _firebaseAuthUtilInterface.getUser())?.emailVerified ??
