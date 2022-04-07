@@ -17,7 +17,7 @@ class LogUtil {
   static final Logger _logger = Logger(
     filter: MyLogFilter(),
     level: Setting.LogLevel,
-    printer: PrettyPrinter(printTime: true, colors: true, methodCount: 10),
+    printer: SimplePrinter(printTime: true, colors: true),
     output: LogConsole.wrap(innerOutput: ConsoleOutput()),
     // printer: new PrettyPrinter(
     //     methodCount: 0,
