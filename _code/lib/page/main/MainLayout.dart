@@ -7,6 +7,7 @@ import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/page/main/KeywordAnalysisPage.dart';
 import 'package:sumgo_crawller_flutter/page/main/RequestRemovalPage.dart';
+import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyImage.dart';
 import 'package:sumgo_crawller_flutter/widget/MyHeader.dart';
 
@@ -67,7 +68,19 @@ class MainLayoutComponent extends KDHComponent<_MainLayoutState> {
         children: [
           Positioned(top: 150, bottom: 0, left: 0, right: 0, child: content()),
           MyHeader(pageC),
-          ...(!Setting.isRelease?[Positioned(bottom: 10, right: 10, child: FloatingActionButton(child: const Icon(Icons.bug_report), onPressed: ()=>LogConsole.openLogConsole(context)))]:[]),
+          ...(!Setting.isRelease
+              ? [
+                  Positioned(
+                    bottom: 10,
+                    right: 10,
+                    child: FloatingActionButton(
+                      backgroundColor: MyColors.red,
+                      child: const Icon(Icons.bug_report),
+                      onPressed: () => LogConsole.openLogConsole(context),
+                    ),
+                  )
+                ]
+              : []),
         ],
       ),
     );
