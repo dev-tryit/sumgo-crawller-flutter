@@ -38,8 +38,8 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
       (map == null || map.isEmpty) ? null : fromMap(map);
 
   Future<Type?> getOneByField(
-      {required String key,
-      required String value,
+      {String? key,
+      String? value,
       bool onlyMyData = false,
       bool useSort = true,
       bool descending = false}) async {

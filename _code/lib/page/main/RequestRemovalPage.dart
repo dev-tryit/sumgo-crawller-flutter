@@ -11,7 +11,9 @@ import 'package:sumgo_crawller_flutter/_common/util/AnimationUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/UrlUtil.dart';
+import 'package:sumgo_crawller_flutter/dialog/SettingDialog.dart';
 import 'package:sumgo_crawller_flutter/repository/RemovalConditionRepository.dart';
+import 'package:sumgo_crawller_flutter/repository/SettingRepository.dart';
 import 'package:sumgo_crawller_flutter/util/MyBottomSheetUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
@@ -134,6 +136,30 @@ class RequestRemovalPageService
   }
 
   Future<void> removeRequests() async {
+    if (PlatformUtil.isWeb()) {
+      await showOkAlertDialog(
+        context: context,
+        title: "알림",
+        message: "웹에서는 크롤링할 수 없습니다.\n앱을 다운로드합니다.",
+      );
+      await UrlUtil.openUrl(
+          'https://github.com/dev-tryit/sumgo_crawller_flutter/raw/master/deploy/SumgoManager.zip');
+      return;
+    }
+
+    Setting? setting = await SettingRepository().getOne();
+    if (setting == null ||
+        (setting.sumgoId ?? "").isEmpty ||
+        (setting.sumgoPw ?? "").isEmpty) {
+      await showOkAlertDialog(
+        context: context,
+        title: "알림",
+        message: "숨고 매니저 설정이 필요합니다.",
+      );
+      SettingDialog.show(context);
+      return;
+    }
+
     await MyComponents.showLoadingDialog(context);
     final List<String> listToIncludeAlways = (await RemovalConditionRepository()
             .getListByType(type: RemovalType.best.value))
@@ -149,21 +175,13 @@ class RequestRemovalPageService
         .toList();
     await MyComponents.dismissLoadingDialog();
 
-    if (PlatformUtil.isWeb()) {
-      MyComponents.snackBar(context, "웹에서는 크롤링할 수 없습니다.\n해당 앱을 윈도우에 다운로드해주세요");
-      await UrlUtil.openUrl('https://github.com/dev-tryit/sumgo_crawller_flutter/raw/master/deploy/SumgoManager.zip');
-      LogUtil.debug(
-          "listToIncludeAlways: $listToIncludeAlways, listToInclude: $listToInclude, listToExclude: $listToExclude, ");
-      return;
-    }
-
     try {
       await MyComponents.showLoadingDialog(context);
       await MyCrawller(
-              listToIncludeAlways: listToIncludeAlways,
-              listToInclude: listToInclude,
-              listToExclude: listToExclude)
-          .start();
+        listToIncludeAlways: listToIncludeAlways,
+        listToInclude: listToInclude,
+        listToExclude: listToExclude,
+      ).start(setting);
     } finally {
       await MyComponents.dismissLoadingDialog();
     }
@@ -225,6 +243,7 @@ class RequestRemovalListTile extends StatelessWidget {
   RequestRemovalPageService s;
   AnimationController? animateController;
   bool isPlusIcon;
+
   RequestRemovalListTile(
       {Key? key, required this.item, required this.s, this.isPlusIcon = true})
       : super(key: key);
@@ -247,14 +266,16 @@ class RequestRemovalListTile extends StatelessWidget {
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 5),
           horizontalTitleGap: 6,
-          title: Text("[${item.typeDisplay ?? ""}] ${item.content ?? ""}", style: MyFonts.gothicA1()),
+          title: Text("[${item.typeDisplay ?? ""}] ${item.content ?? ""}",
+              style: MyFonts.gothicA1()),
           dense: true,
         ),
         endActionPane: ActionPane(
           //3. startActionPane: 오른쪽으로 드래그하면 나오는액션, endActionPane: 왼쪽
-          extentRatio: 0.2, //각각 child의 크기
-          motion:
-              const BehindMotion(), //동작 애니메이션 설정 BehindMotion, DrawerMotion, ScrollMotion, StretchMotion
+          extentRatio: 0.2,
+          //각각 child의 크기
+          motion: const BehindMotion(),
+          //동작 애니메이션 설정 BehindMotion, DrawerMotion, ScrollMotion, StretchMotion
           children: [
             CustomSlidableAction(
               onPressed: (c) => s.deleteRemovalCondition(context, item, this),

@@ -8,7 +8,7 @@ class AnalysisItem extends WithDocId {
 
   AnalysisItem({required this.title, required this.keywordList}) : super(documentId: DateTime.now().microsecondsSinceEpoch);
 
-  AnalysisItem.empty();
+  AnalysisItem.empty(): super(documentId: DateTime.now().microsecondsSinceEpoch);
 
   factory AnalysisItem.fromJson(Map<String, dynamic> json) => fromMap(json);
 

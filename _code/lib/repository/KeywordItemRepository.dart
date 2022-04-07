@@ -9,7 +9,7 @@ class KeywordItem extends WithDocId {
   KeywordItem({required this.keyword, required this.count})
       : super(documentId: DateTime.now().microsecondsSinceEpoch);
 
-  KeywordItem.empty();
+  KeywordItem.empty(): super(documentId: DateTime.now().microsecondsSinceEpoch);
 
   factory KeywordItem.fromJson(Map<String, dynamic> json) => fromMap(json);
 

@@ -12,7 +12,7 @@ class RemovalCondition extends WithDocId {
       {required this.type, required this.content, required this.typeDisplay})
       : super(documentId: DateTime.now().microsecondsSinceEpoch);
 
-  RemovalCondition.empty();
+  RemovalCondition.empty(): super(documentId: DateTime.now().microsecondsSinceEpoch);
 
   factory RemovalCondition.fromJson(Map<String, dynamic> json) => fromMap(json);
 
