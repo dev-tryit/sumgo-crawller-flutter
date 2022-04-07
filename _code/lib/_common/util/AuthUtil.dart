@@ -1,9 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseAuthUtilInterface.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firebase/FirebaseAuthSingleton.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/firedart/FiredartAuthSingleton.dart';
+import 'package:sumgo_crawller_flutter/page/LoadPage.dart';
 
 enum NeededAuthBehavior { NEED_LOGIN, NEED_VERIFICATION, NEED_REGISTRATION }
 
@@ -97,8 +100,11 @@ class AuthUtil {
     return NeededAuthBehavior.NEED_VERIFICATION;
   }
 
-  Future<void> logout() async {
+  Future<void> logout({BuildContext? context}) async {
     await _firebaseAuthUtilInterface.logout();
+    if(context != null) {
+      PageUtil.movePage(context, LoadPage());
+    }
   }
 
   Future<void> loginWithEmailDefaultPassword(String email) async {

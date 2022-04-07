@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sumgo_crawller_flutter/_common/util/AuthUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
+import 'package:sumgo_crawller_flutter/dialog/SettingDialog.dart';
 import 'package:sumgo_crawller_flutter/page/LoadPage.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
@@ -52,14 +53,11 @@ class MyHeader extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () async {
-              await AuthUtil().logout();
-              PageUtil.movePage(context, LoadPage());
-            },
+            onTap: () => SettingDialog.show(context),
             child: const Opacity(
               opacity: 1,
               child: Icon(
-                Icons.logout,
+                Icons.settings,
                 color: MyColors.white,
                 size: 20,
               ),
