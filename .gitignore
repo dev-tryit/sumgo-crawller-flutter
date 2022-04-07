@@ -1,5 +1,6 @@
 _code/lib/_local/
 _code/.local-chromium/
+**/settings.gradle
 
 # Miscellaneous
 *.class

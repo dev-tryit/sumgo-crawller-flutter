@@ -183,7 +183,7 @@ class MyCrawller {
       List<String> orStrList = toIncludeForOr.split("||").toList();
       bool existOr = orStrList
           .where(
-              (orStr) => !message.toLowerCase().contains(orStr.toLowerCase()))
+              (orStr) => message.toLowerCase().contains(orStr.toLowerCase()))
           .isNotEmpty;
       if (!existOr) {
         LogUtil.info("condition2 message:$message, orStrList:$orStrList");
