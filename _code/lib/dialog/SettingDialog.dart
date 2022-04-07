@@ -85,7 +85,7 @@ class SettingDialogComponent
             const SizedBox(height: 10),
             textFieldWithLabel(label: "숨고 PW", controller: pwController, obscureText:true),
             const SizedBox(height: 10),
-            textFieldWithLabel(label: "크롬 주소", controller: chromeUrlController),
+            textFieldWithLabel(label: "크롬 주소", controller: chromeUrlController, hintText: 'http://localhost:9222'),
             const SizedBox(height: 35),
             actions(s),
           ],
@@ -95,7 +95,7 @@ class SettingDialogComponent
   }
 
   Widget textFieldWithLabel(
-      {required String label, TextEditingController? controller, bool obscureText = false}) {
+      {required String label, TextEditingController? controller, bool obscureText = false, String? hintText}) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -105,6 +105,9 @@ class SettingDialogComponent
           child: TextField(
             controller: controller,
             obscureText: obscureText,
+            decoration: InputDecoration(
+              hintText: hintText,
+            ),
           ),
         ),
       ],

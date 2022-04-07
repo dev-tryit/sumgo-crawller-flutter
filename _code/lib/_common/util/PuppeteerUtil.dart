@@ -12,12 +12,12 @@ class PuppeteerUtil {
   Future<void> openBrowser(Future<void> Function() function,
       {int width = 1920,
       int height = 1600,
-      bool headless = true,
-      bool isConnect = false}) async {
+      bool headless = true, String? browserUrl}) async {
+    bool isConnect = (browserUrl??"").isNotEmpty;
     if (isConnect) {
       //크롬 바로가기 만들고, 거기에 "C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222형태로 쓰면 됨.
       //이때, 크롬을 다 껏다가 해야함.
-      browser = await puppeteer.connect(browserUrl: 'http://localhost:9222');
+      browser = await puppeteer.connect(browserUrl: browserUrl!);
     } else {
       browser = await puppeteer.launch(
         headless: headless,
