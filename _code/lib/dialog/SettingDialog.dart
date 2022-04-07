@@ -61,12 +61,10 @@ class _SettingDialogState extends KDHState<SettingDialog,
   Future<void> afterBuild() async {}
 }
 
-class SettingDialogComponent
-    extends KDHComponent<_SettingDialogState> {
+class SettingDialogComponent extends KDHComponent<_SettingDialogState> {
   final idController = TextEditingController();
   final pwController = TextEditingController();
   final chromeUrlController = TextEditingController();
-
 
   SettingDialogComponent(_SettingDialogState state) : super(state);
 
@@ -74,18 +72,23 @@ class SettingDialogComponent
     return Dialog(
       child: Padding(
         padding:
-        const EdgeInsets.only(left: 25, right: 25, top: 18, bottom: 18),
+            const EdgeInsets.only(left: 25, right: 25, top: 18, bottom: 18),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             title(s),
             const Divider(),
+            const SizedBox(height: 20),
             textFieldWithLabel(label: "숨고 ID", controller: idController),
-            const SizedBox(height: 10),
-            textFieldWithLabel(label: "숨고 PW", controller: pwController, obscureText:true),
-            const SizedBox(height: 10),
-            textFieldWithLabel(label: "크롬 주소", controller: chromeUrlController, hintText: 'http://localhost:9222'),
+            const SizedBox(height: 30),
+            textFieldWithLabel(
+                label: "숨고 PW", controller: pwController, obscureText: true),
+            const SizedBox(height: 30),
+            textFieldWithLabel(
+                label: "크롬 주소",
+                controller: chromeUrlController,
+                hintText: 'http://localhost:9222'),
             const SizedBox(height: 35),
             actions(s),
           ],
@@ -95,7 +98,10 @@ class SettingDialogComponent
   }
 
   Widget textFieldWithLabel(
-      {required String label, TextEditingController? controller, bool obscureText = false, String? hintText}) {
+      {required String label,
+      TextEditingController? controller,
+      bool obscureText = false,
+      String? hintText}) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -107,7 +113,11 @@ class SettingDialogComponent
             obscureText: obscureText,
             decoration: InputDecoration(
               hintText: hintText,
+              hintStyle: TextStyle(
+                  color: (hintText ?? "").isNotEmpty ? Colors.grey : null),
+              isDense: true,
             ),
+            style: TextStyle(fontSize: 10),
           ),
         ),
       ],
@@ -134,44 +144,44 @@ class SettingDialogComponent
   }
 
   Widget title(SettingDialogService s) {
-    return
-      Row(
-        children: [
-          Text(
-            "크롤링 설정하기",
-            style: MyFonts.gothicA1(
-              fontWeight: FontWeight.bold,
-            ),
+    return Row(
+      children: [
+        Text(
+          "크롤링 설정하기",
+          style: MyFonts.gothicA1(
+            fontWeight: FontWeight.bold,
           ),
-          const Spacer(),
-          ElevatedButton(
-            child: const Text("로그아웃"),
-            onPressed: s.logout,
-            style: ElevatedButton.styleFrom(primary: MyColors.lightBlue),
-          ),
-        ],
-      );
+        ),
+        const Spacer(),
+        ElevatedButton(
+          child: const Text("로그아웃"),
+          onPressed: s.logout,
+          style: ElevatedButton.styleFrom(primary: MyColors.lightBlue),
+        ),
+      ],
+    );
   }
 }
 
-class SettingDialogService extends KDHService<_SettingDialogState,
-    SettingDialogComponent> {
+class SettingDialogService
+    extends KDHService<_SettingDialogState, SettingDialogComponent> {
   Setting? setting;
 
-  SettingDialogService(
-      _SettingDialogState state, SettingDialogComponent c)
+  SettingDialogService(_SettingDialogState state, SettingDialogComponent c)
       : super(state, c);
 
   Future<void> onLoad() async {
     setting = await SettingRepository().getOne();
-    c.idController.text = setting?.sumgoId??"";
-    c.pwController.text = setting?.sumgoPw??"";
-    c.chromeUrlController.text = setting?.crallwerUrl??"";
+    c.idController.text = setting?.sumgoId ?? "";
+    c.pwController.text = setting?.sumgoPw ?? "";
+    c.chromeUrlController.text = setting?.crallwerUrl ?? "";
   }
 
-
-  Future<void> saveSetting() async{
-    setting = (setting ?? Setting.empty())..sumgoId= c.idController.text..sumgoPw=c.pwController.text..crallwerUrl=c.chromeUrlController.text;
+  Future<void> saveSetting() async {
+    setting = (setting ?? Setting.empty())
+      ..sumgoId = c.idController.text
+      ..sumgoPw = c.pwController.text
+      ..crallwerUrl = c.chromeUrlController.text;
     await SettingRepository().save(setting: setting!);
     PageUtil.back(context);
   }
