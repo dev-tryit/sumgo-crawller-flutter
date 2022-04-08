@@ -9,6 +9,7 @@ import 'package:sumgo_crawller_flutter/_common/util/DesktopUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/ErrorUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/page/LoadPage.dart';
+import 'package:sumgo_crawller_flutter/page/main/MainLayout.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 import 'package:sumgo_crawller_flutter/util/MyStoreUtil.dart';
@@ -43,7 +44,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //TODO: 라우트 적용 작업 필요
     return MaterialApp(
       title: MySetting.appName,
       debugShowCheckedModeBanner: false,
@@ -82,8 +82,11 @@ class MyApp extends StatelessWidget {
         child = MyComponents.easyLoadingBuilder()(context, child);
         return child;
       },
-      initialRoute: "/",
       home: LoadPage(),
+      routes: {
+        '/LoadPage': (BuildContext context) => LoadPage(),
+        '/MainLayout' : (BuildContext context) => MainLayout(),
+      },
     );
   }
 }
