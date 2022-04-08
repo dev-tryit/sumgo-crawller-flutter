@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sumgo_crawller_flutter/Setting.dart';
+import 'package:sumgo_crawller_flutter/MySetting.dart';
 import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseAuthUtilInterface.dart';
@@ -24,7 +24,7 @@ class FirebaseAuthSingleton extends FirebaseAuthUtilInterface {
       //이외 플랫폼(firebase_auth, 정식)
 
       await _instance.setLanguageCode(
-          Setting.defaultLocale.languageCode); //이메일 보낼 때 한국어로 보냄
+          MySetting.defaultLocale.languageCode); //이메일 보낼 때 한국어로 보냄
 
       //setPersistence를 통해서, 웹의 경우, 로그인 유지를 시킬지, 세션에만 시킬지, 안시킬지 결정할 수 있다.
 

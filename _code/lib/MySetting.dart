@@ -1,8 +1,6 @@
 import 'dart:ui';
 
-import 'package:logger/logger.dart';
-
-class Setting {
+class MySetting {
   static const bool isRelease = true;
 
   //Lang
@@ -12,7 +10,7 @@ class Setting {
   static const int timeZoneOffset = 9;
 
   // App
-  static const String appName = "TRY_IT";
+  static const String appName = "숨고 매니저";
 
   // 중복 클릭 방지 시간
   static int milliSecondsForPreventingMultipleClicks = 300;

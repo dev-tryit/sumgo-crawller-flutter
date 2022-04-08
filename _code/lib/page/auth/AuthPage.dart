@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:sumgo_crawller_flutter/MySetting.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
@@ -91,7 +91,7 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
             children: [
               const SizedBox(height: 36),
               Text(
-                "숨고 매니저",
+                MySetting.appName,
                 style: MyFonts.blackHanSans(
                   fontSize: 35,
                   color: MyColors.deepBlue,

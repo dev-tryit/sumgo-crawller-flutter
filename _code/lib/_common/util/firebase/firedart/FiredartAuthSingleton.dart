@@ -5,7 +5,7 @@ import 'package:firedart/auth/user_gateway.dart';
 import 'package:firedart/firedart.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sumgo_crawller_flutter/Setting.dart';
+import 'package:sumgo_crawller_flutter/MySetting.dart';
 import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseAuthUtilInterface.dart';
@@ -104,7 +104,7 @@ class FiredartAuthSingleton extends FirebaseAuthUtilInterface {
 
     try {
       await _instance.requestEmailVerification(
-          langCode: Setting.defaultLocale.languageCode);
+          langCode: MySetting.defaultLocale.languageCode);
     } on AuthException catch (e) {
       var code = e.message;
       if (code == 'EMAIL_EXISTS') {

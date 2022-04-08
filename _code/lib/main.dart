@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:sumgo_crawller_flutter/Setting.dart';
+import 'package:sumgo_crawller_flutter/MySetting.dart';
 import 'package:sumgo_crawller_flutter/_common/config/MyCustomScrollBehavior.dart';
 import 'package:sumgo_crawller_flutter/_common/util/AuthUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/DesktopUtil.dart';
@@ -33,6 +33,7 @@ Future<void> main() async {
         size: const Size(350, 800),
         minimumSize: const Size(350, 800),
         maximumSize: const Size(350, 800),
+        title: MySetting.appName
       );
     }
     runApp(MyApp());
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: Setting.appName,
+      title: MySetting.appName,
       debugShowCheckedModeBanner: false,
       scrollBehavior: MyCustomScrollBehavior(),
       theme: ThemeData(

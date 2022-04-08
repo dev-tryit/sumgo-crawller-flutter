@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:sumgo_crawller_flutter/Setting.dart';
+import 'package:sumgo_crawller_flutter/MySetting.dart';
 import 'package:sumgo_crawller_flutter/_common/util/AnimationUtil.dart';
 
 class MyComponents {
@@ -349,7 +349,7 @@ class MyComponents {
         DateTime now = DateTime.now();
         if (_lastClickDateTime != null &&
             _lastClickDateTime!.difference(now).inMilliseconds.abs() <
-                Setting.milliSecondsForPreventingMultipleClicks) {
+                MySetting.milliSecondsForPreventingMultipleClicks) {
           return;
         }
         _lastClickDateTime = now;
@@ -380,7 +380,7 @@ class MyComponents {
           DateTime now = DateTime.now();
           if (_lastClickDateTime != null &&
               _lastClickDateTime!.difference(now).inMilliseconds.abs() <
-                  Setting.milliSecondsForPreventingMultipleClicks) {
+                  MySetting.milliSecondsForPreventingMultipleClicks) {
             return;
           }
           _lastClickDateTime = now;

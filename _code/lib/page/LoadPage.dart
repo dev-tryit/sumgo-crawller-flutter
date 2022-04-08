@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sumgo_crawller_flutter/MySetting.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
@@ -55,7 +56,7 @@ class LoadPageComponent extends KDHComponent<_LoadPageState> {
       color: MyColors.deepBlue,
       alignment: Alignment.center,
       child: Text(
-        "숨고 매니저",
+        MySetting.appName,
         style: MyFonts.blackHanSans(
           fontSize: 35,
           color: MyColors.white,

@@ -1,7 +1,7 @@
 import 'package:logger/logger.dart';
 import 'package:logger_flutter/logger_flutter.dart';
 import "package:stack_trace/stack_trace.dart";
-import 'package:sumgo_crawller_flutter/Setting.dart';
+import 'package:sumgo_crawller_flutter/MySetting.dart';
 
 class LogUtil {
   static const bool _showLogLevel = false;
@@ -10,7 +10,7 @@ class LogUtil {
   static final _filter = DevelopmentFilter();
   static final Logger _logger = Logger(
     filter: _filter,
-    level: Setting.isRelease?Level.warning:Level.debug,
+    level: MySetting.isRelease?Level.warning:Level.debug,
     printer: SimplePrinter(printTime: true, colors: true),
     output: LogConsole.wrap(innerOutput: ConsoleOutput()),
     // printer: new PrettyPrinter(
@@ -58,7 +58,7 @@ class LogUtil {
     }
 
     if (_showAppName) {
-      logStr += "[${Setting.appName}_APP] ";
+      logStr += "[${MySetting.appName}_APP] ";
     }
 
     if (_showMethodName) {

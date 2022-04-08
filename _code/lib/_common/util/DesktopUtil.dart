@@ -4,14 +4,17 @@ import 'package:window_manager/window_manager.dart';
 
 class DesktopUtil {
   static Future setDesktopSetting(
-      {required Size size, Size? minimumSize, Size? maximumSize, String? title}) async {
+      {Size? size, Size? minimumSize, Size? maximumSize, String? title}) async {
     await windowManager.ensureInitialized();
     windowManager.waitUntilReadyToShow().then((_) async {
-      // Hide window title bar
+
       if(title != null) {
         await windowManager.setTitle(title);
       }
-      await windowManager.setSize(size);
+
+      if(size != null) {
+        await windowManager.setSize(size);
+      }
       if (minimumSize != null) {
         await windowManager.setMinimumSize(minimumSize);
       }

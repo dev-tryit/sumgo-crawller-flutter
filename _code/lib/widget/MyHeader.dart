@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sumgo_crawller_flutter/_common/util/AuthUtil.dart';
-import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
-import 'package:sumgo_crawller_flutter/dialog/SettingDialog.dart';
-import 'package:sumgo_crawller_flutter/page/LoadPage.dart';
-import 'package:sumgo_crawller_flutter/page/main/MainLayout.dart';
+import 'package:sumgo_crawller_flutter/MySetting.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 import 'package:sumgo_crawller_flutter/util/MyImage.dart';
@@ -49,7 +45,7 @@ class MyHeader extends StatelessWidget {
         children: [
           const Opacity(opacity: 0, child: Icon(Icons.logout)),
           Text(
-            "숨고 매니저",
+            MySetting.appName,
             style: MyFonts.blackHanSans(
               fontSize: 28,
               color: MyColors.white,

@@ -3,15 +3,14 @@ import 'dart:async';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:sumgo_crawller_flutter/MySetting.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/AnimationUtil.dart';
-import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/UrlUtil.dart';
-import 'package:sumgo_crawller_flutter/dialog/SettingDialog.dart';
 import 'package:sumgo_crawller_flutter/repository/RemovalConditionRepository.dart';
 import 'package:sumgo_crawller_flutter/repository/SettingRepository.dart';
 import 'package:sumgo_crawller_flutter/util/MyBottomSheetUtil.dart';
@@ -155,7 +154,7 @@ class RequestRemovalPageService
       await showOkAlertDialog(
         context: context,
         title: "알림",
-        message: "숨고 매니저 설정이 필요합니다.",
+        message: "${MySetting.appName} 설정이 필요합니다.",
       );
       state.widget.showSettingDialog();
       return;
