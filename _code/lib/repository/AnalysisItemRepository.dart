@@ -52,7 +52,7 @@ class AnalysisItemRepository {
 
   final FirebaseStoreUtilInterface<AnalysisItem> _ =
       FirebaseStoreUtilInterface.init<AnalysisItem>(
-    collectionName: StringUtil.classToString(AnalysisItem.empty()),
+    collectionName: StringUtil.classToString(AnalysisItem.empty().runtimeType),
     fromMap: AnalysisItem.fromMap,
     toMap: AnalysisItem.toMap,
   );

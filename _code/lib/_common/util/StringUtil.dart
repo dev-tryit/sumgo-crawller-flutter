@@ -1,7 +1,10 @@
+
+
+
 class StringUtil {
-  static String classToString(dynamic clazz) {
+  static String classToString(Type clazz) {
     String returnStr = "";
-    returnStr = clazz.runtimeType.toString();
+    returnStr = clazz.toString();
     returnStr = returnStr.replaceAll(r"$", "");
     return returnStr;
   }

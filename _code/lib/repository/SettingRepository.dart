@@ -1,7 +1,6 @@
 import 'package:sumgo_crawller_flutter/_common/abstract/WithDocId.dart';
 import 'package:sumgo_crawller_flutter/_common/util/StringUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseStoreUtilInterface.dart';
-import 'package:sumgo_crawller_flutter/widget/SelectRemovalType.dart';
 
 class Setting extends WithDocId {
   String? sumgoId;
@@ -50,7 +49,7 @@ class SettingRepository {
 
   final FirebaseStoreUtilInterface<Setting> _ =
       FirebaseStoreUtilInterface.init<Setting>(
-    collectionName: StringUtil.classToString(Setting.empty()),
+    collectionName: StringUtil.classToString(Setting.empty().runtimeType),
     fromMap: Setting.fromMap,
     toMap: Setting.toMap,
   );

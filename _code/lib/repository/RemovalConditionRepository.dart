@@ -61,7 +61,7 @@ class RemovalConditionRepository {
 
   final FirebaseStoreUtilInterface<RemovalCondition> _ =
       FirebaseStoreUtilInterface.init<RemovalCondition>(
-    collectionName: StringUtil.classToString(RemovalCondition.empty()),
+    collectionName: StringUtil.classToString(RemovalCondition.empty().runtimeType),
     fromMap: RemovalCondition.fromMap,
     toMap: RemovalCondition.toMap,
   );

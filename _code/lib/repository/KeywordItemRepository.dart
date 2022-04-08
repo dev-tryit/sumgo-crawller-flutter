@@ -49,7 +49,7 @@ class KeywordItemRepository {
   KeywordItemRepository._internal();
 
   final _ = FirebaseStoreUtilInterface.init<KeywordItem>(
-    collectionName: StringUtil.classToString(KeywordItem.empty()),
+    collectionName: StringUtil.classToString(KeywordItem.empty().runtimeType),
     fromMap: KeywordItem.fromMap,
     toMap: KeywordItem.toMap,
   );
