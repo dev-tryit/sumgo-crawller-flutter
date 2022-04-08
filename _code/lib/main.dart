@@ -17,6 +17,9 @@ import 'package:sumgo_crawller_flutter/util/MyTheme.dart';
 
 import 'firebase_options.dart';
 
+const width = 350.0;
+const height = 700.0;
+
 Future<void> main() async {
   ErrorUtil.catchError(() async {
     if (!PlatformUtil.isComputer()) {
@@ -31,9 +34,9 @@ Future<void> main() async {
 
     if (PlatformUtil.isComputer()) {
       DesktopUtil.setDesktopSetting(
-        size: const Size(350, 800),
-        minimumSize: const Size(350, 800),
-        maximumSize: const Size(350, 800),
+        size: const Size(width, height),
+        minimumSize: const Size(width, height),
+        maximumSize: const Size(width, height),
         title: MySetting.appName
       );
     }
@@ -71,8 +74,8 @@ class MyApp extends StatelessWidget {
         child = FittedBox(
           alignment: Alignment.center,
           child: Container(
-            width: 350,
-            height: 700,
+            width: width,
+            height: height,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black, width: 1),
             ),

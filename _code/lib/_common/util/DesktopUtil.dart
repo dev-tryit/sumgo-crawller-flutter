@@ -4,12 +4,16 @@ import 'package:window_manager/window_manager.dart';
 
 class DesktopUtil {
   static Future setDesktopSetting(
-      {Size? size, Size? minimumSize, Size? maximumSize, String? title}) async {
+      {Size? size, Size? minimumSize, Size? maximumSize, String? title, double? aspectRatio}) async {
     await windowManager.ensureInitialized();
     windowManager.waitUntilReadyToShow().then((_) async {
 
       if(title != null) {
         await windowManager.setTitle(title);
+      }
+
+      if(aspectRatio != null) {
+        await windowManager.setAspectRatio(aspectRatio);
       }
 
       if(size != null) {
