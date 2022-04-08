@@ -3,14 +3,25 @@ import 'package:logger_flutter/logger_flutter.dart';
 import "package:stack_trace/stack_trace.dart";
 import 'package:sumgo_crawller_flutter/MySetting.dart';
 
+class MyFilter extends LogFilter {
+  @override
+  bool shouldLog(LogEvent event) {
+    var shouldLog = false;
+    if (event.level.index >= level!.index) {
+      shouldLog = true;
+    }
+    return shouldLog;
+  }
+}
+
 class LogUtil {
   static const bool _showLogLevel = false;
   static const bool _showAppName = false;
   static const bool _showMethodName = true;
-  static final _filter = DevelopmentFilter();
+  static final _filter = MySetting.isRelease ? DevelopmentFilter() : MyFilter(); //DevelopmentFilter는 release에서 작동안해서 테스트를 위해 사용.
   static final Logger _logger = Logger(
     filter: _filter,
-    level: MySetting.isRelease?Level.warning:Level.debug,
+    level: MySetting.isRelease ? Level.warning : Level.debug,
     printer: PrettyPrinter(printTime: true, colors: true, methodCount: 10),
     output: LogConsole.wrap(innerOutput: ConsoleOutput()),
     // printer: new PrettyPrinter(
