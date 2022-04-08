@@ -136,7 +136,7 @@ class RequestRemovalPageService
   }
 
   Future<void> removeRequests() async {
-    if (PlatformUtil().isWeb()) {
+    if (PlatformUtil.isWeb()) {
       await showOkAlertDialog(
         context: context,
         title: "알림",

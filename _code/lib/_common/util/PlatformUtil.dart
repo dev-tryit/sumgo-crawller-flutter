@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 enum os { Unknown, Web, Android, Fuchsia, IOS, Linux, MacOS, Windows }
 
 class PlatformUtil {
-  os getPlatform() {
+  static os getPlatform() {
     if (kIsWeb) {
       return os.Web;
     } else if (Platform.isIOS) {
@@ -24,7 +24,7 @@ class PlatformUtil {
     return os.Unknown;
   }
 
-  bool isWeb() {
+  static bool isWeb() {
     os platform = getPlatform();
     bool b = (platform == os.Web);
 
@@ -32,7 +32,7 @@ class PlatformUtil {
     return b;
   }
 
-  bool isMobile() {
+  static bool isMobile() {
     os platform = getPlatform();
     bool b =  (platform == os.Android ||
         platform == os.IOS ||
@@ -42,7 +42,7 @@ class PlatformUtil {
     return b;
   }
 
-  bool isComputer() {
+  static bool isComputer() {
     os platform = getPlatform();
     bool b =  (platform == os.Linux ||
         platform == os.MacOS ||
