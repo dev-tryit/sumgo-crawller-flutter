@@ -1,25 +1,18 @@
 import 'dart:async';
 
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
-import 'package:sumgo_crawller_flutter/_common/util/AnimationUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/AuthUtil.dart';
+import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
-import 'package:sumgo_crawller_flutter/repository/AnalysisItemRepository.dart';
+import 'package:sumgo_crawller_flutter/_common/widget/EasyKeyboardListener.dart';
 import 'package:sumgo_crawller_flutter/repository/SettingRepository.dart';
-import 'package:sumgo_crawller_flutter/util/MyBottomSheetUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
-import 'package:sumgo_crawller_flutter/util/MyImage.dart';
-import 'package:sumgo_crawller_flutter/widget/MyCard.dart';
-import 'package:sumgo_crawller_flutter/widget/MyChart.dart';
-import 'package:sumgo_crawller_flutter/widget/MyRedButton.dart';
 
 class SettingDialog extends StatefulWidget {
   const SettingDialog({Key? key}) : super(key: key);
@@ -62,6 +55,7 @@ class _SettingDialogState extends KDHState<SettingDialog,
 }
 
 class SettingDialogComponent extends KDHComponent<_SettingDialogState> {
+  static const String debugString = "hiddenDebug";
   final idController = TextEditingController();
   final pwController = TextEditingController();
   final chromeUrlController = TextEditingController();
@@ -69,29 +63,37 @@ class SettingDialogComponent extends KDHComponent<_SettingDialogState> {
   SettingDialogComponent(_SettingDialogState state) : super(state);
 
   Widget body(SettingDialogService s) {
-    return Dialog(
-      child: Padding(
-        padding:
-            const EdgeInsets.only(left: 25, right: 25, top: 18, bottom: 18),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            title(s),
-            const Divider(),
-            const SizedBox(height: 20),
-            textFieldWithLabel(label: "숨고 ID", controller: idController),
-            const SizedBox(height: 30),
-            textFieldWithLabel(
-                label: "숨고 PW", controller: pwController, obscureText: true),
-            const SizedBox(height: 30),
-            textFieldWithLabel(
-                label: "크롬 주소",
-                controller: chromeUrlController,
-                hintText: 'http://localhost:9222'),
-            const SizedBox(height: 35),
-            actions(s),
-          ],
+    return EasyKeyboardListener(
+      onValue: (value) {
+        if (value.contains(debugString)) {
+          MyComponents.snackBar(context, "음 디버그 활성화");
+        }
+      },
+      inputLimit: debugString.length,
+      child: Dialog(
+        child: Padding(
+          padding:
+              const EdgeInsets.only(left: 25, right: 25, top: 18, bottom: 18),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              title(s),
+              const Divider(),
+              const SizedBox(height: 20),
+              textFieldWithLabel(label: "숨고 ID", controller: idController),
+              const SizedBox(height: 30),
+              textFieldWithLabel(
+                  label: "숨고 PW", controller: pwController, obscureText: true),
+              const SizedBox(height: 30),
+              textFieldWithLabel(
+                  label: "크롬 주소",
+                  controller: chromeUrlController,
+                  hintText: 'http://localhost:9222'),
+              const SizedBox(height: 35),
+              actions(s),
+            ],
+          ),
         ),
       ),
     );

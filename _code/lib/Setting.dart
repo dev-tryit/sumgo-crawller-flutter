@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:logger/logger.dart';
 
 class Setting {
-  static const bool isRelease = true;
+  static const bool isRelease = false;
 
   //Lang
   static const Locale defaultLocale = Locale('ko', 'kr');
