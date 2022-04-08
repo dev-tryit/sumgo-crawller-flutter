@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:logger_flutter/logger_flutter.dart';
-import 'package:sumgo_crawller_flutter/Setting.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
+import 'package:sumgo_crawller_flutter/dialog/SettingDialog.dart';
 import 'package:sumgo_crawller_flutter/page/main/KeywordAnalysisPage.dart';
 import 'package:sumgo_crawller_flutter/page/main/RequestRemovalPage.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
@@ -47,7 +47,7 @@ class _MainLayoutState
 
   @override
   void mustRebuild() {
-    widgetToBuild = () => Scaffold(body: c.body());
+    widgetToBuild = () => Scaffold(body: c.body(s));
     rebuild();
   }
 
@@ -62,37 +62,37 @@ class MainLayoutComponent extends KDHComponent<_MainLayoutState> {
       : pageC = PageController(),
         super(state);
 
-  Widget body() {
+  Widget body(MainLayoutService s) {
     return SizedBox.expand(
       child: Stack(
         children: [
-          Positioned(top: 150, bottom: 0, left: 0, right: 0, child: content()),
-          MyHeader(pageC),
-          // ...(!Setting.isRelease
-          //     ? [
-          //         Positioned(
-          //           bottom: 10,
-          //           right: 10,
-          //           child: FloatingActionButton(
-          //             backgroundColor: MyColors.red,
-          //             child: const Icon(Icons.bug_report),
-          //             onPressed: () => LogConsole.openLogConsole(context),
-          //           ),
-          //         )
-          //       ]
-          //     : []),
+          Positioned(top: 150, bottom: 0, left: 0, right: 0, child: content(s)),
+          MyHeader(pageC, s.showSettingDialog),
+          ...(!s.isShownDebugTool
+              ? [
+                  Positioned(
+                    bottom: 10,
+                    right: 10,
+                    child: FloatingActionButton(
+                      backgroundColor: MyColors.red,
+                      child: const Icon(Icons.bug_report),
+                      onPressed: () => LogConsole.openLogConsole(context),
+                    ),
+                  )
+                ]
+              : []),
         ],
       ),
     );
   }
 
-  Widget content() {
+  Widget content(MainLayoutService s) {
     return PageView(
       controller: pageC,
       physics: const NeverScrollableScrollPhysics(),
-      children: const [
+      children: [
         KeywordAnalysisPage(),
-        RequestRemovalPage(),
+        RequestRemovalPage(s.showSettingDialog)
       ],
     );
   }
@@ -100,6 +100,19 @@ class MainLayoutComponent extends KDHComponent<_MainLayoutState> {
 
 class MainLayoutService
     extends KDHService<_MainLayoutState, MainLayoutComponent> {
+  bool isShownDebugTool = false;
+
   MainLayoutService(_MainLayoutState state, MainLayoutComponent c)
       : super(state, c);
+
+  void showDebugWidget(bool useDebugTool) {
+    if (useDebugTool) {
+      isShownDebugTool = true;
+      rebuild();
+    }
+  }
+  
+  void showSettingDialog() {
+    SettingDialog.show(context, showDebugWidget);
+  }
 }

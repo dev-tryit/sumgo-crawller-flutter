@@ -3,6 +3,7 @@ import 'package:sumgo_crawller_flutter/_common/util/AuthUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
 import 'package:sumgo_crawller_flutter/dialog/SettingDialog.dart';
 import 'package:sumgo_crawller_flutter/page/LoadPage.dart';
+import 'package:sumgo_crawller_flutter/page/main/MainLayout.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 import 'package:sumgo_crawller_flutter/util/MyImage.dart';
@@ -10,8 +11,10 @@ import 'package:sumgo_crawller_flutter/widget/MyMenu.dart';
 
 class MyHeader extends StatelessWidget {
   final PageController pageC;
+  final Function showSettingDialog;
 
-  const MyHeader(this.pageC, {Key? key}) : super(key: key);
+  const MyHeader(this.pageC, this.showSettingDialog, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +56,7 @@ class MyHeader extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () => SettingDialog.show(context),
+            onTap: () => showSettingDialog(),
             child: const Opacity(
               opacity: 1,
               child: Icon(

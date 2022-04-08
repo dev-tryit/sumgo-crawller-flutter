@@ -9,19 +9,34 @@ import 'package:sumgo_crawller_flutter/_common/util/AuthUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/widget/EasyKeyboardListener.dart';
+import 'package:sumgo_crawller_flutter/page/main/MainLayout.dart';
 import 'package:sumgo_crawller_flutter/repository/SettingRepository.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 
+// ...(!Setting.isRelease
+//     ? [
+//         Positioned(
+//           bottom: 10,
+//           right: 10,
+//           child: FloatingActionButton(
+//             backgroundColor: MyColors.red,
+//             child: const Icon(Icons.bug_report),
+//             onPressed: () => LogConsole.openLogConsole(context),
+//           ),
+//         )
+//       ]
+//     : []),
 class SettingDialog extends StatefulWidget {
-  const SettingDialog({Key? key}) : super(key: key);
+  final Function showDebugWidget;
+  const SettingDialog(this.showDebugWidget, {Key? key}) : super(key: key);
 
   @override
   _SettingDialogState createState() => _SettingDialogState();
 
-  static void show(BuildContext context) {
-    showDialog(context: context, builder: (context) => SettingDialog());
+  static void show(BuildContext context, Function showDebugWidget) {
+    showDialog(context: context, builder: (context) => SettingDialog(showDebugWidget));
   }
 }
 
@@ -66,7 +81,8 @@ class SettingDialogComponent extends KDHComponent<_SettingDialogState> {
     return EasyKeyboardListener(
       onValue: (value) {
         if (value.contains(debugString)) {
-          MyComponents.snackBar(context, "음 디버그 활성화");
+          state.widget.showDebugWidget(true);
+          MyComponents.snackBar(context, "디버그 도구가 활성화되었습니다.");
         }
       },
       inputLimit: debugString.length,

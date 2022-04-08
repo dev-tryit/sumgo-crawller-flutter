@@ -26,7 +26,8 @@ import 'package:sumgo_crawller_flutter/widget/MyWhiteButton.dart';
 import 'package:sumgo_crawller_flutter/widget/SelectRemovalType.dart';
 
 class RequestRemovalPage extends StatefulWidget {
-  const RequestRemovalPage({Key? key}) : super(key: key);
+  Function showSettingDialog;
+  RequestRemovalPage(this.showSettingDialog, {Key? key}) : super(key: key);
 
   @override
   _RequestRemovalPageState createState() => _RequestRemovalPageState();
@@ -156,7 +157,7 @@ class RequestRemovalPageService
         title: "알림",
         message: "숨고 매니저 설정이 필요합니다.",
       );
-      SettingDialog.show(context);
+      state.widget.showSettingDialog();
       return;
     }
 

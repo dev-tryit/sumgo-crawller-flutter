@@ -5,14 +5,14 @@ import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 
 abstract class KDHService<STATE extends KDHState, COMPONENT> {
-  final STATE _state;
+  final STATE state;
   final COMPONENT c;
 
-  BuildContext get context => _state.context;
-  void rebuild({Function? afterBuild}) => _state.rebuild(afterBuild: afterBuild);
-  Size get screenSize => _state.screenSize;
-  Map<dynamic, WidgetToGetSize> get widgetMap => _state.widgetMap;
-  set widgetToBuild(Widget Function() widgetToBuild) => _state.widgetToBuild = widgetToBuild;
+  BuildContext get context => state.context;
+  void rebuild({Function? afterBuild}) => state.rebuild(afterBuild: afterBuild);
+  Size get screenSize => state.screenSize;
+  Map<dynamic, WidgetToGetSize> get widgetMap => state.widgetMap;
+  set widgetToBuild(Widget Function() widgetToBuild) => state.widgetToBuild = widgetToBuild;
 
-  KDHService(this._state, this.c);
+  KDHService(this.state, this.c);
 }
