@@ -85,9 +85,10 @@ class MyApp extends StatelessWidget {
         child = MyComponents.easyLoadingBuilder()(context, child);
         return child;
       },
+      initialRoute: "/${LoadPage.className}",
       home: LoadPage(),
       routes: {
-        '/LoadPage': (BuildContext context) => LoadPage(),
+        '/${LoadPage.className}': (BuildContext context) => LoadPage(),
         '/${AuthPage.className}' : (BuildContext context) => AuthPage(),
       },
     );

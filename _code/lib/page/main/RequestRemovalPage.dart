@@ -25,7 +25,7 @@ import 'package:sumgo_crawller_flutter/widget/MyWhiteButton.dart';
 import 'package:sumgo_crawller_flutter/widget/SelectRemovalType.dart';
 
 class RequestRemovalPage extends StatefulWidget {
-  final className = "RequestRemovalPage";
+  static String get className => "RequestRemovalPage";
   Function showSettingDialog;
   RequestRemovalPage(this.showSettingDialog, {Key? key}) : super(key: key);
 

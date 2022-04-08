@@ -19,7 +19,7 @@ import 'package:sumgo_crawller_flutter/widget/MyChart.dart';
 import 'package:sumgo_crawller_flutter/widget/MyRedButton.dart';
 
 class KeywordAnalysisPage extends StatefulWidget {
-  final className = "KeywordAnalysisPage";
+  static String get className => "KeywordAnalysisPage";
   const KeywordAnalysisPage({Key? key}) : super(key: key);
 
   @override
