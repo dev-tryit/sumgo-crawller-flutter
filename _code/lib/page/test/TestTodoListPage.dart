@@ -7,7 +7,7 @@ class Todo {
   String? content;
   bool? checked;
 
-  static const String className = "Todo";
+  final className = "Todo";
 
   Todo({this.content, this.checked = false});
 
@@ -26,7 +26,7 @@ class Todo {
 }
 
 class TestTodoListPage extends StatefulWidget {
-  static const String className = "TestTodoList";
+  final className = "TestTodoList";
   const TestTodoListPage({Key? key}) : super(key: key);
 
   @override

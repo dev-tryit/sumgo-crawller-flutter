@@ -22,7 +22,7 @@ class User {
 }
 
 class TestLoginPage extends StatefulWidget {
-  static const String className = "TestLoginPage";
+  final className = "TestLoginPage";
   @override
   _TestLoginPageState createState() => _TestLoginPageState();
 }

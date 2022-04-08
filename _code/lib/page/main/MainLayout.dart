@@ -12,7 +12,7 @@ import 'package:sumgo_crawller_flutter/util/MyImage.dart';
 import 'package:sumgo_crawller_flutter/widget/MyHeader.dart';
 
 class MainLayout extends StatefulWidget {
-  static const String className = "MainLayout";
+  final className = "MainLayout";
   @override
   _MainLayoutState createState() => _MainLayoutState();
 }
