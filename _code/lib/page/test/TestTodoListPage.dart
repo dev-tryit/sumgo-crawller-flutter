@@ -25,14 +25,15 @@ class Todo {
   }
 }
 
-class TestTodoList extends StatefulWidget {
-  const TestTodoList({Key? key}) : super(key: key);
+class TestTodoListPage extends StatefulWidget {
+  static const String className = "TestTodoList";
+  const TestTodoListPage({Key? key}) : super(key: key);
 
   @override
-  _TestTodoListState createState() => _TestTodoListState();
+  _TestTodoListPageState createState() => _TestTodoListPageState();
 }
 
-class _TestTodoListState extends State<TestTodoList> {
+class _TestTodoListPageState extends State<TestTodoListPage> {
   bool isLoaded = false;
   List<Todo> todoList = [
     // Todo("아침 산책", true),
@@ -166,7 +167,7 @@ class _MyListTileState extends State<MyListTile> {
 }
 
 class InputBottomBox extends StatefulWidget {
-  _TestTodoListState testTodoListState;
+  _TestTodoListPageState testTodoListState;
 
   InputBottomBox(this.testTodoListState, {Key? key}) : super(key: key);
 

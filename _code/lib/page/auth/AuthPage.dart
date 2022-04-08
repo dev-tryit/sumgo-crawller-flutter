@@ -15,6 +15,7 @@ import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 
 class AuthPage extends StatefulWidget {
+  static const String className = "AuthPage";
   @override
   _AuthPageState createState() => _AuthPageState();
 }

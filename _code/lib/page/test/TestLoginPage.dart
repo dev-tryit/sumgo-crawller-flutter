@@ -1,7 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sumgo_crawller_flutter/page/test/TestTodoList.dart';
+import 'package:sumgo_crawller_flutter/page/test/TestTodoListPage.dart';
 
 class User {
   String id;
@@ -22,6 +22,7 @@ class User {
 }
 
 class TestLoginPage extends StatefulWidget {
+  static const String className = "TestLoginPage";
   @override
   _TestLoginPageState createState() => _TestLoginPageState();
 }
@@ -39,7 +40,7 @@ class _TestLoginPageState extends State<TestLoginPage> {
       bool isLogin = FirebaseAuth.instance.currentUser != null;
       print("isLogin : $isLogin");
       if(isLogin) {
-        goPage(context, TestTodoList());
+        goPage(context, TestTodoListPage());
       }
     });
   }
@@ -116,7 +117,7 @@ class _TestLoginPageState extends State<TestLoginPage> {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: user.id, password: user.pw);
       showMessage(context, "로그인 완료되었습니다");
-      goPage(context, TestTodoList());
+      goPage(context, TestTodoListPage());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         showMessage(context, "해당 유저가 없습니다.");

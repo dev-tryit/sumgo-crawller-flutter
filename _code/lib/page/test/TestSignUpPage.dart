@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class TestSignUpPage extends StatefulWidget {
+  static const String className = "TestSignUpPage";
   const TestSignUpPage({Key? key}) : super(key: key);
 
   @override

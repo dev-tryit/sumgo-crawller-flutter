@@ -12,6 +12,7 @@ import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 
 class LoadPage extends StatefulWidget {
+  static const String className = "LoadPage";
   const LoadPage({Key? key}) : super(key: key);
 
   @override

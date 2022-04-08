@@ -28,6 +28,7 @@ import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 //       ]
 //     : []),
 class SettingDialog extends StatefulWidget {
+  static const String className = "SettingDialog";
   final Function showDebugWidget;
   const SettingDialog(this.showDebugWidget, {Key? key}) : super(key: key);
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
-import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/MediaQueryUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 

@@ -51,9 +51,7 @@ class PageUtil {
     );
   }
 
-  static String makePagePath(Widget page) {
-    String pageStr = page.runtimeType.toString();
-    pageStr = pageStr.replaceAll(r"$", "");
-    return "/" + pageStr;
+  static String makePagePath(dynamic page) {
+    return "/" + page.className;
   }
 }
