@@ -1,9 +1,9 @@
 import 'package:sumgo_crawller_flutter/_common/abstract/WithDocId.dart';
-import 'package:sumgo_crawller_flutter/_common/util/StringUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseStoreUtilInterface.dart';
 import 'package:sumgo_crawller_flutter/widget/SelectRemovalType.dart';
 
 class RemovalCondition extends WithDocId {
+  static const String className = "RemovalCondition";
   String? type;
   String? content;
   String? typeDisplay;
@@ -11,8 +11,6 @@ class RemovalCondition extends WithDocId {
   RemovalCondition(
       {required this.type, required this.content, required this.typeDisplay})
       : super(documentId: DateTime.now().microsecondsSinceEpoch);
-
-  RemovalCondition.empty(): super(documentId: DateTime.now().microsecondsSinceEpoch);
 
   factory RemovalCondition.fromJson(Map<String, dynamic> json) => fromMap(json);
 
@@ -61,7 +59,7 @@ class RemovalConditionRepository {
 
   final FirebaseStoreUtilInterface<RemovalCondition> _ =
       FirebaseStoreUtilInterface.init<RemovalCondition>(
-    collectionName: StringUtil.classToString(RemovalCondition.empty().runtimeType),
+    collectionName: RemovalCondition.className,
     fromMap: RemovalCondition.fromMap,
     toMap: RemovalCondition.toMap,
   );

@@ -3,7 +3,6 @@ import 'package:sumgo_crawller_flutter/_common/model/exception/CommonException.d
 import 'package:sumgo_crawller_flutter/_common/util/AuthUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
-import 'package:sumgo_crawller_flutter/_common/util/StringUtil.dart';
 import 'package:sumgo_crawller_flutter/page/main/MainLayout.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 
@@ -90,17 +89,17 @@ class AuthStateRegistration<COMPONENT> implements AuthState<COMPONENT> {
     String passwordConfirm = data['passwordConfirm'];
 
 
-    if (StringUtil.isNullOrEmpty(email)) {
+    if (email.isEmpty) {
       MyComponents.toastError(context, "이메일이 비어있습니다");
       return this;
     }
 
-    if (StringUtil.isNullOrEmpty(password)) {
+    if (password.isEmpty) {
       MyComponents.toastError(context, "비밀번호가 비어있습니다");
       return this;
     }
 
-    if (StringUtil.isNullOrEmpty(passwordConfirm)) {
+    if (passwordConfirm.isEmpty) {
       MyComponents.toastError(context, "비밀번호 확인이 비어있습니다");
       return this;
     }
@@ -140,12 +139,12 @@ class AuthStateLogin<COMPONENT> implements AuthState<COMPONENT> {
     String email = data['email'];
     String password = data['password'];
 
-    if (StringUtil.isNullOrEmpty(email)) {
+    if (email.isEmpty) {
       MyComponents.toastError(context, "이메일이 비어있습니다");
       return this;
     }
 
-    if (StringUtil.isNullOrEmpty(password)) {
+    if (password.isEmpty) {
       MyComponents.toastError(context, "비밀번호가 비어있습니다");
       return this;
     }

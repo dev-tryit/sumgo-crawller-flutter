@@ -7,7 +7,6 @@ import 'package:sumgo_crawller_flutter/_common/config/MyCustomScrollBehavior.dar
 import 'package:sumgo_crawller_flutter/_common/util/AuthUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/DesktopUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/ErrorUtil.dart';
-import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/page/LoadPage.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
@@ -44,7 +43,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    LogUtil.error("MyApp error");
     //TODO: 라우트 적용 작업 필요
     return MaterialApp(
       title: MySetting.appName,

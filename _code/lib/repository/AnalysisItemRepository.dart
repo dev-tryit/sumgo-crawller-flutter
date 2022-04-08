@@ -1,14 +1,12 @@
 import 'package:sumgo_crawller_flutter/_common/abstract/WithDocId.dart';
-import 'package:sumgo_crawller_flutter/_common/util/StringUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseStoreUtilInterface.dart';
 
 class AnalysisItem extends WithDocId {
+  static const String className = "AnalysisItem";
   String? title;
   List? keywordList;
 
   AnalysisItem({required this.title, required this.keywordList}) : super(documentId: DateTime.now().microsecondsSinceEpoch);
-
-  AnalysisItem.empty(): super(documentId: DateTime.now().microsecondsSinceEpoch);
 
   factory AnalysisItem.fromJson(Map<String, dynamic> json) => fromMap(json);
 
@@ -52,7 +50,7 @@ class AnalysisItemRepository {
 
   final FirebaseStoreUtilInterface<AnalysisItem> _ =
       FirebaseStoreUtilInterface.init<AnalysisItem>(
-    collectionName: StringUtil.classToString(AnalysisItem.empty().runtimeType),
+    collectionName: AnalysisItem.className,
     fromMap: AnalysisItem.fromMap,
     toMap: AnalysisItem.toMap,
   );

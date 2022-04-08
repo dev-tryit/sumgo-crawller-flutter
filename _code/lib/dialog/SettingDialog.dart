@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
@@ -10,7 +9,6 @@ import 'package:sumgo_crawller_flutter/_common/util/AuthUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/widget/EasyKeyboardListener.dart';
-import 'package:sumgo_crawller_flutter/page/main/MainLayout.dart';
 import 'package:sumgo_crawller_flutter/repository/SettingRepository.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
@@ -198,7 +196,7 @@ class SettingDialogService
   }
 
   Future<void> saveSetting() async {
-    setting = (setting ?? Setting.empty())
+    setting = (setting ?? Setting(sumgoId: "",sumgoPw: "",crallwerUrl: ""))
       ..sumgoId = c.idController.text
       ..sumgoPw = c.pwController.text
       ..crallwerUrl = c.chromeUrlController.text;

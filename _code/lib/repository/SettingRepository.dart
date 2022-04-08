@@ -1,17 +1,16 @@
 import 'package:sumgo_crawller_flutter/_common/abstract/WithDocId.dart';
-import 'package:sumgo_crawller_flutter/_common/util/StringUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/firebase/FirebaseStoreUtilInterface.dart';
 
 class Setting extends WithDocId {
+  static const String className = "Setting";
   String? sumgoId;
   String? sumgoPw;
   String? crallwerUrl;
 
+
   Setting(
       {required this.sumgoId, required this.sumgoPw, required this.crallwerUrl})
       : super(documentId: DateTime.now().microsecondsSinceEpoch);
-
-  Setting.empty(): super(documentId: DateTime.now().microsecondsSinceEpoch);
 
   factory Setting.fromJson(Map<String, dynamic> json) => fromMap(json);
 
@@ -49,7 +48,7 @@ class SettingRepository {
 
   final FirebaseStoreUtilInterface<Setting> _ =
       FirebaseStoreUtilInterface.init<Setting>(
-    collectionName: StringUtil.classToString(Setting.empty().runtimeType),
+    collectionName: Setting.className,
     fromMap: Setting.fromMap,
     toMap: Setting.toMap,
   );
