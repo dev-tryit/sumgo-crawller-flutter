@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TestCountPage extends StatefulWidget {
-  final className = "TestCountPage";
+  static const String staticClassName= "TestCountPage";
+  final className = staticClassName;
   const TestCountPage({Key? key}) : super(key: key);
 
   @override

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TestTabPage extends StatelessWidget {
-  final className = "TestTabPage";
+  static const String staticClassName= "TestTabPage";
+  final className = staticClassName;
   const TestTabPage({Key? key}) : super(key: key);
 
   @override

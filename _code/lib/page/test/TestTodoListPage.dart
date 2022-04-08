@@ -26,7 +26,8 @@ class Todo {
 }
 
 class TestTodoListPage extends StatefulWidget {
-  final className = "TestTodoList";
+  static const String staticClassName= "TestTodoListPage";
+  final className = staticClassName;
   const TestTodoListPage({Key? key}) : super(key: key);
 
   @override
