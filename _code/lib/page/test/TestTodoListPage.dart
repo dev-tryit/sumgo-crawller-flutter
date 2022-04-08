@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 
 class Todo {
+  static const className = "Todo";
+
   String? documentId;
   String? content;
   bool? checked;
-
-  final className = "Todo";
 
   Todo({this.content, this.checked = false});
 
