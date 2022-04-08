@@ -11,7 +11,7 @@ class LogUtil {
   static final Logger _logger = Logger(
     filter: _filter,
     level: MySetting.isRelease?Level.warning:Level.debug,
-    printer: SimplePrinter(printTime: true, colors: true),
+    printer: PrettyPrinter(printTime: true, colors: true, methodCount: 10),
     output: LogConsole.wrap(innerOutput: ConsoleOutput()),
     // printer: new PrettyPrinter(
     //     methodCount: 0,
