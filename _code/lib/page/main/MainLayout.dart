@@ -68,19 +68,19 @@ class MainLayoutComponent extends KDHComponent<_MainLayoutState> {
         children: [
           Positioned(top: 150, bottom: 0, left: 0, right: 0, child: content()),
           MyHeader(pageC),
-          ...(!Setting.isRelease
-              ? [
-                  Positioned(
-                    bottom: 10,
-                    right: 10,
-                    child: FloatingActionButton(
-                      backgroundColor: MyColors.red,
-                      child: const Icon(Icons.bug_report),
-                      onPressed: () => LogConsole.openLogConsole(context),
-                    ),
-                  )
-                ]
-              : []),
+          // ...(!Setting.isRelease
+          //     ? [
+          //         Positioned(
+          //           bottom: 10,
+          //           right: 10,
+          //           child: FloatingActionButton(
+          //             backgroundColor: MyColors.red,
+          //             child: const Icon(Icons.bug_report),
+          //             onPressed: () => LogConsole.openLogConsole(context),
+          //           ),
+          //         )
+          //       ]
+          //     : []),
         ],
       ),
     );

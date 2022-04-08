@@ -3,19 +3,11 @@ import 'package:logger_flutter/logger_flutter.dart';
 import "package:stack_trace/stack_trace.dart";
 import 'package:sumgo_crawller_flutter/Setting.dart';
 
-class MyLogFilter extends LogFilter {
-  @override
-  bool shouldLog(LogEvent event) {
-    return Setting.showLog;
-  }
-}
-
 class LogUtil {
   static const bool _showLogLevel = false;
   static const bool _showAppName = false;
   static const bool _showMethodName = true;
   static final Logger _logger = Logger(
-    filter: MyLogFilter(),
     level: Setting.LogLevel,
     printer: SimplePrinter(printTime: true, colors: true),
     output: LogConsole.wrap(innerOutput: ConsoleOutput()),
