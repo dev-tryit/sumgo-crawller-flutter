@@ -44,7 +44,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    LogUtil.debug("MyApp debug");
+    LogUtil.error("MyApp error");
     //TODO: 라우트 적용 작업 필요
     return MaterialApp(
       title: MySetting.appName,
