@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
@@ -81,6 +82,7 @@ class SettingDialogComponent extends KDHComponent<_SettingDialogState> {
     return EasyKeyboardListener(
       onValue: (value) {
         if (value.contains(debugString)) {
+          LogUtil.setDebugLevel();
           state.widget.showDebugWidget(true);
           MyComponents.snackBar(context, "디버그 도구가 활성화되었습니다.");
         }

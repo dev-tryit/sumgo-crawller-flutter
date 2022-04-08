@@ -7,8 +7,10 @@ class LogUtil {
   static const bool _showLogLevel = false;
   static const bool _showAppName = false;
   static const bool _showMethodName = true;
+  static final _filter = DevelopmentFilter();
   static final Logger _logger = Logger(
-    level: Setting.LogLevel,
+    filter: _filter,
+    level: Setting.isRelease?Level.warning:Level.debug,
     printer: SimplePrinter(printTime: true, colors: true),
     output: LogConsole.wrap(innerOutput: ConsoleOutput()),
     // printer: new PrettyPrinter(
@@ -25,6 +27,10 @@ class LogUtil {
     //     // printTime: true // Should each log print contain a timestamp
     //     ),
   );
+
+  static void setDebugLevel() {
+    _filter.level = Level.debug;
+  }
 
   static void info(String msg) {
     _logger.i(makeLogString(msg));

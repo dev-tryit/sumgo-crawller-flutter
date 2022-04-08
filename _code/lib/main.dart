@@ -29,7 +29,7 @@ Future<void> main() async {
     await AuthUtil().init();
 
     if (PlatformUtil.isComputer()) {
-      DesktopUtil.setSize(
+      DesktopUtil.setDesktopSetting(
         size: const Size(350, 800),
         minimumSize: const Size(350, 800),
         maximumSize: const Size(350, 800),
