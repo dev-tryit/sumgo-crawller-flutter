@@ -18,7 +18,8 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   ErrorUtil.catchError(() async {
-    if (!PlatformUtil.isComputer()) {
+    var platformUtil = PlatformUtil();
+    if (!platformUtil.isComputer()) {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
@@ -28,7 +29,7 @@ Future<void> main() async {
     await MyStoreUtil.init();
     await AuthUtil().init();
 
-    if (PlatformUtil.isComputer()) {
+    if (platformUtil.isComputer()) {
       DesktopUtil.setSize(
         size: const Size(350, 800),
         minimumSize: const Size(350, 800),

@@ -1,10 +1,9 @@
 import 'package:uuid/uuid.dart';
 
 class UUIDUtil {
-  static Uuid uuid = Uuid();
-
-  static String makeUuid(
+  String makeUuid(
       {bool isRandomBased = true, bool isTimeSpaceBased = false}) {
+    var uuid = const Uuid();
     return (isRandomBased ? uuid.v4() : uuid.v1());
   }
 }

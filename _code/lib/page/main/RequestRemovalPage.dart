@@ -93,7 +93,7 @@ class RequestRemovalPageComponent
     final contentController = TextEditingController();
     final typeController = SelectRemovalTypeController();
 
-    MyBottomSheetUtil.showInputBottomSheet(
+    MyBottomSheetUtil().showInputBottomSheet(
       context: context,
       title: '정리 조건 생성하기',
       children: [
@@ -136,13 +136,13 @@ class RequestRemovalPageService
   }
 
   Future<void> removeRequests() async {
-    if (PlatformUtil.isWeb()) {
+    if (PlatformUtil().isWeb()) {
       await showOkAlertDialog(
         context: context,
         title: "알림",
         message: "웹에서는 크롤링할 수 없습니다.\n앱을 다운로드합니다.",
       );
-      await UrlUtil.openUrl(
+      await UrlUtil().openUrl(
           'https://github.com/dev-tryit/sumgo_crawller_flutter/raw/master/deploy/SumgoManager.zip');
       return;
     }

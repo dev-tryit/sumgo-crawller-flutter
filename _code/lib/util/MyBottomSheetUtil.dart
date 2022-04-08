@@ -10,7 +10,7 @@ typedef void AddFunctionWithSetErrorMessage(
     void setErrorMessage(String errorMessage));
 
 class MyBottomSheetUtil {
-  static void showInputBottomSheet(
+  void showInputBottomSheet(
       {required BuildContext context,
       required String title,
       required List<Widget> children,
@@ -27,7 +27,7 @@ class MyBottomSheetUtil {
     );
   }
 
-  static void showBottomSheet(
+  void showBottomSheet(
       {required BuildContext context, required Widget child}) {
     showModalBottomSheet(
       context: context,

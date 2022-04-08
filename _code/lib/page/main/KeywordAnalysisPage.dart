@@ -93,7 +93,7 @@ class KeywordAnalysisPageComponent
     final TextEditingController titleController = TextEditingController();
     final TextEditingController keywordController = TextEditingController();
 
-    MyBottomSheetUtil.showInputBottomSheet(
+    MyBottomSheetUtil().showInputBottomSheet(
       context: context,
       title: '키워드 분류 생성하기',
       children: [
