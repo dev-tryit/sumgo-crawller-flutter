@@ -35,8 +35,8 @@ if [[ !($buildInfo =~ "exiting with code 0") ]]; then
 	exit 1
 fi
 
-echo "cp -r ../build/web/* ../../"
-cp -r ../build/web/* ../../
+echo "cp -r ./build/web/* ../"
+cp -r ./build/web/* ../
 
 #echo "----git fetch origin"
 #git fetch origin
