@@ -68,7 +68,7 @@ class MainLayoutComponent extends KDHComponent<_MainLayoutState> {
         children: [
           Positioned(top: 150, bottom: 0, left: 0, right: 0, child: content(s)),
           MyHeader(pageC, s.showSettingDialog),
-          ...(!s.isShownDebugTool
+          ...(s.isShownDebugTool
               ? [
                   Positioned(
                     bottom: 10,
@@ -111,7 +111,7 @@ class MainLayoutService
       rebuild();
     }
   }
-  
+
   void showSettingDialog() {
     SettingDialog.show(context, showDebugWidget);
   }
