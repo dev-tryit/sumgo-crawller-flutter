@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:puppeteer/puppeteer.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PuppeteerUtil.dart';
-import 'package:sumgo_crawller_flutter/dialog/SettingDialog.dart';
 import 'package:sumgo_crawller_flutter/repository/KeywordItemRepository.dart';
 import 'package:sumgo_crawller_flutter/repository/SettingRepository.dart';
 
@@ -24,13 +22,13 @@ class MyCrawller {
         this.timeout = Duration(seconds: 20);
 
   Future<void> start(Setting setting) async {
-    String crallwerUrl = setting.crallwerUrl ?? "";
     await p.openBrowser(
       () async {
         await _login(setting.sumgoId??"", setting.sumgoPw??"");
         await _deleteAndSendRequests();
       },
       headless: true,
+      browserUrl: setting.crallwerUrl,
     );
   }
 
