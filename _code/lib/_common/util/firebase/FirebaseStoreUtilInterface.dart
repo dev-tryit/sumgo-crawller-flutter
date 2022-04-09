@@ -107,7 +107,7 @@ abstract class FirebaseStoreUtilInterface<Type extends WithDocId> {
     }
 
     if (onlyMyData) {
-      LogUtil.debug("AuthUtil().email : ${AuthUtil().email}");
+      // LogUtil.debug("AuthUtil().email : ${AuthUtil().email}");
       query = query.where("email", isEqualTo: AuthUtil().email??"");
     }
 
