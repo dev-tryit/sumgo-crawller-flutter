@@ -160,11 +160,11 @@ class RequestRemovalPageService
         okLabel: "Windows 앱 다운로드",
         cancelLabel: "크롬 URL 입력",
       );
-      if (result == OkCancelResult.ok) {
+      if (result == OkCancelResult.cancel) {
+        state.widget.showSettingDialog();
+      } else {
         await UrlUtil().openUrl(
             'https://github.com/dev-tryit/sumgo_crawller_flutter/raw/master/deploy/SumgoManager.zip');
-      } else {
-        state.widget.showSettingDialog();
       }
       return;
     }
