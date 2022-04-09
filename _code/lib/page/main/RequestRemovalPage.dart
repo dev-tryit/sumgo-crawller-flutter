@@ -138,6 +138,18 @@ class RequestRemovalPageService
   }
 
   Future<void> removeRequests() async {
+    if (PlatformUtil.isWeb()) {
+      await showOkAlertDialog(
+        context: context,
+        title: "알림",
+        message: "웹에서는 요청 정리를 할 수 없습니다. Windows 프로그램을 이용해주세요",
+        okLabel: "다운로드",
+      );
+      await UrlUtil().openUrl(
+          'https://github.com/dev-tryit/sumgo_crawller_flutter/raw/master/deploy/SumgoManager.zip');
+      return;
+    }
+
     Setting? setting = await SettingRepository().getOne();
     if (setting == null ||
         (setting.sumgoId ?? "").isEmpty ||
@@ -148,24 +160,6 @@ class RequestRemovalPageService
         message: "${MySetting.appName} 설정이 필요합니다.",
       );
       state.widget.showSettingDialog();
-      return;
-    }
-
-    String chromeUrl = setting.crallwerUrl ?? "";
-    if (chromeUrl.isEmpty && PlatformUtil.isWeb()) {
-      var result = await showOkCancelAlertDialog(
-        context: context,
-        title: "알림",
-        message: "크롬 URL을 입력하거나,\nWindows 앱이 필요합니다.",
-        okLabel: "크롬 URL 입력",
-        cancelLabel: "Windows 앱 다운로드",
-      );
-      if (result == OkCancelResult.ok) {
-        state.widget.showSettingDialog();
-      } else {
-        await UrlUtil().openUrl(
-            'https://github.com/dev-tryit/sumgo_crawller_flutter/raw/master/deploy/SumgoManager.zip');
-      }
       return;
     }
 
