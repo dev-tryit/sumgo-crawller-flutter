@@ -157,10 +157,10 @@ class RequestRemovalPageService
         context: context,
         title: "알림",
         message: "크롬 URL을 입력하거나,\nWindows 앱이 필요합니다.",
-        okLabel: "Windows 앱 다운로드",
-        cancelLabel: "크롬 URL 입력",
+        okLabel: "크롬 URL 입력",
+        cancelLabel: "Windows 앱 다운로드",
       );
-      if (result == OkCancelResult.cancel) {
+      if (result == OkCancelResult.ok) {
         state.widget.showSettingDialog();
       } else {
         await UrlUtil().openUrl(
