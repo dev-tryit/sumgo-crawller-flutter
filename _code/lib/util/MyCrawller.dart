@@ -6,9 +6,9 @@ import 'package:sumgo_crawller_flutter/repository/SettingRepository.dart';
 
 
 class MyCrawller {
-  final p;
-  final delay;
-  final timeout;
+  final PuppeteerUtil p;
+  final Duration delay;
+  final Duration timeout;
   final List<String> listToIncludeAlways;
   final List<String> listToInclude;
   final List<String> listToExclude;
@@ -27,7 +27,7 @@ class MyCrawller {
         await _login(setting.sumgoId??"", setting.sumgoPw??"");
         await _deleteAndSendRequests();
       },
-      headless: true,
+      headless: false,
       browserUrl: setting.crallwerUrl,
     );
   }
