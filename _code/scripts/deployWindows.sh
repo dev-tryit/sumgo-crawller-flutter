@@ -1,6 +1,6 @@
 #!/bin/bash
 
-p_path='C:/Users/1/Project/sumgo_crawller_flutter/_code'
+p_path='C:\Users\imkim\StudioProjects\sumgo_crawller_flutter\_code'
 echo "$p_path"
 cd $p_path
 
