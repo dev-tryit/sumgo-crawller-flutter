@@ -4,7 +4,6 @@ import 'package:sumgo_crawller_flutter/_common/util/PuppeteerUtil.dart';
 import 'package:sumgo_crawller_flutter/repository/KeywordItemRepository.dart';
 import 'package:sumgo_crawller_flutter/repository/SettingRepository.dart';
 
-
 class MyCrawller {
   final PuppeteerUtil p;
   final Duration delay;
@@ -24,7 +23,7 @@ class MyCrawller {
   Future<void> start(Setting setting) async {
     await p.openBrowser(
       () async {
-        await _login(setting.sumgoId??"", setting.sumgoPw??"");
+        await _login(setting.sumgoId ?? "", setting.sumgoPw ?? "");
         await _deleteAndSendRequests();
       },
       headless: false,
@@ -154,7 +153,6 @@ class MyCrawller {
 
   Future<void> decideMethod(String message, Future<void> Function() send,
       Future<void> Function() delete) async {
-
     //아래 키워드가 있으면 바로 메시지 보낸다.
     for (String toIncludeAlways in listToIncludeAlways) {
       if (message.toLowerCase().contains(toIncludeAlways.toLowerCase())) {
@@ -184,8 +182,7 @@ class MyCrawller {
     for (String toIncludeForOr in listToIncludeForOr) {
       List<String> orStrList = toIncludeForOr.split("||").toList();
       bool existOr = orStrList
-          .where(
-              (orStr) => message.toLowerCase().contains(orStr.toLowerCase()))
+          .where((orStr) => message.toLowerCase().contains(orStr.toLowerCase()))
           .isNotEmpty;
       if (!existOr) {
         LogUtil.info("condition2 message:$message, orStrList:$orStrList");

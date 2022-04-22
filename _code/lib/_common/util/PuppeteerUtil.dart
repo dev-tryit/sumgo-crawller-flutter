@@ -37,9 +37,11 @@ class PuppeteerUtil {
     tab.defaultTimeout = defaultTimeout;
     await setPageZoom();
 
-    //process
-    await function();
-
+    try {
+      //process
+      await function();
+    }
+    catch(pass){}
     //close
     try {
       await tab.close();
