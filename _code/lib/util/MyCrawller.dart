@@ -26,7 +26,7 @@ class MyCrawller {
         await _login(setting.sumgoId ?? "", setting.sumgoPw ?? "");
         await _deleteAndSendRequests();
       },
-      headless: false,
+      headless: true,
       browserUrl: setting.crallwerUrl,
     );
   }
