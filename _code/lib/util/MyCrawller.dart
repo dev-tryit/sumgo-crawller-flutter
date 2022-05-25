@@ -26,7 +26,7 @@ class MyCrawller {
         await _login(setting.sumgoId ?? "", setting.sumgoPw ?? "");
         await _deleteAndSendRequests();
       },
-      headless: false,
+      headless: true,
       browserUrl: setting.crallwerUrl,
     );
   }
@@ -79,8 +79,8 @@ class MyCrawller {
 
     Future<bool> refreshAndExitIfShould() async {
       await p.goto('https://soomgo.com/requests/received');
-      await p.reload();
-      await p.autoScroll();
+      // await p.reload();
+      // await p.autoScroll();
       bool existSelector =
           await p.waitForSelector('.request-list > li > .request-item');
       if (!existSelector) {

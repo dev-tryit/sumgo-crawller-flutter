@@ -13,5 +13,7 @@ flutter build windows
 echo "rm -r ../deploy/SumgoManager.zip"
 rm -r ../deploy/SumgoManager.zip
 
-echo "zip -r ../deploy/SumgoManager.zip ./build/windows/runner/Release/*"
-zip ../deploy/SumgoManager.zip ./build/windows/runner/Release/*
+
+cd "./build/windows/runner/Release"
+echo "zip -r $p_path/../deploy/SumgoManager.zip ./*"
+zip -r $p_path/../deploy/SumgoManager.zip ./*

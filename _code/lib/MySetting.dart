@@ -18,4 +18,6 @@ class MySetting {
 // static String appVersion = "";
 //
 // static String appBuildNumber = "";
+
+  static const String serverAddress = "https://crawller-backend-x5bi7ohlhq-uc.a.run.app/";
 }
