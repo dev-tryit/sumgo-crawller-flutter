@@ -5,7 +5,7 @@ import 'package:sumgo_crawller_flutter/_common/util/firebase/firedart/FiredartAu
 
 class HiveUtil {
   static Future<void> init() async {
-    Hive.initFlutter();
+    await Hive.initFlutter();
     if(PlatformUtil.isComputer()) {
       Hive.registerAdapter(TokenAdapter());
     }
