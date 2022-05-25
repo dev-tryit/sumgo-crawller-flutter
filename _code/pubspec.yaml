@@ -38,6 +38,7 @@ dependencies:
     #    package_info_plus: ^1.4.0
 
     #DESKTOP + MOBILE
+    path_provider: ^2.0.10
     firedart:
       git:
         url: https://github.com/dev-tryit/firedart.git

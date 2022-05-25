@@ -178,7 +178,8 @@ class PreferencesStore extends TokenStore {
 
 class HiveStore extends TokenStore {
   static Future<HiveStore> create() async {
-    var box = await Hive.openBox("auth_store",
+    //기본위치는 내문서에 저장됨.
+    final box = await Hive.openBox("auth_store",
         compactionStrategy: (entries, deletedEntries) => deletedEntries > 50);
     return HiveStore._internal(box);
   }
