@@ -53,7 +53,7 @@ class PuppeteerUtil {
     return await tab.reload();
   }
   Future<void> goto(String url) async {
-    await tab.goto(url, wait: Until.networkIdle, timeout: defaultTimeout);
+    await tab.goto(url, wait: Until.domContentLoaded, timeout: defaultTimeout); //networkIdle는 네트워크 연결이 0개 이하여야 작동하는데, 어떤 페이지는 계속 연결 중일 수 있어서  domContentLoaded를 기준으로 바꾸었음.
   }
 
   Future<String> html({ElementHandle? tag}) async {

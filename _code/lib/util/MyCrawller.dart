@@ -26,7 +26,7 @@ class MyCrawller {
         await _login(setting.sumgoId ?? "", setting.sumgoPw ?? "");
         await _deleteAndSendRequests();
       },
-      headless: true,
+      headless: false,
       browserUrl: setting.crallwerUrl,
     );
   }
@@ -34,6 +34,7 @@ class MyCrawller {
   Future<void> _login(String? id, String? pw) async {
     for (int i = 0; i < 5; i++) {
       await p.goto('https://soomgo.com/requests/received');
+      await p.click('footer > button:nth-child(1)'); //시스템 점검 사전 안내 버튼이 있으면 누르기
       if (await _isLoginSuccess()) {
         LogUtil.info("로그인 성공");
         break;
