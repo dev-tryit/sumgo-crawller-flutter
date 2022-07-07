@@ -34,7 +34,10 @@ class MyCrawller {
   Future<void> _login(String? id, String? pw) async {
     for (int i = 0; i < 5; i++) {
       await p.goto('https://soomgo.com/requests/received');
-      await p.click('footer > button:nth-child(1)'); //시스템 점검 사전 안내 버튼이 있으면 누르기
+
+      var dialogSelector = 'footer > button:nth-child(1)';
+      await p.waitAndClick(dialogSelector); //시스템 점검 사전 안내 버튼이 있으면 누르기
+
       if (await _isLoginSuccess()) {
         LogUtil.info("로그인 성공");
         break;
@@ -54,8 +57,9 @@ class MyCrawller {
   }
 
   Future<void> _deleteRequest(ElementHandle tag) async {
-    await p.click('.quote-btn.del', tag: tag);
-    await p.click('.swal2-confirm.btn');
+    await p.waitAndClick('.quote-btn.del', tag: tag);
+    await p.wait(2000);
+    await p.waitAndClick('.swal2-confirm.btn');
   }
 
   Future<void> _sendRequests(ElementHandle tag) async {
@@ -64,10 +68,10 @@ class MyCrawller {
     await p.waitForNavigation();
 
     //불러오기
-    await p.click('.quote-tmpl-icon.arrow');
-    await p.click('.item-list .item-short:nth-child(1)');
-    await p.click('.action-btn-wrap');
-    await p.click('.swal2-confirm.btn');
+    await p.waitAndClick('.quote-tmpl-icon.arrow');
+    await p.waitAndClick('.item-list .item-short:nth-child(1)');
+    await p.waitAndClick('.action-btn-wrap');
+    await p.waitAndClick('.swal2-confirm.btn');
 
     //견적보내기
     await p.waitForSelector('.file-wrap .delete');
@@ -118,6 +122,7 @@ class MyCrawller {
 
       keywordMap.addAll(await countKeyword(message));
 
+      await p.wait(5000);
       await decideMethod(
         message,
         () async => await _sendRequests(tag),

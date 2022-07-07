@@ -113,7 +113,7 @@ class PuppeteerUtil {
       Duration timeout = const Duration(seconds: 5)}) async {
     try {
       if(tag != null) {
-        await tab.waitForFunction('(selector, tag) => tag.querySelector(selector)', args:[selector, tag]);
+        await tab.waitForFunction('(selector, tag) => !!tag.querySelector(selector)', args:[selector, tag]);
       }
       else {
         await tab.waitForSelector(selector,
@@ -126,7 +126,7 @@ class PuppeteerUtil {
     }
   }
 
-  Future<void> click(String selector, {ElementHandle? tag}) async {
+  Future<void> waitAndClick(String selector, {ElementHandle? tag}) async {
     try {
       await waitForSelector(selector, tag: tag);
       var tagToClick = await $(selector, tag: tag);
