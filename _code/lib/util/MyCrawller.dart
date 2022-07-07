@@ -172,8 +172,7 @@ class MyCrawller {
     bool isValid = true;
     for (String toIncludeForAnd in listToIncludeForAnd) {
       if (!message.toLowerCase().contains(toIncludeForAnd.toLowerCase())) {
-        LogUtil.info(
-            "condition1 message:$message, toIncludeForAnd:$toIncludeForAnd");
+        // LogUtil.debug("[제거대상] condition1 message:$message, toIncludeForAnd:$toIncludeForAnd");
         isValid = false;
         break;
       }
@@ -186,7 +185,7 @@ class MyCrawller {
           .where((orStr) => message.toLowerCase().contains(orStr.toLowerCase()))
           .isNotEmpty;
       if (!existOr) {
-        LogUtil.info("condition2 message:$message, orStrList:$orStrList");
+        // LogUtil.debug("[제거대상] condition2 message:$message, orStrList:$orStrList");
         isValid = false;
         break;
       }
@@ -194,7 +193,7 @@ class MyCrawller {
     //이 키워드가 있으면, 제거대상
     for (String toExclude in listToExclude) {
       if (message.toLowerCase().contains(toExclude.toLowerCase())) {
-        LogUtil.info("condition3 message:$message, toExclude:$toExclude");
+        // LogUtil.debug("[제거대상] condition3 message:$message, toExclude:$toExclude");
         isValid = false;
         break;
       }

@@ -12,8 +12,9 @@ class PuppeteerUtil {
   Future<void> openBrowser(Future<void> Function() function,
       {int width = 1920,
       int height = 1600,
-      bool headless = true, String? browserUrl}) async {
-    bool isConnect = (browserUrl??"").isNotEmpty;
+      bool headless = true,
+      String? browserUrl}) async {
+    bool isConnect = (browserUrl ?? "").isNotEmpty;
     LogUtil.debug("openBrowser isConnect : $isConnect");
 
     if (isConnect) {
@@ -40,8 +41,7 @@ class PuppeteerUtil {
     try {
       //process
       await function();
-    }
-    catch(pass){}
+    } catch (pass) {}
     //close
     try {
       await tab.close();
@@ -52,8 +52,12 @@ class PuppeteerUtil {
   Future<Response> reload() async {
     return await tab.reload();
   }
+
   Future<void> goto(String url) async {
-    await tab.goto(url, wait: Until.domContentLoaded, timeout: defaultTimeout); //networkIdle는 네트워크 연결이 0개 이하여야 작동하는데, 어떤 페이지는 계속 연결 중일 수 있어서  domContentLoaded를 기준으로 바꾸었음.
+    await tab.goto(url,
+        wait: Until.domContentLoaded,
+        timeout:
+            defaultTimeout); //networkIdle는 네트워크 연결이 0개 이하여야 작동하는데, 어떤 페이지는 계속 연결 중일 수 있어서  domContentLoaded를 기준으로 바꾸었음.
   }
 
   Future<String> html({ElementHandle? tag}) async {
@@ -105,10 +109,16 @@ class PuppeteerUtil {
   Future<bool> waitForSelector(String selector,
       {bool? visible,
       bool? hidden,
+      ElementHandle? tag,
       Duration timeout = const Duration(seconds: 5)}) async {
     try {
-      await tab.waitForSelector(selector,
-          visible: visible, hidden: hidden, timeout: timeout);
+      if(tag != null) {
+        await tab.waitForFunction('(selector, tag) => tag.querySelector(selector)', args:[selector, tag]);
+      }
+      else {
+        await tab.waitForSelector(selector,
+            visible: visible, hidden: hidden, timeout: timeout);
+      }
       return true;
     } catch (e) {
       LogUtil.info("$selector 가 없습니다.");
@@ -118,9 +128,7 @@ class PuppeteerUtil {
 
   Future<void> click(String selector, {ElementHandle? tag}) async {
     try {
-      if (tag == null) {
-        await waitForSelector(selector);
-      }
+      await waitForSelector(selector, tag: tag);
       var tagToClick = await $(selector, tag: tag);
       await tagToClick.click();
     } catch (e) {}
@@ -168,7 +176,5 @@ class PuppeteerUtil {
     }''');
   }
 
-  Future<void> setPageZoom({int zoom=1}) async {
-
-  }
+  Future<void> setPageZoom({int zoom = 1}) async {}
 }
