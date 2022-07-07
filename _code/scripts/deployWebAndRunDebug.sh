@@ -18,7 +18,7 @@ DarkMagenta='\e[1;35;40m'
 DarkCyan='\e[1;36;40m'
 White='\e[1;37;40m'
 
-p_path='C:\Users\imkim\StudioProjects\sumgo_crawller_flutter\_code'
+p_path='C:\Users\1\Project\sumgo_crawller_flutter\_code'
 echo "$p_path"
 cd $p_path
 
