@@ -67,7 +67,6 @@ class MainLayoutComponent extends KDHComponent<_MainLayoutState> {
 
   Widget body(MainLayoutService s) {
     return SettingDialogProvider.consumer(builder: (context, provider, child) {
-      print("consumer");
       return SizedBox.expand(
         child: Stack(
           children: [
