@@ -4,7 +4,7 @@ import 'package:sumgo_crawller_flutter/widget/SelectRemovalType.dart';
 
 class RemovalCondition extends WithDocId {
   static const String className = "RemovalCondition";
-  String? type;
+  String? type; //RemovalType
   String? content;
   String? typeDisplay;
 

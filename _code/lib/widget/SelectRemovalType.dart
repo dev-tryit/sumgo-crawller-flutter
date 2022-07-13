@@ -3,21 +3,23 @@ import 'package:flutter_awesome_select/flutter_awesome_select.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 
+
 class RemovalType {
   static RemovalType get best => const RemovalType.internal("최우선키워드", "best");
   static RemovalType get include => const RemovalType.internal("포함", "include");
   static RemovalType get exclude => const RemovalType.internal("제외", "exclude");
   static List<RemovalType> get values => [
-        RemovalType.include,
-        RemovalType.exclude,
-        RemovalType.best,
-      ];
+    RemovalType.include,
+    RemovalType.exclude,
+    RemovalType.best,
+  ];
 
   final String display;
   final String value;
 
   const RemovalType.internal(this.display, this.value);
 }
+
 
 class SelectRemovalTypeController {
   late _SelectRemovalTypeState state;

@@ -68,6 +68,8 @@ class RequestRemovalPageComponent
   RequestRemovalPageComponent(_RequestRemovalPageState state) : super(state);
 
   Widget body(RequestRemovalPageService s) {
+
+
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Column(
@@ -77,7 +79,27 @@ class RequestRemovalPageComponent
             title: "정리 조건",
             rightButton: MyRedButton("생성하기",
                 onPressed: () => showCreateItemBottomSheet(s)),
-            contents: s.removalConditionList
+            contents: (s.removalConditionList
+                ..sort((a, b) {
+                  //Order는 높으면 우선순위가 높음.
+                  int calculateOrder(RemovalCondition removalCondition){
+                    if(removalCondition.type==RemovalType.best.value) {
+                      return 3;
+                    }
+                    else if(removalCondition.type==RemovalType.include.value) {
+                      return 2;
+                    }
+                    else {
+                      return 1;
+                    }
+                  }
+                  int aOrder = calculateOrder(a);
+                  int bOrder = calculateOrder(b);
+                  print("aOrder:$aOrder, bOrder:$bOrder, a:${a.type}${a.content}, b:${b.type}${b.content}");
+
+                  if(aOrder == bOrder) return 0;
+                  return aOrder>bOrder?-1:1;
+                }))
                 .map((e) => RequestRemovalListTile(
                       item: e,
                       s: s,
