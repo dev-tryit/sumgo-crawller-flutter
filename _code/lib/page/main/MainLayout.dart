@@ -67,6 +67,7 @@ class MainLayoutComponent extends KDHComponent<_MainLayoutState> {
 
   Widget body(MainLayoutService s) {
     return SettingDialogProvider.consumer(builder: (context, provider, child) {
+      print("consumer");
       return SizedBox.expand(
         child: Stack(
           children: [
@@ -109,11 +110,4 @@ class MainLayoutService
   MainLayoutService(_MainLayoutState state, MainLayoutComponent c)
       : super(state, c);
 
-  void showDebugWidget(bool useDebugTool) {
-    if (useDebugTool) {
-      SettingDialogProvider provider = SettingDialogProvider.read(context);
-      provider.isShownDebugTool = true;
-      rebuild();
-    }
-  }
 }

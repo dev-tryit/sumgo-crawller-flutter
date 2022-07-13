@@ -21,4 +21,12 @@ class SettingDialogProvider extends ChangeNotifier {
 
   static SettingDialogProvider read(BuildContext context) =>
       context.read<SettingDialogProvider>();
+
+
+  void showDebugTool(){
+    isShownDebugTool = true;
+    notifyListeners();
+  }
+
+
 }

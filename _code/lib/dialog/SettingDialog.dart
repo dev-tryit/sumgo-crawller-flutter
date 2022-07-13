@@ -83,8 +83,7 @@ class SettingDialogComponent extends KDHComponent<_SettingDialogState> {
       onValue: (value) {
         if (value.contains(debugString)) {
           LogUtil.setDebugLevel();
-          SettingDialogProvider provider = SettingDialogProvider.read(context);
-          provider.isShownDebugTool = true;
+          SettingDialogProvider.read(context).showDebugTool();
           MyComponents.snackBar(context, "디버그 도구가 활성화되었습니다.");
         }
       },
