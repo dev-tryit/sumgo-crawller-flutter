@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sumgo_crawller_flutter/MySetting.dart';
 import 'package:sumgo_crawller_flutter/_common/config/MyCustomScrollBehavior.dart';
 import 'package:sumgo_crawller_flutter/_common/util/AuthUtil.dart';
@@ -9,12 +10,16 @@ import 'package:sumgo_crawller_flutter/_common/util/DesktopUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/ErrorUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/page/LoadPage.dart';
+import 'package:sumgo_crawller_flutter/page/main/MainLayout.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 import 'package:sumgo_crawller_flutter/util/MyStoreUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyTheme.dart';
 
 import 'firebase_options.dart';
+import 'page/main/KeywordAnalysisPage.dart';
+import 'page/main/RequestRemovalPage.dart';
+import 'provider/SettingDialogProvider.dart';
 
 const width = 350.0;
 const height = 700.0;
@@ -39,7 +44,12 @@ Future<void> main() async {
         title: MySetting.appName
       );
     }
-    runApp(MyApp());
+    runApp(MultiProvider(
+      providers: [
+        SettingDialogProvider.provider,
+      ],
+      child: MyApp(),
+    ));
   });
 }
 
@@ -50,6 +60,11 @@ class MyApp extends StatelessWidget {
       title: MySetting.appName,
       debugShowCheckedModeBanner: false,
       scrollBehavior: MyCustomScrollBehavior(),
+      routes: {
+        MainLayout.staticClassName:(context) => MainLayout(),
+        KeywordAnalysisPage.staticClassName:(context) => KeywordAnalysisPage(),
+        RequestRemovalPage.staticClassName:(context) => RequestRemovalPage(),
+      },
       theme: ThemeData(
         brightness: Brightness.light,
         canvasColor: MyTheme.backgroundColor,

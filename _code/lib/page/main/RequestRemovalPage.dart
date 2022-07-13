@@ -11,6 +11,7 @@ import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/AnimationUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
 import 'package:sumgo_crawller_flutter/_common/util/UrlUtil.dart';
+import 'package:sumgo_crawller_flutter/dialog/SettingDialog.dart';
 import 'package:sumgo_crawller_flutter/repository/RemovalConditionRepository.dart';
 import 'package:sumgo_crawller_flutter/repository/SettingRepository.dart';
 import 'package:sumgo_crawller_flutter/util/MyBottomSheetUtil.dart';
@@ -27,8 +28,7 @@ import 'package:sumgo_crawller_flutter/widget/SelectRemovalType.dart';
 class RequestRemovalPage extends StatefulWidget {
   static const String staticClassName = "RequestRemovalPage";
   final className = staticClassName;
-  Function showSettingDialog;
-  RequestRemovalPage(this.showSettingDialog, {Key? key}) : super(key: key);
+  RequestRemovalPage({Key? key}) : super(key: key);
 
   @override
   _RequestRemovalPageState createState() => _RequestRemovalPageState();
@@ -81,7 +81,6 @@ class RequestRemovalPageComponent
                 onPressed: () => showCreateItemBottomSheet(s)),
             contents: (s.removalConditionList
                 ..sort((a, b) {
-                  //Order는 높으면 우선순위가 높음.
                   int calculateOrder(RemovalCondition removalCondition){
                     if(removalCondition.type==RemovalType.best.value) {
                       return 3;
@@ -93,12 +92,7 @@ class RequestRemovalPageComponent
                       return 1;
                     }
                   }
-                  int aOrder = calculateOrder(a);
-                  int bOrder = calculateOrder(b);
-                  print("aOrder:$aOrder, bOrder:$bOrder, a:${a.type}${a.content}, b:${b.type}${b.content}");
-
-                  if(aOrder == bOrder) return 0;
-                  return aOrder>bOrder?-1:1;
+                  return calculateOrder(a)>calculateOrder(b)?-1:1;
                 }))
                 .map((e) => RequestRemovalListTile(
                       item: e,
@@ -181,7 +175,7 @@ class RequestRemovalPageService
         title: "알림",
         message: "${MySetting.appName} 설정이 필요합니다.",
       );
-      state.widget.showSettingDialog();
+      SettingDialog.show(context);
       return;
     }
 

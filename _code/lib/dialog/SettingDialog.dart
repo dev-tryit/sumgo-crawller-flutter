@@ -14,6 +14,8 @@ import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 
+import '../provider/SettingDialogProvider.dart';
+
 // ...(!Setting.isRelease
 //     ? [
 //         Positioned(
@@ -29,14 +31,13 @@ import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 //     : []),
 class SettingDialog extends StatefulWidget {
   static const String className = "SettingDialog";
-  final Function showDebugWidget;
-  const SettingDialog(this.showDebugWidget, {Key? key}) : super(key: key);
+  const SettingDialog({Key? key}) : super(key: key);
 
   @override
   _SettingDialogState createState() => _SettingDialogState();
 
-  static void show(BuildContext context, Function showDebugWidget) {
-    showDialog(context: context, builder: (context) => SettingDialog(showDebugWidget));
+  static void show(BuildContext context) {
+    showDialog(context: context, builder: (context) => SettingDialog());
   }
 }
 
@@ -82,7 +83,8 @@ class SettingDialogComponent extends KDHComponent<_SettingDialogState> {
       onValue: (value) {
         if (value.contains(debugString)) {
           LogUtil.setDebugLevel();
-          state.widget.showDebugWidget(true);
+          SettingDialogProvider provider = SettingDialogProvider.read(context);
+          provider.isShownDebugTool = true;
           MyComponents.snackBar(context, "디버그 도구가 활성화되었습니다.");
         }
       },
