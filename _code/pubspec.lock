@@ -429,10 +429,12 @@ packages:
   google_fonts:
     dependency: "direct main"
     description:
-      name: google_fonts
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.3.3"
+      path: "."
+      ref: proposal-awaitFontLoads
+      resolved-ref: e8b70fb653075734b8624644482d85ee136b64a5
+      url: "https://github.com/material-foundation/google-fonts-flutter.git"
+    source: git
+    version: "3.0.1"
   googleapis_auth:
     dependency: transitive
     description:
