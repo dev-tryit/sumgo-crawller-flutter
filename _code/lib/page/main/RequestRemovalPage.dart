@@ -1,23 +1,13 @@
 import 'dart:async';
 
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:sumgo_crawller_flutter/MySetting.dart';
-import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
-import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/AnimationUtil.dart';
-import 'package:sumgo_crawller_flutter/_common/util/PlatformUtil.dart';
-import 'package:sumgo_crawller_flutter/_common/util/UrlUtil.dart';
-import 'package:sumgo_crawller_flutter/dialog/SettingDialog.dart';
 import 'package:sumgo_crawller_flutter/repository/RemovalConditionRepository.dart';
-import 'package:sumgo_crawller_flutter/repository/SettingRepository.dart';
 import 'package:sumgo_crawller_flutter/util/MyBottomSheetUtil.dart';
-import 'package:sumgo_crawller_flutter/util/MyColors.dart';
-import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
-import 'package:sumgo_crawller_flutter/util/MyCrawller.dart';
+import 'package:sumgo_crawller_flutter/util/MyColorser/util/MyCrawller.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 import 'package:sumgo_crawller_flutter/util/MyImage.dart';
 import 'package:sumgo_crawller_flutter/widget/MyCard.dart';
@@ -25,51 +15,40 @@ import 'package:sumgo_crawller_flutter/widget/MyRedButton.dart';
 import 'package:sumgo_crawller_flutter/widget/MyWhiteButton.dart';
 import 'package:sumgo_crawller_flutter/widget/SelectRemovalType.dart';
 
+import '../../provider/RequestRemovalProvider.dart';
+
 class RequestRemovalPage extends StatefulWidget {
   static const String staticClassName = "RequestRemovalPage";
   final className = staticClassName;
+
   RequestRemovalPage({Key? key}) : super(key: key);
 
   @override
   _RequestRemovalPageState createState() => _RequestRemovalPageState();
 }
 
-class _RequestRemovalPageState extends KDHState<RequestRemovalPage,
-    RequestRemovalPageComponent, RequestRemovalPageService> {
+class _RequestRemovalPageState extends KDHState<RequestRemovalPage> {
   @override
   bool isPage() => false;
-
-  @override
-  makeComponent() => RequestRemovalPageComponent(this);
-
-  @override
-  makeService() => RequestRemovalPageService(this, c);
 
   @override
   List<WidgetToGetSize> makeWidgetListToGetSize() => [];
 
   @override
   Future<void> onLoad() async {
-    await s.resetRemovalConditionList();
+    await RequestRemovalProvider.read(context).resetRemovalConditionList();
   }
 
   @override
   void mustRebuild() {
-    widgetToBuild = () => c.body(s);
+    widgetToBuild = () => body();
     rebuild();
   }
 
   @override
   Future<void> afterBuild() async {}
-}
 
-class RequestRemovalPageComponent
-    extends KDHComponent<_RequestRemovalPageState> {
-  RequestRemovalPageComponent(_RequestRemovalPageState state) : super(state);
-
-  Widget body(RequestRemovalPageService s) {
-
-
+  Widget body() {
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Column(
@@ -78,36 +57,36 @@ class RequestRemovalPageComponent
           MyCard(
             title: "정리 조건",
             rightButton: MyRedButton("생성하기",
-                onPressed: () => showCreateItemBottomSheet(s)),
-            contents: (s.removalConditionList
-                ..sort((a, b) {
-                  int calculateOrder(RemovalCondition removalCondition){
-                    if(removalCondition.type==RemovalType.best.value) {
-                      return 3;
+                onPressed: () => showCreateItemBottomSheet()),
+            contents: (RequestRemovalProvider.read(context).removalConditionList
+                  ..sort((a, b) {
+                    int calculateOrder(RemovalCondition removalCondition) {
+                      if (removalCondition.type == RemovalType.best.value) {
+                        return 3;
+                      } else if (removalCondition.type ==
+                          RemovalType.include.value) {
+                        return 2;
+                      } else {
+                        return 1;
+                      }
                     }
-                    else if(removalCondition.type==RemovalType.include.value) {
-                      return 2;
-                    }
-                    else {
-                      return 1;
-                    }
-                  }
-                  return calculateOrder(a)>calculateOrder(b)?-1:1;
-                }))
+
+                    return calculateOrder(a) > calculateOrder(b) ? -1 : 1;
+                  }))
                 .map((e) => RequestRemovalListTile(
                       item: e,
-                      s: s,
                       isPlusIcon: e.type != "exclude",
                     ))
                 .toList(),
-            bottomButton: MyWhiteButton("요청 정리하기", onPressed: s.removeRequests),
+            bottomButton: MyWhiteButton("요청 정리하기",
+                onPressed: RequestRemovalProvider.read(context).removeRequests),
           ),
         ],
       ),
     );
   }
 
-  void showCreateItemBottomSheet(RequestRemovalPageService s) {
+  void showCreateItemBottomSheet() {
     final contentController = TextEditingController();
     final typeController = SelectRemovalTypeController();
 
@@ -131,7 +110,8 @@ class RequestRemovalPageComponent
         const SizedBox(height: 10),
       ],
       buttonStr: "생성",
-      onAdd: (setErrorMessage) => s.addRemovalCondition(
+      onAdd: (setErrorMessage) =>
+          RequestRemovalProvider.read(context).addRemovalCondition(
         contentController.text.trim(),
         typeController.type,
         typeController.typeDisplay,
@@ -141,130 +121,12 @@ class RequestRemovalPageComponent
   }
 }
 
-class RequestRemovalPageService
-    extends KDHService<_RequestRemovalPageState, RequestRemovalPageComponent> {
-  List<RemovalCondition> removalConditionList = [];
-
-  RequestRemovalPageService(
-      _RequestRemovalPageState state, RequestRemovalPageComponent c)
-      : super(state, c);
-
-  Future<void> resetRemovalConditionList() async {
-    removalConditionList = await RemovalConditionRepository().getList();
-  }
-
-  Future<void> removeRequests() async {
-    if (PlatformUtil.isWeb()) {
-      await showOkAlertDialog(
-        context: context,
-        title: "알림",
-        message: "웹에서는 요청 정리를 할 수 없습니다. Windows 프로그램을 이용해주세요",
-        okLabel: "다운로드",
-      );
-      await UrlUtil().openUrl(
-          'https://github.com/dev-tryit/sumgo_crawller_flutter/raw/master/deploy/SumgoManager.zip');
-      return;
-    }
-
-    Setting? setting = await SettingRepository().getOne();
-    if (setting == null ||
-        (setting.sumgoId ?? "").isEmpty ||
-        (setting.sumgoPw ?? "").isEmpty) {
-      await showOkAlertDialog(
-        context: context,
-        title: "알림",
-        message: "${MySetting.appName} 설정이 필요합니다.",
-      );
-      SettingDialog.show(context);
-      return;
-    }
-
-    await MyComponents.showLoadingDialog(context);
-    final List<String> listToIncludeAlways = (await RemovalConditionRepository()
-            .getListByType(type: RemovalType.best.value))
-        .map((e) => e.content ?? "")
-        .toList();
-    final List<String> listToInclude = (await RemovalConditionRepository()
-            .getListByType(type: RemovalType.include.value))
-        .map((e) => e.content ?? "")
-        .toList();
-    final List<String> listToExclude = (await RemovalConditionRepository()
-            .getListByType(type: RemovalType.exclude.value))
-        .map((e) => e.content ?? "")
-        .toList();
-    await MyComponents.dismissLoadingDialog();
-
-    try {
-      await MyComponents.showLoadingDialog(context);
-      await MyCrawller(
-        listToIncludeAlways: listToIncludeAlways,
-        listToInclude: listToInclude,
-        listToExclude: listToExclude,
-      ).start(setting);
-    } finally {
-      await MyComponents.dismissLoadingDialog();
-    }
-  }
-
-  Future<void> addRemovalCondition(
-      String content,
-      String type,
-      String typeDisplay,
-      void Function(String errorMessage) setErrorMessage) async {
-    String? errorMessage =
-        RemovalCondition.getErrorMessageForAdd(content, type, typeDisplay);
-    if (errorMessage != null) {
-      setErrorMessage(errorMessage);
-      return;
-    }
-    setErrorMessage('');
-
-    var item = RemovalCondition(
-        content: content, type: type, typeDisplay: typeDisplay);
-
-    removalConditionList.add(item);
-    RemovalConditionRepository().add(removalCondition: item);
-
-    Navigator.pop(context);
-    rebuild();
-
-    MyComponents.snackBar(context, "생성되었습니다");
-  }
-
-  Future<void> deleteRemovalCondition(BuildContext context,
-      RemovalCondition item, RequestRemovalListTile myListTile) async {
-    final result = await showOkCancelAlertDialog(
-      context: context,
-      title: "알림",
-      message: "정말 삭제하시겠습니까?",
-      okLabel: "예",
-      cancelLabel: "아니오",
-    );
-    if (result == OkCancelResult.ok) {
-      if (myListTile.animateController != null) {
-        myListTile.animateController!.duration =
-            const Duration(milliseconds: 100);
-        await myListTile.animateController!.reverse(); //forward or reverse
-      }
-
-      removalConditionList.remove(item);
-      RemovalConditionRepository().delete(documentId: item.documentId ?? -1);
-
-      rebuild();
-
-      MyComponents.snackBar(context, "삭제되었습니다");
-    }
-  }
-}
-
 class RequestRemovalListTile extends StatelessWidget {
   RemovalCondition item;
-  RequestRemovalPageService s;
   AnimationController? animateController;
   bool isPlusIcon;
 
-  RequestRemovalListTile(
-      {Key? key, required this.item, required this.s, this.isPlusIcon = true})
+  RequestRemovalListTile({Key? key, required this.item, this.isPlusIcon = true})
       : super(key: key);
 
   @override
@@ -297,7 +159,8 @@ class RequestRemovalListTile extends StatelessWidget {
           //동작 애니메이션 설정 BehindMotion, DrawerMotion, ScrollMotion, StretchMotion
           children: [
             CustomSlidableAction(
-              onPressed: (c) => s.deleteRemovalCondition(context, item, this),
+              onPressed: (c) => RequestRemovalProvider.read(context)
+                  .deleteRemovalCondition(context, item, animateController),
               backgroundColor: const Color(0xFFFE4A49),
               foregroundColor: Colors.white,
               child: const Icon(Icons.delete),

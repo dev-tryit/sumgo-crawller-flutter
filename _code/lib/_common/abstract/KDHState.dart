@@ -3,10 +3,8 @@ import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/MediaQueryUtil.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 
-abstract class KDHState<TargetWidget extends StatefulWidget, COMPONENT, SERVICE>
+abstract class KDHState<TargetWidget extends StatefulWidget>
     extends State<TargetWidget> {
-  late final COMPONENT c;
-  late final SERVICE s;
 
   Map<dynamic, WidgetToGetSize> widgetMap = {};
   Widget Function()? widgetToBuild;
@@ -21,10 +19,6 @@ abstract class KDHState<TargetWidget extends StatefulWidget, COMPONENT, SERVICE>
   bool isPage();
 
   List<WidgetToGetSize> makeWidgetListToGetSize() => [];
-
-  COMPONENT? makeComponent() => null;
-
-  SERVICE? makeService() => null;
 
   void rebuild({Function? afterBuild}) {
     if (afterBuild != null) {
@@ -101,15 +95,6 @@ abstract class KDHState<TargetWidget extends StatefulWidget, COMPONENT, SERVICE>
     // LogUtil.debug("super.prepareRebuild");
     if (_widgetListToGetSize.isNotEmpty) {
       _getSizeOfWidgetList();
-    }
-
-    var component = makeComponent();
-    if (component != null) {
-      c = component;
-    }
-    var service = makeService();
-    if (service != null) {
-      s = service;
     }
 
     await onLoad();

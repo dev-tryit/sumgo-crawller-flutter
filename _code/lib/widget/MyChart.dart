@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
-import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/ColorUtil.dart';
@@ -20,49 +18,58 @@ class MyChart extends StatefulWidget {
 }
 
 class _MyChartState
-    extends KDHState<MyChart, MyChartComponent, MyChartService> {
+    extends KDHState<MyChart> {
+  Map<String, double> percentByKeyword = {};
+
+  List<PieChartSectionData> sectionDataList = [];
+  List<Color> colorList = [];
+  int touchedIndex = -1;
+  final gridViewCount = 3;
+  final scrollController = ScrollController();
+
   @override
   bool isPage() => false;
-
-  @override
-  makeComponent() => MyChartComponent(this);
-
-  @override
-  makeService() => MyChartService(this, c);
 
   @override
   List<WidgetToGetSize> makeWidgetListToGetSize() => [];
 
   @override
   Future<void> onLoad() async {
-    await s.onLoad(widget);
+    List<KeywordItem> keywordItemList = [];
+    try {
+      keywordItemList = List.from((await Future.wait(
+          (widget.analysisItem.keywordList ?? []).map((keyword) =>
+              KeywordItemRepository().getKeywordItem(keyword: keyword))))
+          .where((element) => element != null));
+    } catch (e) {
+      keywordItemList = [];
+    }
+
+    percentByKeyword = {};
+    for (var keywordItem in keywordItemList) {
+      var keyword = keywordItem.keyword ?? "";
+      if (!percentByKeyword.containsKey(keyword)) {
+        percentByKeyword[keyword] = 0;
+      }
+
+      percentByKeyword[keyword] = (keywordItem.count ?? 0.0).toDouble();
+    }
+
+    colorList = (widget.analysisItem.keywordList ?? [])
+        .map((e) => ColorUtil.random())
+        .toList();
   }
 
   @override
   void mustRebuild() {
-    widgetToBuild = () => c.body(s, widget);
+    widgetToBuild = () => body(widget);
     rebuild();
   }
 
-  @override
-  Future<void> afterBuild() async {}
-}
-
-class MyChartComponent extends KDHComponent<_MyChartState> {
-  List<PieChartSectionData> sectionDataList = [];
-  List<Color> colorList = [];
-  int touchedIndex = -1;
-
-  final gridViewCount = 3;
-
-  final scrollController = ScrollController();
-
-  MyChartComponent(_MyChartState state) : super(state);
-
-  Widget body(MyChartService s, MyChart widget) {
+  Widget body( MyChart widget) {
     int i = 0;
     sectionDataList = [];
-    for (MapEntry<String, double> entry in s.percentByKeyword.entries) {
+    for (MapEntry<String, double> entry in percentByKeyword.entries) {
       final color = colorList[i];
       final isTouched = touchedIndex == i;
       sectionDataList.add(
@@ -83,17 +90,17 @@ class MyChartComponent extends KDHComponent<_MyChartState> {
 
     return sectionDataList.isNotEmpty
         ? Column(
-            children: <Widget>[
-              const SizedBox(height: 20),
-              header(),
-              const SizedBox(height: 18),
-              SizedBox(
-                width: 100,
-                height: 100,
-                child: chart(),
-              ),
-            ],
-          )
+      children: <Widget>[
+        const SizedBox(height: 20),
+        header(),
+        const SizedBox(height: 18),
+        SizedBox(
+          width: 100,
+          height: 100,
+          child: chart(),
+        ),
+      ],
+    )
         : Text("관련 데이터가 없습니다");
   }
 
@@ -124,15 +131,15 @@ class MyChartComponent extends KDHComponent<_MyChartState> {
       PieChartData(
           pieTouchData: PieTouchData(
               touchCallback: (FlTouchEvent event, pieTouchResponse) {
-            if (!event.isInterestedForInteractions ||
-                pieTouchResponse == null ||
-                pieTouchResponse.touchedSection == null) {
-              touchedIndex = -1;
-              return;
-            }
-            touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
-            rebuild();
-          }),
+                if (!event.isInterestedForInteractions ||
+                    pieTouchResponse == null ||
+                    pieTouchResponse.touchedSection == null) {
+                  touchedIndex = -1;
+                  return;
+                }
+                touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
+                rebuild();
+              }),
           startDegreeOffset: 180,
           borderData: FlBorderData(
             show: false,
@@ -142,37 +149,14 @@ class MyChartComponent extends KDHComponent<_MyChartState> {
           sections: sectionDataList),
     );
   }
-}
 
-class MyChartService extends KDHService<_MyChartState, MyChartComponent> {
-  Map<String, double> percentByKeyword = {};
-  MyChartService(_MyChartState state, MyChartComponent c) : super(state, c);
+  @override
+  Future<void> afterBuild() async {}
 
-  Future<void> onLoad(MyChart widget) async {
-    List<KeywordItem> keywordItemList = [];
-    try {
-      keywordItemList = List.from((await Future.wait(
-              (widget.analysisItem.keywordList ?? []).map((keyword) =>
-                  KeywordItemRepository().getKeywordItem(keyword: keyword))))
-          .where((element) => element != null));
-    } catch (e) {
-      keywordItemList = [];
-    }
-
-    percentByKeyword = {};
-    for (var keywordItem in keywordItemList) {
-      var keyword = keywordItem.keyword ?? "";
-      if (!percentByKeyword.containsKey(keyword)) {
-        percentByKeyword[keyword] = 0;
-      }
-
-      percentByKeyword[keyword] = (keywordItem.count ?? 0.0).toDouble();
-    }
-
-    c.colorList = (widget.analysisItem.keywordList ?? [])
-        .map((e) => ColorUtil.random())
-        .toList();
+  //Provider 데이터
+  Future<void> init(MyChart widget) async {
   }
+
 }
 
 class Indicator extends StatelessWidget {

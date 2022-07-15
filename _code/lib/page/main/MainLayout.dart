@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:logger_flutter/logger_flutter.dart';
-import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
-import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/dialog/SettingDialog.dart';
@@ -20,7 +18,9 @@ class MainLayout extends StatefulWidget {
 }
 
 class _MainLayoutState
-    extends KDHState<MainLayout, MainLayoutComponent, MainLayoutService> {
+    extends KDHState<MainLayout> {
+  final pageC = PageController();
+
   @override
   bool isPage() {
     return true;
@@ -30,12 +30,6 @@ class _MainLayoutState
   List<WidgetToGetSize> makeWidgetListToGetSize() {
     return [];
   }
-
-  @override
-  MainLayoutComponent makeComponent() => MainLayoutComponent(this);
-
-  @override
-  MainLayoutService makeService() => MainLayoutService(this, c);
 
   @override
   Future<void> onLoad() async {
@@ -50,27 +44,19 @@ class _MainLayoutState
 
   @override
   void mustRebuild() {
-    widgetToBuild = () => Scaffold(body: c.body(s));
+    widgetToBuild = () => Scaffold(body: body());
     rebuild();
   }
 
   @override
   Future<void> afterBuild() async {}
-}
 
-class MainLayoutComponent extends KDHComponent<_MainLayoutState> {
-  final PageController pageC;
-
-  MainLayoutComponent(_MainLayoutState state)
-      : pageC = PageController(),
-        super(state);
-
-  Widget body(MainLayoutService s) {
+  Widget body() {
     return SettingDialogProvider.consumer(builder: (context, provider, child) {
       return SizedBox.expand(
         child: Stack(
           children: [
-            Positioned(top: 150, bottom: 0, left: 0, right: 0, child: content(s)),
+            Positioned(top: 150, bottom: 0, left: 0, right: 0, child: content()),
             MyHeader(pageC, ()=>SettingDialog.show(context)),
             ...(provider.isShownDebugTool
                 ? [
@@ -91,7 +77,7 @@ class MainLayoutComponent extends KDHComponent<_MainLayoutState> {
     });
   }
 
-  Widget content(MainLayoutService s) {
+  Widget content() {
     return PageView(
       controller: pageC,
       physics: const NeverScrollableScrollPhysics(),
@@ -101,12 +87,4 @@ class MainLayoutComponent extends KDHComponent<_MainLayoutState> {
       ],
     );
   }
-}
-
-class MainLayoutService
-    extends KDHService<_MainLayoutState, MainLayoutComponent> {
-
-  MainLayoutService(_MainLayoutState state, MainLayoutComponent c)
-      : super(state, c);
-
 }

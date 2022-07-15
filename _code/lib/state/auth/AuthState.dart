@@ -6,33 +6,29 @@ import 'package:sumgo_crawller_flutter/_common/util/PageUtil.dart';
 import 'package:sumgo_crawller_flutter/page/main/MainLayout.dart';
 import 'package:sumgo_crawller_flutter/util/MyComponents.dart';
 
-class AuthStateManager<COMPONENT> {
-  AuthState<COMPONENT> state;
-  COMPONENT c;
-
-  AuthStateManager(this.c) : state = AuthStateSendEmail<COMPONENT>(c);
+class AuthStateManager {
+  AuthState state;
+  
+  AuthStateManager() : state = AuthStateSendEmail();
 
   Future<void> handle(Map<String, dynamic> data) async {
     state = await state.handle(data);
   }
 }
 
-abstract class AuthState<COMPONENT> {
-  COMPONENT c;
+abstract class AuthState {
 
-  AuthState(this.c);
+  AuthState();
 
-  Future<AuthState<COMPONENT>> handle(Map<String, dynamic> data);
+  Future<AuthState> handle(Map<String, dynamic> data);
 }
 
-class AuthStateSendEmail<COMPONENT> implements AuthState<COMPONENT> {
-  @override
-  COMPONENT c;
+class AuthStateSendEmail implements AuthState {
 
-  AuthStateSendEmail(this.c);
+  AuthStateSendEmail();
 
   @override
-  Future<AuthState<COMPONENT>> handle(Map<String, dynamic> data) async {
+  Future<AuthState> handle(Map<String, dynamic> data) async {
     BuildContext context = data['context'];
 
     MyComponents.showLoadingDialog(context);
@@ -40,25 +36,22 @@ class AuthStateSendEmail<COMPONENT> implements AuthState<COMPONENT> {
         await AuthUtil().sendEmailVerification(email: data['email']);
     LogUtil.info("AuthStateSendEmail handle neededAuthBehavior:$neededAuthBehavior");
     if (neededAuthBehavior == NeededAuthBehavior.NEED_LOGIN) {
-      return AuthStateLogin<COMPONENT>(c);
+      return AuthStateLogin();
     } else if (neededAuthBehavior == NeededAuthBehavior.NEED_REGISTRATION) {
-      return AuthStateRegistration<COMPONENT>(c);
+      return AuthStateRegistration();
     } else if (neededAuthBehavior == NeededAuthBehavior.NEED_VERIFICATION) {
-      return AuthStateNeedVerification<COMPONENT>(c);
+      return AuthStateNeedVerification();
     }
     MyComponents.dismissLoadingDialog();
     return this;
   }
 }
 
-class AuthStateNeedVerification<COMPONENT> implements AuthState<COMPONENT> {
-  @override
-  COMPONENT c;
-
-  AuthStateNeedVerification(this.c);
+class AuthStateNeedVerification implements AuthState {
+  AuthStateNeedVerification();
 
   @override
-  Future<AuthState<COMPONENT>> handle(Map<String, dynamic> data) async {
+  Future<AuthState> handle(Map<String, dynamic> data) async {
     BuildContext context = data['context'];
 
     MyComponents.showLoadingDialog(context);
@@ -66,7 +59,7 @@ class AuthStateNeedVerification<COMPONENT> implements AuthState<COMPONENT> {
     if (await AuthUtil().emailIsVerified()) {
       await AuthUtil().delete();
       MyComponents.dismissLoadingDialog();
-      return AuthStateRegistration<COMPONENT>(c);
+      return AuthStateRegistration();
     } else {
       MyComponents.dismissLoadingDialog();
       MyComponents.toastError(data['context'], "이메일 인증이 필요합니다.");
@@ -75,14 +68,11 @@ class AuthStateNeedVerification<COMPONENT> implements AuthState<COMPONENT> {
   }
 }
 
-class AuthStateRegistration<COMPONENT> implements AuthState<COMPONENT> {
-  @override
-  COMPONENT c;
-
-  AuthStateRegistration(this.c);
+class AuthStateRegistration implements AuthState {
+  AuthStateRegistration();
 
   @override
-  Future<AuthState<COMPONENT>> handle(Map<String, dynamic> data) async {
+  Future<AuthState> handle(Map<String, dynamic> data) async {
     BuildContext context = data['context'];
     String email = data['email'];
     String password = data['password'];
@@ -127,14 +117,11 @@ class AuthStateRegistration<COMPONENT> implements AuthState<COMPONENT> {
   }
 }
 
-class AuthStateLogin<COMPONENT> implements AuthState<COMPONENT> {
-  @override
-  COMPONENT c;
-
-  AuthStateLogin(this.c);
+class AuthStateLogin implements AuthState {
+  AuthStateLogin();
 
   @override
-  Future<AuthState<COMPONENT>> handle(Map<String, dynamic> data) async {
+  Future<AuthState> handle(Map<String, dynamic> data) async {
     BuildContext context = data['context'];
     String email = data['email'];
     String password = data['password'];

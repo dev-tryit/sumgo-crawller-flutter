@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
-import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/AuthUtil.dart';
@@ -16,19 +14,6 @@ import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 
 import '../provider/SettingDialogProvider.dart';
 
-// ...(!Setting.isRelease
-//     ? [
-//         Positioned(
-//           bottom: 10,
-//           right: 10,
-//           child: FloatingActionButton(
-//             backgroundColor: MyColors.red,
-//             child: const Icon(Icons.bug_report),
-//             onPressed: () => LogConsole.openLogConsole(context),
-//           ),
-//         )
-//       ]
-//     : []),
 class SettingDialog extends StatefulWidget {
   static const String className = "SettingDialog";
   const SettingDialog({Key? key}) : super(key: key);
@@ -41,44 +26,40 @@ class SettingDialog extends StatefulWidget {
   }
 }
 
-class _SettingDialogState extends KDHState<SettingDialog,
-    SettingDialogComponent, SettingDialogService> {
+class _SettingDialogState extends KDHState<SettingDialog> {
+  Setting? setting;
+
   @override
   bool isPage() => false;
-
-  @override
-  makeComponent() => SettingDialogComponent(this);
-
-  @override
-  makeService() => SettingDialogService(this, c);
 
   @override
   List<WidgetToGetSize> makeWidgetListToGetSize() => [];
 
   @override
   Future<void> onLoad() async {
-    await s.onLoad();
+    setting = await SettingRepository().getOne();
+    idController.text = setting?.sumgoId ?? "";
+    pwController.text = setting?.sumgoPw ?? "";
+    chromeUrlController.text = setting?.crallwerUrl ?? "";
   }
 
   @override
   void mustRebuild() {
-    widgetToBuild = () => c.body(s);
+    widgetToBuild = () => body();
     rebuild();
   }
 
   @override
   Future<void> afterBuild() async {}
-}
 
-class SettingDialogComponent extends KDHComponent<_SettingDialogState> {
+
   static const String debugString = "hiddenDebug";
   final idController = TextEditingController();
   final pwController = TextEditingController();
   final chromeUrlController = TextEditingController();
 
-  SettingDialogComponent(_SettingDialogState state) : super(state);
 
-  Widget body(SettingDialogService s) {
+  Widget body() {
     return EasyKeyboardListener(
       onValue: (value) {
         if (value.contains(debugString)) {
@@ -91,12 +72,12 @@ class SettingDialogComponent extends KDHComponent<_SettingDialogState> {
       child: Dialog(
         child: Padding(
           padding:
-              const EdgeInsets.only(left: 25, right: 25, top: 18, bottom: 18),
+          const EdgeInsets.only(left: 25, right: 25, top: 18, bottom: 18),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              title(s),
+              title(),
               const Divider(),
               const SizedBox(height: 20),
               textFieldWithLabel(label: "숨고 ID", controller: idController),
@@ -109,7 +90,7 @@ class SettingDialogComponent extends KDHComponent<_SettingDialogState> {
                   controller: chromeUrlController,
                   hintText: 'http://localhost:9222'),
               const SizedBox(height: 35),
-              actions(s),
+              actions(),
             ],
           ),
         ),
@@ -119,9 +100,9 @@ class SettingDialogComponent extends KDHComponent<_SettingDialogState> {
 
   Widget textFieldWithLabel(
       {required String label,
-      TextEditingController? controller,
-      bool obscureText = false,
-      String? hintText}) {
+        TextEditingController? controller,
+        bool obscureText = false,
+        String? hintText}) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -144,26 +125,26 @@ class SettingDialogComponent extends KDHComponent<_SettingDialogState> {
     );
   }
 
-  Widget actions(SettingDialogService s) {
+  Widget actions() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         ElevatedButton(
           child: const Text("저장"),
-          onPressed: s.saveSetting,
+          onPressed: saveSetting,
           style: ElevatedButton.styleFrom(primary: MyColors.red),
         ),
         const SizedBox(width: 10),
         ElevatedButton(
           child: const Text("취소"),
-          onPressed: s.cancel,
+          onPressed: cancel,
           style: ElevatedButton.styleFrom(primary: MyColors.red),
         ),
       ],
     );
   }
 
-  Widget title(SettingDialogService s) {
+  Widget title() {
     return Row(
       children: [
         Text(
@@ -175,33 +156,18 @@ class SettingDialogComponent extends KDHComponent<_SettingDialogState> {
         const Spacer(),
         ElevatedButton(
           child: const Text("로그아웃"),
-          onPressed: s.logout,
+          onPressed: logout,
           style: ElevatedButton.styleFrom(primary: MyColors.lightBlue),
         ),
       ],
     );
   }
-}
-
-class SettingDialogService
-    extends KDHService<_SettingDialogState, SettingDialogComponent> {
-  Setting? setting;
-
-  SettingDialogService(_SettingDialogState state, SettingDialogComponent c)
-      : super(state, c);
-
-  Future<void> onLoad() async {
-    setting = await SettingRepository().getOne();
-    c.idController.text = setting?.sumgoId ?? "";
-    c.pwController.text = setting?.sumgoPw ?? "";
-    c.chromeUrlController.text = setting?.crallwerUrl ?? "";
-  }
 
   Future<void> saveSetting() async {
     setting = (setting ?? Setting(sumgoId: "",sumgoPw: "",crallwerUrl: ""))
-      ..sumgoId = c.idController.text
-      ..sumgoPw = c.pwController.text
-      ..crallwerUrl = c.chromeUrlController.text;
+      ..sumgoId = idController.text
+      ..sumgoPw = pwController.text
+      ..crallwerUrl = chromeUrlController.text;
     await SettingRepository().save(setting: setting!);
     PageUtil.back(context);
   }
@@ -213,4 +179,5 @@ class SettingDialogService
   void logout() {
     AuthUtil().logout(context: context);
   }
+
 }

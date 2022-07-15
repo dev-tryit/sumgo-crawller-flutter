@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sumgo_crawller_flutter/MySetting.dart';
-import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
-import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/AuthUtil.dart';
@@ -12,16 +10,16 @@ import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 
 class LoadPage extends StatefulWidget {
-  static const String staticClassName= "LoadPage";
+  static const String staticClassName = "LoadPage";
   final className = staticClassName;
+
   const LoadPage({Key? key}) : super(key: key);
 
   @override
   _LoadPageState createState() => _LoadPageState();
 }
 
-class _LoadPageState
-    extends KDHState<LoadPage, LoadPageComponent, LoadPageService> {
+class _LoadPageState extends KDHState<LoadPage> {
   @override
   bool isPage() => true;
 
@@ -29,28 +27,18 @@ class _LoadPageState
   List<WidgetToGetSize> makeWidgetListToGetSize() => [];
 
   @override
-  LoadPageComponent makeComponent() => LoadPageComponent(this);
-
-  @override
-  LoadPageService makeService() => LoadPageService(this, c);
-
-  @override
   Future<void> onLoad() async {}
 
   @override
   void mustRebuild() {
-    widgetToBuild = () => Scaffold(body: c.body());
+    widgetToBuild = () => Scaffold(body: body());
     rebuild();
   }
 
   @override
   Future<void> afterBuild() async {
-    await s.moveNextPage();
+    await moveNextPage();
   }
-}
-
-class LoadPageComponent extends KDHComponent<_LoadPageState> {
-  LoadPageComponent(_LoadPageState state) : super(state);
 
   Widget body() {
     return Container(
@@ -66,10 +54,6 @@ class LoadPageComponent extends KDHComponent<_LoadPageState> {
       ),
     );
   }
-}
-
-class LoadPageService extends KDHService<_LoadPageState, LoadPageComponent> {
-  LoadPageService(_LoadPageState state, LoadPageComponent c) : super(state, c);
 
   Future<void> moveNextPage() async {
     await Future.delayed(const Duration(seconds: 1));

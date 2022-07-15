@@ -19,6 +19,7 @@ import 'package:sumgo_crawller_flutter/util/MyTheme.dart';
 import 'firebase_options.dart';
 import 'page/main/KeywordAnalysisPage.dart';
 import 'page/main/RequestRemovalPage.dart';
+import 'provider/KeywordAnalysisProvider.dart';
 import 'provider/SettingDialogProvider.dart';
 
 const width = 350.0;
@@ -47,6 +48,7 @@ Future<void> main() async {
     runApp(MultiProvider(
       providers: [
         SettingDialogProvider.provider,
+        KeywordAnalysisProvider.provider,
       ],
       child: MyApp(),
     ));

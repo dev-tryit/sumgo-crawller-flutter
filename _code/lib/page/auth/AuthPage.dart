@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:sumgo_crawller_flutter/MySetting.dart';
-import 'package:sumgo_crawller_flutter/_common/abstract/KDHComponent.dart';
-import 'package:sumgo_crawller_flutter/_common/abstract/KDHService.dart';
 import 'package:sumgo_crawller_flutter/_common/abstract/KDHState.dart';
 import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/LogUtil.dart';
@@ -22,7 +20,9 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState
-    extends KDHState<AuthPage, AuthPageComponent, AuthPageService> {
+    extends KDHState<AuthPage> {
+  final authStateManager = AuthStateManager();
+  
   @override
   bool isPage() => true;
 
@@ -30,25 +30,17 @@ class _AuthPageState
   List<WidgetToGetSize> makeWidgetListToGetSize() => [];
 
   @override
-  AuthPageComponent makeComponent() => AuthPageComponent(this);
-
-  @override
-  AuthPageService makeService() => AuthPageService(this, c);
-
-  @override
   Future<void> onLoad() async {}
 
   @override
   void mustRebuild() {
-    widgetToBuild = () => c.body(s);
+    widgetToBuild = () => body();
     rebuild();
   }
 
   @override
   Future<void> afterBuild() async {}
-}
 
-class AuthPageComponent extends KDHComponent<_AuthPageState> {
   final _formKey = GlobalKey<FormState>();
 
   final emailController = TextEditingController();
@@ -62,29 +54,28 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
 
   List<Widget> elementList = [];
 
-  AuthPageComponent(_AuthPageState state) : super(state);
 
-  Widget body(AuthPageService s) {
-    final authState = s.authStateManager.state;
+  Widget body() {
+    final authState = authStateManager.state;
     setUIByAuthState(authState);
 
     return Scaffold(
       bottomSheet: nextButtonText != null
           ? AnimatedOpacity(
-              opacity: 1.0,
-              duration: const Duration(milliseconds: 1500),
-              child: Container(
-                height: 82,
-                padding: const EdgeInsets.only(left: 32, right: 32, bottom: 32),
-                child: SizedBox.expand(
-                  child: ElevatedButton(
-                    child: Text(nextButtonText!),
-                    style: ElevatedButton.styleFrom(primary: MyColors.deepBlue),
-                    onPressed: s.loginOrRegister,
-                  ),
-                ),
-              ),
-            )
+        opacity: 1.0,
+        duration: const Duration(milliseconds: 1500),
+        child: Container(
+          height: 82,
+          padding: const EdgeInsets.only(left: 32, right: 32, bottom: 32),
+          child: SizedBox.expand(
+            child: ElevatedButton(
+              child: Text(nextButtonText!),
+              style: ElevatedButton.styleFrom(primary: MyColors.deepBlue),
+              onPressed: loginOrRegister,
+            ),
+          ),
+        ),
+      )
           : null,
       body: Form(
         key: _formKey,
@@ -104,7 +95,7 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
                 label: "이메일",
                 trailing: emailValidationText,
                 trailingColor: emailValidationColor,
-                onTrailingTap: s.sendEmailVerification,
+                onTrailingTap: sendEmailVerification,
                 controller: emailController,
                 textFieldEnabled: emailTextFieldEnabled,
                 keyboardType: TextInputType.emailAddress,
@@ -157,22 +148,22 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
               ),
               ...trailing != null
                   ? [
-                      const SizedBox(width: 8),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 25),
-                        child: InkWell(
-                          onTap: onTrailingTap,
-                          child: Text(
-                            trailing,
-                            style: MyFonts.gothicA1(
-                              color: trailingColor ?? MyColors.deepBlue,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                const SizedBox(width: 8),
+                Padding(
+                  padding: const EdgeInsets.only(top: 25),
+                  child: InkWell(
+                    onTap: onTrailingTap,
+                    child: Text(
+                      trailing,
+                      style: MyFonts.gothicA1(
+                        color: trailingColor ?? MyColors.deepBlue,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ]
+                    ),
+                  ),
+                ),
+              ]
                   : [],
             ],
           ),
@@ -181,7 +172,7 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
     );
   }
 
-  void setUIByAuthState(AuthState<AuthPageComponent> authState) {
+  void setUIByAuthState(AuthState authState) {
     // 상태별 위젯 상태 변경.
     if (authState is AuthStateNeedVerification) {
       emailValidationText = "인증 확인";
@@ -245,20 +236,13 @@ class AuthPageComponent extends KDHComponent<_AuthPageState> {
       ]);
     }
   }
-}
 
-class AuthPageService extends KDHService<_AuthPageState, AuthPageComponent> {
-  AuthStateManager<AuthPageComponent> authStateManager;
-
-  AuthPageService(_AuthPageState state, AuthPageComponent c)
-      : authStateManager = AuthStateManager<AuthPageComponent>(c),
-        super(state, c);
 
   void sendEmailVerification() async {
     LogUtil.debug(
         "sendEmailVerification authStateManager.authState:${authStateManager.state.runtimeType}");
 
-    String email = c.emailController.text.trim();
+    String email = emailController.text.trim();
 
     await MyComponents.showLoadingDialog(context);
     if (authStateManager.state is AuthStateSendEmail) {
@@ -274,14 +258,14 @@ class AuthPageService extends KDHService<_AuthPageState, AuthPageComponent> {
     LogUtil.debug(
         "loginOrRegister authStateManager.authState:${authStateManager.state.runtimeType}");
 
-    String email = c.emailController.text.trim();
-    String password = c.passwordController.text.trim();
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
 
     if (authStateManager.state is AuthStateLogin) {
       await authStateManager.state
           .handle({'email': email, 'password': password, 'context': context});
     } else if (authStateManager.state is AuthStateRegistration) {
-      String passwordConfirm = c.passwordConfirmController.text.trim();
+      String passwordConfirm = passwordConfirmController.text.trim();
       await authStateManager.handle({
         'email': email,
         'password': password,
@@ -296,3 +280,4 @@ class AuthPageService extends KDHService<_AuthPageState, AuthPageComponent> {
     }
   }
 }
+
