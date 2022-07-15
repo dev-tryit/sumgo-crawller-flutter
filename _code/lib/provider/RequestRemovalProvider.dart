@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../MySetting.dart';
-import '../_common/interface/Type.dart';
+import '../_common/interface/ConsumerBuilderType.dart';
 import '../_common/util/PlatformUtil.dart';
 import '../_common/util/UrlUtil.dart';
 import '../dialog/SettingDialog.dart';

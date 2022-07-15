@@ -2,7 +2,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../_common/interface/TypisPage.dart';
+import '../_common/interface/ConsumerBuilderType.dart';
 import '../repository/AnalysisItemRepository.dart';
 import '../util/MyComponents.dart';
 
