@@ -22,13 +22,10 @@ class RemovalType {
 
 
 class SelectRemovalTypeController {
-  late _SelectRemovalTypeState state;
+  String typeValue;
+  String typeDisplay;
 
-  String get type => state.typeValue ?? "";
-  String get typeDisplay => state.typeDisplay ?? "";
-  void init(_SelectRemovalTypeState state) {
-    this.state = state;
-  }
+  SelectRemovalTypeController({this.typeValue="", this.typeDisplay=""});
 }
 
 class SelectRemovalType extends StatefulWidget {
@@ -48,7 +45,8 @@ class _SelectRemovalTypeState extends State<SelectRemovalType> {
   void initState() {
     super.initState();
 
-    widget.typeController.init(this);
+    widget.typeController.typeValue = typeValue??"";
+    widget.typeController.typeDisplay = typeDisplay??"";
   }
 
   @override

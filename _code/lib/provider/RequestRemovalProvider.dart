@@ -115,6 +115,28 @@ class RequestRemovalProvider extends ChangeNotifier {
     MyComponents.snackBar(context, "생성되었습니다");
   }
 
+  Future<void> updateRemovalCondition(
+      String content,
+      String type,
+      String typeDisplay,
+      RemovalCondition currentItem,
+      void Function(String errorMessage) setErrorMessage) async {
+    String? errorMessage =
+    RemovalCondition.getErrorMessageForAdd(content, type, typeDisplay);
+    if (errorMessage != null) {
+      setErrorMessage(errorMessage);
+      return;
+    }
+    setErrorMessage('');
+
+    RemovalConditionRepository().update(currentItem..content=content..type=type..typeDisplay=typeDisplay);
+
+    Navigator.pop(context);
+    notifyListeners();
+
+    MyComponents.snackBar(context, "수정되었습니다");
+  }
+
   Future<void> deleteRemovalCondition(BuildContext context,
       RemovalCondition item, AnimationController? animateController) async {
     final result = await showOkCancelAlertDialog(

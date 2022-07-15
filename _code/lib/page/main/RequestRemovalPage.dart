@@ -49,41 +49,46 @@ class _RequestRemovalPageState extends KDHState<RequestRemovalPage> {
   Future<void> afterBuild() async {}
 
   Widget body() {
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Column(
-        children: [
-          const SizedBox(height: 60),
-          MyCard(
-            title: "정리 조건",
-            rightButton: MyRedButton("생성하기",
-                onPressed: () => showCreateItemBottomSheet()),
-            contents: (RequestRemovalProvider.read(context).removalConditionList
-                  ..sort((a, b) {
-                    int calculateOrder(RemovalCondition removalCondition) {
-                      if (removalCondition.type == RemovalType.best.value) {
-                        return 3;
-                      } else if (removalCondition.type ==
-                          RemovalType.include.value) {
-                        return 2;
-                      } else {
-                        return 1;
+    return RequestRemovalProvider.consumer(builder:
+        (BuildContext context, RequestRemovalProvider provider, Widget? child) {
+      return SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            const SizedBox(height: 60),
+            MyCard(
+              title: "정리 조건",
+              rightButton: MyRedButton("생성하기",
+                  onPressed: () => showCreateItemBottomSheet()),
+              contents: (RequestRemovalProvider.read(context)
+                      .removalConditionList
+                    ..sort((a, b) {
+                      int calculateOrder(RemovalCondition removalCondition) {
+                        if (removalCondition.type == RemovalType.best.value) {
+                          return 3;
+                        } else if (removalCondition.type ==
+                            RemovalType.include.value) {
+                          return 2;
+                        } else {
+                          return 1;
+                        }
                       }
-                    }
 
-                    return calculateOrder(a) > calculateOrder(b) ? -1 : 1;
-                  }))
-                .map((e) => RequestRemovalListTile(
-                      item: e,
-                      isPlusIcon: e.type != "exclude",
-                    ))
-                .toList(),
-            bottomButton: MyWhiteButton("요청 정리하기",
-                onPressed: RequestRemovalProvider.read(context).removeRequests),
-          ),
-        ],
-      ),
-    );
+                      return calculateOrder(a) > calculateOrder(b) ? -1 : 1;
+                    }))
+                  .map((e) => RequestRemovalListTile(
+                        item: e,
+                        isPlusIcon: e.type != "exclude",
+                      ))
+                  .toList(),
+              bottomButton: MyWhiteButton("요청 정리하기",
+                  onPressed:
+                      RequestRemovalProvider.read(context).removeRequests),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   void showCreateItemBottomSheet() {
@@ -113,7 +118,7 @@ class _RequestRemovalPageState extends KDHState<RequestRemovalPage> {
       onButtonPress: (setErrorMessage) =>
           RequestRemovalProvider.read(context).addRemovalCondition(
         contentController.text.trim(),
-        typeController.type,
+        typeController.typeValue,
         typeController.typeDisplay,
         setErrorMessage,
       ),
@@ -153,11 +158,17 @@ class RequestRemovalListTile extends StatelessWidget {
         ),
         endActionPane: ActionPane(
           //3. startActionPane: 오른쪽으로 드래그하면 나오는액션, endActionPane: 왼쪽
-          extentRatio: 0.2,
+          extentRatio: 0.4,
           //각각 child의 크기
           motion: const BehindMotion(),
           //동작 애니메이션 설정 BehindMotion, DrawerMotion, ScrollMotion, StretchMotion
           children: [
+            CustomSlidableAction(
+              onPressed: (c) => showUpdateItemBottomSheet(context, item),
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+              child: const Icon(Icons.edit),
+            ),
             CustomSlidableAction(
               onPressed: (c) => RequestRemovalProvider.read(context)
                   .deleteRemovalCondition(context, item, animateController),
@@ -168,6 +179,42 @@ class RequestRemovalListTile extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+
+  void showUpdateItemBottomSheet(BuildContext context, RemovalCondition currentItem) {
+    final contentController = TextEditingController(text: currentItem.content);
+    final typeController = SelectRemovalTypeController(typeDisplay: currentItem.typeDisplay??"", typeValue: currentItem.type??"");
+
+    MyBottomSheetUtil().showInputBottomSheet(
+      context: context,
+      title: '정리 조건 수정하기',
+      children: [
+        SelectRemovalType(typeController: typeController),
+        const SizedBox(height: 10),
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          dense: true,
+          minLeadingWidth: 100,
+          leading: Text("내용",
+              style: MyFonts.gothicA1(color: MyColors.black, fontSize: 12.5)),
+          title: TextField(
+            controller: contentController,
+            decoration: const InputDecoration(isDense: true),
+          ),
+        ),
+        const SizedBox(height: 10),
+      ],
+      buttonStr: "수정",
+      onButtonPress: (setErrorMessage) =>
+          RequestRemovalProvider.read(context).updateRemovalCondition(
+            contentController.text.trim(),
+            typeController.typeValue,
+            typeController.typeDisplay,
+            currentItem,
+            setErrorMessage,
+          ),
     );
   }
 }
