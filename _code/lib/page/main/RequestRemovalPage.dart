@@ -118,7 +118,7 @@ class _RequestRemovalPageState extends KDHState<RequestRemovalPage> {
       onButtonPress: (setErrorMessage) =>
           RequestRemovalProvider.read(context).addRemovalCondition(
         contentController.text.trim(),
-        typeController.typeValue,
+        typeController.type,
         typeController.typeDisplay,
         setErrorMessage,
       ),
@@ -185,15 +185,13 @@ class RequestRemovalListTile extends StatelessWidget {
   void showUpdateItemBottomSheet(
       BuildContext context, RemovalCondition currentItem) {
     final contentController = TextEditingController(text: currentItem.content);
-    final typeController = SelectRemovalTypeController(
-        typeDisplay: currentItem.typeDisplay ?? "",
-        typeValue: currentItem.type ?? "");
+    final typeController = SelectRemovalTypeController();
 
     MyBottomSheetUtil().showInputBottomSheet(
       context: context,
       title: '정리 조건 수정하기',
       children: [
-        SelectRemovalType(typeController: typeController),
+        SelectRemovalType(typeController: typeController, typeDisplay: currentItem.typeDisplay, typeValue: currentItem.type),
         const SizedBox(height: 10),
         ListTile(
           contentPadding: EdgeInsets.zero,
@@ -212,7 +210,7 @@ class RequestRemovalListTile extends StatelessWidget {
       onButtonPress: (setErrorMessage) =>
           RequestRemovalProvider.read(context).updateRemovalCondition(
         contentController.text.trim(),
-        typeController.typeValue,
+        typeController.type,
         typeController.typeDisplay,
         currentItem,
         setErrorMessage,

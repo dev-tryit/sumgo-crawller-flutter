@@ -22,16 +22,22 @@ class RemovalType {
 
 
 class SelectRemovalTypeController {
-  String typeValue;
-  String typeDisplay;
+  late _SelectRemovalTypeState state;
 
-  SelectRemovalTypeController({this.typeValue="", this.typeDisplay=""});
+  String get type => state.typeValue ?? "";
+  String get typeDisplay => state.typeDisplay ?? "";
+  void init(_SelectRemovalTypeState state) {
+    this.state = state;
+  }
+
 }
 
 class SelectRemovalType extends StatefulWidget {
   SelectRemovalTypeController typeController;
+  String? typeValue;
+  String? typeDisplay;
 
-  SelectRemovalType({Key? key, required this.typeController}) : super(key: key);
+  SelectRemovalType({Key? key, required this.typeController, this.typeDisplay, this.typeValue}) : super(key: key);
 
   @override
   _SelectRemovalTypeState createState() => _SelectRemovalTypeState();
@@ -45,8 +51,7 @@ class _SelectRemovalTypeState extends State<SelectRemovalType> {
   void initState() {
     super.initState();
 
-    widget.typeController.typeValue = typeValue??"";
-    widget.typeController.typeDisplay = typeDisplay??"";
+    widget.typeController.init(this);
   }
 
   @override
