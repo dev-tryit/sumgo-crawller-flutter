@@ -7,7 +7,6 @@ import 'package:sumgo_crawller_flutter/_common/model/WidgetToGetSize.dart';
 import 'package:sumgo_crawller_flutter/_common/util/AnimationUtil.dart';
 import 'package:sumgo_crawller_flutter/repository/RemovalConditionRepository.dart';
 import 'package:sumgo_crawller_flutter/util/MyBottomSheetUtil.dart';
-import 'package:sumgo_crawller_flutter/util/MyColorser/util/MyCrawller.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 import 'package:sumgo_crawller_flutter/util/MyImage.dart';
 import 'package:sumgo_crawller_flutter/widget/MyCard.dart';
@@ -16,6 +15,7 @@ import 'package:sumgo_crawller_flutter/widget/MyWhiteButton.dart';
 import 'package:sumgo_crawller_flutter/widget/SelectRemovalType.dart';
 
 import '../../provider/RequestRemovalProvider.dart';
+import '../../util/MyColors.dart';
 
 class RequestRemovalPage extends StatefulWidget {
   static const String staticClassName = "RequestRemovalPage";

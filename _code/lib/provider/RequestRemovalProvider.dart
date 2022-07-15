@@ -7,7 +7,7 @@ import '../MySetting.dart';
 import '../_common/interface/Type.dart';
 import '../_common/util/PlatformUtil.dart';
 import '../_common/util/UrlUtil.dart';
-import '../dialog/SettingDialogemRepository.dart';
+import '../dialog/SettingDialog.dart';
 import '../repository/RemovalConditionRepository.dart';
 import '../repository/SettingRepository.dart';
 import '../util/MyComponents.dart';

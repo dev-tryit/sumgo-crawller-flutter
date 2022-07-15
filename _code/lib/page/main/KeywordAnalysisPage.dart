@@ -125,9 +125,71 @@ class _KeywordAnalysisPageState extends KDHState<KeywordAnalysisPage> {
     );
   }
 
-  void showUpdateItemBottomSheet() {
-    final TextEditingController titleController = TextEditingController();
-    final TextEditingController keywordController = TextEditingController();
+}
+
+class KeywrodAnalysisListTile extends StatelessWidget {
+  AnalysisItem item;
+  AnimationController? animateController;
+
+  KeywrodAnalysisListTile({Key? key, required this.item})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    String title = item.title ?? "";
+    String keyword = (item.keywordList ?? []).join(",  ".trim());
+
+    return AnimationUtil.slideInLeft(
+      manualTrigger: true,
+      duration: const Duration(milliseconds: 0),
+      delay: const Duration(milliseconds: 0),
+      from: 15,
+      controller: (aController) => animateController = aController,
+      child: Slidable(
+        key: GlobalKey(), //1.반드시 키가 있어야함
+        child: ListTile(
+          //2. 슬라이드할 대상 설정
+          leading: const Padding(
+            padding: EdgeInsets.only(top: 6),
+            child: Image(image: MyImage.boxIcon),
+          ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+          horizontalTitleGap: 6,
+          title: Text("$title 분류", style: MyFonts.gothicA1()),
+          subtitle: Text(keyword,
+              // maxLines: 1,
+              // overflow: TextOverflow.ellipsis,
+              style: MyFonts.gothicA1(fontSize: 9)),
+          dense: true,
+        ),
+        endActionPane: ActionPane(
+          //3. startActionPane: 오른쪽으로 드래그하면 나오는액션, endActionPane: 왼쪽
+          extentRatio: 0.40,
+          //각각 child의 크기
+          motion: const BehindMotion(),
+          //동작 애니메이션 설정 BehindMotion, DrawerMotion, ScrollMotion, StretchMotion
+          children: [
+            CustomSlidableAction(
+              onPressed: (c) => showUpdateItemBottomSheet(context, title, keyword, item),
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+              child: const Icon(Icons.edit),
+            ),
+            CustomSlidableAction(
+              onPressed: (c) => KeywordAnalysisProvider.read(context).deleteAnalysisItem(context, item, animateController),
+              backgroundColor: const Color(0xFFFE4A49),
+              foregroundColor: Colors.white,
+              child: const Icon(Icons.delete),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void showUpdateItemBottomSheet(BuildContext context, String title, String keyword, AnalysisItem currentItem) {
+    final TextEditingController titleController = TextEditingController(text:title);
+    final TextEditingController keywordController = TextEditingController(text:keyword);
 
     MyBottomSheetUtil().showInputBottomSheet(
       context: context,
@@ -159,72 +221,12 @@ class _KeywordAnalysisPageState extends KDHState<KeywordAnalysisPage> {
         const SizedBox(height: 10),
       ],
       buttonStr: "생성",
-      onAdd: (setErrorMessage) => KeywordAnalysisProvider.read(context).addAnalysisItem(
-        titleController.text.trim(),
-        keywordController.text.trim(),
+      onAdd: (setErrorMessage) => KeywordAnalysisProvider.read(context).updateAnalysisItem(
+        context,
+        title,
+        keyword,
+        currentItem,
         setErrorMessage,
-        scrollController,
-      ),
-    );
-  }
-}
-
-class KeywrodAnalysisListTile extends StatelessWidget {
-  AnalysisItem item;
-  AnimationController? animateController;
-
-  KeywrodAnalysisListTile({Key? key, required this.item})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    String title = item.title ?? "";
-    String subtitle = (item.keywordList ?? []).join(",  ".trim());
-
-    return AnimationUtil.slideInLeft(
-      manualTrigger: true,
-      duration: const Duration(milliseconds: 0),
-      delay: const Duration(milliseconds: 0),
-      from: 15,
-      controller: (aController) => animateController = aController,
-      child: Slidable(
-        key: GlobalKey(), //1.반드시 키가 있어야함
-        child: ListTile(
-          //2. 슬라이드할 대상 설정
-          leading: const Padding(
-            padding: EdgeInsets.only(top: 6),
-            child: Image(image: MyImage.boxIcon),
-          ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-          horizontalTitleGap: 6,
-          title: Text("$title 분류", style: MyFonts.gothicA1()),
-          subtitle: Text(subtitle,
-              // maxLines: 1,
-              // overflow: TextOverflow.ellipsis,
-              style: MyFonts.gothicA1(fontSize: 9)),
-          dense: true,
-        ),
-        endActionPane: ActionPane(
-          //3. startActionPane: 오른쪽으로 드래그하면 나오는액션, endActionPane: 왼쪽
-          extentRatio: 0.40,
-          //각각 child의 크기
-          motion: const BehindMotion(),
-          //동작 애니메이션 설정 BehindMotion, DrawerMotion, ScrollMotion, StretchMotion
-          children: [
-            CustomSlidableAction(
-              onPressed: (c) => KeywordAnalysisProvider.read(context).updateAnalysisItem(context, item, this),
-              backgroundColor: Colors.blue,
-              foregroundColor: Colors.white,
-              child: const Icon(Icons.edit),
-            ),
-            CustomSlidableAction(
-              onPressed: (c) => KeywordAnalysisProvider.read(context).deleteAnalysisItem(context, item, this),
-              backgroundColor: const Color(0xFFFE4A49),
-              foregroundColor: Colors.white,
-              child: const Icon(Icons.delete),
-            ),
-          ],
-        ),
       ),
     );
   }
