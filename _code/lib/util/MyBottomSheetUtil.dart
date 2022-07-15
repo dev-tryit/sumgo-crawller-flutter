@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:sumgo_crawller_flutter/util/MyColors.dart';
 import 'package:sumgo_crawller_flutter/util/MyFonts.dart';
 import 'package:sumgo_crawller_flutter/widget/MyRedButton.dart';
@@ -14,14 +13,14 @@ class MyBottomSheetUtil {
       {required BuildContext context,
       required String title,
       required List<Widget> children,
-      required AddFunctionWithSetErrorMessage onAdd,
+      required AddFunctionWithSetErrorMessage onButtonPress,
       required String buttonStr}) {
     showBottomSheet(
       context: context,
       child: InputBottomSheet(
         title: title,
         children: children,
-        onAdd: onAdd,
+        onAdd: onButtonPress,
         buttonStr: buttonStr,
       ),
     );

@@ -116,7 +116,7 @@ class _KeywordAnalysisPageState extends KDHState<KeywordAnalysisPage> {
         const SizedBox(height: 10),
       ],
       buttonStr: "생성",
-      onAdd: (setErrorMessage) => KeywordAnalysisProvider.read(context).addAnalysisItem(
+      onButtonPress: (setErrorMessage) => KeywordAnalysisProvider.read(context).addAnalysisItem(
         titleController.text.trim(),
         keywordController.text.trim(),
         setErrorMessage,
@@ -193,7 +193,7 @@ class KeywrodAnalysisListTile extends StatelessWidget {
 
     MyBottomSheetUtil().showInputBottomSheet(
       context: context,
-      title: '키워드 분류 생성하기',
+      title: '키워드 분류 수정하기',
       children: [
         ListTile(
           contentPadding: EdgeInsets.zero,
@@ -220,11 +220,11 @@ class KeywrodAnalysisListTile extends StatelessWidget {
         ),
         const SizedBox(height: 10),
       ],
-      buttonStr: "생성",
-      onAdd: (setErrorMessage) => KeywordAnalysisProvider.read(context).updateAnalysisItem(
+      buttonStr: "수정",
+      onButtonPress: (setErrorMessage) => KeywordAnalysisProvider.read(context).updateAnalysisItem(
         context,
-        title,
-        keyword,
+        titleController.text.trim(),
+        keywordController.text.trim(),
         currentItem,
         setErrorMessage,
       ),

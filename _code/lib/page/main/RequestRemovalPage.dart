@@ -110,7 +110,7 @@ class _RequestRemovalPageState extends KDHState<RequestRemovalPage> {
         const SizedBox(height: 10),
       ],
       buttonStr: "생성",
-      onAdd: (setErrorMessage) =>
+      onButtonPress: (setErrorMessage) =>
           RequestRemovalProvider.read(context).addRemovalCondition(
         contentController.text.trim(),
         typeController.type,
