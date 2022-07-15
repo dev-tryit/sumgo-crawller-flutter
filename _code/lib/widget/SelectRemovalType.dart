@@ -52,11 +52,11 @@ class _SelectRemovalTypeState extends State<SelectRemovalType> {
     super.initState();
 
     widget.typeController.init(this);
-    if(typeValue!= null) {
-      typeValue = typeValue;
+    if(widget.typeValue!= null) {
+      typeValue = widget.typeValue;
     }
-    if(typeDisplay!= null) {
-      typeDisplay = typeDisplay;
+    if(widget.typeDisplay!= null) {
+      typeDisplay = widget.typeDisplay;
     }
   }
 
