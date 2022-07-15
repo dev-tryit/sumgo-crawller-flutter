@@ -118,7 +118,7 @@ class _RequestRemovalPageState extends KDHState<RequestRemovalPage> {
       onButtonPress: (setErrorMessage) =>
           RequestRemovalProvider.read(context).addRemovalCondition(
         contentController.text.trim(),
-        typeController.type,
+        typeController.typeValue,
         typeController.typeDisplay,
         setErrorMessage,
       ),
@@ -210,7 +210,7 @@ class RequestRemovalListTile extends StatelessWidget {
       onButtonPress: (setErrorMessage) =>
           RequestRemovalProvider.read(context).updateRemovalCondition(
         contentController.text.trim(),
-        typeController.type,
+        typeController.typeValue,
         typeController.typeDisplay,
         currentItem,
         setErrorMessage,

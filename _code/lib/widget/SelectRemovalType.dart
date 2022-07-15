@@ -24,7 +24,7 @@ class RemovalType {
 class SelectRemovalTypeController {
   late _SelectRemovalTypeState state;
 
-  String get type => state.typeValue ?? "";
+  String get typeValue => state.typeValue ?? "";
   String get typeDisplay => state.typeDisplay ?? "";
   void init(_SelectRemovalTypeState state) {
     this.state = state;
@@ -52,6 +52,12 @@ class _SelectRemovalTypeState extends State<SelectRemovalType> {
     super.initState();
 
     widget.typeController.init(this);
+    if(typeValue!= null) {
+      typeValue = typeValue;
+    }
+    if(typeDisplay!= null) {
+      typeDisplay = typeDisplay;
+    }
   }
 
   @override
