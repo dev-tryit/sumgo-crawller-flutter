@@ -171,7 +171,7 @@ class RequestRemovalListTile extends StatelessWidget {
             ),
             CustomSlidableAction(
               onPressed: (c) => RequestRemovalProvider.read(context)
-                  .deleteRemovalCondition(context, item, animateController),
+                  .deleteRemovalCondition(item, animateController),
               backgroundColor: const Color(0xFFFE4A49),
               foregroundColor: Colors.white,
               child: const Icon(Icons.delete),
@@ -182,10 +182,12 @@ class RequestRemovalListTile extends StatelessWidget {
     );
   }
 
-
-  void showUpdateItemBottomSheet(BuildContext context, RemovalCondition currentItem) {
+  void showUpdateItemBottomSheet(
+      BuildContext context, RemovalCondition currentItem) {
     final contentController = TextEditingController(text: currentItem.content);
-    final typeController = SelectRemovalTypeController(typeDisplay: currentItem.typeDisplay??"", typeValue: currentItem.type??"");
+    final typeController = SelectRemovalTypeController(
+        typeDisplay: currentItem.typeDisplay ?? "",
+        typeValue: currentItem.type ?? "");
 
     MyBottomSheetUtil().showInputBottomSheet(
       context: context,
@@ -209,12 +211,12 @@ class RequestRemovalListTile extends StatelessWidget {
       buttonStr: "수정",
       onButtonPress: (setErrorMessage) =>
           RequestRemovalProvider.read(context).updateRemovalCondition(
-            contentController.text.trim(),
-            typeController.typeValue,
-            typeController.typeDisplay,
-            currentItem,
-            setErrorMessage,
-          ),
+        contentController.text.trim(),
+        typeController.typeValue,
+        typeController.typeDisplay,
+        currentItem,
+        setErrorMessage,
+      ),
     );
   }
 }

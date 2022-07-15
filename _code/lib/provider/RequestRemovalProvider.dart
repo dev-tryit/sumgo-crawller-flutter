@@ -29,8 +29,9 @@ class RequestRemovalProvider extends ChangeNotifier {
           {required ConsumerBuilderType<RequestRemovalProvider> builder}) =>
       Consumer<RequestRemovalProvider>(builder: builder);
 
-  static RequestRemovalProvider read(BuildContext context) =>
-      context.read<RequestRemovalProvider>();
+  static RequestRemovalProvider read(BuildContext context) {
+    return context.read<RequestRemovalProvider>()..context=context;
+  }
 
 
   Future<void> resetRemovalConditionList() async {
@@ -137,8 +138,7 @@ class RequestRemovalProvider extends ChangeNotifier {
     MyComponents.snackBar(context, "수정되었습니다");
   }
 
-  Future<void> deleteRemovalCondition(BuildContext context,
-      RemovalCondition item, AnimationController? animateController) async {
+  Future<void> deleteRemovalCondition(RemovalCondition item, AnimationController? animateController) async {
     final result = await showOkCancelAlertDialog(
       context: context,
       title: "알림",

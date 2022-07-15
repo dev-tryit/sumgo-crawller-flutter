@@ -21,8 +21,9 @@ class KeywordAnalysisProvider extends ChangeNotifier {
           {required ConsumerBuilderType<KeywordAnalysisProvider> builder}) =>
       Consumer<KeywordAnalysisProvider>(builder: builder);
 
-  static KeywordAnalysisProvider read(BuildContext context) =>
-      context.read<KeywordAnalysisProvider>();
+  static KeywordAnalysisProvider read(BuildContext context) {
+    return context.read<KeywordAnalysisProvider>()..context = context;
+  }
 
   Future<void> resetAnalysisItemList() async {
     analysisItemList = await AnalysisItemRepository().getList();
@@ -61,7 +62,7 @@ class KeywordAnalysisProvider extends ChangeNotifier {
     MyComponents.snackBar(context, "생성되었습니다");
   }
 
-  Future<void> deleteAnalysisItem(BuildContext context,
+  Future<void> deleteAnalysisItem(
       AnalysisItem currentItem, AnimationController? animateController) async {
     final result = await showOkCancelAlertDialog(
       context: context,
@@ -86,7 +87,6 @@ class KeywordAnalysisProvider extends ChangeNotifier {
   }
 
   Future<void> updateAnalysisItem(
-    BuildContext context,
     String title,
     String keyword,
     AnalysisItem currentItem,
@@ -102,7 +102,9 @@ class KeywordAnalysisProvider extends ChangeNotifier {
     List<String> keywordList =
         keyword.split(",").map((str) => str.trim()).toList();
 
-    AnalysisItemRepository().update(currentItem..title=title.replaceAll("분류", "")..keywordList=keywordList);
+    AnalysisItemRepository().update(currentItem
+      ..title = title.replaceAll("분류", "")
+      ..keywordList = keywordList);
 
     Navigator.pop(context);
 

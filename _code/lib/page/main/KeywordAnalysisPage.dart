@@ -176,7 +176,7 @@ class KeywrodAnalysisListTile extends StatelessWidget {
               child: const Icon(Icons.edit),
             ),
             CustomSlidableAction(
-              onPressed: (c) => KeywordAnalysisProvider.read(context).deleteAnalysisItem(context, item, animateController),
+              onPressed: (c) => KeywordAnalysisProvider.read(context).deleteAnalysisItem(item, animateController),
               backgroundColor: const Color(0xFFFE4A49),
               foregroundColor: Colors.white,
               child: const Icon(Icons.delete),
@@ -222,7 +222,6 @@ class KeywrodAnalysisListTile extends StatelessWidget {
       ],
       buttonStr: "수정",
       onButtonPress: (setErrorMessage) => KeywordAnalysisProvider.read(context).updateAnalysisItem(
-        context,
         titleController.text.trim(),
         keywordController.text.trim(),
         currentItem,
